@@ -1,18 +1,19 @@
 import { TypeGuard } from "./types";
 import { isFunction, isNil } from "./utils";
 
-export type ObjectTypeGuardTemplate<T extends object> = {
+export type TypeGuardTemplate<T extends object> = {
 	[K in keyof T]-?: TypeGuard<T[K]>;
 };
 
-export type IsObjectParameter<T extends object> = ObjectTypeGuardTemplate<T> | ((guard: TypeGuard<T>) => IsObjectParameter<T>);
+export type IsTypeParameter<T extends object> = TypeGuardTemplate<T> | ((guard: TypeGuard<T>) => IsTypeParameter<T>);
 
-export const extractTypeGuardTemplate = <T extends object>(guard: TypeGuard<T>, parameter: IsObjectParameter<T>): ObjectTypeGuardTemplate<T> => {
+export const extractTypeGuardTemplate = <T extends object>(guard: TypeGuard<T>, parameter: IsTypeParameter<T>): TypeGuardTemplate<T> => {
 	return isFunction(parameter) ? extractTypeGuardTemplate(guard, parameter(guard)) : parameter;
 };
 
-export const isObject = <T extends object>(template: IsObjectParameter<T>): TypeGuard<T> => {
-	let resolvedTemplate: ObjectTypeGuardTemplate<T> | null = null;
+export const isType = <T extends object>(template: IsTypeParameter<T>): TypeGuard<T> => {
+	let resolvedTemplate: TypeGuardTemplate<T> | null = null;
+
 	const guard = (value: any): value is T => {
 		if (isNil(value)) {
 			return false;
@@ -27,5 +28,6 @@ export const isObject = <T extends object>(template: IsObjectParameter<T>): Type
 
 		return true;
 	};
+
 	return guard;
 };

@@ -1,5 +1,5 @@
 import { describe } from "vitest";
-import { isDate, isMaybe, isNumber, isObject, isString, isValueUnion } from "../src";
+import { isDate, isMaybe, isNumber, isType, isString, isValueUnion } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is tree type", () => {
@@ -10,7 +10,7 @@ describe("is tree type", () => {
 	};
 
 	describedGuardTests({
-		guard: isObject<Tree>(isTree => ({
+		guard: isType<Tree>(isTree => ({
 			value: isNumber,
 			left: isMaybe(isTree),
 			right: isMaybe(isTree),
@@ -45,7 +45,7 @@ describe("is person interface", () => {
 	}
 
 	describedGuardTests({
-		guard: isObject<Person>({
+		guard: isType<Person>({
 			name: isString,
 			height: isNumber,
 			birthday: isDate,
