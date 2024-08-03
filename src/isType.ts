@@ -2,7 +2,7 @@ import { TypeGuard } from "./types";
 import { isFunction, isNil } from "./utils";
 
 export type TypeGuardTemplate<T extends object> = {
-	[K in keyof T]-?: TypeGuard<T[K]>;
+	-readonly [K in keyof T]-?: TypeGuard<T[K]>;
 };
 
 export type IsTypeParameter<T extends object> = TypeGuardTemplate<T> | ((guard: TypeGuard<T>) => IsTypeParameter<T>);
