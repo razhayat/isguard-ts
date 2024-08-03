@@ -1,6 +1,6 @@
 import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isIntersection, isNumber, isObject, isString } from "../src";
+import { isIntersection, isNumber, isType, isString } from "../src";
 
 describe("is number & string", () => {
 	describedGuardTests({
@@ -22,10 +22,10 @@ describe("is number & string", () => {
 
 describe("is { a: number } & { b: string }", () => {
 	type A = { a: number; };
-	const isA = isObject<A>({ a: isNumber });
+	const isA = isType<A>({ a: isNumber });
 
 	type B = { b: string };
-	const isB = isObject<B>({ b: isString });
+	const isB = isType<B>({ b: isString });
 
 	describedGuardTests({
 		guard: isIntersection(isA, isB),
