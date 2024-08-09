@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf } from "vitest";
-import { Guarded, isArray, isInstanceof, isIntersection, MapGuarded, MapTypeGuard, TypeGuard } from "../src";
+import { Guarded, isArray, isInstanceof, isIntersection, isType, MapGuarded, MapTypeGuard, TypeGuard } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exectly equal", () => {
@@ -137,6 +137,17 @@ describe("isIntersection return type", () => {
 	it("should return TypeGuard<A & (B | C)>", () => {
 		type Actual = ReturnType<typeof isIntersection<[A, B | C]>>;
 		type Expected = TypeGuard<A & (B | C)>;
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+});
+
+describe("isType return type", () => {
+	type A = { a: number };
+
+	it("should return TypeGuard<A>", () => {
+		type Actual = ReturnType<typeof isType<A>>;
+		type Expected = TypeGuard<A>;
 
 		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 	});
