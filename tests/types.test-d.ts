@@ -30,9 +30,8 @@ describe("Guarded type", () => {
 			// @ts-expect-error
 			number
 		>;
-		type Expected = never;
 
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		expectTypeOf<Actual>().toBeNever();
 	});
 
 	it("should extract from TypeGuard", () => {
@@ -54,6 +53,13 @@ describe("Guarded type", () => {
 		type Expected = string | number;
 
 		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should not extract recursively", () => {
+		type Actual = Guarded<TypeGuard<TypeGuard<Date>>>;
+		type Expected = Date;
+
+		expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
 	});
 });
 
@@ -114,10 +120,18 @@ describe("isEnum return type", () => {
 describe("isInstanceof return type", () => {
 	it("should return TypeGuard<T>", () => {
 		class Example { }
-		type Actual = ReturnType<typeof isInstanceof<Example>>;
+		const actual = isInstanceof(Example);
 		type Expected = TypeGuard<Example>;
 
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		expectTypeOf(actual).toEqualTypeOf<Expected>();
+	});
+
+	it("should accept abstract class", () => {
+		abstract class Example { }
+		const actual = isInstanceof(Example);
+		type Expected = TypeGuard<Example>;
+
+		expectTypeOf(actual).toEqualTypeOf<Expected>();
 	});
 });
 
