@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf } from "vitest";
-import { Guarded, isArray, isInstanceof, isIntersection, isType, isUnion, MapGuarded, MapTypeGuard, TypeGuard } from "../src";
+import { Guarded, isArray, isInstanceof, isIntersection, isType, isUnion, isValueUnion, MapGuarded, MapTypeGuard, TypeGuard } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exectly equal", () => {
@@ -182,6 +182,22 @@ describe("isUnion return type", () => {
 	it("should return TypeGuard<A | (B & C)>", () => {
 		type Actual = ReturnType<typeof isUnion<[A, B & C]>>;
 		type Expected = TypeGuard<A | (B & C)>;
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+});
+
+describe("isValueUnion return type", () => {
+	it("should return TypeGuard<1 | 2>", () => {
+		type Actual = ReturnType<typeof isValueUnion<[1, 2]>>;
+		type Expected = TypeGuard<1 | 2>;
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should return TypeGuard<1 | 'Hello'>", () => {
+		type Actual = ReturnType<typeof isValueUnion<[1, 'Hello']>>;
+		type Expected = TypeGuard<1 | 'Hello'>;
 
 		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 	});
