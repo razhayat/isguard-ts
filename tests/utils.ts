@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { isBoolean, isFunction, isNumber, isString, isSymbol, isUndefined, TypeGuard } from "../src";
+import { isBoolean, isFunction, isNumber, isString, isSymbol, isUndefined, isValue, TypeGuard } from "../src";
 
 export type DescribedGuardTestsProps<T> = {
 	guard: TypeGuard<T>;
@@ -36,7 +36,7 @@ export const constructorStringify = (constructor: Function, ...args: unknown[]) 
 	return `new ${constructor.name}(${argsStr})`;
 };
 
-export const defaultStringifyInput = (input: unknown) => {
+export const defaultStringifyInput = (input: unknown): string => {
 	if (isFunction(input) || isUndefined(input)) {
 		return objectKeyStringify(input);
 	}
