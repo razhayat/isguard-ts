@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isDate, isFalse, isFunction, isInstanceof, isIntersection, isNil, isNull, isNumber, isNumberArray, isString, isStringArray, isTrue, isType, isUndefined, isUnion, isValue, isValueUnion, MapGuarded, MapTypeGuard, TypeGuard } from "../src";
+import { Guarded, isArray, isBoolean, isDate, isEnum, isFalse, isFunction, isInstanceof, isIntersection, isNil, isNull, isNumber, isNumberArray, isString, isStringArray, isTrue, isType, isUndefined, isUnion, isValue, isValueUnion, MapGuarded, MapTypeGuard, TypeGuard } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exectly equal", () => {
@@ -93,6 +93,19 @@ describe("isArray return type", () => {
 	it("should return TypeGuard<T[]>", () => {
 		type Actual = ReturnType<typeof isArray<number>>;
 		type Expected = TypeGuard<number[]>;
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+});
+
+describe("isEnum return type", () => {
+	enum Example {
+		field,
+	}
+
+	it("should return TypeGuard<T>", () => {
+		type Actual = ReturnType<typeof isEnum<typeof Example>>;
+		type Expected = TypeGuard<typeof Example>;
 
 		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 	});
