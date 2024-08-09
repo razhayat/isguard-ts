@@ -3,14 +3,23 @@ import { TypeGuard } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exectly equal", () => {
-		expectTypeOf<TypeGuard<number>>().toEqualTypeOf<TypeGuard<number>>();
+		type Actual = TypeGuard<number>;
+		type Expected = TypeGuard<number>;
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 	});
 
 	it("should not equal derived types", () => {
-		expectTypeOf<TypeGuard<number>>().not.toEqualTypeOf<TypeGuard<number | undefined>>();
+		type Actual = TypeGuard<number>;
+		type Expected = TypeGuard<number | undefined>;
+
+		expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
 	});
 
 	it("should not equal base types", () => {
-		expectTypeOf<TypeGuard<number | undefined>>().not.toEqualTypeOf<TypeGuard<number>>();
+		type Actual = TypeGuard<number | undefined>;
+		type Expected = TypeGuard<number>;
+
+		expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
 	});
 });
