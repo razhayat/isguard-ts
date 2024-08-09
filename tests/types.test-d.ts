@@ -23,3 +23,36 @@ describe("TypeGuard type", () => {
 		expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
 	});
 });
+
+describe("Guarded type", () => {
+	it("should not allow non TypeGuard types", () => {
+		type Actual = Guarded<
+			// @ts-expect-error
+			number
+		>;
+		type Expected = never;
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should extract from TypeGuard", () => {
+		type Actual = Guarded<TypeGuard<number>>;
+		type Expected = number;
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should extract from TypeGuard of union", () => {
+		type Actual = Guarded<TypeGuard<string | number>>;
+		type Expected = string | number;
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should extract from union of TypeGuard", () => {
+		type Actual = Guarded<TypeGuard<string> | TypeGuard<number>>;
+		type Expected = string | number;
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+});
