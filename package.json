@@ -4,12 +4,13 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "npx vitest"
+		"test": "npx vitest --typecheck"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
-	"dependencies": {
-		"vitest": "^1.6.0"
+	"devDependencies": {
+		"typescript": "^5.5.4",
+		"vitest": "^2.0.5"
 	}
 }
