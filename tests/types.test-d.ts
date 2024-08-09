@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf } from "vitest";
-import { Guarded, isArray, MapGuarded, MapTypeGuard, TypeGuard } from "../src";
+import { Guarded, isArray, isInstanceof, MapGuarded, MapTypeGuard, TypeGuard } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exectly equal", () => {
@@ -93,6 +93,16 @@ describe("isArray return type", () => {
 	it("should return TypeGuard<T[]>", () => {
 		type Actual = ReturnType<typeof isArray<number>>;
 		type Expected = TypeGuard<number[]>;
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+});
+
+describe("isInstanceof return type", () => {
+	it("should return TypeGuard<T>", () => {
+		class Example { }
+		type Actual = ReturnType<typeof isInstanceof<Example>>;
+		type Expected = TypeGuard<Example>;
 
 		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 	});
