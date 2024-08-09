@@ -1,8 +1,8 @@
-import { TypeGuard, GuardedType } from "./types";
+import { TypeGuard, Guarded } from "./types";
 import { isValue } from "./isValue";
 
-export const isUnion = <T extends TypeGuard<any>[]>(...guards: T): TypeGuard<GuardedType<T[number]>> => {
-	return (value: unknown): value is GuardedType<T[number]> => {
+export const isUnion = <T extends TypeGuard<any>[]>(...guards: T): TypeGuard<Guarded<T[number]>> => {
+	return (value: unknown): value is Guarded<T[number]> => {
 		return guards.some(guard => guard(value));
 	};
 };
