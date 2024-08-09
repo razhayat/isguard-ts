@@ -1,5 +1,5 @@
-import { describe, it, expectTypeOf } from "vitest";
-import { Guarded, isArray, isInstanceof, isIntersection, isType, isUnion, isValue, isValueUnion, MapGuarded, MapTypeGuard, TypeGuard } from "../src";
+import { describe, it, expectTypeOf, test } from "vitest";
+import { Guarded, isArray, isBoolean, isDate, isFalse, isFunction, isInstanceof, isIntersection, isNil, isNull, isNumber, isNumberArray, isString, isStringArray, isTrue, isType, isUndefined, isUnion, isValue, isValueUnion, MapGuarded, MapTypeGuard, TypeGuard } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exectly equal", () => {
@@ -209,5 +209,55 @@ describe("isValue return type", () => {
 		type Expected = TypeGuard<"hello">;
 
 		expectTypeOf(actual).toEqualTypeOf<Expected>();
+	});
+});
+
+describe("util types", () => {
+	test("isNull should return TypeGuard<null>", () => {
+		expectTypeOf(isNull).toEqualTypeOf<TypeGuard<null>>();
+	});
+
+	test("isUndefined should return TypeGuard<undefined>", () => {
+		expectTypeOf(isUndefined).toEqualTypeOf<TypeGuard<undefined>>();
+	});
+
+	test("isNil should return TypeGuard<null | undefined>", () => {
+		expectTypeOf(isNil).toEqualTypeOf<TypeGuard<null | undefined>>();
+	});
+
+	test("isTrue should return TypeGuard<true>", () => {
+		expectTypeOf(isTrue).toEqualTypeOf<TypeGuard<true>>();
+	});
+
+	test("isFalse should return TypeGuard<false>", () => {
+		expectTypeOf(isFalse).toEqualTypeOf<TypeGuard<false>>();
+	});
+
+	test("isNumber should return TypeGuard<number>", () => {
+		expectTypeOf(isNumber).toEqualTypeOf<TypeGuard<number>>();
+	});
+
+	test("isString should return TypeGuard<string>", () => {
+		expectTypeOf(isString).toEqualTypeOf<TypeGuard<string>>();
+	});
+
+	test("isBoolean should return TypeGuard<boolean>", () => {
+		expectTypeOf(isBoolean).toEqualTypeOf<TypeGuard<boolean>>();
+	});
+
+	test("isFunction should return TypeGuard<Function>", () => {
+		expectTypeOf(isFunction).toEqualTypeOf<TypeGuard<(...args: any[]) => unknown>>();
+	});
+
+	test("isDate should return TypeGuard<Date>", () => {
+		expectTypeOf(isDate).toEqualTypeOf<TypeGuard<Date>>();
+	});
+
+	test("isNumberArray should return TypeGuard<number[]>", () => {
+		expectTypeOf(isNumberArray).toEqualTypeOf<TypeGuard<number[]>>();
+	});
+
+	test("isStringArray should return TypeGuard<string[]>", () => {
+		expectTypeOf(isStringArray).toEqualTypeOf<TypeGuard<string[]>>();
 	});
 });
