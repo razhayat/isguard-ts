@@ -5,3 +5,7 @@ export type Guarded<T extends TypeGuard<any>> = T extends TypeGuard<infer R> ? R
 export type MapGuarded<T extends readonly TypeGuard<any>[]> = {
 	[I in keyof T]: Guarded<T[I]>;
 };
+
+export type MapTypeGuard<T extends readonly unknown[]> = {
+	[I in keyof T]: TypeGuard<T[I]>;
+};
