@@ -56,3 +56,19 @@ describe("Guarded type", () => {
 		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 	});
 });
+
+describe("MapTypeGuard type", () => {
+	it("sould map to TypeGuard tuple", () => {
+		type Actual = MapTypeGuard<[number, string, Date]>;
+		type Expected = [TypeGuard<number>, TypeGuard<string>, TypeGuard<Date>];
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should accept readonly tuple", () => {
+		type Actual = MapTypeGuard<readonly [number, string, Date]>;
+		type Expected = readonly [TypeGuard<number>, TypeGuard<string>, TypeGuard<Date>];
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+});
