@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf } from "vitest";
-import { Guarded, isArray, isInstanceof, MapGuarded, MapTypeGuard, TypeGuard } from "../src";
+import { Guarded, isArray, isInstanceof, isIntersection, MapGuarded, MapTypeGuard, TypeGuard } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exectly equal", () => {
@@ -103,6 +103,40 @@ describe("isInstanceof return type", () => {
 		class Example { }
 		type Actual = ReturnType<typeof isInstanceof<Example>>;
 		type Expected = TypeGuard<Example>;
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+});
+
+describe("isIntersection return type", () => {
+	type A = { a: number };
+	type B = { b: number };
+	type C = { c: number };
+
+	it("should return TypeGuard<A>", () => {
+		type Actual = ReturnType<typeof isIntersection<[A]>>;
+		type Expected = TypeGuard<A>;
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should return TypeGuard<A & B>", () => {
+		type Actual = ReturnType<typeof isIntersection<[A, B]>>;
+		type Expected = TypeGuard<A & B>;
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should return TypeGuard<A & B & C>", () => {
+		type Actual = ReturnType<typeof isIntersection<[A, B, C]>>;
+		type Expected = TypeGuard<A & B & C>;
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should return TypeGuard<A & (B | C)>", () => {
+		type Actual = ReturnType<typeof isIntersection<[A, B | C]>>;
+		type Expected = TypeGuard<A & (B | C)>;
 
 		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 	});
