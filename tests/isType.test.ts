@@ -42,6 +42,7 @@ describe("is person interface", () => {
 		birthday: Date;
 		deathday: Date | null;
 		sex: "M" | "F";
+		[key: PropertyKey]: any;
 	}
 
 	describedGuardTests({
