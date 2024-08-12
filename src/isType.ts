@@ -1,13 +1,13 @@
 import { TypeGuard } from "./types";
 import { isFunction, isNil } from "./utils";
 
-export type TypeGuardTemplate<T extends object> = {
+export type TypeGuardTemplate<T> = {
 	-readonly [K in keyof T]-?: TypeGuard<T[K]>;
 };
 
-export type IsTypeParameter<T extends object> = TypeGuardTemplate<T> | ((guard: TypeGuard<T>) => IsTypeParameter<T>);
+export type IsTypeParameter<T> = TypeGuardTemplate<T> | ((guard: TypeGuard<T>) => IsTypeParameter<T>);
 
-export const extractTypeGuardTemplate = <T extends object>(guard: TypeGuard<T>, parameter: IsTypeParameter<T>): TypeGuardTemplate<T> => {
+export const extractTypeGuardTemplate = <T>(guard: TypeGuard<T>, parameter: IsTypeParameter<T>): TypeGuardTemplate<T> => {
 	return isFunction(parameter) ? extractTypeGuardTemplate(guard, parameter(guard)) : parameter;
 };
 
