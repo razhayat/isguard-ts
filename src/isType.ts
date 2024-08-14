@@ -15,11 +15,12 @@ export const isType = <T extends object>(template: T extends readonly unknown[] 
 	let resolvedTemplate: TypeGuardTemplate<T> | null = null;
 
 	const guard = (value: any): value is T => {
+		resolvedTemplate = resolvedTemplate ?? extractTypeGuardTemplate<T>(guard, template);
+
 		if (isNil(value)) {
 			return false;
 		}
 
-		resolvedTemplate = resolvedTemplate ?? extractTypeGuardTemplate<T>(guard, template);
 		for (const key in resolvedTemplate) {
 			if (!resolvedTemplate[key](value[key])) {
 				return false;
