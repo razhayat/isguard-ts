@@ -11,7 +11,7 @@ export const extractTypeGuardTemplate = <T>(guard: TypeGuard<T>, parameter: IsTy
 	return isFunction(parameter) ? extractTypeGuardTemplate(guard, parameter(guard)) : parameter;
 };
 
-export const isType = <T extends Record<PropertyKey, unknown>>(template: IsTypeParameter<T>): TypeGuard<T> => {
+export const isType = <T extends object>(template: T extends readonly unknown[] ? never : IsTypeParameter<T>): TypeGuard<T> => {
 	let resolvedTemplate: TypeGuardTemplate<T> | null = null;
 
 	const guard = (value: any): value is T => {
@@ -19,7 +19,7 @@ export const isType = <T extends Record<PropertyKey, unknown>>(template: IsTypeP
 			return false;
 		}
 
-		resolvedTemplate = resolvedTemplate ?? extractTypeGuardTemplate(guard, template);
+		resolvedTemplate = resolvedTemplate ?? extractTypeGuardTemplate<T>(guard, template);
 		for (const key in resolvedTemplate) {
 			if (!resolvedTemplate[key](value[key])) {
 				return false;
