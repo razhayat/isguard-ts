@@ -7,4 +7,4 @@ export * from "./isTypeof";
 export * from "./isUnion";
 export * from "./isValue";
 export * from "./types";
-export * from "./utils";
+export * from "./isUtils";

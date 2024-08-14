@@ -1,5 +1,5 @@
 import { TypeGuard } from "./types";
-import { isNumber } from "./utils";
+import { isNumber } from "./isUtils";
 
 export type Enum = Record<string | number, string | number>;
 

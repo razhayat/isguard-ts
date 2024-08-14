@@ -1,5 +1,5 @@
 import { TypeGuard } from "./types";
-import { isFunction, isNil } from "./utils";
+import { isFunction, isNil } from "./isUtils";
 
 export type TypeGuardTemplate<T> = {
 	-readonly [K in keyof T]-?: TypeGuard<T[K]>;
