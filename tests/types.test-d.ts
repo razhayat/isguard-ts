@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isDate, isEnum, isFalse, isFunction, isInstanceof, isIntersection, isNil, isNull, isNumber, isNumberArray, isString, isStringArray, isTrue, isType, isUndefined, isUnion, isValue, isValueUnion, MapGuarded, MapTypeGuard, TypeGuard } from "../src";
+import { Guarded, isArray, isBoolean, isDate, isEnum, isFalse, isFunction, isInstanceof, isIntersection, isNil, isNull, isNumber, isNumberArray, isString, isStringArray, isTrue, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exectly equal", () => {
@@ -60,38 +60,6 @@ describe("Guarded type", () => {
 		type Expected = Date;
 
 		expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
-	});
-});
-
-describe("MapTypeGuard type", () => {
-	it("should map to TypeGuard tuple", () => {
-		type Actual = MapTypeGuard<[number, string, Date]>;
-		type Expected = [TypeGuard<number>, TypeGuard<string>, TypeGuard<Date>];
-
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
-	});
-
-	it("should accept readonly tuple", () => {
-		type Actual = MapTypeGuard<readonly [number, string, Date]>;
-		type Expected = readonly [TypeGuard<number>, TypeGuard<string>, TypeGuard<Date>];
-
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
-	});
-});
-
-describe("MapGuarded type", () => {
-	it("should map to Guarded tuple", () => {
-		type Actual = MapGuarded<[TypeGuard<number>, TypeGuard<string>, TypeGuard<Date>]>;
-		type Expected = [number, string, Date];
-
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
-	});
-
-	it("should accept readonly tuple", () => {
-		type Actual = MapGuarded<readonly [TypeGuard<number>, TypeGuard<string>, TypeGuard<Date>]>;
-		type Expected = readonly [number, string, Date];
-
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 	});
 });
 
