@@ -42,6 +42,7 @@ describe("is person interface", () => {
 		birthday: Date;
 		deathday: Date | null;
 		sex: "M" | "F";
+		[key: PropertyKey]: any;
 	}
 
 	describedGuardTests({
@@ -68,6 +69,27 @@ describe("is person interface", () => {
 			[{ name: "", height: 6, birthday: new Date(), deathday: null, sex: "F", another: "no" }, true],
 			[{ name: "", height: 6, birthday: new Date(), deathday: new Date(), sex: "O" }, false],
 			[{ name: NaN, height: 6, birthday: new Date(), deathday: new Date(), sex: "M" }, false],
+		],
+	});
+});
+
+describe("is tuple like type", () => {
+	type TupleLike = {
+		0: string,
+		1: number;
+	};
+
+	describedGuardTests({
+		guard: isType<TupleLike>({
+			"0": isString,
+			"1": isNumber,
+		}),
+		testCases: [
+			[{ 0: "Hello", 1: 6 }, true],
+			[["Hello", 6], true],
+			[["Bye", 7, new Date()], true],
+			[{ 0: new Date(), 1: 6 }, false],
+			[{ 0: "Hello", 1: 6, age: 56 }, true],
 		],
 	});
 });

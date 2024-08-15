@@ -1,6 +1,5 @@
-import { isUnion } from "./isUnion";
 import { TypeGuard } from "./types";
-import { isNumber, isString } from "./utils";
+import { isNumber } from "./isUtils";
 
 export type Enum = Record<string | number, string | number>;
 
@@ -14,7 +13,7 @@ export const getEnumValues = (enumObj: Enum) => {
 
 export const isEnum = <T extends Enum>(enumObj: T): TypeGuard<T> => {
 	const enumValues = getEnumValues(enumObj);
-	return (data: unknown): data is T => {
-		return enumValues.some(v => v === data);
+	return (value: unknown): value is T => {
+		return enumValues.some(v => v === value);
 	};
 };
