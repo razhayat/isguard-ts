@@ -9,3 +9,7 @@ export type MapGuarded<T extends readonly TypeGuard<any>[]> = {
 export type MapTypeGuard<T extends readonly unknown[]> = {
 	[I in keyof T]: TypeGuard<T[I]>;
 };
+
+export type TypeGuardTemplate<T> = {
+	-readonly [K in keyof T]-?: TypeGuard<T[K]>;
+};
