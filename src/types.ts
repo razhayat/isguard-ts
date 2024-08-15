@@ -13,3 +13,5 @@ export type MapTypeGuard<T extends readonly unknown[]> = {
 export type TypeGuardTemplate<T> = {
 	-readonly [K in keyof T]-?: TypeGuard<T[K]>;
 };
+
+export type IsTypeParameter<T> = TypeGuardTemplate<T> | ((guard: TypeGuard<T>) => IsTypeParameter<T>);
