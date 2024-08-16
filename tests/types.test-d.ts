@@ -222,37 +222,39 @@ describe("isType return type", () => {
 	});
 });
 
-describe("isUnion return type", () => {
+describe("isUnion", () => {
 	type A = { a: number };
 	type B = { b: number };
 	type C = { c: number };
 
-	it("should return TypeGuard<A>", () => {
-		type Actual = ReturnType<typeof isUnion<[A]>>;
-		type Expected = TypeGuard<A>;
+	describe("return type", () => {
+		it("should return TypeGuard<A>", () => {
+			type Actual = ReturnType<typeof isUnion<[A]>>;
+			type Expected = TypeGuard<A>;
 
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
-	});
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
 
-	it("should return TypeGuard<A | B>", () => {
-		type Actual = ReturnType<typeof isUnion<[A, B]>>;
-		type Expected = TypeGuard<A | B>;
+		it("should return TypeGuard<A | B>", () => {
+			type Actual = ReturnType<typeof isUnion<[A, B]>>;
+			type Expected = TypeGuard<A | B>;
 
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
-	});
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
 
-	it("should return TypeGuard<A | B | C>", () => {
-		type Actual = ReturnType<typeof isUnion<[A, B, C]>>;
-		type Expected = TypeGuard<A | B | C>;
+		it("should return TypeGuard<A | B | C>", () => {
+			type Actual = ReturnType<typeof isUnion<[A, B, C]>>;
+			type Expected = TypeGuard<A | B | C>;
 
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
-	});
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
 
-	it("should return TypeGuard<A | (B & C)>", () => {
-		type Actual = ReturnType<typeof isUnion<[A, B & C]>>;
-		type Expected = TypeGuard<A | (B & C)>;
+		it("should return TypeGuard<A | (B & C)>", () => {
+			type Actual = ReturnType<typeof isUnion<[A, B & C]>>;
+			type Expected = TypeGuard<A | (B & C)>;
 
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
 	});
 });
 
