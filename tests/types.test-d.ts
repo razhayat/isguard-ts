@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isDate, isEnum, isFalse, isFunction, isInstanceof, isIntersection, isNil, isNull, isNumber, isNumberArray, isString, isStringArray, isTrue, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard } from "../src";
+import { Guarded, isArray, isBoolean, isDate, isEnum, isFalse, isFunction, isInstanceof, isIntersection, isNil, isNull, isNumber, isNumberArray, isString, isStringArray, isTrue, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exectly equal", () => {
@@ -58,6 +58,69 @@ describe("Guarded type", () => {
 	it("should not extract recursively", () => {
 		type Actual = Guarded<TypeGuard<TypeGuard<Date>>>;
 		type Expected = Date;
+
+		expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
+	});
+});
+
+describe("TypeGuardTemplate", () => {
+	it("should map to TypeGuard", () => {
+		type Actual = TypeGuardTemplate<{ a: number; b: string; }>;
+		type Expected = { a: TypeGuard<number>; b: TypeGuard<string>; };
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should handle fields with union types", () => {
+		type Actual = TypeGuardTemplate<{ a: number | null }>;
+		type Expected = { a: TypeGuard<number | null>; };
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should handle fields with intersection types", () => {
+		type A = { a: string };
+		type B = { b: number };
+		type Actual = TypeGuardTemplate<{ a: A & B; }>;
+		type Expected = { a: TypeGuard<A & B>; };
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should handle fields with complex types", () => {
+		type A = { a: string };
+		type B = { b: number };
+		type C = { c: Date };
+		type Actual = TypeGuardTemplate<{ a: (A & B) | C; }>;
+		type Expected = { a: TypeGuard<(A & B) | C>; };
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should make optional fields required", () => {
+		type Actual = TypeGuardTemplate<{ a?: number; }>;
+		type Expected = { a: TypeGuard<number | undefined>; };
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should support tuples", () => {
+		type Actual = TypeGuardTemplate<[number, string]>;
+		type Expected = [TypeGuard<number>, TypeGuard<string>];
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should remove readonly", () => {
+		type Actual = TypeGuardTemplate<readonly [number, string]>;
+		type Expected = readonly [TypeGuard<number>, TypeGuard<string>];
+
+		expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
+	});
+
+	it("should remove optional from tuple item", () => {
+		type Actual = TypeGuardTemplate<[string?]>;
+		type Expected = [TypeGuard<string | undefined>?];
 
 		expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
 	});
