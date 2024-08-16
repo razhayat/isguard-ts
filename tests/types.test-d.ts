@@ -200,6 +200,15 @@ describe("isIntersection", () => {
 			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 		});
 	});
+
+	describe("parameters", () => {
+		it("should make optional items required", () => {
+			type Actual = Parameters<typeof isIntersection<[A?]>>;
+			type Expected = [TypeGuard<A | undefined>?];
+
+			expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
+		});
+	});
 });
 
 describe("isType return type", () => {
