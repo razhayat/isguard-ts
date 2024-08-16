@@ -256,6 +256,15 @@ describe("isUnion", () => {
 			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 		});
 	});
+
+	describe("parameters", () => {
+		it("should make optional items required", () => {
+			type Actual = Parameters<typeof isUnion<[A?]>>;
+			type Expected = [TypeGuard<A | undefined>];
+
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
+	});
 });
 
 describe("isValueUnion return type", () => {
