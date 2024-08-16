@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isDate, isEnum, isFalse, isFunction, isInstanceof, isIntersection, isNil, isNull, isNumber, isNumberArray, isString, isStringArray, isTrue, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard } from "../src";
+import { Guarded, isArray, isBoolean, isDate, isEnum, isFalse, isFunction, isInstanceof, isIntersection, isNil, isNull, isNumber, isNumberArray, isString, isStringArray, isTrue, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exectly equal", () => {
@@ -63,6 +63,69 @@ describe("Guarded type", () => {
 	});
 });
 
+describe("TypeGuardTemplate", () => {
+	it("should map to TypeGuard", () => {
+		type Actual = TypeGuardTemplate<{ a: number; b: string; }>;
+		type Expected = { a: TypeGuard<number>; b: TypeGuard<string>; };
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should handle fields with union types", () => {
+		type Actual = TypeGuardTemplate<{ a: number | null }>;
+		type Expected = { a: TypeGuard<number | null>; };
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should handle fields with intersection types", () => {
+		type A = { a: string };
+		type B = { b: number };
+		type Actual = TypeGuardTemplate<{ a: A & B; }>;
+		type Expected = { a: TypeGuard<A & B>; };
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should handle fields with complex types", () => {
+		type A = { a: string };
+		type B = { b: number };
+		type C = { c: Date };
+		type Actual = TypeGuardTemplate<{ a: (A & B) | C; }>;
+		type Expected = { a: TypeGuard<(A & B) | C>; };
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should make optional fields required", () => {
+		type Actual = TypeGuardTemplate<{ a?: number; }>;
+		type Expected = { a: TypeGuard<number | undefined>; };
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should support tuples", () => {
+		type Actual = TypeGuardTemplate<[number, string]>;
+		type Expected = [TypeGuard<number>, TypeGuard<string>];
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should remove readonly", () => {
+		type Actual = TypeGuardTemplate<readonly [number, string]>;
+		type Expected = readonly [TypeGuard<number>, TypeGuard<string>];
+
+		expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
+	});
+
+	it("should remove optional from tuple item", () => {
+		type Actual = TypeGuardTemplate<[string?]>;
+		type Expected = [TypeGuard<string | undefined>?];
+
+		expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
+	});
+});
+
 describe("isArray return type", () => {
 	it("should return TypeGuard<T[]>", () => {
 		type Actual = ReturnType<typeof isArray<number>>;
@@ -103,37 +166,48 @@ describe("isInstanceof return type", () => {
 	});
 });
 
-describe("isIntersection return type", () => {
+describe("isIntersection", () => {
 	type A = { a: number };
 	type B = { b: number };
 	type C = { c: number };
 
-	it("should return TypeGuard<A>", () => {
-		type Actual = ReturnType<typeof isIntersection<[A]>>;
-		type Expected = TypeGuard<A>;
+	describe("return type", () => {
+		it("should return TypeGuard<A>", () => {
+			type Actual = ReturnType<typeof isIntersection<[A]>>;
+			type Expected = TypeGuard<A>;
 
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
+
+		it("should return TypeGuard<A & B>", () => {
+			type Actual = ReturnType<typeof isIntersection<[A, B]>>;
+			type Expected = TypeGuard<A & B>;
+
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
+
+		it("should return TypeGuard<A & B & C>", () => {
+			type Actual = ReturnType<typeof isIntersection<[A, B, C]>>;
+			type Expected = TypeGuard<A & B & C>;
+
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
+
+		it("should return TypeGuard<A & (B | C)>", () => {
+			type Actual = ReturnType<typeof isIntersection<[A, B | C]>>;
+			type Expected = TypeGuard<A & (B | C)>;
+
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
 	});
 
-	it("should return TypeGuard<A & B>", () => {
-		type Actual = ReturnType<typeof isIntersection<[A, B]>>;
-		type Expected = TypeGuard<A & B>;
+	describe("parameters", () => {
+		it("should make optional items required", () => {
+			type Actual = Parameters<typeof isIntersection<[A?]>>;
+			type Expected = [TypeGuard<A | undefined>];
 
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
-	});
-
-	it("should return TypeGuard<A & B & C>", () => {
-		type Actual = ReturnType<typeof isIntersection<[A, B, C]>>;
-		type Expected = TypeGuard<A & B & C>;
-
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
-	});
-
-	it("should return TypeGuard<A & (B | C)>", () => {
-		type Actual = ReturnType<typeof isIntersection<[A, B | C]>>;
-		type Expected = TypeGuard<A & (B | C)>;
-
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
 	});
 });
 
@@ -148,37 +222,48 @@ describe("isType return type", () => {
 	});
 });
 
-describe("isUnion return type", () => {
+describe("isUnion", () => {
 	type A = { a: number };
 	type B = { b: number };
 	type C = { c: number };
 
-	it("should return TypeGuard<A>", () => {
-		type Actual = ReturnType<typeof isUnion<[A]>>;
-		type Expected = TypeGuard<A>;
+	describe("return type", () => {
+		it("should return TypeGuard<A>", () => {
+			type Actual = ReturnType<typeof isUnion<[A]>>;
+			type Expected = TypeGuard<A>;
 
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
+
+		it("should return TypeGuard<A | B>", () => {
+			type Actual = ReturnType<typeof isUnion<[A, B]>>;
+			type Expected = TypeGuard<A | B>;
+
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
+
+		it("should return TypeGuard<A | B | C>", () => {
+			type Actual = ReturnType<typeof isUnion<[A, B, C]>>;
+			type Expected = TypeGuard<A | B | C>;
+
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
+
+		it("should return TypeGuard<A | (B & C)>", () => {
+			type Actual = ReturnType<typeof isUnion<[A, B & C]>>;
+			type Expected = TypeGuard<A | (B & C)>;
+
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
 	});
 
-	it("should return TypeGuard<A | B>", () => {
-		type Actual = ReturnType<typeof isUnion<[A, B]>>;
-		type Expected = TypeGuard<A | B>;
+	describe("parameters", () => {
+		it("should make optional items required", () => {
+			type Actual = Parameters<typeof isUnion<[A?]>>;
+			type Expected = [TypeGuard<A | undefined>];
 
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
-	});
-
-	it("should return TypeGuard<A | B | C>", () => {
-		type Actual = ReturnType<typeof isUnion<[A, B, C]>>;
-		type Expected = TypeGuard<A | B | C>;
-
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
-	});
-
-	it("should return TypeGuard<A | (B & C)>", () => {
-		type Actual = ReturnType<typeof isUnion<[A, B & C]>>;
-		type Expected = TypeGuard<A | (B & C)>;
-
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
 	});
 });
 
