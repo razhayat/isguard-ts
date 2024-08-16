@@ -204,9 +204,9 @@ describe("isIntersection", () => {
 	describe("parameters", () => {
 		it("should make optional items required", () => {
 			type Actual = Parameters<typeof isIntersection<[A?]>>;
-			type Expected = [TypeGuard<A | undefined>?];
+			type Expected = [TypeGuard<A | undefined>];
 
-			expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 		});
 	});
 });
