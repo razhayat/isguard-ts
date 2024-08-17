@@ -38,7 +38,7 @@ type Test = Guarded<TypeGuard<number>>; // number
 ```
 
 ### `isType()`
-Helper function that helps you create type guards for a type
+Helps you create type guards for types and interfaces
 ```typescript
 type Test = {
 	a: number;
@@ -76,7 +76,7 @@ const isTree2: TypeGuard<Tree> = isType<Tree>(isTreeParam => ({
 ```
 
 ### `isUnion(...guards)`
-Helper function that helps you create type guards for a union
+Helps you create type guards for unions
 ```typescript
 const isNumberOrString: TypeGuard<number | string> = isUnion(isNumber, isString);
 
@@ -86,7 +86,7 @@ isNumberOrString(new Date()) // false
 ```
 
 ### `isIntersection(...guards)`
-Helper function that helps you create type guards for an intersection
+Helps you create type guards for intersections
 ```typescript
 type A = { a: number };
 type B = { b: string };
@@ -121,13 +121,13 @@ isRecord(["Hello", "Bye"]) // false
 ```
 
 ### `isOptional<T>(guard: TypeGuard<T>): TypeGuard<T | undefined>`
-Helper function that helps you create type guards for optional types
+Helps you create type guards for optional types
 ```typescript
 const isNumberOrUndefined: TypeGuard<number | undefined> = isOptional(isNumber);
 ```
 
 ### `isMaybe<T>(guard: TypeGuard<T>): TypeGuard<T | null>`
-Helper functions that creates type guards for nullable types
+Helps you create type guards for nullable types
 ```typescript
 const isNumberOrNull: TypeGuard<number | null> = isMaybe(isNumber);
 ```
