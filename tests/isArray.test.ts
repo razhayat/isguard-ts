@@ -14,6 +14,9 @@ describe("is number array", () => {
 			[[6, -6, 6.66], true],
 			[["1", 2, 3], false],
 			[1, false],
+			[["hello", "bye"], false],
+			[new Date(), false],
+			[() => 12, false],
 		],
 	});
 });

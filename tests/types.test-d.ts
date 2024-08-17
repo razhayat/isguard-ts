@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isDate, isEnum, isFalse, isFunction, isInstanceof, isIntersection, isNil, isNull, isNumber, isNumberArray, isString, isStringArray, isTrue, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isOptioanlDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exectly equal", () => {
@@ -293,51 +293,83 @@ describe("isValue return type", () => {
 });
 
 describe("util types", () => {
-	test("isNull should return TypeGuard<null>", () => {
+	test("isNull should be TypeGuard<null>", () => {
 		expectTypeOf(isNull).toEqualTypeOf<TypeGuard<null>>();
 	});
 
-	test("isUndefined should return TypeGuard<undefined>", () => {
+	test("isUndefined should be TypeGuard<undefined>", () => {
 		expectTypeOf(isUndefined).toEqualTypeOf<TypeGuard<undefined>>();
 	});
 
-	test("isNil should return TypeGuard<null | undefined>", () => {
+	test("isNil should be TypeGuard<null | undefined>", () => {
 		expectTypeOf(isNil).toEqualTypeOf<TypeGuard<null | undefined>>();
 	});
 
-	test("isTrue should return TypeGuard<true>", () => {
-		expectTypeOf(isTrue).toEqualTypeOf<TypeGuard<true>>();
-	});
-
-	test("isFalse should return TypeGuard<false>", () => {
-		expectTypeOf(isFalse).toEqualTypeOf<TypeGuard<false>>();
-	});
-
-	test("isNumber should return TypeGuard<number>", () => {
+	test("isNumber should be TypeGuard<number>", () => {
 		expectTypeOf(isNumber).toEqualTypeOf<TypeGuard<number>>();
 	});
 
-	test("isString should return TypeGuard<string>", () => {
+	test("isString should be TypeGuard<string>", () => {
 		expectTypeOf(isString).toEqualTypeOf<TypeGuard<string>>();
 	});
 
-	test("isBoolean should return TypeGuard<boolean>", () => {
+	test("isBoolean should be TypeGuard<boolean>", () => {
 		expectTypeOf(isBoolean).toEqualTypeOf<TypeGuard<boolean>>();
 	});
 
-	test("isFunction should return TypeGuard<Function>", () => {
+	test("isFunction should be TypeGuard<(...args: any[]) => unknown>", () => {
 		expectTypeOf(isFunction).toEqualTypeOf<TypeGuard<(...args: any[]) => unknown>>();
 	});
 
-	test("isDate should return TypeGuard<Date>", () => {
+	test("isDate should be TypeGuard<Date>", () => {
 		expectTypeOf(isDate).toEqualTypeOf<TypeGuard<Date>>();
 	});
 
-	test("isNumberArray should return TypeGuard<number[]>", () => {
+	test("isNumberArray should be TypeGuard<number[]>", () => {
 		expectTypeOf(isNumberArray).toEqualTypeOf<TypeGuard<number[]>>();
 	});
 
-	test("isStringArray should return TypeGuard<string[]>", () => {
+	test("isStringArray should be TypeGuard<string[]>", () => {
 		expectTypeOf(isStringArray).toEqualTypeOf<TypeGuard<string[]>>();
+	});
+
+	test("isBooleanArray should be TypeGuard<boolean[]>", () => {
+		expectTypeOf(isBooleanArray).toEqualTypeOf<TypeGuard<boolean[]>>();
+	});
+
+	test("isDateArray should be TypeGuard<Date[]>", () => {
+		expectTypeOf(isDateArray).toEqualTypeOf<TypeGuard<Date[]>>();
+	});
+
+	test("isOptionalNumber should be TypeGuard<number | undefined>", () => {
+		expectTypeOf(isOptionalNumber).toEqualTypeOf<TypeGuard<number | undefined>>();
+	});
+
+	test("isOptionalString should be TypeGuard<string | undefined>", () => {
+		expectTypeOf(isOptionalString).toEqualTypeOf<TypeGuard<string | undefined>>();
+	});
+
+	test("isOptionalBoolean should be TypeGuard<boolean | undefined>", () => {
+		expectTypeOf(isOptionalBoolean).toEqualTypeOf<TypeGuard<boolean | undefined>>();
+	});
+
+	test("isOptionalDate should be TypeGuard<Date | undefined>", () => {
+		expectTypeOf(isOptioanlDate).toEqualTypeOf<TypeGuard<Date | undefined>>();
+	});
+
+	test("isMaybeNumber should be TypeGuard<number | null>", () => {
+		expectTypeOf(isMaybeNumber).toEqualTypeOf<TypeGuard<number | null>>();
+	});
+
+	test("isMaybeString should be TypeGuard<string | null>", () => {
+		expectTypeOf(isMaybeString).toEqualTypeOf<TypeGuard<string | null>>();
+	});
+
+	test("isMaybeBoolean should be TypeGuard<boolean | null>", () => {
+		expectTypeOf(isMaybeBoolean).toEqualTypeOf<TypeGuard<boolean | null>>();
+	});
+
+	test("isMaybeDate should be TypeGuard<Date | null>", () => {
+		expectTypeOf(isMaybeDate).toEqualTypeOf<TypeGuard<Date | null>>();
 	});
 });
