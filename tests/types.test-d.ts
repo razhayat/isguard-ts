@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isDate, isEnum, isFunction, isInstanceof, isIntersection, isNil, isNull, isNumber, isNumberArray, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isInstanceof, isIntersection, isNil, isNull, isNumber, isNumberArray, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exectly equal", () => {
@@ -331,5 +331,13 @@ describe("util types", () => {
 
 	test("isStringArray should be TypeGuard<string[]>", () => {
 		expectTypeOf(isStringArray).toEqualTypeOf<TypeGuard<string[]>>();
+	});
+
+	test("isBooleanArray should be TypeGuard<boolean[]>", () => {
+		expectTypeOf(isBooleanArray).toEqualTypeOf<TypeGuard<boolean[]>>();
+	});
+
+	test("isDateArray should be TypeGuard<Date[]>", () => {
+		expectTypeOf(isDateArray).toEqualTypeOf<TypeGuard<Date[]>>();
 	});
 });
