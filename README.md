@@ -54,7 +54,7 @@ const isTest = isType<Test>({
 isTest({ a: 6, b: "Hello" }) // true
 ```
 
-It can also support recursive types by passing a function as an argument
+It also supports recursive types by passing a function as an argument
 ```typescript
 type Tree = {
 	value: number;
@@ -68,7 +68,7 @@ const isTree = isType<Tree>(() => ({
 	right: isMaybe(isTree),
 }));
 
-// isTree can also be accessed via the passed function's parameter:
+// isTree can also be accessed via the passed function's parameter
 const isTree2 = isType<Tree>(isTreeParam => ({
 	value: isNumber,
 	left: isMaybe(isTreeParam), // isTreeParam === isTree
@@ -86,6 +86,22 @@ const isRecord = isTuple<Record>([isNumber, isOptionalString]);
 isRecord([6, "Hello"]) // true
 isRecord([6]) // true
 isRecord(["Hello", "Bye"]) // false
+```
+
+Just like `isType`, it supports recursive tuples
+```typescript
+type Record = [number, Record | null];
+
+const isRecord = isTuple<Record>(() => [
+	isNumber,
+	isMaybe(isRecord),
+]);
+
+// isRecord can also be accessed via the function's parameter
+const isRecord2 = isTuple<Record>(isRecordParam => [
+	isNumber,
+	isMaybe(isRecordParam), // isRecordParam === isRecord2
+]);
 ```
 
 ### `isUnion<[T1, T2, ...]>(...guards): TypeGuard<T1 | T2 | ...>`
