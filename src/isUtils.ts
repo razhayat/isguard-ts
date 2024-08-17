@@ -20,6 +20,8 @@ export const isDate = isInstanceof(Date);
 
 export const isNumberArray = isArray(isNumber);
 export const isStringArray = isArray(isString);
+export const isBooleanArray = isArray(isBoolean);
+export const isDateArray = isArray(isDate);
 
 export const isOptional = <T>(guard: TypeGuard<T>) => isUnion(isUndefined, guard);
 export const isOptionalNumber = isOptional(isNumber);
