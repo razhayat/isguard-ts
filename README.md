@@ -46,7 +46,7 @@ type Test = {
 	b: string;
 };
 
-const isTest: TypeGuard<Test> = isType<Test>({
+const isTest = isType<Test>({
 	a: isNumber,
 	b: isString,
 });
@@ -62,14 +62,14 @@ type Tree = {
 	right: Tree | null;
 };
 
-const isTree: TypeGuard<Tree> = isType<Tree>(() => ({
+const isTree = isType<Tree>(() => ({
 	value: isNumber,
 	left: isMaybe(isTree), // isTree is the return type of isType
 	right: isMaybe(isTree),
 }));
 
 // isTree can also be accessed via the passed function's parameter:
-const isTree2: TypeGuard<Tree> = isType<Tree>(isTreeParam => ({
+const isTree2 = isType<Tree>(isTreeParam => ({
 	value: isNumber,
 	left: isMaybe(isTreeParam), // isTreeParam === isTree
 	right: isMaybe(isTreeParam),
