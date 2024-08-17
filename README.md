@@ -38,7 +38,7 @@ Extracts the guarded type out of TypeGuard
 type Test = Guarded<TypeGuard<number>>; // number
 ```
 
-### `isType()`
+### `isType<T>(): TypeGuard<T>`
 Helps you create type guards for types and interfaces
 ```typescript
 type Test = {
@@ -76,7 +76,7 @@ const isTree2: TypeGuard<Tree> = isType<Tree>(isTreeParam => ({
 }));
 ```
 
-### `isUnion(...guards)`
+### `isUnion<[T1, T2, ...]>(...guards): TypeGuard<T1 | T2 | ...>`
 Helps you create type guards for unions
 ```typescript
 const isNumberOrString: TypeGuard<number | string> = isUnion(isNumber, isString);
@@ -86,7 +86,7 @@ isNumberOrString("Hello") // true
 isNumberOrString(new Date()) // false
 ```
 
-### `isIntersection(...guards)`
+### `isIntersection<[T1, T2, ...]>(...guards): TypeGuard<T1 & T2 & ...>`
 Helps you create type guards for intersections
 ```typescript
 type A = { a: number };
@@ -109,7 +109,7 @@ const isTest = isType<Test>({ a: isNumber });
 const isTestArray: TypeGuard<Test[]> = isArray(isTest);
 ```
 
-### `isTuple<T>()`
+### `isTuple<T>(): TypeGuard<T>`
 Helps you create type guards for tuples
 ```typescript
 type Record = [number, string?];
