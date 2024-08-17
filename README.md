@@ -1,6 +1,6 @@
 # isguard-ts
 A powerful `typescript` library that helps you build your type guards.<br/>
-The library utilizes the `typescript` compiler to ensure the type guards are type safe and fact to create.
+The library utilizes the `typescript` compiler to ensure the type guards are type safe and fast to create.
 
 ## Some of our built-in types
 + TypeGuard
@@ -27,13 +27,13 @@ The library utilizes the `typescript` compiler to ensure the type guards are typ
 
 ## Code Examples
 ### `TypeGuard<T>`
-The most basic type - represents a TypeGuard of `T`
+The most basic type - represents a type guard of `T`
 ```typescript
 type TypeGuard<T> = (value: unknown) => value is T;
 ```
 
 ### `Guarded<T>`
-Extracts the guarded type out of TypeGuard
+Extracts `T` out of `TypeGuard<T>`
 ```typescript
 type Test = Guarded<TypeGuard<number>>; // number
 ```
@@ -54,7 +54,7 @@ const isTest = isType<Test>({
 isTest({ a: 6, b: "Hello" }) // true
 ```
 
-It also supports recursive types by passing a function as an argument
+`isType` also supports recursive types by passing a function as an argument
 ```typescript
 type Tree = {
 	value: number;
@@ -103,7 +103,7 @@ isRecord([6]) // true
 isRecord(["Hello", "Bye"]) // false
 ```
 
-Just like `isType`, it supports recursive tuples
+Just like `isType`, `isTuple` supports recursive tuples
 ```typescript
 type Record = [number, Record | null];
 
@@ -143,7 +143,7 @@ const isC: TypeGuard<C> = isIntersection(isA, isB);
 ```
 
 ### `isArray<T>(guard: TypeGuard<T>): TypeGuard<T[]>`
-Helper function that helps you create type guards for an array
+Helps you create type guards for arrays
 ```typescript
 const isNumberArray = isArray(isNumber);
 
