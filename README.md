@@ -76,6 +76,21 @@ const isTree2 = isType<Tree>(isTreeParam => ({
 }));
 ```
 
+For generic types you would need to create your own type guard generator
+```typescript
+type ValueHolder<T> = {
+	value: T;
+};
+
+const isValueHolder = <T>(isValue: TypeGuard<T>): TypeGuard<ValueHolder<T>> => {
+	return isType<ValueHolder<T>>({
+		value: isValue,
+	});
+};
+
+const isNumberHolder: TypeGuard<ValueHolder<number>> = isValueHolder(isNumber);
+```
+
 ### `isTuple<T>(template): TypeGuard<T>`
 Helps you create type guards for tuples
 ```typescript
