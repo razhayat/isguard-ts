@@ -12,6 +12,7 @@ The library utilizes the `typescript` compiler to ensure the type guards are typ
 + isIntersection
 + isArray
 + isTuple
++ isInstanceof
 + isOptional
 + isMaybe
 
@@ -118,6 +119,16 @@ const isRecord = isTuple<Record>([isNumber, isOptionalString]);
 isRecord([6, "Hello"]) // true
 isRecord([6]) // true
 isRecord(["Hello", "Bye"]) // false
+```
+
+### `isInstanceof<T>(): TypeGuard<T>`
+Helps you create type guards for classes
+```typescript
+abstract class Animal { }
+class Dog extends Animal { }
+
+const isAnimal: TypeGuard<Animal> = isInstanceof(Animal);
+const isDog: TypeGuard<Dog> = isInstanceof(Dog);
 ```
 
 ### `isOptional<T>(guard: TypeGuard<T>): TypeGuard<T | undefined>`
