@@ -38,7 +38,7 @@ Extracts the guarded type out of TypeGuard
 type Test = Guarded<TypeGuard<number>>; // number
 ```
 
-### `isType<T>(): TypeGuard<T>`
+### `isType<T>(template): TypeGuard<T>`
 Helps you create type guards for types and interfaces
 ```typescript
 type Test = {
@@ -109,7 +109,7 @@ const isTest = isType<Test>({ a: isNumber });
 const isTestArray: TypeGuard<Test[]> = isArray(isTest);
 ```
 
-### `isTuple<T>(): TypeGuard<T>`
+### `isTuple<T>(template): TypeGuard<T>`
 Helps you create type guards for tuples
 ```typescript
 type Record = [number, string?];
@@ -121,7 +121,7 @@ isRecord([6]) // true
 isRecord(["Hello", "Bye"]) // false
 ```
 
-### `isInstanceof<T>(): TypeGuard<T>`
+### `isInstanceof<T>(constructor): TypeGuard<T>`
 Helps you create type guards for classes
 ```typescript
 abstract class Animal { }
