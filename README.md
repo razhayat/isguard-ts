@@ -1,6 +1,10 @@
 # isguard-ts
-a powerful `typescript` library that helps you build your type guards.<br/>
+A powerful `typescript` library that helps you build your type guards.<br/>
 The library utilizes the `typescript` compiler to ensure the type guards are type safe and fact to create.
+
+## Some of our built-in types
++ TypeGuard
++ Guarded
 
 ## Some of our built-in helper functions
 + isType
@@ -18,10 +22,6 @@ The library utilizes the `typescript` compiler to ensure the type guards are typ
 + isNull
 + isUndefined
 + isNil - Utility type for checking for null or undefined
-
-## Some of our built-in types
-+ TypeGuard
-+ Guarded
 
 ## Code Examples
 ### `TypeGuard<T>`
