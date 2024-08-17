@@ -1,9 +1,9 @@
 import { TypeGuard } from "./types";
 
-export type Constructor<T> = abstract new (...args: any[]) => T;
+export type Constructor = abstract new (...args: any[]) => unknown;
 
-export const isInstanceof = <T>(constructor: Constructor<T>): TypeGuard<T> => {
-	return (value: unknown): value is T => {
+export const isInstanceof = <T extends Constructor>(constructor: T): TypeGuard<InstanceType<T>> => {
+	return (value: unknown): value is InstanceType<T> => {
 		return value instanceof constructor;
 	};
 };
