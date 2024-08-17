@@ -11,6 +11,7 @@ The library utilizes the `typescript` compiler to ensure the type guards are typ
 + isUnion
 + isIntersection
 + isArray
++ isTuple
 + isOptional
 + isMaybe
 
@@ -105,6 +106,18 @@ const isNumberArray = isArray(isNumber);
 type Test = { a: number };
 const isTest = isType<Test>({ a: isNumber });
 const isTestArray: TypeGuard<Test[]> = isArray(isTest);
+```
+
+### `isTuple<T>()`
+Helps you create type guards for tuples
+```typescript
+type Record = [number, string?];
+
+const isRecord = isTuple<Record>([isNumber, isOptionalString]);
+
+isRecord([6, "Hello"]) // true
+isRecord([6]) // true
+isRecord(["Hello", "Bye"]) // false
 ```
 
 ### `isOptional<T>(guard: TypeGuard<T>): TypeGuard<T | undefined>`
