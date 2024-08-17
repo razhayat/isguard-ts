@@ -9,9 +9,6 @@ export const isNull = isValue(null);
 export const isUndefined = isValue(undefined);
 export const isNil = isUnion(isNull, isUndefined);
 
-export const isTrue = isValue(true);
-export const isFalse = isValue(false);
-
 export const isNumber = isTypeof<number>("number");
 export const isBigint = isTypeof<bigint>("bigint");
 export const isString = isTypeof<string>("string");
@@ -20,9 +17,6 @@ export const isSymbol = isTypeof<symbol>("symbol");
 export const isFunction = isTypeof<(...args: any[]) => unknown>("function");
 
 export const isDate = isInstanceof(Date);
-export const isNumberWrapper = isInstanceof(Number);
-export const isStringWrapper = isInstanceof(String);
-export const isBooleanWrapper = isInstanceof(Boolean);
 
 export const isNumberArray = isArray(isNumber);
 export const isStringArray = isArray(isString);
