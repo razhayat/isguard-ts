@@ -293,43 +293,43 @@ describe("isValue return type", () => {
 });
 
 describe("util types", () => {
-	test("isNull should return TypeGuard<null>", () => {
+	test("isNull should be TypeGuard<null>", () => {
 		expectTypeOf(isNull).toEqualTypeOf<TypeGuard<null>>();
 	});
 
-	test("isUndefined should return TypeGuard<undefined>", () => {
+	test("isUndefined should be TypeGuard<undefined>", () => {
 		expectTypeOf(isUndefined).toEqualTypeOf<TypeGuard<undefined>>();
 	});
 
-	test("isNil should return TypeGuard<null | undefined>", () => {
+	test("isNil should be TypeGuard<null | undefined>", () => {
 		expectTypeOf(isNil).toEqualTypeOf<TypeGuard<null | undefined>>();
 	});
 
-	test("isNumber should return TypeGuard<number>", () => {
+	test("isNumber should be TypeGuard<number>", () => {
 		expectTypeOf(isNumber).toEqualTypeOf<TypeGuard<number>>();
 	});
 
-	test("isString should return TypeGuard<string>", () => {
+	test("isString should be TypeGuard<string>", () => {
 		expectTypeOf(isString).toEqualTypeOf<TypeGuard<string>>();
 	});
 
-	test("isBoolean should return TypeGuard<boolean>", () => {
+	test("isBoolean should be TypeGuard<boolean>", () => {
 		expectTypeOf(isBoolean).toEqualTypeOf<TypeGuard<boolean>>();
 	});
 
-	test("isFunction should return TypeGuard<Function>", () => {
+	test("isFunction should be TypeGuard<(...args: any[]) => unknown>", () => {
 		expectTypeOf(isFunction).toEqualTypeOf<TypeGuard<(...args: any[]) => unknown>>();
 	});
 
-	test("isDate should return TypeGuard<Date>", () => {
+	test("isDate should be TypeGuard<Date>", () => {
 		expectTypeOf(isDate).toEqualTypeOf<TypeGuard<Date>>();
 	});
 
-	test("isNumberArray should return TypeGuard<number[]>", () => {
+	test("isNumberArray should be TypeGuard<number[]>", () => {
 		expectTypeOf(isNumberArray).toEqualTypeOf<TypeGuard<number[]>>();
 	});
 
-	test("isStringArray should return TypeGuard<string[]>", () => {
+	test("isStringArray should be TypeGuard<string[]>", () => {
 		expectTypeOf(isStringArray).toEqualTypeOf<TypeGuard<string[]>>();
 	});
 });
