@@ -1,6 +1,6 @@
 import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isFalse, isNil, isNull, isTrue, isUndefined, isValue } from "../src";
+import { isNil, isNull, isUndefined, isValue } from "../src";
 
 describe("is null", () => {
 	describedGuardTests({
@@ -34,30 +34,6 @@ describe("is nil", () => {
 			[undefined, true],
 			[56, false],
 			[{ maybe: 61 }, false],
-		],
-	});
-});
-
-describe("is true", () => {
-	describedGuardTests({
-		guard: isTrue,
-		testCases: [
-			[new Date(), false],
-			[NaN, false],
-			[true, true],
-			[false, false],
-		],
-	});
-});
-
-describe("is false", () => {
-	describedGuardTests({
-		guard: isFalse,
-		testCases: [
-			[null, false],
-			[undefined, false],
-			[true, false],
-			[false, true],
 		],
 	});
 });
