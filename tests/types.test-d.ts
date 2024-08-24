@@ -104,6 +104,13 @@ describe("TypeGuardTemplate", () => {
 		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 	});
 
+	it("should remove readonly", () => {
+		type Actual = TypeGuardTemplate<{ readonly a: number; }>;
+		type Expected = { a: TypeGuard<number>; };
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
 	it("should support tuples", () => {
 		type Actual = TypeGuardTemplate<[number, string]>;
 		type Expected = [TypeGuard<number>, TypeGuard<string>];
@@ -111,7 +118,7 @@ describe("TypeGuardTemplate", () => {
 		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 	});
 
-	it("should remove readonly", () => {
+	it("should remove readonly from tuple", () => {
 		type Actual = TypeGuardTemplate<readonly [number, string]>;
 		type Expected = readonly [TypeGuard<number>, TypeGuard<string>];
 
