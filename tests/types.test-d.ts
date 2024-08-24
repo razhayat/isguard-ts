@@ -131,6 +131,24 @@ describe("TypeGuardTemplate", () => {
 
 		expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
 	});
+
+	it("should not equal derived types", () => {
+		type A = { a: string };
+		type B = A & { b: number };
+		type Actual = TypeGuardTemplate<A>;
+		type Expected = TypeGuardTemplate<B>;
+
+		expectTypeOf<Actual>().not.toMatchTypeOf<Expected>();
+	});
+
+	it("should not equal base types", () => {
+		type A = { a: string };
+		type B = A & { b: number };
+		type Actual = TypeGuardTemplate<B>;
+		type Expected = TypeGuardTemplate<A>;
+
+		expectTypeOf<Actual>().not.toMatchTypeOf<Expected>();
+	});
 });
 
 describe("isArray return type", () => {
