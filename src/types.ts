@@ -6,4 +6,6 @@ export type TypeGuardTemplate<T> = {
 	-readonly [K in keyof T]-?: TypeGuard<T[K]>;
 };
 
-export type TypeGuardTemplateParameter<T> = TypeGuardTemplate<T> | ((guard: TypeGuard<T>) => TypeGuardTemplateParameter<T>);
+export type TypeGuardTemplateFunction<T> = (guard: TypeGuard<T>) => TypeGuardTemplateParameter<T>;
+
+export type TypeGuardTemplateParameter<T> = TypeGuardTemplate<T> | TypeGuardTemplateFunction<T>;
