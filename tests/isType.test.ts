@@ -1,5 +1,5 @@
 import { describe } from "vitest";
-import { isDate, isMaybe, isNumber, isType, isString, isValueUnion } from "../src";
+import { isDate, isMaybe, isNumber, isType, isString, isValue } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is tree type", () => {
@@ -50,7 +50,7 @@ describe("is person interface", () => {
 			height: isNumber,
 			birthday: isDate,
 			deathday: isMaybe(isDate),
-			sex: isValueUnion("M", "F")
+			sex: isValue("M", "F"),
 		}),
 		testCases: [
 			[null, false],

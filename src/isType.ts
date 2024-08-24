@@ -1,6 +1,6 @@
 import { TypeGuardTemplateParameter, TypeGuard } from "./types";
 import { isNil } from "./isUtils";
-import { extractTypeGuardTemplate } from "./utils";
+import { extractTemplate } from "./utils";
 
 export const isType = <T extends object>(template: T extends readonly unknown[] ? never : TypeGuardTemplateParameter<T>): TypeGuard<T> => {
 	const guard = (value: any): value is T => {
@@ -17,6 +17,6 @@ export const isType = <T extends object>(template: T extends readonly unknown[] 
 		return true;
 	};
 
-	const resolvedTemplate = extractTypeGuardTemplate<T>(guard, template);
+	const resolvedTemplate = extractTemplate<T>(template, guard);
 	return guard;
 };
