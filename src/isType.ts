@@ -6,7 +6,7 @@ export const isType = <T extends object>(template: T extends readonly unknown[] 
 	let resolvedTemplate: TypeGuardTemplate<T> | null = null;
 
 	const guard = (value: any): value is T => {
-		resolvedTemplate = resolvedTemplate ?? extractTemplate<T>(guard, template);
+		resolvedTemplate = resolvedTemplate ?? extractTemplate<T>(template, guard);
 
 		if (isNil(value)) {
 			return false;

@@ -5,7 +5,7 @@ export const isTuple = <T extends readonly unknown[]>(template: TypeGuardTemplat
 	let resolvedTemplate: TypeGuardTemplate<T> | null = null;
 
 	const guard = (value: unknown): value is T => {
-		resolvedTemplate = resolvedTemplate ?? extractTemplate(guard, template);
+		resolvedTemplate = resolvedTemplate ?? extractTemplate(template, guard);
 		return Array.isArray(value) && resolvedTemplate.length >= value.length && resolvedTemplate.every((guard, i) => guard(value[i]));
 	};
 
