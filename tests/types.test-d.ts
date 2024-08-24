@@ -13,14 +13,14 @@ describe("TypeGuard type", () => {
 		type Actual = TypeGuard<number>;
 		type Expected = TypeGuard<number | undefined>;
 
-		expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
+		expectTypeOf<Actual>().not.toMatchTypeOf<Expected>();
 	});
 
 	it("should not equal base types", () => {
 		type Actual = TypeGuard<number | undefined>;
 		type Expected = TypeGuard<number>;
 
-		expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
+		expectTypeOf<Actual>().not.toMatchTypeOf<Expected>();
 	});
 });
 
