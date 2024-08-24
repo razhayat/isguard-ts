@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isOptioanlDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, TypeGuard, TypeGuardTemplate } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isOptioanlDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exectly equal", () => {
@@ -63,7 +63,7 @@ describe("Guarded type", () => {
 	});
 });
 
-describe("TypeGuardTemplate", () => {
+describe("TypeGuardTemplate type", () => {
 	it("should map to TypeGuard", () => {
 		type Actual = TypeGuardTemplate<{ a: number; b: string; }>;
 		type Expected = { a: TypeGuard<number>; b: TypeGuard<string>; };
@@ -146,6 +146,26 @@ describe("TypeGuardTemplate", () => {
 		type B = A & { b: number };
 		type Actual = TypeGuardTemplate<B>;
 		type Expected = TypeGuardTemplate<A>;
+
+		expectTypeOf<Actual>().not.toMatchTypeOf<Expected>();
+	});
+});
+
+describe("TypeGuardTemplateFunction type", () => {
+	it("should not equal derived types", () => {
+		type A = { a: string };
+		type B = A & { b: number };
+		type Actual = TypeGuardTemplateFunction<A>;
+		type Expected = TypeGuardTemplateFunction<B>;
+
+		expectTypeOf<Actual>().not.toMatchTypeOf<Expected>();
+	});
+
+	it("should not equal base types", () => {
+		type A = { a: string };
+		type B = A & { b: number };
+		type Actual = TypeGuardTemplateFunction<B>;
+		type Expected = TypeGuardTemplateFunction<A>;
 
 		expectTypeOf<Actual>().not.toMatchTypeOf<Expected>();
 	});
