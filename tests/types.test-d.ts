@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isOptioanlDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isOptioanlDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, TypeGuard, TypeGuardTemplate } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exectly equal", () => {
@@ -267,28 +267,26 @@ describe("isUnion", () => {
 	});
 });
 
-describe("isValueUnion return type", () => {
-	it("should return TypeGuard<1 | 2>", () => {
-		type Actual = ReturnType<typeof isValueUnion<[1, 2]>>;
-		type Expected = TypeGuard<1 | 2>;
-
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
-	});
-
-	it("should return TypeGuard<1 | 'Hello'>", () => {
-		type Actual = ReturnType<typeof isValueUnion<[1, 'Hello']>>;
-		type Expected = TypeGuard<1 | 'Hello'>;
-
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
-	});
-});
-
 describe("isValue return type", () => {
 	it("should narrow generic type", () => {
 		const actual = isValue("hello");
 		type Expected = TypeGuard<"hello">;
 
 		expectTypeOf(actual).toEqualTypeOf<Expected>();
+	});
+
+	it("should return TypeGuard<1 | 2>", () => {
+		type Actual = ReturnType<typeof isValue<[1, 2]>>;
+		type Expected = TypeGuard<1 | 2>;
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should return TypeGuard<1 | 'Hello'>", () => {
+		type Actual = ReturnType<typeof isValue<[1, 'Hello']>>;
+		type Expected = TypeGuard<1 | 'Hello'>;
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 	});
 });
 
