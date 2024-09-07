@@ -1,10 +1,11 @@
 import { describe } from "vitest";
-import { isDate, isInstanceof } from "../src";
+import { isDate, isInstanceof, isObject } from "../src";
 import { describedGuardTests } from "./utils";
 
 class Animal { }
 class Dog extends Animal { }
 class Cat extends Animal { }
+
 describe("is animal", () => {
 	describedGuardTests({
 		guard: isInstanceof(Animal),
