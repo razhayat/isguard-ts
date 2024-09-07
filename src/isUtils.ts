@@ -17,6 +17,7 @@ export const isSymbol = isTypeof<symbol>("symbol");
 export const isFunction = isTypeof<(...args: any[]) => unknown>("function");
 
 export const isDate = isInstanceof(Date);
+export const isObject = isInstanceof(Object);
 
 export const isNumberArray = isArray(isNumber);
 export const isStringArray = isArray(isString);

@@ -2,6 +2,42 @@ import { describe } from "vitest";
 import { isDate, isMaybe, isNumber, isType, isString, isValue } from "../src";
 import { describedGuardTests } from "./utils";
 
+describe("is simple type", () => {
+	type Simple = {
+		name: string;
+		age: number;
+	};
+
+	class SimpleClass implements Simple {
+		public constructor(public name: string, public age: number) {
+
+		}
+	}
+
+	describedGuardTests({
+		guard: isType<Simple>({
+			name: isString,
+			age: isNumber,
+		}),
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[12, false],
+			["6", false],
+			[[], false],
+			[{}, false],
+			[new Set(), false],
+			[NaN, false],
+			[{ name2: "b", age: 14 }, false],
+			[{ name: 12, age: 15 }, false],
+			[{ name: new Date(), age: "3223" }, false],
+			[{ name: "bla", age: 12 }, true],
+			[{ name: "b", age: 13, name2: "fkmf" }, true],
+			[new SimpleClass("blue", 16), true],
+		],
+	});
+});
+
 describe("is tree type", () => {
 	type Tree = {
 		value: number;

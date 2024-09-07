@@ -1,4 +1,4 @@
-import { TypeGuard, TypeGuardTemplate, TypeGuardTemplateParameter } from "./types";
+import { TypeGuard, TypeGuardTemplateParameter } from "./types";
 import { extractTemplate } from "./utils";
 
 export const isTuple = <T extends readonly unknown[]>(template: TypeGuardTemplateParameter<T>): TypeGuard<T> => {
