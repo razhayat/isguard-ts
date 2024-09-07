@@ -57,3 +57,23 @@ describe("is date", () => {
 		],
 	});
 });
+
+describe("is object", () => {
+	describedGuardTests({
+		guard: isObject,
+		testCases: [
+			[null, false],
+			[undefined, false],
+			["07/09/2024", false],
+			["23/07/2024🥹", false],
+			["06/08/2024🤦", false],
+			[Symbol(), false],
+			[56, false],
+			[{ hello: 12 }, true],
+			[[2, null, "bye"], true],
+			[new Set(), true],
+			[new Map(), true],
+			[[new Date()], true],
+		],
+	});
+});
