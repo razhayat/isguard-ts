@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isOptioanlDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptioanlDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exectly equal", () => {
@@ -366,6 +366,10 @@ describe("util types", () => {
 
 	test("isDate should be TypeGuard<Date>", () => {
 		expectTypeOf(isDate).toEqualTypeOf<TypeGuard<Date>>();
+	});
+
+	test("isObject should be TypeGuard<Object>", () => {
+		expectTypeOf(isObject).toEqualTypeOf<TypeGuard<Object>>();
 	});
 
 	test("isNumberArray should be TypeGuard<number[]>", () => {
