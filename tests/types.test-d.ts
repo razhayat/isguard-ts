@@ -312,14 +312,25 @@ describe("isIndexRecord", () => {
 	});
 });
 
-describe("isType return type", () => {
+describe("isType", () => {
 	type A = { a: number };
 
-	it("should return TypeGuard<A>", () => {
-		type Actual = ReturnType<typeof isType<A>>;
-		type Expected = TypeGuard<A>;
+	describe("return type", () => {
+		it("should return TypeGuard<A>", () => {
+			const actual = isType<A>({ a: isNumber });
+			type Expected = TypeGuard<A>;
 
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+	});
+
+	describe("parameters", () => {
+		it("should not accept arrays", () => {
+			isType(
+				// @ts-expect-error
+				[isNumber, isString],
+			);
+		});
 	});
 });
 
