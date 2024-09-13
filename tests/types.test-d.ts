@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptioanlDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptioanlDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isRecord, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exectly equal", () => {
@@ -252,6 +252,42 @@ describe("isIntersection", () => {
 			type Expected = [TypeGuard<A | undefined>];
 
 			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
+	});
+});
+
+describe("isRecord", () => {
+	describe("return type", () => {
+		it("should return TypeGuard<Record<'a' | 'b', number>>", () => {
+			const actual = isRecord(["a", "b"], isNumber);
+			type Expected = TypeGuard<Record<"a" | "b", number>>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+	});
+
+	describe("parameters", () => {
+		it("should accept readonly keys", () => {
+			const keys = ["a", "b"] as const;
+			const actual = isRecord(keys, isDate);
+			type Expected = TypeGuard<Record<"a" | "b", Date>>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+
+		it("should accept string or number as keys", () => {
+			const actual = isRecord(["a", 56], isNull);
+			type Expected = TypeGuard<Record<"a" | 56, null>>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+
+		it("should not accept Date as key", () => {
+			isRecord(
+				// @ts-expect-error
+				[new Date()],
+				isNull,
+			);
 		});
 	});
 });
