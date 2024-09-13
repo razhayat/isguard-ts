@@ -20,8 +20,8 @@ export const objectKeyStringify = (input: any) => {
 };
 
 export const objectStringify = (input: object) => {
-	const entries = Object.entries(input).map(([key, value]) => {
-		return `${key}: ${defaultStringifyInput(value)}`
+	const entries = Reflect.ownKeys(input).map(key => {
+		return `${key.toString()}: ${defaultStringifyInput(Reflect.get(input, key))}`
 	}).join(", ");
 
 	if (!entries) {
