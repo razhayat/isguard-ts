@@ -321,7 +321,7 @@ describe("isValue return type", () => {
 	});
 });
 
-describe("isValues return type", () => {
+describe("isValueUnion return type", () => {
 	it("should return TypeGuard<1 | 2>", () => {
 		type Actual = ReturnType<typeof isValueUnion<[1, 2]>>;
 		type Expected = TypeGuard<1 | 2>;
