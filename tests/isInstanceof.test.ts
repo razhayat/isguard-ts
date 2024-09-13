@@ -75,6 +75,8 @@ describe("is object", () => {
 			[new Set(), true],
 			[new Map(), true],
 			[[new Date()], true],
+			[Object.create(null), false],
+			[Object.create({}), true],
 		],
 	});
 });
