@@ -13,14 +13,12 @@ export const isRecord = <K extends PropertyKey[], V>(keys: K, isValue: TypeGuard
 	};
 };
 
-export const isIndexRecord = <K extends PropertyKey, V>(isKey: TypeGuard<K>, isValue: TypeGuard<V>): TypeGuard<Record<K, V>> => {
+export const isIndexRecord = <K extends PropertyKey, V>(isValue: TypeGuard<V>): TypeGuard<Record<K, V>> => {
 	return (value: unknown): value is Record<K, V> => {
 		if (!isObject(value) || value.constructor !== Object) {
 			return false;
 		}
 
-		return Object.entries(value).every(([key, value]) => {
-			return isKey(key) && isValue(value);
-		});
+		return Object.values(value).every(isValue);
 	};
 };

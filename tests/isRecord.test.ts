@@ -1,10 +1,10 @@
 import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isIndexRecord, isNumber, isRecord, isString, isValueUnion } from "../src";
+import { isIndexRecord, isNumber, isRecord, isValueUnion } from "../src";
 
-describe("is Record<string, number> record", () => {
+describe("is indexRecord", () => {
 	describedGuardTests({
-		guard: isIndexRecord(isString, isNumber),
+		guard: isIndexRecord(isNumber),
 		testCases: [
 			[null, false],
 			[undefined, false],
