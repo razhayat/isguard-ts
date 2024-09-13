@@ -1,10 +1,11 @@
 import { describe } from "vitest";
-import { isDate, isInstanceof } from "../src";
+import { isDate, isInstanceof, isObject } from "../src";
 import { describedGuardTests } from "./utils";
 
 class Animal { }
 class Dog extends Animal { }
 class Cat extends Animal { }
+
 describe("is animal", () => {
 	describedGuardTests({
 		guard: isInstanceof(Animal),
@@ -54,6 +55,28 @@ describe("is date", () => {
 			[[new Date()], false],
 			[new Date(666), true],
 			[-56, false]
+		],
+	});
+});
+
+describe("is object", () => {
+	describedGuardTests({
+		guard: isObject,
+		testCases: [
+			[null, false],
+			[undefined, false],
+			["07/09/2024", false],
+			["23/07/2024🥹", false],
+			["06/08/2024🤦", false],
+			[Symbol(), false],
+			[56, false],
+			[{ hello: 12 }, true],
+			[[2, null, "bye"], true],
+			[new Set(), true],
+			[new Map(), true],
+			[[new Date()], true],
+			[Object.create(null), false],
+			[Object.create({}), true],
 		],
 	});
 });
