@@ -1,14 +1,26 @@
 {
 	"name": "isguard-ts",
 	"version": "1.0.0",
-	"description": "",
+	"description": "a typescript library for type guards",
 	"main": "dist/index.js",
 	"scripts": {
 		"test": "npx vitest --typecheck",
 		"build": "npx tsc -b"
 	},
-	"keywords": [],
-	"author": "",
+	"keywords": [
+		"assert",
+		"check",
+		"guard",
+		"is",
+		"ts",
+		"typescript",
+		"typeguards",
+		"types",
+		"validate"
+	],
+	"author": {
+		"name": "Raz Hayat"
+	},
 	"license": "ISC",
 	"devDependencies": {
 		"typescript": "^5.5.4",
