@@ -2,6 +2,22 @@ import { describe } from "vitest";
 import { isDate, isMaybe, isNumber, isType, isString, isValueUnion } from "../src";
 import { describedGuardTests } from "./utils";
 
+describe("is empty type", () => {
+	describedGuardTests({
+		guard: isType({}),
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[12, true],
+			["vsfbsdf", true],
+			[{}, true],
+			[[], true],
+			[new Map(), true],
+			[{ hello: "yes" }, true],
+		],
+	});
+});
+
 describe("is simple type", () => {
 	type Simple = {
 		name: string;
