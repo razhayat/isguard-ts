@@ -429,8 +429,8 @@ describe("util types", () => {
 		expectTypeOf(isBoolean).toEqualTypeOf<TypeGuard<boolean>>();
 	});
 
-	test("isFunction should be TypeGuard<(...args: any[]) => unknown>", () => {
-		expectTypeOf(isFunction).toEqualTypeOf<TypeGuard<(...args: any[]) => unknown>>();
+	test("isFunction should be TypeGuard<Function>", () => {
+		expectTypeOf(isFunction).toEqualTypeOf<TypeGuard<Function>>();
 	});
 
 	test("isDate should be TypeGuard<Date>", () => {

@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { isBoolean, isFunction, isNumber, isString, isSymbol, isUndefined, isValue, TypeGuard } from "../src";
+import { isBoolean, isFunction, isNumber, isString, isSymbol, isUndefined, TypeGuard } from "../src";
 
 export type DescribedGuardTestsProps<T> = {
 	guard: TypeGuard<T>;
@@ -13,10 +13,6 @@ export const guardTest = (input: unknown, guard: TypeGuard<any>, result: boolean
 
 export const defaultDescription = (input: string, result: boolean) => {
 	return `should return ${result} for ${input}`;
-};
-
-export const objectKeyStringify = (input: any) => {
-	return Object.keys({ [input]: null })[0];
 };
 
 export const objectStringify = (input: object) => {
@@ -37,8 +33,8 @@ export const constructorStringify = (constructor: Function, ...args: unknown[]) 
 };
 
 export const defaultStringifyInput = (input: unknown): string => {
-	if (isFunction(input) || isUndefined(input)) {
-		return objectKeyStringify(input);
+	if (isUndefined(input)) {
+		return "undefined";
 	}
 
 	if (Array.isArray(input)) {
@@ -46,7 +42,7 @@ export const defaultStringifyInput = (input: unknown): string => {
 		return `[${itemsStr}]`;
 	}
 
-	if (isNumber(input) || isBoolean(input) || isSymbol(input)) {
+	if (isNumber(input) || isBoolean(input) || isSymbol(input) || isFunction(input)) {
 		return input.toString();
 	}
 
