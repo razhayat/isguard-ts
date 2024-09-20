@@ -193,6 +193,20 @@ describe("isEnum", () => {
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 	});
+
+	describe("parameters", () => {
+		it("should accept regular enum", () => {
+			isEnum(Example);
+		});
+
+		it("should not accept const enums", () => {
+			const enum ConstEnum {}
+			isEnum(
+				// @ts-expect-error
+				ConstEnum
+			);
+		});
+	});
 });
 
 describe("getEnumValues", () => {
