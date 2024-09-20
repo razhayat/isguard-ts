@@ -180,16 +180,18 @@ describe("isArray return type", () => {
 	});
 });
 
-describe("isEnum return type", () => {
+describe("isEnum", () => {
 	enum Example {
 		field,
 	}
 
-	it("should return TypeGuard<T>", () => {
-		const actual = isEnum(Example);
-		type Expected = TypeGuard<typeof Example>;
+	describe("return type", () => {
+		it("should return TypeGuard<T>", () => {
+			const actual = isEnum(Example);
+			type Expected = TypeGuard<typeof Example>;
 
-		expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
 	});
 });
 
