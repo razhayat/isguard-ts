@@ -1,6 +1,6 @@
 import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isEnum } from "../src/isEnum";
+import { isEnum } from "../src";
 
 enum Example {
 	one,

@@ -180,16 +180,32 @@ describe("isArray return type", () => {
 	});
 });
 
-describe("isEnum return type", () => {
+describe("isEnum", () => {
 	enum Example {
 		field,
 	}
 
-	it("should return TypeGuard<T>", () => {
-		const actual = isEnum(Example);
-		type Expected = TypeGuard<typeof Example>;
+	describe("return type", () => {
+		it("should return TypeGuard<T>", () => {
+			const actual = isEnum(Example);
+			type Expected = TypeGuard<typeof Example>;
 
-		expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+	});
+
+	describe("parameters", () => {
+		it("should accept regular enum", () => {
+			isEnum(Example);
+		});
+
+		it("should not accept const enums", () => {
+			const enum ConstEnum {}
+			isEnum(
+				// @ts-expect-error
+				ConstEnum
+			);
+		});
 	});
 });
 
@@ -429,8 +445,8 @@ describe("util types", () => {
 		expectTypeOf(isBoolean).toEqualTypeOf<TypeGuard<boolean>>();
 	});
 
-	test("isFunction should be TypeGuard<(...args: any[]) => unknown>", () => {
-		expectTypeOf(isFunction).toEqualTypeOf<TypeGuard<(...args: any[]) => unknown>>();
+	test("isFunction should be TypeGuard<Function>", () => {
+		expectTypeOf(isFunction).toEqualTypeOf<TypeGuard<Function>>();
 	});
 
 	test("isDate should be TypeGuard<Date>", () => {

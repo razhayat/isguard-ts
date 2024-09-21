@@ -9,12 +9,12 @@ export const isNull = isValue(null);
 export const isUndefined = isValue(undefined);
 export const isNil = isUnion(isNull, isUndefined);
 
-export const isNumber = isTypeof<number>("number");
-export const isBigint = isTypeof<bigint>("bigint");
-export const isString = isTypeof<string>("string");
-export const isBoolean = isTypeof<boolean>("boolean");
-export const isSymbol = isTypeof<symbol>("symbol");
-export const isFunction = isTypeof<(...args: any[]) => unknown>("function");
+export const isNumber = isTypeof("number");
+export const isBigint = isTypeof("bigint");
+export const isString = isTypeof("string");
+export const isBoolean = isTypeof("boolean");
+export const isSymbol = isTypeof("symbol");
+export const isFunction = isTypeof("function");
 export const isPropertyKey: TypeGuard<PropertyKey> = isUnion(isString, isNumber, isSymbol);
 
 export const isDate = isInstanceof(Date);
