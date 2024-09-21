@@ -1,6 +1,6 @@
-import { describe, expect, test } from "vitest";
+import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isEnum, getEnumValues } from "../src";
+import { isEnum } from "../src";
 
 enum Example {
 	one,
@@ -31,14 +31,5 @@ describe("is enum", () => {
 			[{}, false],
 			[new Date(), false],
 		],
-	});
-});
-
-describe("get enum values", () => {
-	test("get enum values returns the values", () => {
-		const result = getEnumValues(Example);
-		const expected = [0, 1, 2, "apple", 56, "yami"];
-
-		expect(result.sort()).toEqual(expected.sort());
 	});
 });

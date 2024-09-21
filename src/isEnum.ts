@@ -3,7 +3,7 @@ import { isNumber } from "./isUtils";
 
 export type Enum = Record<string | number, string | number>;
 
-export const getEnumValues = (enumObj: Enum) => {
+const getEnumValues = (enumObj: Enum) => {
 	const map = new Map(Object.entries(enumObj));
 	Array.from(map.values()).forEach(value => {
 		isNumber(value) && map.delete(value.toString());
