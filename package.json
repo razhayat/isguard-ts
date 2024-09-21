@@ -1,14 +1,16 @@
 {
 	"name": "isguard-ts",
 	"version": "1.0.0",
-	"description": "a typescript library for type guards",
+	"description": "a typescript library for building type guards quickly and in a type safe way",
 	"main": "dist/index.js",
 	"scripts": {
-		"test": "npx vitest --typecheck",
-		"build": "npx tsc -b"
+		"test": "npx vitest --typecheck --run",
+		"build": "npx tsc -b",
+		"prepare": "npm run test && npm run build"
 	},
 	"keywords": [
 		"assert",
+		"builder",
 		"check",
 		"guard",
 		"is",
@@ -18,10 +20,21 @@
 		"types",
 		"validate"
 	],
+	"homepage": "https://github.com/razhayat/isguard-ts#readme",
+	"bugs": {
+		"url": "https://github.com/razhayat/isguard-ts/issues"
+	},
 	"author": {
 		"name": "Raz Hayat"
 	},
 	"license": "ISC",
+	"files": [
+		"dist/*"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/razhayat/isguard-ts"
+	},
 	"devDependencies": {
 		"typescript": "^5.5.4",
 		"vitest": "^2.1.1"
