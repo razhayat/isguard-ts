@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isRecord, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isRecord, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exactly equal", () => {
@@ -503,5 +503,13 @@ describe("util types", () => {
 
 	test("isMaybeDate should be TypeGuard<Date | null>", () => {
 		expectTypeOf(isMaybeDate).toEqualTypeOf<TypeGuard<Date | null>>();
+	});
+
+	test("isUnknown should be TypeGuard<unknown>", () => {
+		expectTypeOf(isUnknown).toEqualTypeOf<TypeGuard<unknown>>();
+	});
+
+	test("isNever should be TypeGuard<never>", () => {
+		expectTypeOf(isNever).toEqualTypeOf<TypeGuard<never>>();
 	});
 });
