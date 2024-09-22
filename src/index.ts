@@ -3,6 +3,7 @@ export * from "./isEnum";
 export * from "./isInstanceof";
 export * from "./isIntersection";
 export * from "./isRecord";
+export * from "./isTuple";
 export * from "./isType";
 export * from "./isTypeof";
 export * from "./isUnion";
