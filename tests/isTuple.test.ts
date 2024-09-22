@@ -1,7 +1,6 @@
 import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isTuple } from "../src/isTuple";
-import { isNumber, isOptional, isOptionalNumber, isString } from "../src";
+import { isTuple, isNumber, isOptional, isOptionalNumber, isString } from "../src";
 
 describe("is normal tuple", () => {
 	type Tuple = [string, number];

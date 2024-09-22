@@ -9,6 +9,9 @@ export const isNull = isValue(null);
 export const isUndefined = isValue(undefined);
 export const isNil = isUnion(isNull, isUndefined);
 
+export const isTrue = isValue(true);
+export const isFalse = isValue(false);
+
 export const isNumber = isTypeof("number");
 export const isBigint = isTypeof("bigint");
 export const isString = isTypeof("string");
@@ -29,10 +32,13 @@ export const isOptional = <T>(guard: TypeGuard<T>) => isUnion(isUndefined, guard
 export const isOptionalNumber = isOptional(isNumber);
 export const isOptionalString = isOptional(isString);
 export const isOptionalBoolean = isOptional(isBoolean);
-export const isOptioanlDate = isOptional(isDate);
+export const isOptionalDate = isOptional(isDate);
 
 export const isMaybe = <T>(guard: TypeGuard<T>) => isUnion(isNull, guard);
 export const isMaybeNumber = isMaybe(isNumber);
 export const isMaybeString = isMaybe(isString);
 export const isMaybeBoolean = isMaybe(isBoolean);
 export const isMaybeDate = isMaybe(isDate);
+
+export const isUnknown: TypeGuard<unknown> = (value: unknown): value is unknown => true;
+export const isNever: TypeGuard<never> = (value: unknown): value is never => false;
