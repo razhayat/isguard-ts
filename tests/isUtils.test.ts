@@ -1,6 +1,6 @@
 import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isUnknown } from "../src";
+import { isNever, isUnknown } from "../src";
 
 describe("isUnknown", () => {
 	describedGuardTests({
@@ -17,6 +17,25 @@ describe("isUnknown", () => {
 			[[new Date(), 12, "bye"], true],
 			[{ bye: "no", ok: "yes" }, true],
 			[() => { }, true],
+		],
+	});
+});
+
+describe("isNever", () => {
+	describedGuardTests({
+		guard: isNever,
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[12, false],
+			[true, false],
+			[new Map(), false],
+			[[], false],
+			[{}, false],
+			["hello", false],
+			[[new Date(), 12, "bye"], false],
+			[{ bye: "no", ok: "yes" }, false],
+			[() => { }, false],
 		],
 	});
 });
