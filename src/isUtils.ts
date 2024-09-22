@@ -9,6 +9,9 @@ export const isNull = isValue(null);
 export const isUndefined = isValue(undefined);
 export const isNil = isUnion(isNull, isUndefined);
 
+export const isTrue = isValue(true);
+export const isFalse = isValue(false);
+
 export const isNumber = isTypeof("number");
 export const isBigint = isTypeof("bigint");
 export const isString = isTypeof("string");
