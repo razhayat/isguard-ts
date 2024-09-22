@@ -29,7 +29,7 @@ export const isOptional = <T>(guard: TypeGuard<T>) => isUnion(isUndefined, guard
 export const isOptionalNumber = isOptional(isNumber);
 export const isOptionalString = isOptional(isString);
 export const isOptionalBoolean = isOptional(isBoolean);
-export const isOptioanlDate = isOptional(isDate);
+export const isOptionalDate = isOptional(isDate);
 
 export const isMaybe = <T>(guard: TypeGuard<T>) => isUnion(isNull, guard);
 export const isMaybeNumber = isMaybe(isNumber);
