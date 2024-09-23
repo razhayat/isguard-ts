@@ -71,7 +71,7 @@ const isTree = isType<Tree>(() => ({
 // isTree can also be accessed via the passed function's parameter
 const isTree2 = isType<Tree>(isTreeParam => ({
 	value: isNumber,
-	left: isMaybe(isTreeParam), // isTreeParam === isTree
+	left: isMaybe(isTreeParam), // isTreeParam === isTree2
 	right: isMaybe(isTreeParam),
 }));
 ```
