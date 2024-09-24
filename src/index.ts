@@ -2,6 +2,7 @@ export * from "./isArray";
 export * from "./isEnum";
 export * from "./isInstanceof";
 export * from "./isIntersection";
+export * from "./isMap";
 export * from "./isRecord";
 export * from "./isTuple";
 export * from "./isType";
