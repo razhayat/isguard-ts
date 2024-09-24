@@ -3,18 +3,18 @@ A powerful `typescript` library that helps you build your type guards.<br/>
 The library utilizes the `typescript` compiler to ensure the type guards are type safe and fast to create.
 
 ## Some of our built-in types
-+ TypeGuard
-+ Guarded
++ [TypeGuard](#type-guard)
++ [Guarded](#guarded)
 
 ## Some of our built-in helper functions
-+ isType
-+ isTuple
-+ isUnion
-+ isIntersection
-+ isArray
-+ isInstanceof
-+ isOptional
-+ isMaybe
++ [isType](#is-type)
++ [isTuple](#is-tuple)
++ [isUnion](#is-union)
++ [isIntersection](#is-intersection)
++ [isArray](#is-array)
++ [isInstanceof](#is-instanceof)
++ [isOptional](#is-optional)
++ [isMaybe](#is-maybe)
 
 ## Some of our utility type guards
 + isString
@@ -26,18 +26,22 @@ The library utilizes the `typescript` compiler to ensure the type guards are typ
 + isNil - `null` or `undefined`
 
 ## Code Examples
+
+### <span id="type-guard" ></span>
 ### `TypeGuard<T>`
 The most basic type - represents a type guard of `T`
 ```typescript
 type TypeGuard<T> = (value: unknown) => value is T;
 ```
 
+### <span id="guarded" ></span>
 ### `Guarded<T>`
 Extracts `T` out of `TypeGuard<T>`
 ```typescript
 type Test = Guarded<TypeGuard<number>>; // number
 ```
 
+### <span id="is-type" ></span>
 ### `isType<T>(template): TypeGuard<T>`
 Helps you create type guards for types and interfaces
 ```typescript
@@ -90,7 +94,7 @@ const isValueHolder = <T>(isValue: TypeGuard<T>): TypeGuard<ValueHolder<T>> => {
 
 const isNumberHolder: TypeGuard<ValueHolder<number>> = isValueHolder(isNumber);
 ```
-
+### <span id="is-tuple" ></span>
 ### `isTuple<T>(template): TypeGuard<T>`
 Helps you create type guards for tuples
 ```typescript
@@ -119,6 +123,7 @@ const isRecord2 = isTuple<Record>(isRecordParam => [
 ]);
 ```
 
+### <span id="is-union" ></span>
 ### `isUnion<[T1, T2, ...]>(...guards): TypeGuard<T1 | T2 | ...>`
 Helps you create type guards for unions
 ```typescript
@@ -129,6 +134,7 @@ isNumberOrString("Hello") // true
 isNumberOrString(new Date()) // false
 ```
 
+### <span id="is-intersection" ></span>
 ### `isIntersection<[T1, T2, ...]>(...guards): TypeGuard<T1 & T2 & ...>`
 Helps you create type guards for intersections
 ```typescript
@@ -142,6 +148,7 @@ const isB = isType<B>({ b: isString });
 const isC: TypeGuard<C> = isIntersection(isA, isB);
 ```
 
+### <span id="is-array" ></span>
 ### `isArray<T>(guard: TypeGuard<T>): TypeGuard<T[]>`
 Helps you create type guards for arrays
 ```typescript
@@ -152,6 +159,7 @@ const isTest = isType<Test>({ a: isNumber });
 const isTestArray: TypeGuard<Test[]> = isArray(isTest);
 ```
 
+### <span id="is-instanceof" ></span>
 ### `isInstanceof<T>(constructor): TypeGuard<T>`
 Helps you create type guards for classes
 ```typescript
@@ -162,12 +170,14 @@ const isAnimal: TypeGuard<Animal> = isInstanceof(Animal);
 const isDog: TypeGuard<Dog> = isInstanceof(Dog);
 ```
 
+### <span id="is-optional" ></span>
 ### `isOptional<T>(guard: TypeGuard<T>): TypeGuard<T | undefined>`
 Helps you create type guards for optional types
 ```typescript
 const isNumberOrUndefined: TypeGuard<number | undefined> = isOptional(isNumber);
 ```
 
+### <span id="is-maybe" ></span>
 ### `isMaybe<T>(guard: TypeGuard<T>): TypeGuard<T | null>`
 Helps you create type guards for nullable types
 ```typescript
