@@ -98,28 +98,28 @@ const isNumberHolder: TypeGuard<ValueHolder<number>> = isValueHolder(isNumber);
 ### `isTuple<T>(template): TypeGuard<T>`
 Helps you create type guards for tuples
 ```typescript
-type Record = [number, string?];
+type Row = [number, string?];
 
-const isRecord = isTuple<Record>([isNumber, isOptionalString]);
+const isRow = isTuple<Row>([isNumber, isOptionalString]);
 
-isRecord([6, "Hello"]) // true
-isRecord([6]) // true
-isRecord(["Hello", "Bye"]) // false
+isRow([6, "Hello"]) // true
+isRow([6]) // true
+isRow(["Hello", "Bye"]) // false
 ```
 
 Just like `isType`, `isTuple` supports recursive tuples
 ```typescript
-type Record = [number, Record | null];
+type Row = [number, Row | null];
 
-const isRecord = isTuple<Record>(() => [
+const isRow = isTuple<Row>(() => [
 	isNumber,
-	isMaybe(isRecord),
+	isMaybe(isRow),
 ]);
 
-// isRecord can also be accessed via the function's parameter
-const isRecord2 = isTuple<Record>(isRecordParam => [
+// isRow can also be accessed via the function's parameter
+const isRow = isTuple<Row>(isRowParam => [
 	isNumber,
-	isMaybe(isRecordParam), // isRecordParam === isRecord2
+	isMaybe(isRowParam), // isRowParam === isRow2
 ]);
 ```
 
