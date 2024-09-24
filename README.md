@@ -23,7 +23,7 @@ The library utilizes the `typescript` compiler to ensure the type guards are typ
 + isDate
 + isNull
 + isUndefined
-+ isNil - Utility type for checking for null or undefined
++ isNil - `null` or `undefined`
 
 ## Code Examples
 ### `TypeGuard<T>`
