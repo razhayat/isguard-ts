@@ -45,17 +45,17 @@ type Test = Guarded<TypeGuard<number>>; // number
 ### `isType<T>(template): TypeGuard<T>`
 Helps you create type guards for types and interfaces
 ```typescript
-type Test = {
-	a: number;
-	b: string;
+type Person = {
+	name: string;
+	age: number;
 };
 
-const isTest = isType<Test>({
-	a: isNumber,
-	b: isString,
+const isPerson = isType<Person>({
+	name: isString,
+	age: isNumber,
 });
 
-isTest({ a: 6, b: "Hello" }) // true
+isPerson({ name: "Hello", age: 6 }) // true
 ```
 
 `isType` also supports recursive types by passing a function as an argument
