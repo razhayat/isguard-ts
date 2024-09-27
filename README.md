@@ -124,7 +124,7 @@ const isRow = isTuple<Row>(() => [
 ]);
 
 // isRow can also be accessed via the function's parameter
-const isRow = isTuple<Row>(isRowParam => [
+const isRow2 = isTuple<Row>(isRowParam => [
 	isNumber,
 	isMaybe(isRowParam), // isRowParam === isRow2
 ]);
