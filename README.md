@@ -13,6 +13,7 @@ A powerful `typescript` library that helps you build your type guards.<br/>
 + [isIntersection](#is-intersection)
 + [isArray](#is-array)
 + [isSet](#is-set)
++ [isMap](#is-map)
 + [isRecord](#is-record)
 + [isIndexRecord](#is-index-record)
 + [isInstanceof](#is-instanceof)
@@ -169,6 +170,13 @@ const isTestArray: TypeGuard<Test[]> = isArray(isTest);
 Helps you create type guards for sets
 ```typescript
 const isNumberSet = isSet(isNumber);
+```
+
+><span id="is-map" ></span>
+### `isMap<K, V>(isKey: TypeGuard<K>, isValue: TypeGuard<V>): TypeGuard<Map<K, V>>`
+Helps you create type guards for maps
+```typescript
+const isStringBooleanMap = isMap(isString, isBoolean);
 ```
 
 ><span id="is-record" ></span>
