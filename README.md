@@ -12,6 +12,7 @@ A powerful `typescript` library that helps you build type guards.<br/>
 + [isUnion](#is-union)
 + [isIntersection](#is-intersection)
 + [isArray](#is-array)
++ [isEnum](#is-enum)
 + [isSet](#is-set)
 + [isMap](#is-map)
 + [isRecord](#is-record)
@@ -163,6 +164,23 @@ const isNumberArray = isArray(isNumber);
 type Test = { a: number };
 const isTest = isType<Test>({ a: isNumber });
 const isTestArray: TypeGuard<Test[]> = isArray(isTest);
+```
+
+*<span id="is-enum" ></span>*
+### `isEnum<T>(enumObj: T): TypeGuard<T[keyof T]>`
+Helps you create type guards for enums
+```typescript
+enum Direction {
+	up = 0,
+	down = 1,
+	left = 2,
+	right = 3,
+}
+
+const isDirection: TypeGuard<Direction> = isEnum(Direction);
+isDirection(Direction.up) // true
+isDirection(2) // true
+isDirection("hello") // false
 ```
 
 *<span id="is-set" ></span>*
