@@ -62,7 +62,7 @@ const isPerson = isType<Person>({
 	age: isNumber,
 });
 
-isPerson({ name: "Hello", age: 6 }) // true
+isPerson({ name: "Hello", age: 6 }); // true
 ```
 
 `isType` also supports recursive types by passing a function as an argument
@@ -109,9 +109,9 @@ type Row = [number, string?];
 
 const isRow = isTuple<Row>([isNumber, isOptionalString]);
 
-isRow([6, "Hello"]) // true
-isRow([6]) // true
-isRow(["Hello", "Bye"]) // false
+isRow([6, "Hello"]); // true
+isRow([6]); // true
+isRow(["Hello", "Bye"]); // false
 ```
 
 Just like `isType`, `isTuple` supports recursive tuples
@@ -136,9 +136,9 @@ Helps you create type guards for unions
 ```typescript
 const isNumberOrString: TypeGuard<number | string> = isUnion(isNumber, isString);
 
-isNumberOrString(6) // true
-isNumberOrString("Hello") // true
-isNumberOrString(new Date()) // false
+isNumberOrString(6); // true
+isNumberOrString("Hello"); // true
+isNumberOrString(new Date()); // false
 ```
 
 *<span id="is-intersection" ></span>*
@@ -178,9 +178,9 @@ enum Direction {
 }
 
 const isDirection: TypeGuard<Direction> = isEnum(Direction);
-isDirection(Direction.up) // true
-isDirection(2) // true
-isDirection("hello") // false
+isDirection(Direction.up); // true
+isDirection(2); // true
+isDirection("hello"); // false
 ```
 
 *<span id="is-set" ></span>*
