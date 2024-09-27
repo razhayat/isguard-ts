@@ -206,7 +206,7 @@ type TimeUnit = "second" | "minute" | "hour";
 type TimeUnitToMillisecond = Record<TimeUnit, number>;
 
 const isTimeUnit: TypeGuard<TimeUnit> = isValueUnion("second", "minute", "hour");
-const isTimeUnitToMillisecond: TypeGuard<Record<TimeUnit, number>> = isRecord(isTimeUnit, isNumber);
+const isTimeUnitToMillisecond: TypeGuard<TimeUnitToMillisecond> = isRecord(isTimeUnit, isNumber);
 ```
 
 *<span id="is-index-record" ></span>*
