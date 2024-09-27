@@ -24,6 +24,8 @@ A powerful `typescript` library that helps you build your type guards.<br/>
 + isNull
 + isUndefined
 + isNil - `null` or `undefined`
++ isUnknown - always returns `true`
++ isNever - always returns `false`
 
 ## Code Examples
 
