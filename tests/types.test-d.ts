@@ -188,7 +188,7 @@ describe("isEnum", () => {
 	describe("return type", () => {
 		it("should return TypeGuard<T>", () => {
 			const actual = isEnum(Example);
-			type Expected = TypeGuard<typeof Example>;
+			type Expected = TypeGuard<Example>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
