@@ -159,9 +159,10 @@ const isC: TypeGuard<C> = isIntersection(isA, isB);
 ### `isArray<T>(guard: TypeGuard<T>): TypeGuard<T[]>`
 Helps you create type guards for arrays
 ```typescript
-const isNumberArray = isArray(isNumber);
+type Test = {
+	a: number;
+};
 
-type Test = { a: number };
 const isTest = isType<Test>({ a: isNumber });
 const isTestArray: TypeGuard<Test[]> = isArray(isTest);
 ```
