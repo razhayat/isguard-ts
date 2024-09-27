@@ -12,6 +12,7 @@ A powerful `typescript` library that helps you build your type guards.<br/>
 + [isUnion](#is-union)
 + [isIntersection](#is-intersection)
 + [isArray](#is-array)
++ [isRecord](#is-record)
 + [isInstanceof](#is-instanceof)
 + [isOptional](#is-optional)
 + [isMaybe](#is-maybe)
@@ -159,6 +160,17 @@ const isNumberArray = isArray(isNumber);
 type Test = { a: number };
 const isTest = isType<Test>({ a: isNumber });
 const isTestArray: TypeGuard<Test[]> = isArray(isTest);
+```
+
+><span id="is-record" ></span>
+### `isRecord<K, V>(isKey: TypeGuard<K>, isValue: TypeGuard<V>): TypeGuard<Record<K, V>>`
+Helps you create type guards for records
+```typescript
+type TimeUnit = "second" | "minute" | "hour";
+type TimeUnitToMillisecond = Record<TimeUnit, number>;
+
+const isTimeUnit: TypeGuard<TimeUnit> = isValueUnion("second", "minute", "hour");
+const isTimeUnitToMillisecond = isRecord(isTimeUnit, isNumber);
 ```
 
 ><span id="is-instanceof" ></span>
