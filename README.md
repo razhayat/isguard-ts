@@ -187,14 +187,14 @@ isDirection("hello") // false
 ### `isSet<T>(guard: TypeGuard<T>): TypeGuard<Set<T>>`
 Helps you create type guards for sets
 ```typescript
-const isNumberSet = isSet(isNumber);
+const isNumberSet: TypeGuard<Set<number>> = isSet(isNumber);
 ```
 
 *<span id="is-map" ></span>*
 ### `isMap<K, V>(isKey: TypeGuard<K>, isValue: TypeGuard<V>): TypeGuard<Map<K, V>>`
 Helps you create type guards for maps
 ```typescript
-const isStringBooleanMap = isMap(isString, isBoolean);
+const isStringBooleanMap: TypeGuard<Map<string, boolean>> = isMap(isString, isBoolean);
 ```
 
 *<span id="is-record" ></span>*
@@ -205,7 +205,7 @@ type TimeUnit = "second" | "minute" | "hour";
 type TimeUnitToMillisecond = Record<TimeUnit, number>;
 
 const isTimeUnit: TypeGuard<TimeUnit> = isValueUnion("second", "minute", "hour");
-const isTimeUnitToMillisecond = isRecord(isTimeUnit, isNumber);
+const isTimeUnitToMillisecond: TypeGuard<Record<TimeUnit, number>> = isRecord(isTimeUnit, isNumber);
 ```
 
 *<span id="is-index-record" ></span>*
