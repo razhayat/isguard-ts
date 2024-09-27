@@ -13,6 +13,7 @@ A powerful `typescript` library that helps you build your type guards.<br/>
 + [isIntersection](#is-intersection)
 + [isArray](#is-array)
 + [isRecord](#is-record)
++ [isIndexRecord](#is-index-record)
 + [isInstanceof](#is-instanceof)
 + [isOptional](#is-optional)
 + [isMaybe](#is-maybe)
@@ -171,6 +172,13 @@ type TimeUnitToMillisecond = Record<TimeUnit, number>;
 
 const isTimeUnit: TypeGuard<TimeUnit> = isValueUnion("second", "minute", "hour");
 const isTimeUnitToMillisecond = isRecord(isTimeUnit, isNumber);
+```
+
+><span id="is-index-record" ></span>
+### `isIndexRecord<V>(isValue: TypeGuard<V>): TypeGuard<Record<PropertyKey, V>>`
+Works just like `isRecord` but checks only the `values` and not the `keys`
+```typescript
+const isNumberRecord: TypeGuard<Record<PropertyKey, number>> = isIndexRecord(isNumber);
 ```
 
 ><span id="is-instanceof" ></span>
