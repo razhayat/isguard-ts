@@ -12,6 +12,7 @@ A powerful `typescript` library that helps you build your type guards.<br/>
 + [isUnion](#is-union)
 + [isIntersection](#is-intersection)
 + [isArray](#is-array)
++ [isSet](#is-set)
 + [isRecord](#is-record)
 + [isIndexRecord](#is-index-record)
 + [isInstanceof](#is-instanceof)
@@ -161,6 +162,13 @@ const isNumberArray = isArray(isNumber);
 type Test = { a: number };
 const isTest = isType<Test>({ a: isNumber });
 const isTestArray: TypeGuard<Test[]> = isArray(isTest);
+```
+
+><span id="is-set" ></span>
+### `isSet<T>(guard: TypeGuard<T>): TypeGuard<Set<T>>`
+Helps you create type guards for sets
+```typescript
+const isNumberSet = isSet(isNumber);
 ```
 
 ><span id="is-record" ></span>
