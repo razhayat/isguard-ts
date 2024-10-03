@@ -48,7 +48,7 @@
 		"url": "https://github.com/razhayat/isguard-ts"
 	},
 	"devDependencies": {
-		"typescript": "^5.5.4",
+		"typescript": "^5.6.2",
 		"vitest": "^2.1.1"
 	}
 }
