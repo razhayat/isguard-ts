@@ -15,7 +15,6 @@ A powerful `typescript` library that helps you build type guards.<br/>
 + [isEnum](#is-enum)
 + [isSet](#is-set)
 + [isMap](#is-map)
-+ [isRecord](#is-record)
 + [isIndexRecord](#is-index-record)
 + [isInstanceof](#is-instanceof)
 + [isOptional](#is-optional)
@@ -198,20 +197,9 @@ Helps you create type guards for maps
 const isStringBooleanMap: TypeGuard<Map<string, boolean>> = isMap(isString, isBoolean);
 ```
 
-*<span id="is-record" ></span>*
-### `isRecord<K, V>(isKey: TypeGuard<K>, isValue: TypeGuard<V>): TypeGuard<Record<K, V>>`
-Helps you create type guards for records
-```typescript
-type TimeUnit = "second" | "minute" | "hour";
-type TimeUnitToMillisecond = Record<TimeUnit, number>;
-
-const isTimeUnit: TypeGuard<TimeUnit> = isValueUnion("second", "minute", "hour");
-const isTimeUnitToMillisecond: TypeGuard<TimeUnitToMillisecond> = isRecord(isTimeUnit, isNumber);
-```
-
 *<span id="is-index-record" ></span>*
 ### `isIndexRecord<V>(isValue: TypeGuard<V>): TypeGuard<Record<PropertyKey, V>>`
-Works just like `isRecord` but checks only the `values` and not the `keys`
+Checks only the `values` of the object and not the `keys`
 ```typescript
 const isNumberRecord: TypeGuard<Record<PropertyKey, number>> = isIndexRecord(isNumber);
 ```
