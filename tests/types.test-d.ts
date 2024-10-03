@@ -209,7 +209,7 @@ describe("isEnum", () => {
 	});
 });
 
-describe("isInstanceof return type", () => {
+describe("isInstanceof", () => {
 	it("should return TypeGuard<T>", () => {
 		class Example { }
 		const actual = isInstanceof(Example);
@@ -224,6 +224,14 @@ describe("isInstanceof return type", () => {
 		type Expected = TypeGuard<Example>;
 
 		expectTypeOf(actual).toEqualTypeOf<Expected>();
+	});
+
+	it("should not accept function constructor", () => {
+		function Example() { }
+		isInstanceof(
+			// @ts-expect-error
+			Example
+		);
 	});
 });
 
