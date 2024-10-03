@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet, record } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exactly equal", () => {
@@ -209,7 +209,7 @@ describe("isEnum", () => {
 	});
 });
 
-describe("isInstanceof return type", () => {
+describe("isInstanceof", () => {
 	it("should return TypeGuard<T>", () => {
 		class Example { }
 		const actual = isInstanceof(Example);
@@ -224,6 +224,14 @@ describe("isInstanceof return type", () => {
 		type Expected = TypeGuard<Example>;
 
 		expectTypeOf(actual).toEqualTypeOf<Expected>();
+	});
+
+	it("should not accept function constructor", () => {
+		function Example() { }
+		isInstanceof(
+			// @ts-expect-error
+			Example
+		);
 	});
 });
 
@@ -406,7 +414,7 @@ describe("isValueUnion return type", () => {
 	});
 });
 
-describe("util types", () => {
+describe("is util types", () => {
 	test("isTrue should be TypeGuard<true>", () => {
 		expectTypeOf(isTrue).toEqualTypeOf<TypeGuard<true>>();
 	});
@@ -505,5 +513,14 @@ describe("util types", () => {
 
 	test("isNever should be TypeGuard<never>", () => {
 		expectTypeOf(isNever).toEqualTypeOf<TypeGuard<never>>();
+	});
+});
+
+describe("record", () => {
+	it("should return TypeGuardTemplate<Record<Keys, V>>", () => {
+		const actual = record(["a", "b", "c"], isString);
+		type Expected = TypeGuardTemplate<Record<"a" | "b" | "c", string>>;
+
+		expectTypeOf(actual).toEqualTypeOf<Expected>();
 	});
 });
