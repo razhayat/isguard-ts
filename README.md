@@ -15,7 +15,6 @@ A powerful `typescript` library that helps you build type guards.<br/>
 + [isEnum](#is-enum)
 + [isSet](#is-set)
 + [isMap](#is-map)
-+ [isRecord](#is-record)
 + [isIndexRecord](#is-index-record)
 + [isInstanceof](#is-instanceof)
 + [isOptional](#is-optional)
@@ -62,7 +61,7 @@ const isPerson = isType<Person>({
 	age: isNumber,
 });
 
-isPerson({ name: "Hello", age: 6 }) // true
+isPerson({ name: "Hello", age: 6 }); // true
 ```
 
 `isType` also supports recursive types by passing a function as an argument
@@ -109,9 +108,9 @@ type Row = [number, string?];
 
 const isRow = isTuple<Row>([isNumber, isOptionalString]);
 
-isRow([6, "Hello"]) // true
-isRow([6]) // true
-isRow(["Hello", "Bye"]) // false
+isRow([6, "Hello"]); // true
+isRow([6]); // true
+isRow(["Hello", "Bye"]); // false
 ```
 
 Just like `isType`, `isTuple` supports recursive tuples
@@ -124,7 +123,7 @@ const isRow = isTuple<Row>(() => [
 ]);
 
 // isRow can also be accessed via the function's parameter
-const isRow = isTuple<Row>(isRowParam => [
+const isRow2 = isTuple<Row>(isRowParam => [
 	isNumber,
 	isMaybe(isRowParam), // isRowParam === isRow2
 ]);
@@ -136,9 +135,9 @@ Helps you create type guards for unions
 ```typescript
 const isNumberOrString: TypeGuard<number | string> = isUnion(isNumber, isString);
 
-isNumberOrString(6) // true
-isNumberOrString("Hello") // true
-isNumberOrString(new Date()) // false
+isNumberOrString(6); // true
+isNumberOrString("Hello"); // true
+isNumberOrString(new Date()); // false
 ```
 
 *<span id="is-intersection" ></span>*
@@ -159,9 +158,10 @@ const isC: TypeGuard<C> = isIntersection(isA, isB);
 ### `isArray<T>(guard: TypeGuard<T>): TypeGuard<T[]>`
 Helps you create type guards for arrays
 ```typescript
-const isNumberArray = isArray(isNumber);
+type Test = {
+	a: number;
+};
 
-type Test = { a: number };
 const isTest = isType<Test>({ a: isNumber });
 const isTestArray: TypeGuard<Test[]> = isArray(isTest);
 ```
@@ -178,39 +178,28 @@ enum Direction {
 }
 
 const isDirection: TypeGuard<Direction> = isEnum(Direction);
-isDirection(Direction.up) // true
-isDirection(2) // true
-isDirection("hello") // false
+isDirection(Direction.up); // true
+isDirection(2); // true
+isDirection("hello"); // false
 ```
 
 *<span id="is-set" ></span>*
 ### `isSet<T>(guard: TypeGuard<T>): TypeGuard<Set<T>>`
 Helps you create type guards for sets
 ```typescript
-const isNumberSet = isSet(isNumber);
+const isNumberSet: TypeGuard<Set<number>> = isSet(isNumber);
 ```
 
 *<span id="is-map" ></span>*
 ### `isMap<K, V>(isKey: TypeGuard<K>, isValue: TypeGuard<V>): TypeGuard<Map<K, V>>`
 Helps you create type guards for maps
 ```typescript
-const isStringBooleanMap = isMap(isString, isBoolean);
-```
-
-*<span id="is-record" ></span>*
-### `isRecord<K, V>(isKey: TypeGuard<K>, isValue: TypeGuard<V>): TypeGuard<Record<K, V>>`
-Helps you create type guards for records
-```typescript
-type TimeUnit = "second" | "minute" | "hour";
-type TimeUnitToMillisecond = Record<TimeUnit, number>;
-
-const isTimeUnit: TypeGuard<TimeUnit> = isValueUnion("second", "minute", "hour");
-const isTimeUnitToMillisecond = isRecord(isTimeUnit, isNumber);
+const isStringBooleanMap: TypeGuard<Map<string, boolean>> = isMap(isString, isBoolean);
 ```
 
 *<span id="is-index-record" ></span>*
 ### `isIndexRecord<V>(isValue: TypeGuard<V>): TypeGuard<Record<PropertyKey, V>>`
-Works just like `isRecord` but checks only the `values` and not the `keys`
+Checks only the `values` of the object and not the `keys`
 ```typescript
 const isNumberRecord: TypeGuard<Record<PropertyKey, number>> = isIndexRecord(isNumber);
 ```
