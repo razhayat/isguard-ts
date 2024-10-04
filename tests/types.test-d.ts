@@ -335,11 +335,86 @@ describe("isType", () => {
 	});
 
 	describe("parameters", () => {
+		it("should accept classes", () => {
+			class Example {}
+			isType<Example>;
+		});
+
 		it("should not accept arrays", () => {
 			isType(
 				// @ts-expect-error
 				[isNumber, isString],
 			);
+		});
+
+		it("should not accept a number", () => {
+			isType(
+				// @ts-expect-error
+				12,
+			);
+		});
+
+		it("should not accept number as a generic argument", () => {
+			isType<
+				// @ts-expect-error
+				number
+			>;
+		});
+
+		it("should not accept a string", () => {
+			isType(
+				// @ts-expect-error
+				"Don't accept me",
+			);
+		});
+
+		it("should not accept string as a generic argument", () => {
+			isType<
+				// @ts-expect-error
+				string
+			>;
+		});
+
+		it("should not accept boolean", () => {
+			isType(
+				// @ts-expect-error
+				false,
+			);
+		});
+
+		it("should not accept boolean as a generic argument", () => {
+			isType<
+				// @ts-expect-error
+				boolean
+			>;
+		});
+
+		it("should not accept undefined", () => {
+			isType(
+				// @ts-expect-error
+				undefined,
+			);
+		});
+
+		it("should not accept undefined as a generic argument", () => {
+			isType<
+				// @ts-expect-error
+				undefined
+			>;
+		});
+
+		it("should not accept null", () => {
+			isType(
+				// @ts-expect-error
+				null,
+			);
+		});
+
+		it("should not accept null as a generic argument", () => {
+			isType<
+				// @ts-expect-error
+				null
+			>;
 		});
 	});
 });
