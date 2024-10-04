@@ -44,13 +44,17 @@ type TypeGuard<T> = (value: unknown) => value is T;
 ### `Guarded<T>`
 Extracts `T` out of `TypeGuard<T>`
 ```typescript
-type Test = Guarded<TypeGuard<number>>; // number
+import { Guarded, TypeGuard } from "isguard-ts";
+
+type Extracted = Guarded<TypeGuard<number>>; // number
 ```
 
 *<span id="is-type" ></span>*
 ### `isType<T>(template): TypeGuard<T>`
 Helps you create type guards for types and interfaces
 ```typescript
+import { isType, isString, isNumber } from "isguard-ts";
+
 type Person = {
 	name: string;
 	age: number;
@@ -66,6 +70,8 @@ isPerson({ name: "Hello", age: 6 }); // true
 
 `isType` also supports recursive types by passing a function as an argument
 ```typescript
+import { isType, isNumber, isMaybe } from "isguard-ts";
+
 type Tree = {
 	value: number;
 	left: Tree | null;
@@ -88,6 +94,8 @@ const isTree2 = isType<Tree>(isTreeParam => ({
 
 For generic types you would need to create your own type guard generator
 ```typescript
+import { TypeGuard, isType } from "isguard-ts";
+
 type ValueHolder<T> = {
 	value: T;
 };
@@ -104,6 +112,8 @@ const isNumberHolder: TypeGuard<ValueHolder<number>> = isValueHolder(isNumber);
 ### `isTuple<T>(template): TypeGuard<T>`
 Helps you create type guards for tuples
 ```typescript
+import { isTuple, isNumber, isOptionalString } from "isguard-ts";
+
 type Row = [number, string?];
 
 const isRow = isTuple<Row>([isNumber, isOptionalString]);
@@ -115,6 +125,8 @@ isRow(["Hello", "Bye"]); // false
 
 Just like `isType`, `isTuple` supports recursive tuples
 ```typescript
+import { isTuple, isNumber, isMaybe } from "isguard-ts";
+
 type Row = [number, Row | null];
 
 const isRow = isTuple<Row>(() => [
@@ -133,6 +145,8 @@ const isRow2 = isTuple<Row>(isRowParam => [
 ### `isUnion<[T1, T2, ...]>(...guards): TypeGuard<T1 | T2 | ...>`
 Helps you create type guards for unions
 ```typescript
+import { TypeGuard, isUnion, isNumber, isString } from "isguard-ts";
+
 const isNumberOrString: TypeGuard<number | string> = isUnion(isNumber, isString);
 
 isNumberOrString(6); // true
@@ -144,6 +158,8 @@ isNumberOrString(new Date()); // false
 ### `isIntersection<[T1, T2, ...]>(...guards): TypeGuard<T1 & T2 & ...>`
 Helps you create type guards for intersections
 ```typescript
+import { isType, isNumber, isString, TypeGuard, isIntersection } from "isguard-ts";
+
 type A = { a: number };
 type B = { b: string };
 type C = A & B;
@@ -158,6 +174,8 @@ const isC: TypeGuard<C> = isIntersection(isA, isB);
 ### `isArray<T>(guard: TypeGuard<T>): TypeGuard<T[]>`
 Helps you create type guards for arrays
 ```typescript
+import { isType, isNumber, TypeGuard, isArray } from "isguard-ts";
+
 type Test = {
 	a: number;
 };
@@ -170,6 +188,8 @@ const isTestArray: TypeGuard<Test[]> = isArray(isTest);
 ### `isEnum<T>(enumObj: T): TypeGuard<T[keyof T]>`
 Helps you create type guards for enums
 ```typescript
+import { TypeGuard, isEnum } from "isguard-ts";
+
 enum Direction {
 	up = 0,
 	down = 1,
@@ -187,6 +207,8 @@ isDirection("hello"); // false
 ### `isSet<T>(guard: TypeGuard<T>): TypeGuard<Set<T>>`
 Helps you create type guards for sets
 ```typescript
+import { TypeGuard, isSet, isNumber } from "isguard-ts";
+
 const isNumberSet: TypeGuard<Set<number>> = isSet(isNumber);
 ```
 
@@ -194,6 +216,8 @@ const isNumberSet: TypeGuard<Set<number>> = isSet(isNumber);
 ### `isMap<K, V>(isKey: TypeGuard<K>, isValue: TypeGuard<V>): TypeGuard<Map<K, V>>`
 Helps you create type guards for maps
 ```typescript
+import { TypeGuard, isMap, isString, isBoolean } from "isguard-ts";
+
 const isStringBooleanMap: TypeGuard<Map<string, boolean>> = isMap(isString, isBoolean);
 ```
 
@@ -201,6 +225,8 @@ const isStringBooleanMap: TypeGuard<Map<string, boolean>> = isMap(isString, isBo
 ### `isIndexRecord<V>(isValue: TypeGuard<V>): TypeGuard<Record<PropertyKey, V>>`
 Checks only the `values` of the object and not the `keys`
 ```typescript
+import { TypeGuard, isIndexRecord, isNumber } from "isguard-ts";
+
 const isNumberRecord: TypeGuard<Record<PropertyKey, number>> = isIndexRecord(isNumber);
 ```
 
@@ -208,6 +234,8 @@ const isNumberRecord: TypeGuard<Record<PropertyKey, number>> = isIndexRecord(isN
 ### `isInstanceof<T>(constructor): TypeGuard<T>`
 Helps you create type guards for classes
 ```typescript
+import { TypeGuard, isInstanceof } from "isguard-ts";
+
 abstract class Animal { }
 class Dog extends Animal { }
 
@@ -219,6 +247,8 @@ const isDog: TypeGuard<Dog> = isInstanceof(Dog);
 ### `isOptional<T>(guard: TypeGuard<T>): TypeGuard<T | undefined>`
 Helps you create type guards for optional types
 ```typescript
+import { TypeGuard, isOptional, isNumber } from "isguard-ts";
+
 const isNumberOrUndefined: TypeGuard<number | undefined> = isOptional(isNumber);
 ```
 
@@ -226,5 +256,7 @@ const isNumberOrUndefined: TypeGuard<number | undefined> = isOptional(isNumber);
 ### `isMaybe<T>(guard: TypeGuard<T>): TypeGuard<T | null>`
 Helps you create type guards for nullable types
 ```typescript
+import { TypeGuard, isMaybe, isNumber } from "isguard-ts";
+
 const isNumberOrNull: TypeGuard<number | null> = isMaybe(isNumber);
 ```
