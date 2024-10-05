@@ -10,17 +10,17 @@ describe("TypeGuard type", () => {
 	});
 
 	it("should not match derived types", () => {
-		type Actual = TypeGuard<number>;
-		type Expected = TypeGuard<number | undefined>;
+		type Base = TypeGuard<number>;
+		type Derived = TypeGuard<number | undefined>;
 
-		expectTypeOf<Actual>().not.toMatchTypeOf<Expected>();
+		expectTypeOf<Base>().not.toMatchTypeOf<Derived>();
 	});
 
 	it("should not match base types", () => {
-		type Actual = TypeGuard<number | undefined>;
-		type Expected = TypeGuard<number>;
+		type Derived = TypeGuard<number | undefined>;
+		type Base = TypeGuard<number>;
 
-		expectTypeOf<Actual>().not.toMatchTypeOf<Expected>();
+		expectTypeOf<Derived>().not.toMatchTypeOf<Base>();
 	});
 });
 
@@ -153,21 +153,21 @@ describe("TypeGuardTemplate type", () => {
 
 describe("TypeGuardTemplateFunction type", () => {
 	it("should not match derived types", () => {
-		type A = { a: string };
-		type B = A & { b: number };
-		type Actual = TypeGuardTemplateFunction<A>;
-		type Expected = TypeGuardTemplateFunction<B>;
+		type Base = { a: string };
+		type Derived = Base & { b: number };
+		type TemplateBase = TypeGuardTemplateFunction<Base>;
+		type TemplateDerived = TypeGuardTemplateFunction<Derived>;
 
-		expectTypeOf<Actual>().not.toMatchTypeOf<Expected>();
+		expectTypeOf<TemplateBase>().not.toMatchTypeOf<TemplateDerived>();
 	});
 
 	it("should not match base types", () => {
-		type A = { a: string };
-		type B = A & { b: number };
-		type Actual = TypeGuardTemplateFunction<B>;
-		type Expected = TypeGuardTemplateFunction<A>;
+		type Base = { a: string };
+		type Derived = Base & { b: number };
+		type TemplateDerived = TypeGuardTemplateFunction<Derived>;
+		type TemplateBase = TypeGuardTemplateFunction<Base>;
 
-		expectTypeOf<Actual>().not.toMatchTypeOf<Expected>();
+		expectTypeOf<TemplateDerived>().not.toMatchTypeOf<TemplateBase>();
 	});
 });
 
