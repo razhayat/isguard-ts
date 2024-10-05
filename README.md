@@ -16,6 +16,7 @@ A powerful `typescript` library that helps you build type guards.<br/>
 + [isSet](#is-set)
 + [isMap](#is-map)
 + [isRecord](#is-record)
++ [isPartialRecord](#is-partial-record)
 + [isIndexRecord](#is-index-record)
 + [isInstanceof](#is-instanceof)
 + [isOptional](#is-optional)
@@ -226,11 +227,26 @@ const isStringBooleanMap: TypeGuard<Map<string, boolean>> = isMap(isString, isBo
 ### `isRecord<K, V>(keys: K, isValue: TypeGuard<V>): TypeGuard<Record<K[number], V>>`
 Helps you create type guards for records
 ```typescript
+import { TypeGuard, isValueUnion, isRecord } from "isguard-ts";
+
 type TimeUnit = "second" | "minute" | "hour";
 type TimeUnitToMillisecond = Record<TimeUnit, number>;
 
 const isTimeUnit: TypeGuard<TimeUnit> = isValueUnion("second", "minute", "hour");
 const isTimeUnitToMillisecond = isRecord(isTimeUnit, isNumber);
+```
+
+*<span id="is-partial-record" ></span>*
+### `isPartialRecord<K, V>(keys: K, isValue: TypeGuard<V>): TypeGuard<Partial<Record<K[number], V>>>`
+Works just like `isRecord` but allows for `undefined` values
+```typescript
+import { TypeGuard, isValueUnion, isPartialRecord } from "isguard-ts";
+
+type TimeUnit = "second" | "minute" | "hour";
+type PartialTimeUnitToMillisecond = Partial<Record<TimeUnit, number>>;
+
+const isTimeUnit: TypeGuard<TimeUnit> = isValueUnion("second", "minute", "hour");
+const isPartialTimeUnitToMillisecond = isPartialRecord(isTimeUnit, isNumber);
 ```
 
 *<span id="is-index-record" ></span>*
