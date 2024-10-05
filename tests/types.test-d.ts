@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exactly equal", () => {
@@ -333,6 +333,42 @@ describe("isRecord", () => {
 				// @ts-expect-error
 				[new Date()],
 				isNull,
+			);
+		});
+	});
+});
+
+describe("isPartialRecord", () => {
+	describe("return type", () => {
+		it("should return TypeGuard<Record<'a' | 'b', number>>", () => {
+			const actual = isPartialRecord(["a", "b"], isNumber);
+			type Expected = TypeGuard<Partial<Record<"a" | "b", number>>>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+	});
+
+	describe("parameters", () => {
+		it("should accept readonly keys", () => {
+			const keys = ["readonly", "keys"] as const;
+			const actual = isPartialRecord(keys, isBoolean);
+			type Expected = TypeGuard<Partial<Record<"readonly" | "keys", boolean>>>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+
+		it("should accept string or number as keys", () => {
+			const actual = isPartialRecord(["a", 56], isUndefined);
+			type Expected = TypeGuard<Partial<Record<"a" | 56, undefined>>>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+
+		it("should not accept Date as key", () => {
+			isPartialRecord(
+				// @ts-expect-error
+				[new Date()],
+				isNil,
 			);
 		});
 	});
