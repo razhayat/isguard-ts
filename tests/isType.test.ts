@@ -144,3 +144,21 @@ describe("is tuple like type", () => {
 		],
 	});
 });
+
+describe("is tuple type", () => {
+	type Tuple = readonly [string, number];
+
+	describedGuardTests({
+		guard: isType<Tuple>([isString, isNumber]),
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[[], false],
+			[{ 0: "Hello", 1: 6 }, true],
+			[["Hello", 6], true],
+			[["Bye", 7, new Date()], true],
+			[{ 0: new Date(), 1: 6 }, false],
+			[{ 0: "Hello", 1: 6, age: 56 }, true],
+		],
+	});
+});
