@@ -1,19 +1,10 @@
+import { isType } from "./isType";
 import { isObject } from "./isUtils";
 import { TypeGuard } from "./types";
+import { record } from "./utils";
 
-/**
- * @deprecated Will be removed in the next minor version 1.2.0
- */
-export const isRecord = <const K extends readonly PropertyKey[], V>(keys: K, isValue: TypeGuard<V>): TypeGuard<Record<K[number], V>> => {
-	return (value: unknown): value is Record<K[number], V> => {
-		if (!isObject(value) || value.constructor !== Object) {
-			return false;
-		}
-
-		return keys.every(key => {
-			return isValue(Reflect.get(value, key));
-		});
-	};
+export const isRecord = <const K extends readonly PropertyKey[], V>(keys: K, isValue: TypeGuard<V>) => {
+	return isType(record(keys, isValue));
 };
 
 export const isIndexRecord = <K extends PropertyKey, V>(isValue: TypeGuard<V>): TypeGuard<Record<K, V>> => {
