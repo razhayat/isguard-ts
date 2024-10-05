@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet, record } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exactly equal", () => {
@@ -133,21 +133,21 @@ describe("TypeGuardTemplate type", () => {
 	});
 
 	it("should not match derived types", () => {
-		type A = { a: string };
-		type B = A & { b: number };
-		type Actual = TypeGuardTemplate<A>;
-		type Expected = TypeGuardTemplate<B>;
+		type Base = { a: string };
+		type Derived = Base & { b: number };
+		type BaseTemplate = TypeGuardTemplate<Base>;
+		type DerivedTemplate = TypeGuardTemplate<Derived>;
 
-		expectTypeOf<Actual>().not.toMatchTypeOf<Expected>();
+		expectTypeOf<BaseTemplate>().not.toMatchTypeOf<DerivedTemplate>();
 	});
 
 	it("should not match base types", () => {
-		type A = { a: string };
-		type B = A & { b: number };
-		type Actual = TypeGuardTemplate<B>;
-		type Expected = TypeGuardTemplate<A>;
+		type Base = { a: string };
+		type Derived = Base & { b: number };
+		type DerivedTemplate = TypeGuardTemplate<Derived>;
+		type BaseTemplate = TypeGuardTemplate<Base>;
 
-		expectTypeOf<Actual>().not.toMatchTypeOf<Expected>();
+		expectTypeOf<DerivedTemplate>().not.toMatchTypeOf<BaseTemplate>();
 	});
 });
 
@@ -332,6 +332,13 @@ describe("isType", () => {
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
+
+		it("should omit non index for tuples", () => {
+			const actual = isType([isNumber, isString]);
+			type Expected = TypeGuard<{ 0: number; 1: string }>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
 	});
 
 	describe("parameters", () => {
@@ -340,11 +347,8 @@ describe("isType", () => {
 			isType<Example>;
 		});
 
-		it("should not accept arrays", () => {
-			isType(
-				// @ts-expect-error
-				[isNumber, isString],
-			);
+		it("should accept tuples", () => {
+			isType([isNumber, isString]);
 		});
 
 		it("should not accept a number", () => {
@@ -588,14 +592,5 @@ describe("is util types", () => {
 
 	test("isNever should be TypeGuard<never>", () => {
 		expectTypeOf(isNever).toEqualTypeOf<TypeGuard<never>>();
-	});
-});
-
-describe("record", () => {
-	it("should return TypeGuardTemplate<Record<Keys, V>>", () => {
-		const actual = record(["a", "b", "c"], isString);
-		type Expected = TypeGuardTemplate<Record<"a" | "b" | "c", string>>;
-
-		expectTypeOf(actual).toEqualTypeOf<Expected>();
 	});
 });
