@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exactly equal", () => {
@@ -390,6 +390,128 @@ describe("isIndexRecord", () => {
 			type Expected = TypeGuard<Record<number, string>>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+	});
+});
+
+describe("isTuple", () => {
+	describe("return type", () => {
+		it("should return TypeGuard<Row>", () => {
+			type Row = [number, string];
+			const actual = isTuple<Row>([isNumber, isString]);
+			type Expected = TypeGuard<Row>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+	});
+
+	describe("parameters", () => {
+		it("should accept readonly tuples", () => {
+			type Tuple = readonly [number, undefined];
+			const actual = isTuple<Tuple>([isNumber, isUndefined]);
+			type Expected = TypeGuard<Tuple>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+
+		it("should accept a function", () => {
+			const actual = isTuple(() => [isString]);
+			type Expected = TypeGuard<[string]>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+
+		it("should accept a nested function", () => {
+			const actual = isTuple(() => () => [isNumber]);
+			type Expected = TypeGuard<[number]>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+
+		it("should accept a deeply nested function", () => {
+			const actual = isTuple(() => () => () => [isOptionalNumber]);
+			type Expected = TypeGuard<[number | undefined]>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+
+		it("should accept a function whose parameter has the same type as its return type", () => {
+			type Func = typeof isTuple<["yes"]>;
+			type Return = ReturnType<Func>;
+			type FunctionParam = Extract<Parameters<Func>[0], Function>;
+			type Actual = Parameters<FunctionParam>[0];
+
+			expectTypeOf<Actual>().toEqualTypeOf<Return>();
+		});
+
+		it("should not accept a number", () => {
+			isTuple(
+				// @ts-expect-error
+				12,
+			);
+		});
+
+		it("should not accept number as a generic argument", () => {
+			isTuple<
+				// @ts-expect-error
+				number
+			>;
+		});
+
+		it("should not accept a string", () => {
+			isTuple(
+				// @ts-expect-error
+				"Don't accept me",
+			);
+		});
+
+		it("should not accept string as a generic argument", () => {
+			isTuple<
+				// @ts-expect-error
+				string
+			>;
+		});
+
+		it("should not accept boolean", () => {
+			isTuple(
+				// @ts-expect-error
+				false,
+			);
+		});
+
+		it("should not accept boolean as a generic argument", () => {
+			isTuple<
+				// @ts-expect-error
+				boolean
+			>;
+		});
+
+		it("should not accept undefined", () => {
+			isTuple(
+				// @ts-expect-error
+				undefined,
+			);
+		});
+
+		it("should not accept undefined as a generic argument", () => {
+			isTuple<
+				// @ts-expect-error
+				undefined
+			>;
+		});
+
+		it("should not accept null", () => {
+			isTuple(
+				// @ts-expect-error
+				null,
+			);
+		});
+
+		it("should not accept null as a generic argument", () => {
+			isTuple<
+				// @ts-expect-error
+				null
+			>;
 		});
 	});
 });
