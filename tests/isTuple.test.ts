@@ -10,6 +10,7 @@ describe("is normal tuple", () => {
 		testCases: [
 			[null, false],
 			[undefined, false],
+			[new Array(2), false],
 			["hello", false],
 			[{ 0: "hello", 1: 6 }, false],
 			[["hello", 6], true],

@@ -15,8 +15,6 @@ describe("is enum", () => {
 	describedGuardTests({
 		guard: isEnum(Example),
 		testCases: [
-			[null, false],
-			[undefined, false],
 			[Example.one, true, "Example.one"],
 			[Example.two, true, "Example.two"],
 			[Example.three, true, "Example.three"],

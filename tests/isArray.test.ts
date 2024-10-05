@@ -11,6 +11,7 @@ describe("is number array", () => {
 			[NaN, false],
 			[{}, false],
 			[[], true],
+			[new Array(35), true],
 			[[6, -6, 6.66], true],
 			[["1", 2, 3], false],
 			[1, false],
