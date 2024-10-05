@@ -12,4 +12,3 @@ export * from "./isUnion";
 export * from "./isUtils";
 export * from "./isValue";
 export * from "./types";
-export * from "./utils";
