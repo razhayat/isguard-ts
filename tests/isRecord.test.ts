@@ -1,6 +1,6 @@
 import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isBoolean, isIndexRecord, isNumber, isRecord } from "../src";
+import { isBoolean, isIndexRecord, isNumber, isPartialRecord, isRecord, isString } from "../src";
 
 describe("is record", () => {
 	describedGuardTests({
@@ -57,6 +57,28 @@ describe("special is record", () => {
 			[[1, 2, 3], true],
 			[[], true],
 			[() => {}, true],
+		],
+	});
+});
+
+describe("is partial record", () => {
+	describedGuardTests({
+		guard: isPartialRecord(["firstName", "secondName"], isString),
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[NaN, true],
+			[true, true],
+			[new Date(), true],
+			["hello", true],
+			[["firstName", "secondName"], true],
+			[() => { }, true],
+			[{ firstName: "hello" }, true],
+			[{ secondName: 12 }, false],
+			[{ firstName: "hello", secondName: 12 }, false],
+			[{ firstName: "hello", secondName: "bye" }, true],
+			[{ firstName: "hello", secondName: "bye", another: "one" }, true],
+			[{ firstName: "hello", secondName: "bye", another: 45 }, true],
 		],
 	});
 });
