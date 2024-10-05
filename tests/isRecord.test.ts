@@ -1,6 +1,6 @@
 import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isBoolean, isIndexRecord, isNumber, isPartialRecord, isRecord, isString } from "../src";
+import { isBoolean, isIndexRecord, isNumber, isPartialRecord, isRecord, isString, isValueUnion } from "../src";
 
 describe("is record", () => {
 	describedGuardTests({
@@ -19,6 +19,25 @@ describe("is record", () => {
 			[{ num1: "123", num2: true, num3: null }, false],
 			[{ num1: 123, num2: 34, num3: 56 }, true],
 			[{ num1: 123, num2: 34, num3: 56, num4: 56 }, true],
+		],
+	});
+});
+
+describe("is Record<'a' | 'b', 'c', 'd'> record", () => {
+	describedGuardTests({
+		guard: isRecord(["a", "b"], isValueUnion("c", "d")),
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[[], false],
+			[{}, false],
+			[new Set(), false],
+			[{ a: "c" }, false],
+			[{ a: "d", b: "invalid value" }, false],
+			[{ a: "invalid", b: "another invalid" }, false],
+			[{ a: "c", b: "d", another: "kvdkdm" }, true],
+			[{ a: "c", b: "d" }, true],
+			[{ a: "d", b: "c" }, true],
 		],
 	});
 });
