@@ -1,9 +1,9 @@
 export * from "./isArray";
 export * from "./isEnum";
-export * from "./isIndexRecord";
 export * from "./isInstanceof";
 export * from "./isIntersection";
 export * from "./isMap";
+export * from "./isRecord";
 export * from "./isSet";
 export * from "./isTuple";
 export * from "./isType";
@@ -12,4 +12,3 @@ export * from "./isUnion";
 export * from "./isUtils";
 export * from "./isValue";
 export * from "./types";
-export * from "./utils";

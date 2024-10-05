@@ -1,11 +1,13 @@
 import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isBoolean, isFunction, isNumber, isString, isSymbol } from "../src";
+import { isBigint, isBoolean, isFunction, isNumber, isString, isSymbol } from "../src";
 
 describe("is number", () => {
 	describedGuardTests({
 		guard: isNumber,
 		testCases: [
+			[null, false],
+			[undefined, false],
 			[0, true],
 			[{}, false],
 			[6, true],
@@ -13,6 +15,24 @@ describe("is number", () => {
 			["6", false],
 			[new Number(12), false],
 			[Number('12'), true, "Number('12')"],
+		],
+	});
+});
+
+describe("is bigint", () => {
+	describedGuardTests({
+		guard: isBigint,
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[0n, true, "Bigint(0)"],
+			[0, false],
+			[{}, false],
+			[-6n, true, "Bigint(-6)"],
+			[2385035982, false],
+			[true, false],
+			["6", false],
+			[new Number(12), false],
 		],
 	});
 });

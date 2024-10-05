@@ -40,5 +40,5 @@ export const isMaybeString = isMaybe(isString);
 export const isMaybeBoolean = isMaybe(isBoolean);
 export const isMaybeDate = isMaybe(isDate);
 
-export const isUnknown: TypeGuard<unknown> = (value: unknown): value is unknown => true;
-export const isNever: TypeGuard<never> = (value: unknown): value is never => false;
+export const isUnknown: TypeGuard<unknown> = (value): value is unknown => true;
+export const isNever: TypeGuard<never> = (value): value is never => false;

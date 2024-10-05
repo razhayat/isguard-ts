@@ -1,5 +1,5 @@
 import { describe } from "vitest";
-import { isDate, isMaybe, isNumber, isType, isString, isValueUnion, record, isBoolean } from "../src";
+import { isDate, isMaybe, isNumber, isType, isString, isValueUnion } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is empty type", () => {
@@ -145,61 +145,20 @@ describe("is tuple like type", () => {
 	});
 });
 
-describe("is record type", () => {
-	describedGuardTests({
-		guard: isType(record(["num1", "num2", "num3"], isNumber)),
-		testCases: [
-			[null, false],
-			[undefined, false],
-			[12, false],
-			[[1, 2, 3], false],
-			[new Map(), false],
-			[() => {}, false],
-			[{}, false],
-			["bla bla", false],
-			[{ num2: 12, num3: 56 }, false],
-			[{ num1: "123", num2: 12, num3: 56 }, false],
-			[{ num1: "123", num2: true, num3: null }, false],
-			[{ num1: 123, num2: 34, num3: 56 }, true],
-			[{ num1: 123, num2: 34, num3: 56, num4: 56 }, true],
-		],
-	});
-});
+describe("is tuple type", () => {
+	type Tuple = readonly [string, number];
 
-describe("tuple is record type", () => {
 	describedGuardTests({
-		guard: isType(record([0, 1, 2], isBoolean)),
+		guard: isType<Tuple>([isString, isNumber]),
 		testCases: [
 			[null, false],
 			[undefined, false],
-			[754, false],
-			[new Set(), false],
-			[{}, false],
-			[{ age: 56, name: "Hello" }, false],
-			["bla blue bli", false],
-			[() => {}, false],
-			[[true, true], false],
-			[[true, true, false], true],
-			[[true, false, false, 23], true],
-			[{ 0: false, 1: true, 2: false }, true],
-		],
-	});
-});
-
-describe("special is record type", () => {
-	describedGuardTests({
-		guard: isType(record(["length"], isNumber)),
-		testCases: [
-			[null, false],
-			[undefined, false],
-			[12, false],
-			[new Date(), false],
-			[{}, false],
-			[{ array: [1, 2, 3] }, false],
-			["bla bla", true],
-			[[1, 2, 3], true],
-			[[], true],
-			[() => {}, true],
+			[[], false],
+			[{ 0: "Hello", 1: 6 }, true],
+			[["Hello", 6], true],
+			[["Bye", 7, new Date()], true],
+			[{ 0: new Date(), 1: 6 }, false],
+			[{ 0: "Hello", 1: 6, age: 56 }, true],
 		],
 	});
 });
