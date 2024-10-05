@@ -395,10 +395,9 @@ describe("isIndexRecord", () => {
 });
 
 describe("isType", () => {
-	type A = { a: number };
-
 	describe("return type", () => {
 		it("should return TypeGuard<A>", () => {
+			type A = { a: number };
 			const actual = isType<A>({ a: isNumber });
 			type Expected = TypeGuard<A>;
 
@@ -421,6 +420,45 @@ describe("isType", () => {
 
 		it("should accept tuples", () => {
 			isType([isNumber, isString]);
+		});
+
+		it("should accept a function", () => {
+			const actual = isType(() => ({ name: isString }));
+			type Expected = TypeGuard<{ name: string }>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+
+		it("should accept a nested function", () => {
+			const actual = isType(() => () => ({ age: isNumber }));
+			type Expected = TypeGuard<{ age: number }>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+
+		it("should accept a deeply nested function", () => {
+			const actual = isType(() => () => () => ({ optional: isOptionalNumber }));
+			type Expected = TypeGuard<{ optional: number | undefined }>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+
+		it("should accept a function whose parameter has the same type as its return type", () => {
+			type Func = typeof isType<{ hot: "yes" }>;
+			type Return = ReturnType<Func>;
+			type FunctionParam = Extract<Parameters<Func>[0], Function>;
+			type Actual = Parameters<FunctionParam>[0];
+
+			expectTypeOf<Actual>().toEqualTypeOf<Return>();
+		});
+
+		it("should accept a function whose parameter has the same type as its return type for tuples", () => {
+			type Func = typeof isType<[number, string]>;
+			type Return = ReturnType<Func>;
+			type FunctionParam = Extract<Parameters<Func>[0], Function>;
+			type Actual = Parameters<FunctionParam>[0];
+
+			expectTypeOf<Actual>().toEqualTypeOf<Return>();
 		});
 
 		it("should not accept a number", () => {
