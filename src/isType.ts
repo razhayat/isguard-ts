@@ -9,13 +9,13 @@ type Pretty<T> = {
 export type IsTypeGuarded<T> = [T] extends [readonly unknown[]] ? Pretty<Omit<T, keyof unknown[]>> : T;
 
 export const isType = <T extends object>(template: TypeGuardTemplateParameter<T, IsTypeGuarded<T>>): TypeGuard<IsTypeGuarded<T>> => {
-	const guard = (value: any): value is IsTypeGuarded<T> => {
+	const guard = (value: unknown): value is IsTypeGuarded<T> => {
 		if (isNil(value)) {
 			return false;
 		}
 
 		for (const key in resolvedTemplate) {
-			if (!resolvedTemplate[key](value[key])) {
+			if (!resolvedTemplate[key]((value as any)[key])) {
 				return false;
 			}
 		}
