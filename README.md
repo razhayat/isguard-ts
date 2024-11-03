@@ -229,11 +229,11 @@ Helps you create type guards for records
 ```typescript
 import { TypeGuard, isValueUnion, isRecord } from "isguard-ts";
 
-type TimeUnit = "second" | "minute" | "hour";
-type TimeUnitToMillisecond = Record<TimeUnit, number>;
+const timeUnits = ["second", "minute", "hour"] as const;
+type TimeUnit = (typeof timeUnits)[number];
 
-const isTimeUnit: TypeGuard<TimeUnit> = isValueUnion("second", "minute", "hour");
-const isTimeUnitToMillisecond = isRecord(isTimeUnit, isNumber);
+type TimeUnitToMillisecond = Record<TimeUnit, number>;
+const isTimeUnitToMillisecond = isRecord(timeUnits, isNumber);
 ```
 
 *<span id="is-partial-record" ></span>*
@@ -242,11 +242,11 @@ Works just like `isRecord` but allows for `undefined` values
 ```typescript
 import { TypeGuard, isValueUnion, isPartialRecord } from "isguard-ts";
 
-type TimeUnit = "second" | "minute" | "hour";
-type PartialTimeUnitToMillisecond = Partial<Record<TimeUnit, number>>;
+const timeUnits = ["second", "minute", "hour"] as const;
+type TimeUnit = (typeof timeUnits)[number];
 
-const isTimeUnit: TypeGuard<TimeUnit> = isValueUnion("second", "minute", "hour");
-const isPartialTimeUnitToMillisecond = isPartialRecord(isTimeUnit, isNumber);
+type PartialTimeUnitToMillisecond = Partial<Record<TimeUnit, number>>;
+const isPartialTimeUnitToMillisecond = isPartialRecord(timeUnits, isNumber);
 ```
 
 *<span id="is-index-record" ></span>*
