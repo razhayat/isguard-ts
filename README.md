@@ -227,7 +227,7 @@ const isStringBooleanMap: TypeGuard<Map<string, boolean>> = isMap(isString, isBo
 ### `isRecord<K, V>(keys: K, isValue: TypeGuard<V>): TypeGuard<Record<K[number], V>>`
 Helps you create type guards for records
 ```typescript
-import { TypeGuard, isValueUnion, isRecord } from "isguard-ts";
+import { isRecord, isNumber } from "isguard-ts";
 
 const timeUnits = ["second", "minute", "hour"] as const;
 type TimeUnit = (typeof timeUnits)[number];
@@ -240,7 +240,7 @@ const isTimeUnitToMillisecond = isRecord(timeUnits, isNumber);
 ### `isPartialRecord<K, V>(keys: K, isValue: TypeGuard<V>): TypeGuard<Partial<Record<K[number], V>>>`
 Works just like `isRecord` but allows for `undefined` values
 ```typescript
-import { TypeGuard, isValueUnion, isPartialRecord } from "isguard-ts";
+import { isPartialRecord, isNumber } from "isguard-ts";
 
 const timeUnits = ["second", "minute", "hour"] as const;
 type TimeUnit = (typeof timeUnits)[number];
