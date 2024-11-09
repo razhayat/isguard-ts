@@ -12,8 +12,8 @@ const getEnumValues = (enumObj: Enum) => {
 };
 
 export const isEnum = <T extends Enum>(enumObj: T): TypeGuard<T[keyof T]> => {
-	const enumValues = getEnumValues(enumObj);
+	const enumValues: unknown[] = getEnumValues(enumObj);
 	return (value: unknown): value is T[keyof T] => {
-		return enumValues.some(v => v === value);
+		return enumValues.includes(value);
 	};
 };
