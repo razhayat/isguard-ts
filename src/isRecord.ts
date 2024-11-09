@@ -17,6 +17,6 @@ export const isIndexRecord = <K extends PropertyKey, V>(isValue: TypeGuard<V>): 
 			return false;
 		}
 
-		return Object.values(value).every(isValue);
+		return Object.values(value).every(value => isValue(value));
 	};
 };
