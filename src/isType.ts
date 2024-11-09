@@ -1,5 +1,4 @@
 import { TypeGuardTemplateParameter, TypeGuard } from "./types";
-import { isNil } from "./isUtils";
 import { extractTemplate } from "./utils";
 
 type Pretty<T> = {
@@ -10,7 +9,7 @@ export type IsTypeGuarded<T> = [T] extends [readonly unknown[]] ? Pretty<Omit<T,
 
 export const isType = <T extends object>(template: TypeGuardTemplateParameter<T, IsTypeGuarded<T>>): TypeGuard<IsTypeGuarded<T>> => {
 	const guard = (value: unknown): value is IsTypeGuarded<T> => {
-		if (isNil(value)) {
+		if (value === null || value === undefined) {
 			return false;
 		}
 
