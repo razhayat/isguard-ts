@@ -15,7 +15,7 @@ export const isType = <T extends object>(template: TypeGuardTemplateParameter<T,
 		}
 
 		for (const key in resolvedTemplate) {
-			if (!resolvedTemplate[key]((value as any)[key])) {
+			if (!resolvedTemplate[key]((value as Record<string, unknown>)[key])) {
 				return false;
 			}
 		}
@@ -23,6 +23,6 @@ export const isType = <T extends object>(template: TypeGuardTemplateParameter<T,
 		return true;
 	};
 
-	const resolvedTemplate = extractTemplate<T, IsTypeGuarded<T>>(template, guard);
+	const resolvedTemplate = extractTemplate(template, guard);
 	return guard;
 };
