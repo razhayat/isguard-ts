@@ -23,15 +23,12 @@ A powerful `typescript` library that helps you build type guards.<br/>
 + [isMaybe](#is-maybe)
 
 ## Some of our utility type guards
-+ isString
-+ isStringArray
-+ isNumber
-+ isDate
-+ isNull
-+ isUndefined
-+ isNil - `null` or `undefined`
++ isString, isNumber, isBoolean, isDate
++ isStringArray, isNumberArray, isBooleanArray, isDateArray
++ isNull, isUndefined, isNil
 + isUnknown - always returns `true`
 + isNever - always returns `false`
++ [and more](#all-utility)
 
 ## Types
 
@@ -289,4 +286,44 @@ Helps you create type guards for nullable types
 import { TypeGuard, isMaybe, isNumber } from "isguard-ts";
 
 const isNumberOrNull: TypeGuard<number | null> = isMaybe(isNumber);
+```
+
+*<span id="all-utility" ></span>*
+## All utility type guards
+```typescript
+const isNumber: TypeGuard<number>;
+const isBigint: TypeGuard<bigint>;
+const isString: TypeGuard<string>;
+const isBoolean: TypeGuard<boolean>;
+const isSymbol: TypeGuard<symbol>;
+const isFunction: TypeGuard<Function>;
+const isPropertyKey: TypeGuard<PropertyKey>;
+
+const isDate: TypeGuard<Date>;
+const isObject: TypeGuard<Object>;
+
+const isNull: TypeGuard<null>;
+const isUndefined: TypeGuard<undefined>;
+const isNil: TypeGuard<null | undefined>;
+
+const isNumberArray: TypeGuard<number[]>;
+const isStringArray: TypeGuard<string[]>;
+const isBooleanArray: TypeGuard<boolean[]>;
+const isDateArray: TypeGuard<Date[]>;
+
+const isOptionalNumber: TypeGuard<number | undefined>;
+const isOptionalString: TypeGuard<string | undefined>;
+const isOptionalBoolean: TypeGuard<boolean | undefined>;
+const isOptionalDate: TypeGuard<Date | undefined>;
+
+const isMaybeNumber: TypeGuard<number | null>;
+const isMaybeString: TypeGuard<string | null>;
+const isMaybeBoolean: TypeGuard<boolean | null>;
+const isMaybeDate: TypeGuard<Date | null>;
+
+const isTrue: TypeGuard<true>;
+const isFalse: TypeGuard<false>;
+
+const isUnknown: TypeGuard<unknown>;
+const isNever: TypeGuard<never>;
 ```
