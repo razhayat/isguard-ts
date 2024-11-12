@@ -33,7 +33,7 @@ A powerful `typescript` library that helps you build type guards.<br/>
 + isUnknown - always returns `true`
 + isNever - always returns `false`
 
-## Code Examples
+## Types
 
 *<span id="type-guard" ></span>*
 ### `TypeGuard<T>`
@@ -50,6 +50,8 @@ import { Guarded, TypeGuard } from "isguard-ts";
 
 type Extracted = Guarded<TypeGuard<number>>; // number
 ```
+
+## Code Examples
 
 *<span id="is-type" ></span>*
 ### `isType<T>(template): TypeGuard<T>`
