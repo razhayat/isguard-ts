@@ -50,9 +50,15 @@ type Extracted = Guarded<TypeGuard<number>>; // number
 
 ## Code Examples
 
+>Note that some of these code examples contain **Best Practice** and **Caveat** sections<br/>
+You are advised to follow them closely when you write your code
+
 *<span id="is-type" ></span>*
 ### `isType<T>(template): TypeGuard<T>`
 Helps you create type guards for types and interfaces
+
+>**Best Practice:** Pass the generic type argument into `isType`<br/> Otherwise optional fields might have unexpected behavior
+
 ```typescript
 import { isType, isString, isNumber } from "isguard-ts";
 
@@ -112,6 +118,9 @@ const isNumberHolder: TypeGuard<ValueHolder<number>> = isValueHolder(isNumber);
 *<span id="is-tuple" ></span>*
 ### `isTuple<T>(template): TypeGuard<T>`
 Helps you create type guards for tuples
+
+>**Best Practice:** Pass the generic type argument into `isTuple`<br/> Otherwise optional fields might have unexpected behavior
+
 ```typescript
 import { isTuple, isNumber, isOptionalString } from "isguard-ts";
 
@@ -145,19 +154,34 @@ const isRow2 = isTuple<Row>(isRowParam => [
 *<span id="is-union" ></span>*
 ### `isUnion<[T1, T2, ...]>(...guards): TypeGuard<T1 | T2 | ...>`
 Helps you create type guards for unions
+
+>**Best Practice:** Add a type annotation to the result of `isUnion`<br/>
+This ensures the result is of the expected type
+
 ```typescript
-import { TypeGuard, isUnion, isNumber, isString } from "isguard-ts";
+import { isType, isNumber, isString, TypeGuard, isUnion } from "isguard-ts";
 
-const isNumberOrString: TypeGuard<number | string> = isUnion(isNumber, isString);
+type A = { a: number };
+type B = { b: string };
+type C = A | B;
 
-isNumberOrString(6); // true
-isNumberOrString("Hello"); // true
-isNumberOrString(new Date()); // false
+const isA = isType<A>({ a: isNumber });
+const isB = isType<B>({ b: isString });
+
+const isC: TypeGuard<C> = isUnion(isA, isB);
+
+isC({ a: 6 }); // true
+isC({ b: "Hello" }); // true
+isC({ a: new Date() }); // false
 ```
 
 *<span id="is-intersection" ></span>*
 ### `isIntersection<[T1, T2, ...]>(...guards): TypeGuard<T1 & T2 & ...>`
 Helps you create type guards for intersections
+
+>**Best Practice:** Add a type annotation to the result of `isIntersection`<br/>
+This ensures the result is of the expected type
+
 ```typescript
 import { isType, isNumber, isString, TypeGuard, isIntersection } from "isguard-ts";
 
@@ -182,7 +206,7 @@ type Test = {
 };
 
 const isTest = isType<Test>({ a: isNumber });
-const isTestArray: TypeGuard<Test[]> = isArray(isTest);
+const isTestArray = isArray(isTest);
 ```
 
 *<span id="is-enum" ></span>*
@@ -198,7 +222,8 @@ enum Direction {
 	right = 3,
 }
 
-const isDirection: TypeGuard<Direction> = isEnum(Direction);
+const isDirection = isEnum(Direction);
+
 isDirection(Direction.up); // true
 isDirection(2); // true
 isDirection("hello"); // false
@@ -210,7 +235,7 @@ Helps you create type guards for sets
 ```typescript
 import { TypeGuard, isSet, isNumber } from "isguard-ts";
 
-const isNumberSet: TypeGuard<Set<number>> = isSet(isNumber);
+const isNumberSet = isSet(isNumber);
 ```
 
 *<span id="is-map" ></span>*
@@ -219,20 +244,24 @@ Helps you create type guards for maps
 ```typescript
 import { TypeGuard, isMap, isString, isBoolean } from "isguard-ts";
 
-const isStringBooleanMap: TypeGuard<Map<string, boolean>> = isMap(isString, isBoolean);
+const isStringBooleanMap = isMap(isString, isBoolean);
 ```
 
 *<span id="is-record" ></span>*
 ### `isRecord<K, V>(keys: K, isValue: TypeGuard<V>): TypeGuard<Record<K[number], V>>`
 Helps you create type guards for records
+
+>**Best Practice:** Add a type annotation to the result of `isRecord`<br/>
+This ensures the result is of the expected type
+
 ```typescript
-import { isRecord, isNumber } from "isguard-ts";
+import { TypeGuard, isRecord, isNumber } from "isguard-ts";
 
 const timeUnits = ["second", "minute", "hour"] as const;
 type TimeUnit = (typeof timeUnits)[number];
 
 type TimeUnitToMillisecond = Record<TimeUnit, number>;
-const isTimeUnitToMillisecond = isRecord(timeUnits, isNumber);
+const isTimeUnitToMillisecond: TypeGuard<TimeUnitToMillisecond> = isRecord(timeUnits, isNumber);
 ```
 
 *<span id="is-partial-record" ></span>*
@@ -254,7 +283,7 @@ Works just like `isRecord` but checks only the `values` and not the `keys`
 ```typescript
 import { TypeGuard, isIndexRecord, isNumber } from "isguard-ts";
 
-const isNumberRecord: TypeGuard<Record<PropertyKey, number>> = isIndexRecord(isNumber);
+const isNumberRecord = isIndexRecord(isNumber);
 ```
 
 *<span id="is-instanceof" ></span>*
@@ -266,8 +295,8 @@ import { TypeGuard, isInstanceof } from "isguard-ts";
 abstract class Animal { }
 class Dog extends Animal { }
 
-const isAnimal: TypeGuard<Animal> = isInstanceof(Animal);
-const isDog: TypeGuard<Dog> = isInstanceof(Dog);
+const isAnimal = isInstanceof(Animal);
+const isDog = isInstanceof(Dog);
 ```
 
 *<span id="is-optional" ></span>*
@@ -276,7 +305,7 @@ Helps you create type guards for optional types
 ```typescript
 import { TypeGuard, isOptional, isNumber } from "isguard-ts";
 
-const isNumberOrUndefined: TypeGuard<number | undefined> = isOptional(isNumber);
+const isNumberOrUndefined = isOptional(isNumber);
 ```
 
 *<span id="is-maybe" ></span>*
@@ -285,7 +314,7 @@ Helps you create type guards for nullable types
 ```typescript
 import { TypeGuard, isMaybe, isNumber } from "isguard-ts";
 
-const isNumberOrNull: TypeGuard<number | null> = isMaybe(isNumber);
+const isNumberOrNul = isMaybe(isNumber);
 ```
 
 *<span id="all-utility" ></span>*
