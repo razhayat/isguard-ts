@@ -171,6 +171,26 @@ describe("TypeGuardTemplateFunction type", () => {
 	});
 });
 
+describe("TypeGuardTemplateParameter type", () => {
+	it("should not match derived types", () => {
+		type Base = { a: string };
+		type Derived = Base & { b: number };
+		type TemplateBase = TypeGuardTemplateParameter<Base>;
+		type TemplateDerived = TypeGuardTemplateParameter<Derived>;
+
+		expectTypeOf<TemplateBase>().not.toMatchTypeOf<TemplateDerived>();
+	});
+
+	it("should not match base types", () => {
+		type Base = { a: string };
+		type Derived = Base & { b: number };
+		type TemplateDerived = TypeGuardTemplateParameter<Derived>;
+		type TemplateBase = TypeGuardTemplateParameter<Base>;
+
+		expectTypeOf<TemplateDerived>().not.toMatchTypeOf<TemplateBase>();
+	});
+});
+
 describe("isArray return type", () => {
 	it("should return TypeGuard<T[]>", () => {
 		const actual = isArray(isNumber);
