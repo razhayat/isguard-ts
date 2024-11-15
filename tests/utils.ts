@@ -7,7 +7,7 @@ export type DescribedGuardTestsProps<T> = {
 	testCases: [input: unknown, result: boolean, stringifyInput?: string | ((input: unknown) => string)][];
 };
 
-export const guardTest = (input: unknown, guard: TypeGuard<any>, result: boolean) => {
+export const guardTest = <T>(input: unknown, guard: TypeGuard<T>, result: boolean) => {
 	return () => expect(guard(input)).toBe(result);
 };
 
