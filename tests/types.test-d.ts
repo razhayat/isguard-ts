@@ -198,6 +198,13 @@ describe("isArray return type", () => {
 
 		expectTypeOf(actual).toEqualTypeOf<Expected>();
 	});
+
+	it("should return TypeGuard<string[][]>", () => {
+		const actual = isArray(isArray(isString));
+		type Expected = TypeGuard<string[][]>;
+
+		expectTypeOf(actual).toEqualTypeOf<Expected>();
+	});
 });
 
 describe("isEnum", () => {
