@@ -1,5 +1,5 @@
 import { describe } from "vitest";
-import { isDate, isError, isEvalError, isInstanceof, isRangeError } from "../src";
+import { isDate, isError, isEvalError, isInstanceof, isRangeError, isReferenceError } from "../src";
 import { describedGuardTests } from "./utils";
 
 class Animal { }
@@ -118,6 +118,26 @@ describe("is range error", () => {
 			[new URIError(), false],
 			[new EvalError(), false],
 			[new RangeError(), true],
+		],
+	});
+});
+
+describe("is reference error", () => {
+	describedGuardTests({
+		guard: isReferenceError,
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[0, false],
+			[[new String()], false],
+			[{ message: "hello", options: {} }, false],
+			[new Error(), false],
+			[new SyntaxError(), false],
+			[new TypeError(), false],
+			[new URIError(), false],
+			[new EvalError(), false],
+			[new RangeError(), false],
+			[new ReferenceError(), true],
 		],
 	});
 });
