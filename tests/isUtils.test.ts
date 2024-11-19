@@ -1,6 +1,27 @@
 import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isNever, isUnknown } from "../src";
+import { isNever, isObject, isUnknown } from "../src";
+
+describe("is object", () => {
+	describedGuardTests({
+		guard: isObject,
+		testCases: [
+			[null, false],
+			[undefined, false],
+			["07/09/2024", false],
+			["23/07/2024🥹", false],
+			["06/08/2024🤦", false],
+			[Symbol(), false],
+			[56, false],
+			[{ hello: 12 }, true],
+			[[2, null, "bye"], true],
+			[new Set(), true],
+			[new Map(), true],
+			[[new Date()], true],
+			[Object.create({}), true],
+		],
+	});
+});
 
 describe("isUnknown", () => {
 	describedGuardTests({
