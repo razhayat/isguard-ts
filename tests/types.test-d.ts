@@ -687,33 +687,51 @@ describe("isUnion", () => {
 	type B = { b: number };
 	type C = { c: number };
 
+	const isA = isType<A>({ a: isNumber });
+	const isB = isType<B>({ b: isNumber });
+	const isC = isType<C>({ c: isNumber });
+
 	describe("return type", () => {
+		it("should return TypeGuard<never>", () => {
+			const actual = isUnion();
+			type Expected = TypeGuard<never>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+
 		it("should return TypeGuard<A>", () => {
-			type Actual = ReturnType<typeof isUnion<[A]>>;
+			const actual = isUnion(isA);
 			type Expected = TypeGuard<A>;
 
-			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 
 		it("should return TypeGuard<A | B>", () => {
-			type Actual = ReturnType<typeof isUnion<[A, B]>>;
+			const actual = isUnion(isA, isB);
 			type Expected = TypeGuard<A | B>;
 
-			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 
 		it("should return TypeGuard<A | B | C>", () => {
-			type Actual = ReturnType<typeof isUnion<[A, B, C]>>;
+			const actual = isUnion(isA, isB, isC);
 			type Expected = TypeGuard<A | B | C>;
 
-			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 
 		it("should return TypeGuard<A | (B & C)>", () => {
-			type Actual = ReturnType<typeof isUnion<[A, B & C]>>;
+			const actual = isUnion(isA, isIntersection(isB, isC));
 			type Expected = TypeGuard<A | (B & C)>;
 
-			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+
+		it("should return TypeGuard<A | B>", () => {
+			const actual = isUnion(isA, isB, isA);
+			type Expected = TypeGuard<A | B>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 	});
 
