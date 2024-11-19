@@ -19,6 +19,8 @@ A powerful `typescript` library that helps you build type guards.<br/>
 + [isPartialRecord](#is-partial-record)
 + [isIndexRecord](#is-index-record)
 + [isInstanceof](#is-instanceof)
++ [isValue](#is-value)
++ [isValueUnion](#is-value-union)
 + [isOptional](#is-optional)
 + [isMaybe](#is-maybe)
 
@@ -295,6 +297,25 @@ class Dog extends Animal { }
 
 const isAnimal = isInstanceof(Animal);
 const isDog = isInstanceof(Dog);
+```
+
+*<span id="is-value" ></span>*
+### `isValue<T>(value: T): TypeGuard<T>`
+Helps you create type guards for value literals
+```typescript
+import { isValue } from "isguard-ts";
+
+const isHello = isValue("Hello");
+const is12 = isValue(12);
+```
+
+*<span id="is-value-union" ></span>*
+### `isValueUnion<[T1, T2, ...]>(values): TypeGuard<T1 | T2 | ...>`
+Helps you create type guards for union of value literals
+```typescript
+import { isValueUnion } from "isguard-ts";
+
+const isHelloOrBye = isValueUnion("Hello", "Bye");
 ```
 
 *<span id="is-optional" ></span>*
