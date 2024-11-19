@@ -391,6 +391,20 @@ describe("isRecord", () => {
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
+
+		it("should not match when there are missing keys", () => {
+			const actual = isRecord(["a"], isNumber);
+			type Expected = TypeGuard<Record<"a" | "b", number>>;
+
+			expectTypeOf(actual).not.toMatchTypeOf<Expected>();
+		});
+
+		it("should not match when there are too many keys", () => {
+			const actual = isRecord(["a", "b", "c"], isNumber);
+			type Expected = TypeGuard<Record<"a" | "b", number>>;
+
+			expectTypeOf(actual).not.toMatchTypeOf<Expected>();
+		});
 	});
 
 	describe("parameters", () => {
@@ -409,6 +423,14 @@ describe("isRecord", () => {
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 
+		it("should not accept empty array as keys", () => {
+			isRecord(
+				// @ts-expect-error
+				[],
+				isNumber,
+			);
+		});
+
 		it("should not accept Date as key", () => {
 			isRecord(
 				// @ts-expect-error
@@ -421,11 +443,25 @@ describe("isRecord", () => {
 
 describe("isPartialRecord", () => {
 	describe("return type", () => {
-		it("should return TypeGuard<Record<'a' | 'b', number>>", () => {
+		it("should return TypeGuard<Partial<Record<'a' | 'b', number>>>", () => {
 			const actual = isPartialRecord(["a", "b"], isNumber);
 			type Expected = TypeGuard<Partial<Record<"a" | "b", number>>>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+
+		it("should not match when there are missing keys", () => {
+			const actual = isPartialRecord(["a"], isNumber);
+			type Expected = TypeGuard<Partial<Record<"a" | "b", number>>>;
+
+			expectTypeOf(actual).not.toMatchTypeOf<Expected>();
+		});
+
+		it("should not match when there are too many keys", () => {
+			const actual = isPartialRecord(["a", "b", "c"], isNumber);
+			type Expected = TypeGuard<Partial<Record<"a" | "b", number>>>;
+
+			expectTypeOf(actual).not.toMatchTypeOf<Expected>();
 		});
 	});
 
@@ -443,6 +479,14 @@ describe("isPartialRecord", () => {
 			type Expected = TypeGuard<Partial<Record<"a" | 56, undefined>>>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+
+		it("should not accept empty array as keys", () => {
+			isPartialRecord(
+				// @ts-expect-error
+				[],
+				isNumber,
+			);
 		});
 
 		it("should not accept Date as key", () => {
