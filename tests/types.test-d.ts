@@ -267,33 +267,51 @@ describe("isIntersection", () => {
 	type B = { b: number };
 	type C = { c: number };
 
+	const isA = isType<A>({ a: isNumber });
+	const isB = isType<B>({ b: isNumber });
+	const isC = isType<C>({ c: isNumber });
+
 	describe("return type", () => {
+		it("should return TypeGuard<unknown>", () => {
+			const actual = isIntersection();
+			type Expected = TypeGuard<unknown>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+
 		it("should return TypeGuard<A>", () => {
-			type Actual = ReturnType<typeof isIntersection<[A]>>;
+			const actual = isIntersection(isA);
 			type Expected = TypeGuard<A>;
 
-			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 
 		it("should return TypeGuard<A & B>", () => {
-			type Actual = ReturnType<typeof isIntersection<[A, B]>>;
+			const actual = isIntersection(isA, isB);
 			type Expected = TypeGuard<A & B>;
 
-			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 
 		it("should return TypeGuard<A & B & C>", () => {
-			type Actual = ReturnType<typeof isIntersection<[A, B, C]>>;
+			const actual = isIntersection(isA, isB, isC);
 			type Expected = TypeGuard<A & B & C>;
 
-			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 
 		it("should return TypeGuard<A & (B | C)>", () => {
-			type Actual = ReturnType<typeof isIntersection<[A, B | C]>>;
+			const actual = isIntersection(isA, isUnion(isB, isC));
 			type Expected = TypeGuard<A & (B | C)>;
 
-			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+
+		it("should return TypeGuard<A & B>", () => {
+			const actual = isIntersection(isA, isB, isA);
+			type Expected = TypeGuard<A & B>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 	});
 
