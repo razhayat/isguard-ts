@@ -19,21 +19,20 @@ A powerful `typescript` library that helps you build type guards.<br/>
 + [isPartialRecord](#is-partial-record)
 + [isIndexRecord](#is-index-record)
 + [isInstanceof](#is-instanceof)
++ [isValue](#is-value)
++ [isValueUnion](#is-value-union)
 + [isOptional](#is-optional)
 + [isMaybe](#is-maybe)
 
 ## Some of our utility type guards
-+ isString
-+ isStringArray
-+ isNumber
-+ isDate
-+ isNull
-+ isUndefined
-+ isNil - `null` or `undefined`
++ isString, isNumber, isBoolean, isDate
++ isStringArray, isNumberArray, isBooleanArray, isDateArray
++ isNull, isUndefined, isNil
 + isUnknown - always returns `true`
 + isNever - always returns `false`
++ [and more](#all-utility)
 
-## Code Examples
+## Types
 
 *<span id="type-guard" ></span>*
 ### `TypeGuard<T>`
@@ -51,9 +50,18 @@ import { Guarded, TypeGuard } from "isguard-ts";
 type Extracted = Guarded<TypeGuard<number>>; // number
 ```
 
+## Code Examples
+
+>Note that these code examples may contain **Best Practice** sections<br/>
+You are advised to follow them closely when you write your code
+
 *<span id="is-type" ></span>*
 ### `isType<T>(template): TypeGuard<T>`
 Helps you create type guards for types and interfaces
+
+>**Best Practice:** Pass the generic type argument into `isType`<br/>
+Otherwise optional fields might have an unexpected behavior
+
 ```typescript
 import { isType, isString, isNumber } from "isguard-ts";
 
@@ -113,6 +121,10 @@ const isNumberHolder: TypeGuard<ValueHolder<number>> = isValueHolder(isNumber);
 *<span id="is-tuple" ></span>*
 ### `isTuple<T>(template): TypeGuard<T>`
 Helps you create type guards for tuples
+
+>**Best Practice:** Pass the generic type argument into `isTuple`<br/>
+Otherwise optional fields might have an unexpected behavior
+
 ```typescript
 import { isTuple, isNumber, isOptionalString } from "isguard-ts";
 
@@ -146,19 +158,34 @@ const isRow2 = isTuple<Row>(isRowParam => [
 *<span id="is-union" ></span>*
 ### `isUnion<[T1, T2, ...]>(...guards): TypeGuard<T1 | T2 | ...>`
 Helps you create type guards for unions
+
+>**Best Practice:** Add a type annotation to the result of `isUnion`<br/>
+This ensures the result is of the expected type
+
 ```typescript
-import { TypeGuard, isUnion, isNumber, isString } from "isguard-ts";
+import { isType, isNumber, isString, TypeGuard, isUnion } from "isguard-ts";
 
-const isNumberOrString: TypeGuard<number | string> = isUnion(isNumber, isString);
+type A = { a: number };
+type B = { b: string };
+type C = A | B;
 
-isNumberOrString(6); // true
-isNumberOrString("Hello"); // true
-isNumberOrString(new Date()); // false
+const isA = isType<A>({ a: isNumber });
+const isB = isType<B>({ b: isString });
+
+const isC: TypeGuard<C> = isUnion(isA, isB);
+
+isC({ a: 6 }); // true
+isC({ b: "Hello" }); // true
+isC({ a: new Date() }); // false
 ```
 
 *<span id="is-intersection" ></span>*
 ### `isIntersection<[T1, T2, ...]>(...guards): TypeGuard<T1 & T2 & ...>`
 Helps you create type guards for intersections
+
+>**Best Practice:** Add a type annotation to the result of `isIntersection`<br/>
+This ensures the result is of the expected type
+
 ```typescript
 import { isType, isNumber, isString, TypeGuard, isIntersection } from "isguard-ts";
 
@@ -183,7 +210,7 @@ type Test = {
 };
 
 const isTest = isType<Test>({ a: isNumber });
-const isTestArray: TypeGuard<Test[]> = isArray(isTest);
+const isTestArray = isArray(isTest);
 ```
 
 *<span id="is-enum" ></span>*
@@ -199,7 +226,8 @@ enum Direction {
 	right = 3,
 }
 
-const isDirection: TypeGuard<Direction> = isEnum(Direction);
+const isDirection = isEnum(Direction);
+
 isDirection(Direction.up); // true
 isDirection(2); // true
 isDirection("hello"); // false
@@ -211,7 +239,7 @@ Helps you create type guards for sets
 ```typescript
 import { TypeGuard, isSet, isNumber } from "isguard-ts";
 
-const isNumberSet: TypeGuard<Set<number>> = isSet(isNumber);
+const isNumberSet = isSet(isNumber);
 ```
 
 *<span id="is-map" ></span>*
@@ -220,14 +248,14 @@ Helps you create type guards for maps
 ```typescript
 import { TypeGuard, isMap, isString, isBoolean } from "isguard-ts";
 
-const isStringBooleanMap: TypeGuard<Map<string, boolean>> = isMap(isString, isBoolean);
+const isStringBooleanMap = isMap(isString, isBoolean);
 ```
 
 *<span id="is-record" ></span>*
 ### `isRecord<K, V>(keys: K, isValue: TypeGuard<V>): TypeGuard<Record<K[number], V>>`
 Helps you create type guards for records
 ```typescript
-import { isRecord, isNumber } from "isguard-ts";
+import { TypeGuard, isRecord, isNumber } from "isguard-ts";
 
 const timeUnits = ["second", "minute", "hour"] as const;
 type TimeUnit = (typeof timeUnits)[number];
@@ -255,7 +283,7 @@ Works just like `isRecord` but checks only the `values` and not the `keys`
 ```typescript
 import { TypeGuard, isIndexRecord, isNumber } from "isguard-ts";
 
-const isNumberRecord: TypeGuard<Record<PropertyKey, number>> = isIndexRecord(isNumber);
+const isNumberRecord = isIndexRecord(isNumber);
 ```
 
 *<span id="is-instanceof" ></span>*
@@ -267,8 +295,27 @@ import { TypeGuard, isInstanceof } from "isguard-ts";
 abstract class Animal { }
 class Dog extends Animal { }
 
-const isAnimal: TypeGuard<Animal> = isInstanceof(Animal);
-const isDog: TypeGuard<Dog> = isInstanceof(Dog);
+const isAnimal = isInstanceof(Animal);
+const isDog = isInstanceof(Dog);
+```
+
+*<span id="is-value" ></span>*
+### `isValue<T>(value: T): TypeGuard<T>`
+Helps you create type guards for value literals
+```typescript
+import { isValue } from "isguard-ts";
+
+const isHello = isValue("Hello");
+const is12 = isValue(12);
+```
+
+*<span id="is-value-union" ></span>*
+### `isValueUnion<[T1, T2, ...]>(values): TypeGuard<T1 | T2 | ...>`
+Helps you create type guards for union of value literals
+```typescript
+import { isValueUnion } from "isguard-ts";
+
+const isHelloOrBye = isValueUnion("Hello", "Bye");
 ```
 
 *<span id="is-optional" ></span>*
@@ -277,7 +324,7 @@ Helps you create type guards for optional types
 ```typescript
 import { TypeGuard, isOptional, isNumber } from "isguard-ts";
 
-const isNumberOrUndefined: TypeGuard<number | undefined> = isOptional(isNumber);
+const isNumberOrUndefined = isOptional(isNumber);
 ```
 
 *<span id="is-maybe" ></span>*
@@ -286,5 +333,52 @@ Helps you create type guards for nullable types
 ```typescript
 import { TypeGuard, isMaybe, isNumber } from "isguard-ts";
 
-const isNumberOrNull: TypeGuard<number | null> = isMaybe(isNumber);
+const isNumberOrNul = isMaybe(isNumber);
+```
+
+*<span id="all-utility" ></span>*
+## All utility type guards
+```typescript
+const isNumber: TypeGuard<number>;
+const isBigint: TypeGuard<bigint>;
+const isString: TypeGuard<string>;
+const isBoolean: TypeGuard<boolean>;
+const isSymbol: TypeGuard<symbol>;
+const isFunction: TypeGuard<Function>;
+const isPropertyKey: TypeGuard<PropertyKey>;
+
+const isDate: TypeGuard<Date>;
+const isObject: TypeGuard<object>;
+const isError: TypeGuard<Error>;
+const isEvalError: TypeGuard<EvalError>;
+const isRangeError: TypeGuard<RangeError>;
+const isReferenceError: TypeGuard<ReferenceError>;
+const isSyntaxError: TypeGuard<SyntaxError>;
+const isTypeError: TypeGuard<TypeError>;
+const isURIError: TypeGuard<URIError>;
+
+const isNull: TypeGuard<null>;
+const isUndefined: TypeGuard<undefined>;
+const isNil: TypeGuard<null | undefined>;
+
+const isNumberArray: TypeGuard<number[]>;
+const isStringArray: TypeGuard<string[]>;
+const isBooleanArray: TypeGuard<boolean[]>;
+const isDateArray: TypeGuard<Date[]>;
+
+const isOptionalNumber: TypeGuard<number | undefined>;
+const isOptionalString: TypeGuard<string | undefined>;
+const isOptionalBoolean: TypeGuard<boolean | undefined>;
+const isOptionalDate: TypeGuard<Date | undefined>;
+
+const isMaybeNumber: TypeGuard<number | null>;
+const isMaybeString: TypeGuard<string | null>;
+const isMaybeBoolean: TypeGuard<boolean | null>;
+const isMaybeDate: TypeGuard<Date | null>;
+
+const isTrue: TypeGuard<true>;
+const isFalse: TypeGuard<false>;
+
+const isUnknown: TypeGuard<unknown>;
+const isNever: TypeGuard<never>;
 ```

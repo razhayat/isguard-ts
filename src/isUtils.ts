@@ -21,7 +21,15 @@ export const isFunction = isTypeof("function");
 export const isPropertyKey: TypeGuard<PropertyKey> = isUnion(isString, isNumber, isSymbol);
 
 export const isDate = isInstanceof(Date);
-export const isObject = isInstanceof(Object);
+export const isError = 	isInstanceof(Error);
+export const isEvalError = isInstanceof(EvalError);
+export const isRangeError = isInstanceof(RangeError);
+export const isReferenceError = isInstanceof(ReferenceError);
+export const isSyntaxError = isInstanceof(SyntaxError);
+export const isTypeError = isInstanceof(TypeError);
+export const isURIError = isInstanceof(URIError);
+
+export const isObject: TypeGuard<object> = (value) => typeof value === "object" && value !== null;
 
 export const isNumberArray = isArray(isNumber);
 export const isStringArray = isArray(isString);
