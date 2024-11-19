@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exactly equal", () => {
@@ -801,8 +801,36 @@ describe("is util types", () => {
 		expectTypeOf(isDate).toEqualTypeOf<TypeGuard<Date>>();
 	});
 
-	test("isObject should be TypeGuard<Object>", () => {
-		expectTypeOf(isObject).toEqualTypeOf<TypeGuard<Object>>();
+	test("isError should be TypeGuard<Error>", () => {
+		expectTypeOf(isError).toEqualTypeOf<TypeGuard<Error>>();
+	});
+
+	test("isEvalError should be TypeGuard<EvalError>", () => {
+		expectTypeOf(isEvalError).toEqualTypeOf<TypeGuard<EvalError>>();
+	});
+
+	test("isRangeError should be TypeGuard<RangeError>", () => {
+		expectTypeOf(isRangeError).toEqualTypeOf<TypeGuard<RangeError>>();
+	});
+
+	test("isReferenceError should be TypeGuard<ReferenceError>", () => {
+		expectTypeOf(isReferenceError).toEqualTypeOf<TypeGuard<ReferenceError>>();
+	});
+
+	test("isSyntaxError should be TypeGuard<SyntaxError>", () => {
+		expectTypeOf(isSyntaxError).toEqualTypeOf<TypeGuard<SyntaxError>>();
+	});
+
+	test("isTypeError should be TypeGuard<TypeError>", () => {
+		expectTypeOf(isTypeError).toEqualTypeOf<TypeGuard<TypeError>>();
+	});
+
+	test("isURIError should be TypeGuard<URIError>", () => {
+		expectTypeOf(isURIError).toEqualTypeOf<TypeGuard<URIError>>();
+	});
+
+	test("isObject should be TypeGuard<object>", () => {
+		expectTypeOf(isObject).toEqualTypeOf<TypeGuard<object>>();
 	});
 
 	test("isNumberArray should be TypeGuard<number[]>", () => {
