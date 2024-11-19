@@ -1,6 +1,6 @@
 import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isBigint, isBoolean, isFunction, isNumber, isString, isSymbol } from "../src";
+import { isBigint, isBoolean, isFunction, isNumber, isString, isSymbol, isTypeof } from "../src";
 
 describe("is number", () => {
 	describedGuardTests({
@@ -82,6 +82,26 @@ describe("is symbol", () => {
 			[false, false],
 			["Bye", false],
 			[new Date(), false],
+		],
+	});
+});
+
+describe("is typeof object", () => {
+	describedGuardTests({
+		guard: isTypeof("object"),
+		testCases: [
+			[Symbol(), false],
+			[Symbol(12), false],
+			[6, false],
+			[false, false],
+			["Bye", false],
+			[() => {}, false],
+			[function () {}, false],
+			[undefined, false],
+			[new Date(), true],
+			[[1, null, 3], true],
+			[{}, true],
+			[null, true],
 		],
 	});
 });
