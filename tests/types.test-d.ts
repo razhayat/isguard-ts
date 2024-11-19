@@ -22,6 +22,15 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<Derived>().not.toMatchTypeOf<Base>();
 	});
+
+	it("should not match mutually assignable types", () => {
+		type Type1 = { name: string };
+		type Type2 = Type1 & { age?: number };
+
+		expectTypeOf<Type1>().toMatchTypeOf<Type2>();
+		expectTypeOf<Type2>().toMatchTypeOf<Type1>();
+		expectTypeOf<TypeGuard<Type1>>().not.toMatchTypeOf<TypeGuard<Type2>>();
+	});
 });
 
 describe("Guarded type", () => {
@@ -149,6 +158,15 @@ describe("TypeGuardTemplate type", () => {
 
 		expectTypeOf<DerivedTemplate>().not.toMatchTypeOf<BaseTemplate>();
 	});
+
+	it("should not match mutually assignable types", () => {
+		type Type1 = { name?: string };
+		type Type2 = Type1 & { age?: number };
+
+		expectTypeOf<Type1>().toMatchTypeOf<Type2>();
+		expectTypeOf<Type2>().toMatchTypeOf<Type1>();
+		expectTypeOf<TypeGuardTemplate<Type1>>().not.toMatchTypeOf<TypeGuardTemplate<Type2>>();
+	});
 });
 
 describe("TypeGuardTemplateFunction type", () => {
@@ -168,6 +186,15 @@ describe("TypeGuardTemplateFunction type", () => {
 		type TemplateBase = TypeGuardTemplateFunction<Base>;
 
 		expectTypeOf<TemplateDerived>().not.toMatchTypeOf<TemplateBase>();
+	});
+
+	it("should not match mutually assignable types", () => {
+		type Type1 = { name?: string; birth: Date };
+		type Type2 = Type1 & { age?: number; };
+
+		expectTypeOf<Type1>().toMatchTypeOf<Type2>();
+		expectTypeOf<Type2>().toMatchTypeOf<Type1>();
+		expectTypeOf<TypeGuardTemplateFunction<Type1>>().not.toMatchTypeOf<TypeGuardTemplateFunction<Type2>>();
 	});
 });
 
@@ -189,10 +216,19 @@ describe("TypeGuardTemplateParameter type", () => {
 
 		expectTypeOf<TemplateDerived>().not.toMatchTypeOf<TemplateBase>();
 	});
+
+	it("should not match mutually assignable types", () => {
+		type Type1 = {};
+		type Type2 = { age?: number };
+
+		expectTypeOf<Type1>().toMatchTypeOf<Type2>();
+		expectTypeOf<Type2>().toMatchTypeOf<Type1>();
+		expectTypeOf<TypeGuardTemplateParameter<Type1>>().not.toMatchTypeOf<TypeGuardTemplateParameter<Type2>>();
+	});
 });
 
 describe("isArray return type", () => {
-	it("should return TypeGuard<T[]>", () => {
+	it("should return TypeGuard<number[]>", () => {
 		const actual = isArray(isNumber);
 		type Expected = TypeGuard<number[]>;
 
