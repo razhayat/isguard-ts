@@ -252,10 +252,6 @@ const isStringBooleanMap = isMap(isString, isBoolean);
 *<span id="is-record" ></span>*
 ### `isRecord<K, V>(keys: K, isValue: TypeGuard<V>): TypeGuard<Record<K[number], V>>`
 Helps you create type guards for records
-
->**Best Practice:** Add a type annotation to the result of `isRecord`<br/>
-This ensures the result is of the expected type
-
 ```typescript
 import { TypeGuard, isRecord, isNumber } from "isguard-ts";
 
@@ -263,7 +259,7 @@ const timeUnits = ["second", "minute", "hour"] as const;
 type TimeUnit = (typeof timeUnits)[number];
 
 type TimeUnitToMillisecond = Record<TimeUnit, number>;
-const isTimeUnitToMillisecond: TypeGuard<TimeUnitToMillisecond> = isRecord(timeUnits, isNumber);
+const isTimeUnitToMillisecond = isRecord(timeUnits, isNumber);
 ```
 
 *<span id="is-partial-record" ></span>*
