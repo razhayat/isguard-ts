@@ -50,14 +50,15 @@ type Extracted = Guarded<TypeGuard<number>>; // number
 
 ## Code Examples
 
->Note that some of these code examples contain **Best Practice** and **Caveat** sections<br/>
+>Note that these code examples may contain **Best Practice** sections<br/>
 You are advised to follow them closely when you write your code
 
 *<span id="is-type" ></span>*
 ### `isType<T>(template): TypeGuard<T>`
 Helps you create type guards for types and interfaces
 
->**Best Practice:** Pass the generic type argument into `isType`<br/> Otherwise optional fields might have unexpected behavior
+>**Best Practice:** Pass the generic type argument into `isType`<br/>
+Otherwise optional fields might have an unexpected behavior
 
 ```typescript
 import { isType, isString, isNumber } from "isguard-ts";
@@ -119,7 +120,8 @@ const isNumberHolder: TypeGuard<ValueHolder<number>> = isValueHolder(isNumber);
 ### `isTuple<T>(template): TypeGuard<T>`
 Helps you create type guards for tuples
 
->**Best Practice:** Pass the generic type argument into `isTuple`<br/> Otherwise optional fields might have unexpected behavior
+>**Best Practice:** Pass the generic type argument into `isTuple`<br/>
+Otherwise optional fields might have an unexpected behavior
 
 ```typescript
 import { isTuple, isNumber, isOptionalString } from "isguard-ts";
@@ -329,7 +331,14 @@ const isFunction: TypeGuard<Function>;
 const isPropertyKey: TypeGuard<PropertyKey>;
 
 const isDate: TypeGuard<Date>;
-const isObject: TypeGuard<Object>;
+const isObject: TypeGuard<object>;
+const isError: TypeGuard<Error>;
+const isEvalError: TypeGuard<EvalError>;
+const isRangeError: TypeGuard<RangeError>;
+const isReferenceError: TypeGuard<ReferenceError>;
+const isSyntaxError: TypeGuard<SyntaxError>;
+const isTypeError: TypeGuard<TypeError>;
+const isURIError: TypeGuard<URIError>;
 
 const isNull: TypeGuard<null>;
 const isUndefined: TypeGuard<undefined>;
