@@ -18,6 +18,7 @@ export const isIndexRecord = <K extends PropertyKey, V>(isValue: TypeGuard<V>): 
 			return false;
 		}
 
-		return Object.values(value).every(value => isValue(value));
+		const keys = [...Object.keys(value), ...Object.getOwnPropertySymbols(value)];
+		return keys.every(key => isValue((value as Record<PropertyKey, unknown>)[key]));
 	};
 };
