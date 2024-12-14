@@ -24,7 +24,7 @@ describe("is enum", () => {
 			["yami", true],
 			[56, true],
 			["one", false],
-			["oarange", false],
+			["orange", false],
 			[null, false],
 			[undefined, false],
 			[[], false],
