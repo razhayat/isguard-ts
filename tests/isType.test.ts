@@ -14,6 +14,7 @@ describe("is empty type", () => {
 			[[], true],
 			[new Map(), true],
 			[{ hello: "yes" }, true],
+			[{ [Symbol()]: "is symbol going to work?" }, true],
 		],
 	});
 });
@@ -44,6 +45,7 @@ describe("is simple type", () => {
 			[{}, false],
 			[new Set(), false],
 			[NaN, false],
+			[{ [Symbol("name")]: "name", [Symbol("age")]: 12 }, false],
 			[{ name2: "b", age: 14 }, false],
 			[{ name: 12, age: 15 }, false],
 			[{ name: new Date(), age: "3223" }, false],

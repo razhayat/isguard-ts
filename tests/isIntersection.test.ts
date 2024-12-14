@@ -39,6 +39,7 @@ describe("is { a: number } & { b: string }", () => {
 			[{ a: 12, b: "asdf" }, true],
 			[{ b: "asdf", a: 12 }, true],
 			[{ a: 56, b: "Empire!", c: true }, true],
+			[{ a: 56, b: "Empire!", [Symbol()]: "no" }, true],
 			[{ b: 62, a: "Empire!" }, false],
 			[NaN, false],
 			[(value: string) => value, false],
