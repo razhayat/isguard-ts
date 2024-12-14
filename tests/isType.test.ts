@@ -162,3 +162,35 @@ describe("is tuple type", () => {
 		],
 	});
 });
+
+describe("is type with symbol", () => {
+	const hello = Symbol("hello");
+
+	type WithSymbol = {
+		name: string;
+		[hello]: number;
+	};
+
+	describedGuardTests({
+		guard: isType<WithSymbol>({
+			name: isString,
+			[hello]: isNumber,
+		}),
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[12, false],
+			[true, false],
+			["string", false],
+			[new Set(), false],
+			[() => "bye", false],
+			[[], false],
+			[[hello, "hi"], false],
+			[[hello], false],
+			[{}, false],
+			[{ name: 14, [hello]: "not a number" }, false],
+			[{ name: "name", [hello]: 12 }, true],
+			[{ a: "G", name: "2", [hello]: 90 }, true],
+		],
+	});
+});
