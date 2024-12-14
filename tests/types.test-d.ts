@@ -416,9 +416,10 @@ describe("isRecord", () => {
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 
-		it("should accept string or number as keys", () => {
-			const actual = isRecord(["a", 56], isNull);
-			type Expected = TypeGuard<Record<"a" | 56, null>>;
+		it("should accept string, number or symbol as keys", () => {
+			const symbol = Symbol();
+			const actual = isRecord(["a", 56, symbol], isNull);
+			type Expected = TypeGuard<Record<"a" | 56 | typeof symbol, null>>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
@@ -474,9 +475,10 @@ describe("isPartialRecord", () => {
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 
-		it("should accept string or number as keys", () => {
-			const actual = isPartialRecord(["a", 56], isUndefined);
-			type Expected = TypeGuard<Partial<Record<"a" | 56, undefined>>>;
+		it("should accept string, number or symbol as keys", () => {
+			const symbol = Symbol();
+			const actual = isPartialRecord(["a", 56, symbol], isUndefined);
+			type Expected = TypeGuard<Partial<Record<"a" | 56 | typeof symbol, undefined>>>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
