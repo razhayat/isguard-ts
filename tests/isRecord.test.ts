@@ -141,6 +141,7 @@ describe("is indexRecord", () => {
 			[{ hello: "bye" }, false],
 			[{ hi: 12, bye: 6, blue: "kvdkdm" }, false],
 			[[], false],
+			[{ [Symbol()]: "45" }, false],
 			[{}, true],
 			[{ hi: 12 }, true],
 			[{ hi: 12, bye: 6 }, true],
