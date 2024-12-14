@@ -196,3 +196,74 @@ describe("is type with symbol", () => {
 		],
 	});
 });
+
+describe("is type with all PropertyKey types", () => {
+	const symbol = Symbol();
+
+	type All = {
+		str: number;
+		61: number;
+		[symbol]: number;
+	};
+
+	describedGuardTests({
+		guard: isType<All>({
+			str: isNumber,
+			61: isNumber,
+			[symbol]: isNumber,
+		}),
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[true, false],
+			["{ str: 12, 61: 12, [symbol]: 12 }", false],
+			[-0, false],
+			[new Function(), false],
+			[() => {}, false],
+			[[], false],
+			[{}, false],
+			[["str", 61, symbol], false],
+			[Array, false],
+
+			[{ [symbol]: "this is not a number" }, false],
+			[{ [symbol]: 12 }, false],
+
+			[{ str: new Date() }, false],
+			[{ str: 12 }, false],
+
+			[{ 61: () => {} }, false],
+			[{ 61: 12 }, false],
+
+			[{ 61() {}, [symbol]: new Map() }, false],
+			[{ [symbol]: [], 61: 2439 }, false],
+			[{ [symbol]: 783, 61: {} }, false],
+			[{ 61: 734, [symbol]: 18327 }, false],
+
+			[{ [symbol]: true, 61: false }, false],
+			[{ str: 0.35, [symbol]() {} }, false],
+			[{ str: "bla", [symbol]: 783 }, false],
+			[{ [symbol]: 18327, str: -7216 }, false],
+
+			[{ str: "", 61: null }, false],
+			[{ str: 0.35, 61: Array }, false],
+			[{ 61: new Set, str: 783 }, false],
+			[{ 61: 18327.4, str: -7216.3 }, false],
+
+			[{ str: [], 61: () => {}, [symbol]: undefined }, false],
+			[{ [symbol]: 6.6, str: null, 61: true }, false],
+			[{ 61: NaN, [symbol]: Symbol(), str: false }, false],
+			[{ str: Infinity, [symbol]: 534n, 61: "" }, false],
+			[{  61: 53, str: {}, [symbol]: 12 }, false],
+			[{ 61: () => {}, str: 3213, [symbol]: 5372 }, false],
+			[{ str: 23948, [symbol]: null, 61: 2421 }, false],
+			[{ str: 364634, 61: 24523, [symbol]: 2938523 }, true],
+
+			[{ str: 364634, 61: 24523, [symbol]: 2938523, anotherStr: 311 }, true],
+			[{ str: 364634, 61: 24523, [symbol]: 2938523, anotherStr: "not a number" }, true],
+			[{ str: 364634, 61: 24523, [symbol]: 2938523, 46: 325832 }, true],
+			[{ str: 364634, 61: 24523, [symbol]: 2938523, 46: new Date }, true],
+			[{ str: 364634, 61: 24523, [symbol]: 2938523, [Symbol()]: 239483 }, true],
+			[{ str: 364634, 61: 24523, [symbol]: 2938523, [Symbol()]: () => {} }, true],
+		],
+	});
+});
