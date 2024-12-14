@@ -80,6 +80,33 @@ describe("special is record", () => {
 	});
 });
 
+describe("is record with symbol keys", () => {
+	const s1 = Symbol();
+	const s2 = Symbol();
+
+	describedGuardTests({
+		guard: isRecord([s1, s2], isNumber),
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[false, false],
+			["true", false],
+			[0, false],
+			[new Map(), false],
+			[function() {}, false],
+			[[], false],
+			[{}, false],
+			[[s1, s2], false],
+			[{ [s1]: 12 }, false],
+			[{ [s2]: 13 }, false],
+			[{ [s1]: "12", [s2]: 13 }, false],
+			[{ [s1]: 12, [s2]: "13" }, false],
+			[{ [s1]: 12, [s2]: 13 }, true],
+			[{ [s1]: 358, [s2]: 5237, [Symbol()]: "not a number" }, true],
+		],
+	});
+});
+
 describe("is partial record", () => {
 	describedGuardTests({
 		guard: isPartialRecord(["firstName", "secondName"], isString),
@@ -114,6 +141,7 @@ describe("is indexRecord", () => {
 			[{ hello: "bye" }, false],
 			[{ hi: 12, bye: 6, blue: "kvdkdm" }, false],
 			[[], false],
+			[{ [Symbol()]: "45" }, false],
 			[{}, true],
 			[{ hi: 12 }, true],
 			[{ hi: 12, bye: 6 }, true],

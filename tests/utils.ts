@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { isBoolean, isFunction, isNumber, isString, isSymbol, isUndefined, TypeGuard } from "../src";
+import { isBigint, isBoolean, isFunction, isNumber, isString, isSymbol, isUndefined, TypeGuard } from "../src";
 
 export type DescribedGuardTestsProps<T> = {
 	guard: TypeGuard<T>;
@@ -48,6 +48,10 @@ export const defaultStringifyInput = (input: unknown): string => {
 
 	if (isString(input)) {
 		return `"${input}"`;
+	}
+
+	if (isBigint(input)) {
+		return `${input}n`;
 	}
 
 	if (input instanceof Object) {
