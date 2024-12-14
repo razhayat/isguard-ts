@@ -18,7 +18,7 @@ describe("is number array", () => {
 			[["hello", "bye"], false],
 			[new Date(), false],
 			[() => 12, false],
-			[{ length: 13 }, false]
+			[{ length: 13 }, false],
 		],
 	});
 });
