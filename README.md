@@ -88,16 +88,9 @@ type Tree = {
 	right: Tree | null;
 };
 
-const isTree = isType<Tree>(() => ({
+const isTree = isType<Tree>(isTreeParam => ({
 	value: isNumber,
-	left: isMaybe(isTree), // isTree is the return type of isType
-	right: isMaybe(isTree),
-}));
-
-// isTree can also be accessed via the passed function's parameter
-const isTree2 = isType<Tree>(isTreeParam => ({
-	value: isNumber,
-	left: isMaybe(isTreeParam), // isTreeParam === isTree2
+	left: isMaybe(isTreeParam), // isTreeParam === isTree
 	right: isMaybe(isTreeParam),
 }));
 ```
