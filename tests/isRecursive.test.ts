@@ -1,5 +1,5 @@
 import { describe } from "vitest";
-import { isOptional, isRecursive, isType, isNumber, isTuple, isUnion, isArray } from "../src";
+import { isOptional, isRecursive, isType, isNumber, isTuple, isUnion, isArray, isIndexRecord } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is recursive type", () => {
@@ -102,5 +102,42 @@ describe("is recursive union", () => {
 			[[[6, [[]]], 53, [[3532, [[]], [[[46, []]]], 567]]], true],
 			[[[6, [[]]], 53, [[3532, [[]], [[[46, [], new Date()]]], 567]]], false],
 		]
+	});
+});
+
+describe("is recursive index record", () => {
+	type RecursiveIndexRecord = {
+		[key: string]: RecursiveIndexRecord;
+	}
+
+	describedGuardTests({
+		guard: isRecursive<RecursiveIndexRecord>(isRecursiveIndexRecord => isIndexRecord(isRecursiveIndexRecord)),
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[42, false],
+			[76n, false],
+			[true, false],
+			[Symbol("yes"), false],
+			[[], false],
+			[new Date(), false],
+			[() => console.log, false],
+			[function() { return {} }, false],
+			[function*() {}, false],
+			[async function() {}, false],
+			[{ 0: new Set() }, false],
+			[{ str: [] }, false],
+			[{ [Symbol()]: "boolean" }, false],
+			[{ field1: {}, field2: "not {}" }, false],
+			[{ field1: { blue: [] }, field2: {} }, false],
+			[{ field1: { blue: {}, blah: {}, brute: { yes: { exactly: {} }, no: { hi: 12 } } }, field2: {} }, false],
+			[{}, true],
+			[{ 0: {} }, true],
+			[{ str: {} }, true],
+			[{ [Symbol()]: {} }, true],
+			[{ field1: {}, field2: {}, field3: {} }, true],
+			[{ field1: {}, [Symbol("hi")]: { 3: {} }, field3: { 8: {}, field5: {} } }, true],
+			[{ field1: { blue: {}, blah: {}, brute: { yes: { exactly: {} }, no: {} } }, field2: {} }, true],
+		],
 	});
 });
