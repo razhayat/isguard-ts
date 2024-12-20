@@ -1,5 +1,5 @@
 import { describe } from "vitest";
-import { isOptional, isRecursive, isType, isNumber, isTuple } from "../src";
+import { isOptional, isRecursive, isType, isNumber, isTuple, isUnion, isArray } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is recursive type", () => {
@@ -66,5 +66,41 @@ describe("is recursive tuple", () => {
 			[[943.2, [23432, [5352]]], true],
 			[[64, [424]], true],
 		],
+	});
+});
+
+describe("is recursive union", () => {
+	type Numbers = number | Numbers[];
+
+	describedGuardTests({
+		guard: isRecursive<Numbers>(isNumbers => isUnion(
+			isNumber,
+			isArray(isNumbers),
+		)),
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[new Set(), false],
+			[Date, false],
+			[function () {}, false],
+			[() => {}, false],
+			["number", false],
+			[true, false],
+			[/[0123456789]/, false],
+			[Symbol(), false],
+			[{}, false],
+			[{ numbers: 12 }, false],
+			[121, true],
+			[["not a number"], false],
+			[[], true],
+			[[[]], true],
+			[[[[]]], true],
+			[[[[[]]]], true],
+			[[[[[]]]], true],
+			[[[6, [[]]], 53], true],
+			[[[6, [[]]], 53, [[[[]], [[[46, []]]]]]], true],
+			[[[6, [[]]], 53, [[3532, [[]], [[[46, []]]], 567]]], true],
+			[[[6, [[]]], 53, [[3532, [[]], [[[46, [], new Date()]]], 567]]], false],
+		]
 	});
 });
