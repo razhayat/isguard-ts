@@ -2,6 +2,28 @@ import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
 import { isIntersection, isNumber, isType, isString } from "../src";
 
+describe("is empty intersection (unknown)", () => {
+	describedGuardTests({
+		guard: isIntersection(),
+		testCases: [
+			[null, true],
+			[undefined, true],
+			[34363, true],
+			[412424n, true],
+			[-253.5332, true],
+			[true, true],
+			[false, true],
+			[() => {}, true],
+			[function() {}, true],
+			[new Date(), true],
+			[Array, true],
+			["hello", true],
+			[[], true],
+			[{}, true],
+		],
+	});
+});
+
 describe("is number & string", () => {
 	describedGuardTests({
 		guard: isIntersection(isNumber, isString),

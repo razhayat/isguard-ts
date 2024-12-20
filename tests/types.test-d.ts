@@ -349,6 +349,13 @@ describe("isIntersection", () => {
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
+
+		it("should handle optional items", () => {
+			type Actual = ReturnType<typeof isIntersection<[A, B?]>>;
+			type Expected = TypeGuard<A & (B | undefined)>;
+
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
 	});
 
 	describe("parameters", () => {
@@ -832,6 +839,13 @@ describe("isUnion", () => {
 			type Expected = TypeGuard<A | B>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+
+		it("should handle optional items", () => {
+			type Actual = ReturnType<typeof isUnion<[A, B?]>>;
+			type Expected = TypeGuard<A | B | undefined>;
+
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 		});
 	});
 
