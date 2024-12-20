@@ -136,15 +136,9 @@ import { isTuple, isNumber, isMaybe } from "isguard-ts";
 
 type Row = [number, Row | null];
 
-const isRow = isTuple<Row>(() => [
+const isRow = isTuple<Row>(isRowParam => [
 	isNumber,
-	isMaybe(isRow),
-]);
-
-// isRow can also be accessed via the function's parameter
-const isRow2 = isTuple<Row>(isRowParam => [
-	isNumber,
-	isMaybe(isRowParam), // isRowParam === isRow2
+	isMaybe(isRowParam), // isRowParam === isRow
 ]);
 ```
 
