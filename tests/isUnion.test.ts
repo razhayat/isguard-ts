@@ -1,6 +1,6 @@
 import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isBoolean, isDate, isNumber, isString, isUnion, isValueUnion } from "../src";
+import { isBoolean, isDate, isNumber, isString, isUnion } from "../src";
 
 describe("is Date | number | string | boolean", () => {
 	describedGuardTests({
@@ -21,29 +21,6 @@ describe("is Date | number | string | boolean", () => {
 			[null, false],
 			[undefined, false],
 			[(value: number) => value + 6, false],
-		],
-	});
-});
-
-describe("is 'apple' | 'orange' | 'banana' | 6", () => {
-	describedGuardTests({
-		guard: isValueUnion("apple", "orange", "banana", 6),
-		testCases: [
-			[null, false],
-			[undefined, false],
-			[6.001, false],
-			[5.999, false],
-			["apple", true],
-			["orange", true],
-			["banana", true],
-			["mango", false],
-			["apple ", false],
-			["BANANA", false],
-			[6, true],
-			["6", false],
-			[new Map(), false],
-			[new Date(), false],
-			[new Set(), false],
 		],
 	});
 });
