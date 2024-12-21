@@ -103,7 +103,7 @@ const isTree2 = isType<Tree>(isTreeParam => ({
 }));
 ```
 
-For generic types you would need to create your own type guard generator
+For generic types you would need to create your own `TypeGuard` generator
 ```typescript
 import { TypeGuard, isType } from "isguard-ts";
 
