@@ -294,7 +294,6 @@ Helps you create type guards for recursive types
 >**Best Practice:** Pass the generic type argument into `isRecursive`<br/>
 To ensure the `TypeGuard` returned is of the desired type
 
-#### Examples
 ```typescript
 import { isRecursive, isType, isNumber, isOptional } from "isguard-ts";
 
