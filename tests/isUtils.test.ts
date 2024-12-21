@@ -57,6 +57,7 @@ describe("isNever", () => {
 			[null, false],
 			[undefined, false],
 			[12, false],
+			[12n, false],
 			[true, false],
 			[new Map(), false],
 			[[], false],
@@ -65,6 +66,9 @@ describe("isNever", () => {
 			[[new Date(), 12, "bye"], false],
 			[{ bye: "no", ok: "yes" }, false],
 			[() => { }, false],
+			[async function* () {}, false],
+			[Symbol(), false],
+			[/[A-Z]/, false],
 		],
 	});
 });
