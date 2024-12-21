@@ -30,6 +30,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<Type1>().toMatchTypeOf<Type2>();
 		expectTypeOf<Type2>().toMatchTypeOf<Type1>();
 		expectTypeOf<TypeGuard<Type1>>().not.toMatchTypeOf<TypeGuard<Type2>>();
+		expectTypeOf<TypeGuard<Type2>>().not.toMatchTypeOf<TypeGuard<Type1>>();
 	});
 });
 
@@ -166,6 +167,7 @@ describe("TypeGuardTemplate type", () => {
 		expectTypeOf<Type1>().toMatchTypeOf<Type2>();
 		expectTypeOf<Type2>().toMatchTypeOf<Type1>();
 		expectTypeOf<TypeGuardTemplate<Type1>>().not.toMatchTypeOf<TypeGuardTemplate<Type2>>();
+		expectTypeOf<TypeGuardTemplate<Type2>>().not.toMatchTypeOf<TypeGuardTemplate<Type1>>();
 	});
 });
 
@@ -195,6 +197,7 @@ describe("TypeGuardTemplateFunction type", () => {
 		expectTypeOf<Type1>().toMatchTypeOf<Type2>();
 		expectTypeOf<Type2>().toMatchTypeOf<Type1>();
 		expectTypeOf<TypeGuardTemplateFunction<Type1>>().not.toMatchTypeOf<TypeGuardTemplateFunction<Type2>>();
+		expectTypeOf<TypeGuardTemplateFunction<Type2>>().not.toMatchTypeOf<TypeGuardTemplateFunction<Type1>>();
 	});
 });
 
@@ -224,6 +227,7 @@ describe("TypeGuardTemplateParameter type", () => {
 		expectTypeOf<Type1>().toMatchTypeOf<Type2>();
 		expectTypeOf<Type2>().toMatchTypeOf<Type1>();
 		expectTypeOf<TypeGuardTemplateParameter<Type1>>().not.toMatchTypeOf<TypeGuardTemplateParameter<Type2>>();
+		expectTypeOf<TypeGuardTemplateParameter<Type2>>().not.toMatchTypeOf<TypeGuardTemplateParameter<Type1>>();
 	});
 });
 
