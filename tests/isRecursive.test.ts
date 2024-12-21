@@ -141,3 +141,17 @@ describe("is recursive index record", () => {
 		],
 	});
 });
+
+describe("non recursive type", () => {
+	describedGuardTests({
+		guard: isRecursive<number>(() => isNumber),
+		testCases: [
+			[null, false],
+			[undefined, false],
+			["hello", false],
+			[[], false],
+			[{}, false],
+			[0, true],
+		],
+	});
+});
