@@ -141,6 +141,8 @@ describe("is typeof object", () => {
 	describedGuardTests({
 		guard: isTypeof("object"),
 		testCases: [
+			[null, true],
+			[undefined, false],
 			[Symbol(), false],
 			[Symbol(12), false],
 			[6, false],
@@ -148,11 +150,11 @@ describe("is typeof object", () => {
 			["Bye", false],
 			[() => {}, false],
 			[function () {}, false],
-			[undefined, false],
 			[new Date(), true],
+			[/1267/, true],
+			[[], true],
 			[[1, null, 3], true],
 			[{}, true],
-			[null, true],
 		],
 	});
 });
