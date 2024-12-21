@@ -18,6 +18,7 @@ A powerful `typescript` library that helps you build type guards.<br/>
 + [isRecord](#is-record)
 + [isPartialRecord](#is-partial-record)
 + [isIndexRecord](#is-index-record)
++ [isRecursive](#is-recursive)
 + [isInstanceof](#is-instanceof)
 + [isValue](#is-value)
 + [isValueUnion](#is-value-union)
@@ -284,6 +285,60 @@ Works just like `isRecord` but checks only the `values` and not the `keys`
 import { TypeGuard, isIndexRecord, isNumber } from "isguard-ts";
 
 const isNumberRecord = isIndexRecord(isNumber);
+```
+
+*<span id="is-recursive" ></span>*
+### `isRecursive<T>(generator): TypeGuard<T>`
+Helps you create type guards for recursive types
+
+>**Best Practice:** Pass the generic type argument into `isRecursive`<br/>
+To ensure the `TypeGuard` returned is of the desired type
+
+#### Examples
+```typescript
+import { isRecursive, isType, isNumber, isOptional } from "isguard-ts";
+
+type Node = {
+	value: number;
+	next?: Node;
+};
+
+const isNode = isRecursive<Node>(isNodeParam => isType<Node>({
+	value: isNumber,
+	next: isOptional(isNodeParam), // isNodeParam === isNode
+}));
+```
+
+```typescript
+import { isRecursive, isTuple, isNumber, isOptional } from "isguard-ts";
+
+type Row = [number, Row?];
+
+const isRow = isRecursive<Row>(isRowParam => isTuple<Row>([
+	isNumber,
+	isOptional(isRowParam), // isRowParam === isRow
+]));
+```
+
+```typescript
+import { isRecursive, isUnion, isNumber, isString, isBoolean, isNull, isArray, isIndexRecord } from "isguard-ts";
+
+type Json =
+	number |
+	string |
+	boolean |
+	null |
+	Json[] |
+	{ [key: string]: Json; };
+
+const isJson = isRecursive<Json>(isJsonParam => isUnion(
+	isNumber,
+	isString,
+	isBoolean,
+	isNull,
+	isArray(isJsonParam), // isJsonParam === isJson
+	isIndexRecord(isJsonParam),
+));
 ```
 
 *<span id="is-instanceof" ></span>*
