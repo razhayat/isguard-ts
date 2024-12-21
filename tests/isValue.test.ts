@@ -8,8 +8,16 @@ describe("is null", () => {
 		testCases: [
 			[null, true],
 			[undefined, false],
+			[NaN, false],
 			[6, false],
 			["6", false],
+			[false, false],
+			[Symbol(), false],
+			[new Date(), false],
+			[() => {}, false],
+			[/[]/, false],
+			[[], false],
+			[{}, false],
 		],
 	});
 });
