@@ -33,6 +33,7 @@ describe("isUnknown", () => {
 			[null, true],
 			[undefined, true],
 			[12, true],
+			[12n, true],
 			[true, true],
 			[new Map(), true],
 			[[], true],
@@ -41,6 +42,10 @@ describe("isUnknown", () => {
 			[[new Date(), 12, "bye"], true],
 			[{ bye: "no", ok: "yes" }, true],
 			[() => { }, true],
+			[function() {}, true],
+			[async () => {}, true],
+			[Symbol("symbol"), true],
+			[/[a-z]/, true],
 		],
 	});
 });
