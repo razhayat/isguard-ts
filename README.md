@@ -18,6 +18,7 @@ A powerful `typescript` library that helps you build type guards.<br/>
 + [isRecord](#is-record)
 + [isPartialRecord](#is-partial-record)
 + [isIndexRecord](#is-index-record)
++ [isRecursive](#is-recursive)
 + [isInstanceof](#is-instanceof)
 + [isValue](#is-value)
 + [isValueUnion](#is-value-union)
@@ -95,9 +96,9 @@ const isTree = isType<Tree>(isTreeParam => ({
 }));
 ```
 
-For generic types you would need to create your own type guard generator
+For generic types you would need to create your own `TypeGuard` generator
 ```typescript
-import { TypeGuard, isType } from "isguard-ts";
+import { TypeGuard, isType, isNumber } from "isguard-ts";
 
 type ValueHolder<T> = {
 	value: T;
@@ -190,7 +191,7 @@ const isC: TypeGuard<C> = isIntersection(isA, isB);
 ### `isArray<T>(guard: TypeGuard<T>): TypeGuard<T[]>`
 Helps you create type guards for arrays
 ```typescript
-import { isType, isNumber, TypeGuard, isArray } from "isguard-ts";
+import { isType, isNumber, isArray } from "isguard-ts";
 
 type Test = {
 	a: number;
@@ -204,7 +205,7 @@ const isTestArray = isArray(isTest);
 ### `isEnum<T>(enumObj: T): TypeGuard<T[keyof T]>`
 Helps you create type guards for enums
 ```typescript
-import { TypeGuard, isEnum } from "isguard-ts";
+import { isEnum } from "isguard-ts";
 
 enum Direction {
 	up = 0,
@@ -224,7 +225,7 @@ isDirection("hello"); // false
 ### `isSet<T>(guard: TypeGuard<T>): TypeGuard<Set<T>>`
 Helps you create type guards for sets
 ```typescript
-import { TypeGuard, isSet, isNumber } from "isguard-ts";
+import { isSet, isNumber } from "isguard-ts";
 
 const isNumberSet = isSet(isNumber);
 ```
@@ -233,7 +234,7 @@ const isNumberSet = isSet(isNumber);
 ### `isMap<K, V>(isKey: TypeGuard<K>, isValue: TypeGuard<V>): TypeGuard<Map<K, V>>`
 Helps you create type guards for maps
 ```typescript
-import { TypeGuard, isMap, isString, isBoolean } from "isguard-ts";
+import { isMap, isString, isBoolean } from "isguard-ts";
 
 const isStringBooleanMap = isMap(isString, isBoolean);
 ```
@@ -242,7 +243,7 @@ const isStringBooleanMap = isMap(isString, isBoolean);
 ### `isRecord<K, V>(keys: K, isValue: TypeGuard<V>): TypeGuard<Record<K[number], V>>`
 Helps you create type guards for records
 ```typescript
-import { TypeGuard, isRecord, isNumber } from "isguard-ts";
+import { isRecord, isNumber } from "isguard-ts";
 
 const timeUnits = ["second", "minute", "hour"] as const;
 type TimeUnit = (typeof timeUnits)[number];
@@ -268,16 +269,69 @@ const isPartialTimeUnitToMillisecond = isPartialRecord(timeUnits, isNumber);
 ### `isIndexRecord<V>(isValue: TypeGuard<V>): TypeGuard<Record<PropertyKey, V>>`
 Works just like `isRecord` but checks only the `values` and not the `keys`
 ```typescript
-import { TypeGuard, isIndexRecord, isNumber } from "isguard-ts";
+import { isIndexRecord, isNumber } from "isguard-ts";
 
 const isNumberRecord = isIndexRecord(isNumber);
+```
+
+*<span id="is-recursive" ></span>*
+### `isRecursive<T>(generator): TypeGuard<T>`
+Helps you create type guards for recursive types
+
+>**Best Practice:** Pass the generic type argument into `isRecursive`<br/>
+To ensure the `TypeGuard` returned is of the desired type
+
+```typescript
+import { isRecursive, isType, isNumber, isOptional } from "isguard-ts";
+
+type Node = {
+	value: number;
+	next?: Node;
+};
+
+const isNode = isRecursive<Node>(isNodeParam => isType<Node>({
+	value: isNumber,
+	next: isOptional(isNodeParam), // isNodeParam === isNode
+}));
+```
+
+```typescript
+import { isRecursive, isTuple, isNumber, isOptional } from "isguard-ts";
+
+type Row = [number, Row?];
+
+const isRow = isRecursive<Row>(isRowParam => isTuple<Row>([
+	isNumber,
+	isOptional(isRowParam), // isRowParam === isRow
+]));
+```
+
+```typescript
+import { isRecursive, isUnion, isNumber, isString, isBoolean, isNull, isArray, isIndexRecord } from "isguard-ts";
+
+type Json =
+	number |
+	string |
+	boolean |
+	null |
+	Json[] |
+	{ [key: string]: Json; };
+
+const isJson = isRecursive<Json>(isJsonParam => isUnion(
+	isNumber,
+	isString,
+	isBoolean,
+	isNull,
+	isArray(isJsonParam), // isJsonParam === isJson
+	isIndexRecord(isJsonParam),
+));
 ```
 
 *<span id="is-instanceof" ></span>*
 ### `isInstanceof<T>(constructor): TypeGuard<T>`
 Helps you create type guards for classes
 ```typescript
-import { TypeGuard, isInstanceof } from "isguard-ts";
+import { isInstanceof } from "isguard-ts";
 
 abstract class Animal { }
 class Dog extends Animal { }
@@ -309,7 +363,7 @@ const isHelloOrBye = isValueUnion("Hello", "Bye");
 ### `isOptional<T>(guard: TypeGuard<T>): TypeGuard<T | undefined>`
 Helps you create type guards for optional types
 ```typescript
-import { TypeGuard, isOptional, isNumber } from "isguard-ts";
+import { isOptional, isNumber } from "isguard-ts";
 
 const isNumberOrUndefined = isOptional(isNumber);
 ```
@@ -318,7 +372,7 @@ const isNumberOrUndefined = isOptional(isNumber);
 ### `isMaybe<T>(guard: TypeGuard<T>): TypeGuard<T | null>`
 Helps you create type guards for nullable types
 ```typescript
-import { TypeGuard, isMaybe, isNumber } from "isguard-ts";
+import { isMaybe, isNumber } from "isguard-ts";
 
 const isNumberOrNul = isMaybe(isNumber);
 ```
@@ -335,6 +389,7 @@ const isFunction: TypeGuard<Function>;
 const isPropertyKey: TypeGuard<PropertyKey>;
 
 const isDate: TypeGuard<Date>;
+const isRegExp: TypeGuard<RegExp>;
 const isObject: TypeGuard<object>;
 const isError: TypeGuard<Error>;
 const isEvalError: TypeGuard<EvalError>;

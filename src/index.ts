@@ -4,6 +4,7 @@ export * from "./isInstanceof";
 export * from "./isIntersection";
 export * from "./isMap";
 export * from "./isRecord";
+export * from "./isRecursive";
 export * from "./isSet";
 export * from "./isTuple";
 export * from "./isType";
