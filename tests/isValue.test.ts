@@ -134,10 +134,19 @@ describe("is value ('Empire!')", () => {
 	describedGuardTests({
 		guard: isValue("Empire!"),
 		testCases: [
+			[null, false],
+			[undefined, false],
 			[56, false],
 			[57, false],
-			["Empire!", true],
+			[false, false],
 			["Empire", false],
+			[new Date(), false],
+			[[], false],
+			[{}, false],
+			[{ "Empire!": "Empire!" }, false],
+			["Empire!", true],
+			["Empire" + "!", true],
+			[`${"Empire"}!`, true],
 		],
 	});
 });
