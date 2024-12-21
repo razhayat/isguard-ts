@@ -118,16 +118,21 @@ describe("is symbol", () => {
 	describedGuardTests({
 		guard: isSymbol,
 		testCases: [
-			[Symbol(), true],
-			[Symbol(12), true],
-			[Symbol("x"), true],
-			[[Symbol()], false],
 			[null, false],
 			[undefined, false],
 			[6, false],
+			[0n, false],
 			[false, false],
 			["Bye", false],
 			[new Date(), false],
+			[Symbol, false],
+			[[], false],
+			[[Symbol()], false],
+			[{}, false],
+			[Symbol(), true],
+			[Symbol(12), true],
+			[Symbol("x"), true],
+			[Symbol.for("me"), true],
 		],
 	});
 });
