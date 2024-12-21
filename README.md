@@ -389,6 +389,7 @@ const isFunction: TypeGuard<Function>;
 const isPropertyKey: TypeGuard<PropertyKey>;
 
 const isDate: TypeGuard<Date>;
+const isRegExp: TypeGuard<RegExp>;
 const isObject: TypeGuard<object>;
 const isError: TypeGuard<Error>;
 const isEvalError: TypeGuard<EvalError>;
