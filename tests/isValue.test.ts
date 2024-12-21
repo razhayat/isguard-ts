@@ -28,7 +28,14 @@ describe("is undefined", () => {
 		testCases: [
 			[null, false],
 			[undefined, true],
+			[423n, false],
 			[true, false],
+			["hello", false],
+			[new Map(), false],
+			[Symbol("undefined"), false],
+			[async function() {}, false],
+			[[], false],
+			[{}, false],
 			[["Empire"], false],
 		],
 	});
