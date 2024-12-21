@@ -252,6 +252,9 @@ describe("is type with all PropertyKey types", () => {
 			[{}, false],
 			[["str", 61, symbol], false],
 			[Array, false],
+			[Symbol("string"), false],
+			[32n, false],
+			[async () => {}, false],
 
 			[{ [symbol]: "this is not a number" }, false],
 			[{ [symbol]: 12 }, false],
