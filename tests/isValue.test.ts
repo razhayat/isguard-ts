@@ -110,10 +110,22 @@ describe("is value (56)", () => {
 	describedGuardTests({
 		guard: isValue(56),
 		testCases: [
-			[56, true],
+			[null, false],
+			[undefined, false],
 			[57, false],
+			[-56, false],
+			[56n, false],
 			["Empire", false],
+			["56", false],
+			[true, false],
+			[Symbol(56), false],
+			[/56/, false],
+			[Symbol.for("56"), false],
 			[[], false],
+			[{}, false],
+			[() => 56, false],
+			[56, true],
+			[56.0, true],
 		],
 	});
 });
