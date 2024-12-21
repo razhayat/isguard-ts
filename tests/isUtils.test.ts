@@ -13,6 +13,9 @@ describe("is object", () => {
 			["06/08/2024🤦", false],
 			[Symbol(), false],
 			[56, false],
+			[42n, false],
+			[false, false],
+			[/[]/, true],
 			[{ hello: 12 }, true],
 			[[2, null, "bye"], true],
 			[new Set(), true],
@@ -30,6 +33,7 @@ describe("isUnknown", () => {
 			[null, true],
 			[undefined, true],
 			[12, true],
+			[12n, true],
 			[true, true],
 			[new Map(), true],
 			[[], true],
@@ -38,6 +42,10 @@ describe("isUnknown", () => {
 			[[new Date(), 12, "bye"], true],
 			[{ bye: "no", ok: "yes" }, true],
 			[() => { }, true],
+			[function() {}, true],
+			[async () => {}, true],
+			[Symbol("symbol"), true],
+			[/[a-z]/, true],
 		],
 	});
 });
@@ -49,6 +57,7 @@ describe("isNever", () => {
 			[null, false],
 			[undefined, false],
 			[12, false],
+			[12n, false],
 			[true, false],
 			[new Map(), false],
 			[[], false],
@@ -57,6 +66,9 @@ describe("isNever", () => {
 			[[new Date(), 12, "bye"], false],
 			[{ bye: "no", ok: "yes" }, false],
 			[() => { }, false],
+			[async function* () {}, false],
+			[Symbol(), false],
+			[/[A-Z]/, false],
 		],
 	});
 });
