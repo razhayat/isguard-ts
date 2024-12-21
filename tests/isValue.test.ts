@@ -151,6 +151,28 @@ describe("is value ('Empire!')", () => {
 	});
 });
 
+describe("is []", () => {
+	const empty = [];
+	describedGuardTests({
+		guard: isValue(empty),
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[545, false],
+			[43n, false],
+			[true, false],
+			["[]", false],
+			[Symbol(), false],
+			[/[]/, false],
+			[() => empty, false],
+			[[], false],
+			[[empty], false],
+			[{}, false],
+			[empty, true],
+		],
+	});
+});
+
 describe("is 'apple' | 'orange' | 'banana' | 6", () => {
 	describedGuardTests({
 		guard: isValueUnion("apple", "orange", "banana", 6),
