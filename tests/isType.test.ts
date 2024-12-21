@@ -212,6 +212,8 @@ describe("is type with symbol", () => {
 			["string", false],
 			[new Set(), false],
 			[() => "bye", false],
+			[Symbol.for("blue"), false],
+			[/[57]/, false],
 			[[], false],
 			[[hello, "hi"], false],
 			[[hello], false],
