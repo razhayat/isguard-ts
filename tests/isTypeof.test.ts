@@ -68,12 +68,21 @@ describe("is string", () => {
 	describedGuardTests({
 		guard: isString,
 		testCases: [
+			[null, false],
+			[undefined, false],
 			[0, false],
-			[{}, false],
 			[false, false],
+			[Symbol(), false],
+			[/[a-g]/u, false],
+			[new String("Hello"), false],
+			[async function() { return "string" }, false],
+			[[], false],
+			[["hi"], false],
+			[{}, false],
+			[{ name: "john" }, false],
+			["", true],
 			["56 Empire!", true],
 			["6", true],
-			[new String("Hello"), false],
 			[String("Hello"), true, "String('Hello')"],
 		],
 	});
