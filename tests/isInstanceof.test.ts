@@ -10,11 +10,20 @@ describe("is animal", () => {
 	describedGuardTests({
 		guard: isInstanceof(Animal),
 		testCases: [
-			[new Animal(), true],
-			[new Dog(), true],
-			[new Cat(), true],
-			[{}, false],
+			[null, false],
 			[undefined, false],
+			[{}, false],
+			[[new Animal()], false],
+			[() => new Animal(), false],
+			[Animal, false],
+			["new Animal()", false],
+			[{ __proto__: Animal }, false],
+			[new Animal, true],
+			[new Animal(), true],
+			[new Dog, true],
+			[new Dog(), true],
+			[new Cat, true],
+			[new Cat(), true],
 		],
 	});
 });
@@ -23,11 +32,19 @@ describe("is dog", () => {
 	describedGuardTests({
 		guard: isInstanceof(Dog),
 		testCases: [
-			[new Animal(), false],
-			[new Dog(), true],
-			[new Cat(), false],
-			[[], false],
 			[null, false],
+			[undefined, false],
+			[true, false],
+			[12, false],
+			[[], false],
+			[async function() { return new Dog() }, false],
+			[new Animal, false],
+			[new Animal(), false],
+			[new Cat, false],
+			[new Cat(), false],
+			[{ constructor: Dog }, false],
+			[new Dog, true],
+			[new Dog(), true],
 		],
 	});
 });
@@ -36,11 +53,20 @@ describe("is cat", () => {
 	describedGuardTests({
 		guard: isInstanceof(Cat),
 		testCases: [
-			[new Animal(), false],
-			[new Dog(), false],
-			[new Cat(), true],
-			[new Date(666), false],
+			[null, false],
+			[undefined, false],
 			[NaN, false],
+			[false, false],
+			[new Date(666), false],
+			[12n, false],
+			[async () => new Cat(), false],
+			[new Animal, false],
+			[new Animal(), false],
+			[new Dog, false],
+			[new Dog(), false],
+			[{ prototype: Cat }, false],
+			[new Cat, true],
+			[new Cat(), true],
 		],
 	});
 });
@@ -49,12 +75,19 @@ describe("is date", () => {
 	describedGuardTests({
 		guard: isDate,
 		testCases: [
+			[null, false],
+			[undefined, false],
+			[Infinity, false],
+			[Symbol("date"), false],
+			[[], false],
+			[function* () { yield new Date() }, false],
 			[new Animal(), false],
 			["06/07/2024", false],
 			["25/12/2023🥹", false],
 			[[new Date()], false],
-			[new Date(666), true],
 			[-56, false],
+			[new Date, true],
+			[new Date(666), true],
 		],
 	});
 });
