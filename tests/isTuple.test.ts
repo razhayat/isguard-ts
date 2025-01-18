@@ -13,10 +13,10 @@ describe("is normal tuple", () => {
 			[new Array(2), false],
 			["hello", false],
 			[{ 0: "hello", 1: 6 }, false],
-			[["hello", 6], true],
 			[["hello", 78, new Date()], false],
 			[["bye"], false],
 			[[12, "bye"], false],
+			[["hello", 6], true],
 		],
 	});
 });
@@ -31,10 +31,10 @@ describe("is tuple with optional", () => {
 			[undefined, false],
 			[NaN, false],
 			[{ 0: 5, 1: 6 }, false],
-			[[5, 6], true],
 			[[6, 78, new Date()], false],
-			[[6], true],
 			[[12, "bye"], false],
+			[[5, 6], true],
+			[[6], true],
 		],
 	});
 });
@@ -49,8 +49,8 @@ describe("is recursive tuple", () => {
 			[undefined, false],
 			[new Date(), false],
 			[{ 0: 5, 1: [1] }, false],
-			[[1, [2]], true],
 			[[6, 78, new Date()], false],
+			[[1, [2]], true],
 			[[6], true],
 			[[12, [13, [14]]], true],
 		],
