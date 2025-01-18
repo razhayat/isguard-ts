@@ -94,6 +94,9 @@ describe("is string", () => {
 			["", true],
 			["56 Empire!", true],
 			["6", true],
+			['one', true],
+			[`hello`, true],
+			[`hi ${"me from the future"}`, true],
 			[String("Hello"), true, "String('Hello')"],
 		],
 	});
