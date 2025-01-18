@@ -101,14 +101,14 @@ describe("is recursive union", () => {
 			[[[6, [[]]], 53, [[[[]], [[[46, []]]]]]], true],
 			[[[6, [[]]], 53, [[3532, [[]], [[[46, []]]], 567]]], true],
 			[[[6, [[]]], 53, [[3532, [[]], [[[46, [], new Date()]]], 567]]], false],
-		]
+		],
 	});
 });
 
 describe("is recursive index record", () => {
 	type RecursiveIndexRecord = {
 		[key: string]: RecursiveIndexRecord;
-	}
+	};
 
 	describedGuardTests({
 		guard: isRecursive<RecursiveIndexRecord>(isRecursiveIndexRecord => isIndexRecord(isRecursiveIndexRecord)),
@@ -149,6 +149,9 @@ describe("non recursive type", () => {
 			[null, false],
 			[undefined, false],
 			["hello", false],
+			[false, false],
+			[Symbol(), false],
+			[13n, false],
 			[[], false],
 			[{}, false],
 			[0, true],
