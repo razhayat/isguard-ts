@@ -40,6 +40,8 @@ describe("is Date | number | string | boolean", () => {
 			[false, true],
 			[true, true],
 			[[new Date(), true, 0, ""], false],
+			[Symbol(), false],
+			[/[123]/, false],
 			[null, false],
 			[undefined, false],
 			[(value: number) => value + 6, false],

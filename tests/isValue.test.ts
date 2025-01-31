@@ -10,6 +10,7 @@ describe("is null", () => {
 			[undefined, false],
 			[NaN, false],
 			[6, false],
+			[6n, false],
 			["6", false],
 			[false, false],
 			[Symbol(), false],
