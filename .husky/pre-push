@@ -1,0 +1,26 @@
+commit_success=true
+git commit --no-verify -m "@auto(commit staged)" || commit_success=false
+
+git stash push -u -m "@auto(stash unstaged)"
+
+if "$commit_success"; then
+	git reset --soft HEAD^
+	git stash push -u -m "@auto(stash staged)"
+fi
+
+tests_success=true
+npm run test || tests_success=false
+
+if "$commit_success"; then
+	git stash pop
+	git add .
+fi
+
+git stash pop
+
+if "$tests_success"; then
+	exit 0
+fi
+
+echo "push blocked: committed tests have failed"
+exit 1
