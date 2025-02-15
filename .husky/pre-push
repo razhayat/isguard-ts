@@ -1,26 +1,28 @@
-commit_success=true
-git commit --no-verify -m "@auto(commit staged)" || commit_success=false
+current_branch=$(git branch --show-current)
+temp_branch="@auto/$current_branch-$(date +%s)"
 
-git stash push -u -m "@auto(stash unstaged)"
+git checkout -b "$temp_branch"
 
-if "$commit_success"; then
-	git reset --soft HEAD^
-	git stash push -u -m "@auto(stash staged)"
-fi
+git commit --no-verify --allow-empty -m "@auto(commit staged)"
+git add .
+git commit --no-verify --allow-empty -m "@auto(commit unstaged)"
+
+git checkout "$current_branch"
 
 tests_success=true
 npm run test || tests_success=false
 
-if "$commit_success"; then
-	git stash pop
-	git add .
+git checkout "$temp_branch"
+
+git reset --mixed HEAD^
+git reset --soft HEAD^
+
+git checkout "$current_branch"
+git branch -D "$temp_branch"
+
+if ( ! "$tests_success" ); then
+	echo "push blocked: committed tests have failed"
+	exit 1
 fi
 
-git stash pop
-
-if "$tests_success"; then
-	exit 0
-fi
-
-echo "push blocked: committed tests have failed"
-exit 1
+exit 0
