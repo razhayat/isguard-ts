@@ -6,7 +6,8 @@
 	"scripts": {
 		"test": "npx vitest --typecheck --run",
 		"build": "npx tsc -b",
-		"pub": "npm run test && npm run build && npm publish"
+		"pub": "npm run test && npm run build && npm publish",
+		"prepare": "npx husky"
 	},
 	"keywords": [
 		"assert",
