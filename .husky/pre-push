@@ -1,28 +1,15 @@
-current_branch=$(git branch --show-current)
-temp_branch="@auto/$current_branch-$(date +%s)"
-
-git checkout -b "$temp_branch"
-
-git commit --no-verify --allow-empty -m "@auto(commit staged)"
+git commit --no-verify --allow-empty -m "@auto/pre-push(index)"
 git add .
-git commit --no-verify --allow-empty -m "@auto(commit unstaged)"
+git commit --no-verify --allow-empty -m "@auto/pre-push(working tree)"
 
-git checkout "$current_branch"
+git reset --hard HEAD~2
 
-tests_success=true
-npm run test || tests_success=false
+npm run test
+tests_code=$?
 
-git checkout "$temp_branch"
+git reset --hard HEAD@{1}
 
 git reset --mixed HEAD^
 git reset --soft HEAD^
 
-git checkout "$current_branch"
-git branch -D "$temp_branch"
-
-if ( ! "$tests_success" ); then
-	echo "push blocked: committed tests have failed"
-	exit 1
-fi
-
-exit 0
+exit "$tests_code"
