@@ -202,3 +202,26 @@ describe("is function", () => {
 		],
 	});
 });
+
+describe("is typeof undefined", () => {
+	describedGuardTests({
+		guard: isTypeof("undefined"),
+		testCases: [
+			[null, false],
+			[false, false],
+			[true, false],
+			[0, false],
+			[NaN, false],
+			["", false],
+			["hello", false],
+			[Symbol(), false],
+			[[], false],
+			[{}, false],
+			[() => { }, false],
+			[new Date(), false],
+			[{ a: undefined }, false],
+
+			[undefined, true],
+		],
+	});
+});
