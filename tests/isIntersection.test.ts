@@ -46,7 +46,7 @@ describe("is { a: number } & { b: string }", () => {
 	type A = { a: number; };
 	const isA = isType<A>({ a: isNumber });
 
-	type B = { b: string };
+	type B = { b: string; };
 	const isB = isType<B>({ b: isString });
 
 	describedGuardTests({
@@ -54,21 +54,46 @@ describe("is { a: number } & { b: string }", () => {
 		testCases: [
 			[null, false],
 			[undefined, false],
-			[NaN, false],
+			[-Infinity, false],
 			[{}, false],
 			[[], false],
-			[true, false],
+			[4, false],
+			["{ a: 12, b: 'string' }", false],
+			[Symbol(4), false],
+			[false, false],
 			[(value: string) => value, false],
 			[[12, "a"], false],
-			[["a", 12], false],
+			[Promise.resolve(), false],
+
 			[{ a: 12 }, false],
-			[{ b: "asdf" }, false],
-			[{ b: 62, a: "Empire!" }, false],
-			[{ ab: 12, ba: "2324" }, false],
-			[{ a: 12, b: "asdf" }, true],
-			[{ b: "asdf", a: 12 }, true],
-			[{ a: 56, b: "Empire!", c: true }, true],
-			[{ a: 56, b: "Empire!", [Symbol()]: "no" }, true],
+			[{ a: 12, extra: 12 }, false],
+			[{ b: "hello" }, false],
+			[{ b: "hello", extra: "hello" }, false],
+
+			[{ a: 12, b: undefined }, false],
+			[{ a: 12, b: null }, false],
+			[{ a: 12, b: {} }, false],
+			[{ a: 12, b() {} }, false],
+
+			[{ a: undefined, b: "hello" }, false],
+			[{ a: null, b: "hello" }, false],
+			[{ a: new Date(), b: "hello" }, false],
+			[{ a: [], b: "hello" }, false],
+
+			[{ a: "not a number", b: NaN }, false],
+			[{ a: [], b: {} }, false],
+			[{ a: new Date(), b: { a: 12, b: "string" } }, false],
+			[{ a: () => {}, b: true }, false],
+
+			[{ a: 56, b: "Empire!" }, true],
+			[{ a: 0, b: "test" }, true],
+			[{ b: "bar", a: -1, }, true],
+			[{ b: "pi", a: 3.14 }, true],
+
+			[{ a: 100, b: "test", extra: undefined }, true],
+			[{ a: 42, b: "hello", c: () => {} }, true],
+			[{ a: 0, b: "test", c: true }, true],
+			[{ a: 56, b: "Empire!", [Symbol("extra")]: "no" }, true],
 		],
 	});
 });
