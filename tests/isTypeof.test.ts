@@ -147,6 +147,8 @@ describe("is boolean", () => {
 			[null, false],
 			[undefined, false],
 			["56 Empire!", false],
+			["true", false],
+			["false", false],
 			[234, false],
 			[34n, false],
 			[Symbol.for("boolean"), false],
@@ -159,9 +161,20 @@ describe("is boolean", () => {
 			[new Number(6), false],
 			[new String("Hello"), false],
 			[new Boolean(0), false],
+			[Promise.resolve(), false],
+			[function() {}, false],
+			[() => {}, false],
+			[async function() {}, false],
+			[async () => {}, false],
+			[Object.create(null), false],
+
 			[true, true],
 			[false, true],
-			[Boolean("yes"), true, "Boolean('yes')"],
+
+			[Boolean("true"), true, "Boolean('true')"],
+			[Boolean("false"), true, "Boolean('false')"],
+			[Boolean(1), true, "Boolean(1)"],
+			[Boolean(0), true, "Boolean(0)"],
 		],
 	});
 });
