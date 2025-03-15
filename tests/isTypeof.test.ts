@@ -181,10 +181,27 @@ describe("is symbol", () => {
 			[[], false],
 			[[Symbol()], false],
 			[{}, false],
+			[Object(Symbol()), false],
+			[Object(Symbol("description")), false],
+
 			[Symbol(), true],
 			[Symbol(12), true],
 			[Symbol("x"), true],
 			[Symbol.for("me"), true],
+
+			[Symbol.iterator, true],
+			[Symbol.asyncIterator, true],
+			[Symbol.hasInstance, true],
+			[Symbol.isConcatSpreadable, true],
+			[Symbol.match, true],
+			[Symbol.matchAll, true],
+			[Symbol.replace, true],
+			[Symbol.search, true],
+			[Symbol.species, true],
+			[Symbol.split, true],
+			[Symbol.toPrimitive, true],
+			[Symbol.toStringTag, true],
+			[Symbol.unscopables, true],
 		],
 	});
 });
