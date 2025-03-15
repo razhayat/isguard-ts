@@ -1,6 +1,6 @@
 import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isNever, isObject, isUnknown } from "../src";
+import { isMaybe, isNever, isNumber, isObject, isOptional, isPropertyKey, isString, isUnknown } from "../src";
 
 describe("is object", () => {
 	describedGuardTests({
@@ -69,6 +69,99 @@ describe("isNever", () => {
 			[async function* () {}, false],
 			[Symbol(), false],
 			[/[A-Z]/, false],
+		],
+	});
+});
+
+describe("isPropertyKey", () => {
+	describedGuardTests({
+		guard: isPropertyKey,
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[true, false],
+			[false, false],
+			[[], false],
+			[{}, false],
+			[{ key: "123" }, false],
+			[function() {}, false],
+			[() => {}, false],
+			[new Map(), false],
+			[new Set(), false],
+			[BigInt(123), false],
+			[123n, false],
+			[Symbol, false],
+			[Number, false],
+			[String, false],
+
+			["key", true],
+			["propertyKey", true],
+			["123", true],
+			["", true],
+			["0", true],
+			["true", true],
+
+			[123, true],
+			[0, true],
+			[-42, true],
+			[-42.5, true],
+			[Infinity, true],
+			[-Infinity, true],
+			[NaN, true],
+
+			[Symbol("symbolKey"), true],
+			[Symbol(), true],
+			[Symbol.for("me"), true],
+			[Symbol.iterator, true],
+		],
+	});
+});
+
+describe("isOptional", () => {
+	describedGuardTests({
+		guard: isOptional(isString),
+		testCases: [
+			[null, false],
+			[123, false],
+			[true, false],
+			[Symbol(), false],
+			[[], false],
+			[{}, false],
+			[() => {}, false],
+			[BigInt(123), false],
+
+			["hello", true],
+			["", true],
+
+			[undefined, true],
+			[void 0, true],
+		],
+	});
+});
+
+describe("isMaybe", () => {
+	describedGuardTests({
+		guard: isMaybe(isNumber),
+		testCases: [
+			[undefined, false],
+			[false, false],
+			[Symbol(), false],
+			["123", false],
+			[[], false],
+			[{}, false],
+			[function() {}, false],
+			[new Date(), false],
+			[Date, false],
+			[BigInt(123), false],
+
+			[123, true],
+			[0, true],
+			[-42, true],
+			[3.14, true],
+			[Infinity, true],
+			[NaN, true],
+
+			[null, true],
 		],
 	});
 });
