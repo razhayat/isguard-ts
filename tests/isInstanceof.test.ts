@@ -87,9 +87,13 @@ describe("is date", () => {
 		testCases: [
 			[null, false],
 			[undefined, false],
+			[NaN, false],
 			[Infinity, false],
 			[Symbol("date"), false],
+			[{}, false],
 			[[], false],
+			[true, false],
+			[false, false],
 			[function* () { yield new Date() }, false],
 			[new Animal(), false],
 			["06/07/2024", false],
@@ -97,7 +101,13 @@ describe("is date", () => {
 			[[new Date()], false],
 			[-56, false],
 			[new Date, true],
+			[new Date(), true],
+			[new Date("2021-01-01"), true],
+			[new Date(2022, 0, 1), true],
 			[new Date(666), true],
+			[new Date("2025-05-01T10:20:30Z"), true],
+			[new Date("invalid-date-string"), true],
+			[new Date(Infinity), true],
 		],
 	});
 });

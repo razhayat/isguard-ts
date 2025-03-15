@@ -28,7 +28,6 @@ describe("is undefined", () => {
 		guard: isUndefined,
 		testCases: [
 			[null, false],
-			[undefined, true],
 			[423n, false],
 			[true, false],
 			["hello", false],
@@ -38,6 +37,12 @@ describe("is undefined", () => {
 			[[], false],
 			[{}, false],
 			[["Empire"], false],
+
+			[undefined, true],
+			[void 353.4, true],
+			[void null, true],
+			[void new Date(), true],
+			[void (() => 12)(), true],
 		],
 	});
 });
@@ -46,8 +51,6 @@ describe("is nil", () => {
 	describedGuardTests({
 		guard: isNil,
 		testCases: [
-			[null, true],
-			[undefined, true],
 			[56, false],
 			[-34n, false],
 			["null", false],
@@ -59,6 +62,13 @@ describe("is nil", () => {
 			[[], false],
 			[{}, false],
 			[{ maybe: 61 }, false],
+
+			[null, true],
+			[undefined, true],
+			[void NaN, true],
+			[void "", true],
+			[void false, true],
+			[void Symbol, true],
 		],
 	});
 });
@@ -141,9 +151,9 @@ describe("is value ('Empire!')", () => {
 			[57, false],
 			[false, false],
 			["Empire", false],
-			["empire", false],
-			["EMPIRE", false],
-			["EmPiRE", false],
+			["empire!", false],
+			["EMPIRE!", false],
+			["EmPiRE!", false],
 			[new Date(), false],
 			[[], false],
 			[{}, false],

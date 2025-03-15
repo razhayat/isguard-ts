@@ -1,5 +1,5 @@
 import { describe } from "vitest";
-import { isDate, isMaybe, isNumber, isType, isString, isValueUnion } from "../src";
+import { isDate, isMaybe, isNumber, isType, isString, isValueUnion, isOptionalString } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is empty type", () => {
@@ -69,6 +69,51 @@ describe("is simple type", () => {
 			[{ name: "b", age: 13, name2: "fkmf" }, true],
 			[{ name: "bla", age: 12, [Symbol()]: true }, true],
 			[new SimpleClass("blue", 16), true],
+		],
+	});
+});
+
+describe("is type with optional", () => {
+	type MenuItem = {
+		value: string;
+		display?: string;
+	};
+
+	describedGuardTests({
+		guard: isType<MenuItem>({
+			value: isString,
+			display: isOptionalString,
+		}),
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[12, false],
+			[12n, false],
+			[false, false],
+			[Symbol(), false],
+			["12", false],
+			[{}, false],
+			[[], false],
+
+			[{ value: 123 }, false],
+			[{ value: new Date() }, false],
+			[{ value: () => {} }, false],
+
+			[{ value: true, display: "display" }, false],
+			[{ value: null, display: "display" }, false],
+			[{ value: undefined, display: "display" }, false],
+			[{ display: "onlyDisplay" }, false],
+
+			[{ value: "item1", display: 123 }, false],
+			[{ value: "item2", display: true }, false],
+			[{ value: "item3", display: [] }, false],
+			[{ value: "item4", display: {} }, false],
+			[{ value: "item5", display: null }, false],
+
+			[{ value: "item6" }, true],
+			[{ value: "item7", display: undefined }, true],
+			[{ value: "item8", display: "Item 8" }, true],
+			[{ value: "item9", display: "" }, true],
 		],
 	});
 });
