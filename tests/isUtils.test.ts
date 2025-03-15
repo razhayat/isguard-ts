@@ -1,6 +1,6 @@
 import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isNever, isObject, isOptional, isPropertyKey, isString, isUnknown } from "../src";
+import { isMaybe, isNever, isNumber, isObject, isOptional, isPropertyKey, isString, isUnknown } from "../src";
 
 describe("is object", () => {
 	describedGuardTests({
@@ -135,6 +135,33 @@ describe("isOptional", () => {
 
 			[undefined, true],
 			[void 0, true],
+		],
+	});
+});
+
+describe("isMaybe", () => {
+	describedGuardTests({
+		guard: isMaybe(isNumber),
+		testCases: [
+			[undefined, false],
+			[false, false],
+			[Symbol(), false],
+			["123", false],
+			[[], false],
+			[{}, false],
+			[function() {}, false],
+			[new Date(), false],
+			[Date, false],
+			[BigInt(123), false],
+
+			[123, true],
+			[0, true],
+			[-42, true],
+			[3.14, true],
+			[Infinity, true],
+			[NaN, true],
+
+			[null, true],
 		],
 	});
 });
