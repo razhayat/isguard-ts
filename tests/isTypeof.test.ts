@@ -304,6 +304,10 @@ describe("is typeof undefined", () => {
 			[{ a: undefined }, false],
 
 			[undefined, true],
+			[void 0, true],
+			[void undefined, true],
+			[void "something", true],
+			[void (() => {}), true],
 		],
 	});
 });
