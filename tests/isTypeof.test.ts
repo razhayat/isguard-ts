@@ -225,6 +225,7 @@ describe("is function", () => {
 			[/^[hello]{45,78}$/, false],
 			[[], false],
 			[{}, false],
+
 			[(value: number) => value, true],
 			[(...values: number[]) => values, true],
 			[(a: number, b: number) => a + b, true],
@@ -235,8 +236,21 @@ describe("is function", () => {
 			[async function () {}, true],
 			[async function* () {}, true],
 			[async () => {}, true],
+
 			[Array, true],
 			[Array.prototype.find, true, "Array.prototype.find"],
+			[Function, true],
+			[Function.prototype, true, "Function.prototype"],
+
+			[setTimeout, true],
+			[setInterval, true],
+			[console.log, true],
+
+			[class Person { }, true],
+			[class Animal { speak() { } }, true],
+
+			[{ myFunc: () => { } }.myFunc, true],
+			[{ myFunc() { } }.myFunc, true],
 		],
 	});
 });
