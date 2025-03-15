@@ -1,10 +1,10 @@
 import { describe } from "vitest";
-import { isArray, isNumberArray, isString, isType } from "../src";
+import { isArray, isNumber, isString, isType } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is number array", () => {
 	describedGuardTests({
-		guard: isNumberArray,
+		guard: isArray(isNumber),
 		testCases: [
 			[null, false],
 			[undefined, false],
