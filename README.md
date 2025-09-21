@@ -249,7 +249,7 @@ const isNumberRecord = isIndexRecord(isNumber);
 ### `isLazy<T>(generator: () => TypeGuard<T>): TypeGuard<T>`
 Helps you lazy load a type guard.
 Useful for:
-+ Creating type guards for recursive types.
++ Creating type guards for recursive types
 + Resolving undefined errors due to circular imports
 
 >**Important:** Annotate the recursive guard to avoid typescript errors
