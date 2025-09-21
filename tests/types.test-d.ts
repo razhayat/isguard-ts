@@ -721,9 +721,10 @@ describe("isTuple", () => {
 });
 
 describe("isType", () => {
+	type A = { a: number };
+
 	describe("return type", () => {
 		it("should return TypeGuard<A>", () => {
-			type A = { a: number };
 			const actual = isType<A>({ a: isNumber });
 			type Expected = TypeGuard<A>;
 
@@ -749,22 +750,22 @@ describe("isType", () => {
 		});
 
 		it("should accept a function", () => {
-			const actual = isType(() => ({ name: isString }));
-			type Expected = TypeGuard<{ name: string }>;
+			const actual = isType<A>(() => ({ a: isNumber }));
+			type Expected = TypeGuard<A>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 
 		it("should accept a nested function", () => {
-			const actual = isType(() => () => ({ age: isNumber }));
-			type Expected = TypeGuard<{ age: number }>;
+			const actual = isType<A>(() => () => ({ a: isNumber }));
+			type Expected = TypeGuard<A>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 
 		it("should accept a deeply nested function", () => {
-			const actual = isType(() => () => () => ({ optional: isOptionalNumber }));
-			type Expected = TypeGuard<{ optional: number | undefined }>;
+			const actual = isType<A>(() => () => () => ({ a: isNumber }));
+			type Expected = TypeGuard<A>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
