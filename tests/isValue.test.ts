@@ -166,7 +166,7 @@ describe("is value ('Empire!')", () => {
 });
 
 describe("is []", () => {
-	const empty = [];
+	const empty = [] as const;
 	describedGuardTests({
 		guard: isValue(empty),
 		testCases: [
