@@ -619,21 +619,21 @@ describe("isTuple", () => {
 		});
 
 		it("should accept a function", () => {
-			const actual = isTuple(() => [isString]);
+			const actual = isTuple<[string]>((_) => [isString]);
 			type Expected = TypeGuard<[string]>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 
 		it("should accept a nested function", () => {
-			const actual = isTuple(() => () => [isNumber]);
+			const actual = isTuple<[number]>((_) => () => [isNumber]);
 			type Expected = TypeGuard<[number]>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 
 		it("should accept a deeply nested function", () => {
-			const actual = isTuple(() => () => () => [isOptionalNumber]);
+			const actual = isTuple<[number | undefined]>((_) => () => () => [isOptionalNumber]);
 			type Expected = TypeGuard<[number | undefined]>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
