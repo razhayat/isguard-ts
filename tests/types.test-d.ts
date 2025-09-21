@@ -385,6 +385,15 @@ describe("isLazy", () => {
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 	});
+
+	describe("parameters", () => {
+		it("should accept a generator function that returns TypeGuard<A>", () => {
+			type Actual = Parameters<typeof isLazy<A>>;
+			type Expected = [() => TypeGuard<A>];
+
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
+	});
 });
 
 describe("isMap", () => {
