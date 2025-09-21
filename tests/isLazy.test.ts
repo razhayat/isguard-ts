@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { isArray, isIndexRecord, isLazy, isMap, isMaybe, isNumber, isOptional, isString, isTuple, isType, isUnion, TypeGuard } from "../src";
+import { isArray, isIndexRecord, isLazy, isNumber, isOptional, isTuple, isType, isUnion, TypeGuard } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is lazy", () => {
@@ -52,7 +52,7 @@ describe("is recursive tuple", () => {
 
 	const isRow: TypeGuard<Row> = isTuple<Row>([
 		isNumber,
-		isLazy(() => isOptional(isRow)),
+		isOptional(isLazy(() => isRow)),
 	]);
 
 	describedGuardTests({
@@ -126,9 +126,9 @@ describe("is recursive index record", () => {
 		[key: string]: RecursiveIndexRecord;
 	};
 
-	const isRecursiveIndexRecord: TypeGuard<RecursiveIndexRecord> = isIndexRecord(
-		isLazy(() => isRecursiveIndexRecord)
-	);
+	const isRecursiveIndexRecord: TypeGuard<RecursiveIndexRecord> = isLazy(() => isIndexRecord(
+		isRecursiveIndexRecord,
+	));
 
 	describedGuardTests({
 		guard: isRecursiveIndexRecord,
