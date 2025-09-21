@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, TypeGuardTemplateParameter, isRecursive, isRegExp } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, TypeGuardTemplateParameter, isRecursive, isRegExp, isLazy } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exactly equal", () => {
@@ -372,6 +372,30 @@ describe("isIntersection", () => {
 	});
 });
 
+describe("isLazy", () => {
+	type A = { a: number };
+
+	const isA = isType<A>({ a: isNumber });
+
+	describe("return type", () => {
+		it("should return TypeGuard<A>", () => {
+			const actual = isLazy(() => isA);
+			type Expected = TypeGuard<A>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+	});
+
+	describe("parameters", () => {
+		it("should accept a generator function that returns TypeGuard<A>", () => {
+			type Actual = Parameters<typeof isLazy<A>>;
+			type Expected = [() => TypeGuard<A>];
+
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
+	});
+});
+
 describe("isMap", () => {
 	describe("return type", () => {
 		it("should return TypeGuard<Map<K, V>>", () => {
@@ -595,21 +619,21 @@ describe("isTuple", () => {
 		});
 
 		it("should accept a function", () => {
-			const actual = isTuple(() => [isString]);
+			const actual = isTuple<[string]>((_) => [isString]);
 			type Expected = TypeGuard<[string]>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 
 		it("should accept a nested function", () => {
-			const actual = isTuple(() => () => [isNumber]);
+			const actual = isTuple<[number]>((_) => () => [isNumber]);
 			type Expected = TypeGuard<[number]>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 
 		it("should accept a deeply nested function", () => {
-			const actual = isTuple(() => () => () => [isOptionalNumber]);
+			const actual = isTuple<[number | undefined]>((_) => () => () => [isOptionalNumber]);
 			type Expected = TypeGuard<[number | undefined]>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
@@ -697,9 +721,10 @@ describe("isTuple", () => {
 });
 
 describe("isType", () => {
+	type A = { a: number };
+
 	describe("return type", () => {
 		it("should return TypeGuard<A>", () => {
-			type A = { a: number };
 			const actual = isType<A>({ a: isNumber });
 			type Expected = TypeGuard<A>;
 
@@ -725,22 +750,22 @@ describe("isType", () => {
 		});
 
 		it("should accept a function", () => {
-			const actual = isType(() => ({ name: isString }));
-			type Expected = TypeGuard<{ name: string }>;
+			const actual = isType<A>(() => ({ a: isNumber }));
+			type Expected = TypeGuard<A>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 
 		it("should accept a nested function", () => {
-			const actual = isType(() => () => ({ age: isNumber }));
-			type Expected = TypeGuard<{ age: number }>;
+			const actual = isType<A>(() => () => ({ a: isNumber }));
+			type Expected = TypeGuard<A>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
 
 		it("should accept a deeply nested function", () => {
-			const actual = isType(() => () => () => ({ optional: isOptionalNumber }));
-			type Expected = TypeGuard<{ optional: number | undefined }>;
+			const actual = isType<A>(() => () => () => ({ a: isNumber }));
+			type Expected = TypeGuard<A>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
