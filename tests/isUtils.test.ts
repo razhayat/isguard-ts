@@ -1,6 +1,6 @@
 import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isMaybe, isNever, isNumber, isObject, isOptional, isPropertyKey, isString, isUnknown } from "../src";
+import { isFalse, isMaybe, isNever, isNil, isNull, isNumber, isObject, isOptional, isPropertyKey, isString, isTrue, isUndefined, isUnknown } from "../src";
 
 describe("is object", () => {
 	describedGuardTests({
@@ -162,6 +162,121 @@ describe("isMaybe", () => {
 			[NaN, true],
 
 			[null, true],
+		],
+	});
+});
+
+describe("is null", () => {
+	describedGuardTests({
+		guard: isNull,
+		testCases: [
+			[null, true],
+			[undefined, false],
+			[NaN, false],
+			[6, false],
+			[6n, false],
+			["6", false],
+			[false, false],
+			[Symbol(), false],
+			[new Date(), false],
+			[() => {}, false],
+			[/[]/, false],
+			[[], false],
+			[{}, false],
+		],
+	});
+});
+
+describe("is undefined", () => {
+	describedGuardTests({
+		guard: isUndefined,
+		testCases: [
+			[null, false],
+			[423n, false],
+			[true, false],
+			["hello", false],
+			[new Map(), false],
+			[Symbol("undefined"), false],
+			[async function() {}, false],
+			[[], false],
+			[{}, false],
+			[["Empire"], false],
+
+			[undefined, true],
+			[void 353.4, true],
+			[void null, true],
+			[void new Date(), true],
+			[void (() => 12)(), true],
+		],
+	});
+});
+
+describe("is nil", () => {
+	describedGuardTests({
+		guard: isNil,
+		testCases: [
+			[56, false],
+			[-34n, false],
+			["null", false],
+			["", false],
+			[NaN, false],
+			[true, false],
+			[new Set(), false],
+			[RegExp, false],
+			[[], false],
+			[{}, false],
+			[{ maybe: 61 }, false],
+
+			[null, true],
+			[undefined, true],
+			[void NaN, true],
+			[void "", true],
+			[void false, true],
+			[void Symbol, true],
+		],
+	});
+});
+
+describe("is true", () => {
+	describedGuardTests({
+		guard: isTrue,
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[56, false],
+			[{ maybe: 61 }, false],
+			[new Date(), false],
+			["true", false],
+			["True", false],
+			[new Boolean(true), false],
+			[false, false],
+			[async () => {}, false],
+			[Symbol.for("true"), false],
+			[[], false],
+			[{}, false],
+			[true, true],
+		],
+	});
+});
+
+describe("is false", () => {
+	describedGuardTests({
+		guard: isFalse,
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[NaN, false],
+			[0, false],
+			["false", false],
+			["False", false],
+			[new Boolean(false), false],
+			[new Boolean(true), false],
+			[[], false],
+			[{}, false],
+			[function() {}, false],
+			[[false], false],
+			[true, false],
+			[false, true],
 		],
 	});
 });
