@@ -8,7 +8,7 @@ import { TypeGuard } from "./types";
 
 export const isNull = isLiteral(null);
 export const isUndefined = isLiteral(undefined);
-export const isNil = isUnion(isNull, isUndefined);
+export const isNil = isLiteral(null, undefined);
 
 export const isTrue = isLiteral(true);
 export const isFalse = isLiteral(false);
@@ -31,8 +31,6 @@ export const isReferenceError = isInstanceof(ReferenceError);
 export const isSyntaxError = isInstanceof(SyntaxError);
 export const isTypeError = isInstanceof(TypeError);
 export const isURIError = isInstanceof(URIError);
-
-export const isObject: TypeGuard<object> = (value) => typeof value === "object" && value !== null;
 
 export const isNumberArray = isArray(isNumber);
 export const isStringArray = isArray(isString);
