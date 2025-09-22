@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, TypeGuardTemplateParameter, isRecursive, isRegExp, isLazy, isLiteral } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, TypeGuardTemplateParameter, isRecursive, isRegExp, isLazy, isLiteral, isRefine } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exactly equal", () => {
@@ -687,6 +687,28 @@ describe("isRecursive", () => {
 			type Expected = TypeGuard<NotRecursive>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+	});
+});
+
+describe("isRefine", () => {
+	describe("return type", () => {
+		it("should return TypeGuard<Farewell>", () => {
+			type Farewell = `Bye ${string}`;
+			const actual = isRefine(isString, (value): value is Farewell => true);
+			type Expected = TypeGuard<Farewell>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+	});
+
+	describe("parameters", () => {
+		it("should accept TypeGuard as a first parameter", () => {
+			expectTypeOf(isRefine).parameter(0).toEqualTypeOf<TypeGuard<unknown>>();
+		});
+
+		it("should accept a typescript type guard as a second argument", () => {
+			expectTypeOf(isRefine<boolean, true>).parameter(1).toEqualTypeOf<(value: boolean) => value is true>;
 		});
 	});
 });

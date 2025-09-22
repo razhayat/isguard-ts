@@ -23,6 +23,7 @@ A powerful `typescript` library that helps you build type guards.<br/>
 + [isLiteral](#is-literal)
 + [isOptional](#is-optional)
 + [isMaybe](#is-maybe)
++ [isRefine](#is-refine)
 
 ## Some of our utility type guards
 + isString, isNumber, isBoolean, isDate
@@ -52,15 +53,13 @@ type Extracted = Guarded<TypeGuard<number>>; // number
 
 ## Code Examples
 
->Note that these code examples may contain **Best Practice** sections<br/>
-You are advised to follow them closely when you write your code
-
 *<span id="is-type" ></span>*
 ### `isType<T>(template): TypeGuard<T>`
 Helps you create type guards for types and interfaces
 
->**Best Practice:** Pass the generic type argument into `isType`<br/>
-Otherwise optional fields might have an unexpected behavior
+> ***Best Practice:***
+> Pass the generic type argument into `isType` <br/>
+> Otherwise optional fields might have an unexpected behavior
 
 ```typescript
 import { isType, isString, isNumber } from "isguard-ts";
@@ -98,8 +97,9 @@ const isNumberHolder: TypeGuard<ValueHolder<number>> = isValueHolder(isNumber);
 ### `isTuple<T>(template): TypeGuard<T>`
 Helps you create type guards for tuples
 
->**Best Practice:** Pass the generic type argument into `isTuple`<br/>
-Otherwise optional fields might have an unexpected behavior
+> ***Best Practice:***
+> Pass the generic type argument into `isTuple` <br/>
+> Otherwise optional fields might have an unexpected behavior
 
 ```typescript
 import { isTuple, isNumber, isOptionalString } from "isguard-ts";
@@ -117,8 +117,9 @@ isRow(["Hello", "Bye"]); // false
 ### `isUnion<[T1, T2, ...]>(...guards): TypeGuard<T1 | T2 | ...>`
 Helps you create type guards for unions
 
->**Best Practice:** Add a type annotation to the result of `isUnion`<br/>
-This ensures the result is of the expected type
+> ***Best Practice:***
+> Add a type annotation to the result of `isUnion` <br/>
+> This ensures the result is of the expected type
 
 ```typescript
 import { isType, isNumber, isString, TypeGuard, isUnion } from "isguard-ts";
@@ -141,8 +142,9 @@ isC({ a: new Date() }); // false
 ### `isIntersection<[T1, T2, ...]>(...guards): TypeGuard<T1 & T2 & ...>`
 Helps you create type guards for intersections
 
->**Best Practice:** Add a type annotation to the result of `isIntersection`<br/>
-This ensures the result is of the expected type
+> ***Best Practice:***
+> Add a type annotation to the result of `isIntersection` <br/>
+> This ensures the result is of the expected type
 
 ```typescript
 import { isType, isNumber, isString, TypeGuard, isIntersection } from "isguard-ts";
@@ -251,7 +253,8 @@ Useful for:
 + Creating type guards for recursive types
 + Resolving undefined errors due to circular imports
 
->**Important:** Annotate the recursive guard to avoid typescript errors
+> ***Important:***
+> Annotate the recursive guard to avoid typescript errors
 
 ```typescript
 import { isType, isNumber, isLazy, isOptional } from "isguard-ts";
@@ -339,6 +342,26 @@ Helps you create type guards for nullable types
 import { isMaybe, isNumber } from "isguard-ts";
 
 const isNumberOrNul = isMaybe(isNumber);
+```
+
+*<span id="is-refine" ></span>*
+### `isRefine<T, R>(guard: TypeGuard<T>, refinement: (value: T) => value is R): TypeGuard<R>`
+Helps you refine existing type guards. Can be used for:
++ Branded types (like Email, PositiveNumber and more)
++ Template literals (like \`Bye ${string}\`)
+
+> ***Warning:***
+> using `isRefine` can be unsafe because it let's you implement potentially false logic <br/>
+> Use at your own risk.
+
+```typescript
+import { isRefine, isString } from "isguard-ts";
+
+type Farewell = `Bye ${string}`;
+
+const isFarewell = isRefine(isString, (value: string): value is Farewell => {
+	return value.startsWith("Bye ");
+});
 ```
 
 *<span id="all-utility" ></span>*
