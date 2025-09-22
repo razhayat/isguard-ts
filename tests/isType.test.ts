@@ -1,5 +1,5 @@
 import { describe } from "vitest";
-import { isDate, isMaybe, isNumber, isType, isString, isOptionalString, isLiteral } from "../src";
+import { isDate, isMaybe, isNumber, isType, isString, isOptionalString, isLiteral, isLazy, TypeGuard } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is empty type", () => {
@@ -125,12 +125,14 @@ describe("is tree type", () => {
 		right: Tree | null;
 	};
 
+	const isTree: TypeGuard<Tree> = isType<Tree>({
+		value: isNumber,
+		left: isLazy(() => isMaybe(isTree)),
+		right: isLazy(() => isMaybe(isTree)),
+	})
+
 	describedGuardTests({
-		guard: isType<Tree>(isTree => ({
-			value: isNumber,
-			left: isMaybe(isTree),
-			right: isMaybe(isTree),
-		})),
+		guard: isTree,
 		testCases: [
 			[null, false],
 			[undefined, false],
