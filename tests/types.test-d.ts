@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, TypeGuardTemplateParameter, isRegExp, isLazy, isLiteral, isRefine } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, TypeGuardTemplateParameter, isRegExp, isLazy, isLiteral, isRefine } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exactly equal", () => {
@@ -1000,31 +1000,6 @@ describe("isUnion", () => {
 
 			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 		});
-	});
-});
-
-describe("isValue return type", () => {
-	it("should narrow generic type", () => {
-		const actual = isValue("hello");
-		type Expected = TypeGuard<"hello">;
-
-		expectTypeOf(actual).toEqualTypeOf<Expected>();
-	});
-});
-
-describe("isValueUnion return type", () => {
-	it("should return TypeGuard<1 | 2>", () => {
-		const actual = isValueUnion(1, 2);
-		type Expected = TypeGuard<1 | 2>;
-
-		expectTypeOf(actual).toEqualTypeOf<Expected>();
-	});
-
-	it("should return TypeGuard<1 | 'Hello'>", () => {
-		const actual = isValueUnion(1, 'Hello');
-		type Expected = TypeGuard<1 | 'Hello'>;
-
-		expectTypeOf(actual).toEqualTypeOf<Expected>();
 	});
 });
 

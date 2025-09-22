@@ -13,5 +13,4 @@ export * from "./isType";
 export * from "./isTypeof";
 export * from "./isUnion";
 export * from "./isUtils";
-export * from "./isValue";
 export * from "./types";
