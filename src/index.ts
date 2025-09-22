@@ -7,6 +7,7 @@ export * from "./isLiteral";
 export * from "./isMap";
 export * from "./isRecord";
 export * from "./isRecursive";
+export * from "./isRefine";
 export * from "./isSet";
 export * from "./isTuple";
 export * from "./isType";
