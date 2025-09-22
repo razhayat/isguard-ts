@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, TypeGuardTemplateParameter, isRecursive, isRegExp, isLazy } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, TypeGuardTemplateParameter, isRecursive, isRegExp, isLazy, isLiteral } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exactly equal", () => {
@@ -392,6 +392,99 @@ describe("isLazy", () => {
 			type Expected = [() => TypeGuard<A>];
 
 			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		});
+	});
+});
+
+describe("isLiteral", () => {
+	describe("return type", () => {
+		it("should return TypeGuard<12>", () => {
+			const actual = isLiteral(12);
+			type Expected = TypeGuard<12>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+
+		it("should return TypeGuard<12 | false>", () => {
+			const actual = isLiteral(12, false);
+			type Expected = TypeGuard<12 | false>;
+
+			expectTypeOf(actual).toEqualTypeOf<Expected>();
+		});
+	});
+
+	describe("parameters", () => {
+		it("should accept a string", () => {
+			isLiteral("Accept me");
+		});
+
+		it("should accept a number", () => {
+			isLiteral(12);
+		});
+
+		it("should accept a bigint", () => {
+			isLiteral(235385793857938578395794n);
+		});
+
+		it("should accept a boolean", () => {
+			isLiteral(true);
+		});
+
+		it("should accept null", () => {
+			isLiteral(null);
+		});
+
+		it("should accept undefined", () => {
+			isLiteral(undefined);
+		});
+
+		it("should accept multiple literals", () => {
+			isLiteral(null, false);
+		});
+
+		it("should not accept some values being non literals", () => {
+			isLiteral(
+				null,
+				false,
+				// @ts-expect-error
+				new Date(),
+			);
+		});
+
+		it("should not accept a symbol", () => {
+			isLiteral(
+				// @ts-expect-error
+				Symbol("I'm not accepted so I'm very sad🥲"),
+			);
+		});
+
+		it("should not accept a Date", () => {
+			isLiteral(
+				// @ts-expect-error
+				new Date(),
+			);
+		});
+
+		it("should not accept a class", () => {
+			class Example {}
+			isLiteral(
+				// @ts-expect-error
+				Example,
+			);
+		});
+
+		it("should not accept an array", () => {
+			isLiteral(
+				// @ts-expect-error
+				[1, 4],
+			);
+		});
+
+		it("should not accept a function", () => {
+			isLiteral(
+				// @ts-expect-error
+				() => 45,
+			);
 		});
 	});
 });
