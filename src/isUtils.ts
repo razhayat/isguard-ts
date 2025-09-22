@@ -1,16 +1,16 @@
 import { isArray } from "./isArray";
 import { isInstanceof } from "./isInstanceof";
+import { isLiteral } from "./isLiteral";
 import { isTypeof } from "./isTypeof";
 import { isUnion } from "./isUnion";
-import { isValue } from "./isValue";
 import { TypeGuard } from "./types";
 
-export const isNull = isValue(null);
-export const isUndefined = isValue(undefined);
+export const isNull = isLiteral(null);
+export const isUndefined = isLiteral(undefined);
 export const isNil = isUnion(isNull, isUndefined);
 
-export const isTrue = isValue(true);
-export const isFalse = isValue(false);
+export const isTrue = isLiteral(true);
+export const isFalse = isLiteral(false);
 
 export const isNumber = isTypeof("number");
 export const isBigint = isTypeof("bigint");
