@@ -3,6 +3,7 @@ export * from "./isEnum";
 export * from "./isInstanceof";
 export * from "./isIntersection";
 export * from "./isLazy";
+export * from "./isLiteral";
 export * from "./isMap";
 export * from "./isRecord";
 export * from "./isRecursive";
