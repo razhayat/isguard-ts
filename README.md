@@ -20,8 +20,7 @@ A powerful `typescript` library that helps you build type guards.<br/>
 + [isIndexRecord](#is-index-record)
 + [isLazy](#is-lazy)
 + [isInstanceof](#is-instanceof)
-+ [isValue](#is-value)
-+ [isValueUnion](#is-value-union)
++ [isLiteral](#is-literal)
 + [isOptional](#is-optional)
 + [isMaybe](#is-maybe)
 
@@ -313,23 +312,15 @@ const isAnimal = isInstanceof(Animal);
 const isDog = isInstanceof(Dog);
 ```
 
-*<span id="is-value" ></span>*
-### `isValue<T>(value: T): TypeGuard<T>`
-Helps you create type guards for value literals
+*<span id="is-literal" ></span>*
+### `isLiteral<T extends Literal[]>(...literals: T): TypeGuard<T[number]>`
+Helps you create type guards for literals
 ```typescript
-import { isValue } from "isguard-ts";
+import { isLiteral } from "isguard-ts";
 
-const isHello = isValue("Hello");
-const is12 = isValue(12);
-```
-
-*<span id="is-value-union" ></span>*
-### `isValueUnion<[T1, T2, ...]>(values): TypeGuard<T1 | T2 | ...>`
-Helps you create type guards for union of value literals
-```typescript
-import { isValueUnion } from "isguard-ts";
-
-const isHelloOrBye = isValueUnion("Hello", "Bye");
+const isHello = isLiteral("Hello");
+const is12 = isLiteral(12);
+const isHelloOr12 = isLiteral("Hello", 12);
 ```
 
 *<span id="is-optional" ></span>*
