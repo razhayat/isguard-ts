@@ -2,7 +2,30 @@ import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
 import { isLiteral } from "../src";
 
-describe("is value (56)", () => {
+describe("is literal of nothing (never)", () => {
+	describedGuardTests({
+		guard: isLiteral(),
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[12, false],
+			[12n, false],
+			[true, false],
+			[new Map(), false],
+			[[], false],
+			[{}, false],
+			["hello", false],
+			[[new Date(), 12, "bye"], false],
+			[{ bye: "no", ok: "yes" }, false],
+			[() => { }, false],
+			[async function* () {}, false],
+			[Symbol(), false],
+			[/[A-Z]/, false],
+		],
+	});
+});
+
+describe("is literal (56)", () => {
 	describedGuardTests({
 		guard: isLiteral(56),
 		testCases: [
@@ -26,7 +49,7 @@ describe("is value (56)", () => {
 	});
 });
 
-describe("is value ('Empire!')", () => {
+describe("is literal ('Empire!')", () => {
 	describedGuardTests({
 		guard: isLiteral("Empire!"),
 		testCases: [
