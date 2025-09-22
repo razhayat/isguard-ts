@@ -1,5 +1,5 @@
 import { describe } from "vitest";
-import { isDate, isMaybe, isNumber, isType, isString, isOptionalString, isLiteral } from "../src";
+import { isDate, isMaybe, isNumber, isType, isString, isOptionalString, isLiteral, isLazy, TypeGuard } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is empty type", () => {
@@ -125,12 +125,14 @@ describe("is tree type", () => {
 		right: Tree | null;
 	};
 
+	const isTree: TypeGuard<Tree> = isType<Tree>({
+		value: isNumber,
+		left: isLazy(() => isMaybe(isTree)),
+		right: isLazy(() => isMaybe(isTree)),
+	})
+
 	describedGuardTests({
-		guard: isType<Tree>(isTree => ({
-			value: isNumber,
-			left: isMaybe(isTree),
-			right: isMaybe(isTree),
-		})),
+		guard: isTree,
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -355,6 +357,9 @@ describe("is type with all PropertyKey types", () => {
 			[{ 61: () => {}, str: 3213, [symbol]: 5372 }, false],
 			[{ str: 23948, [symbol]: null, 61: 2421 }, false],
 			[{ str: 364634, 61: 24523, [symbol]: 2938523 }, true],
+			[{ get str() { return "364634" }, 61: 24523, [symbol]: 2938523 }, false],
+			[{ get str() { return 364634 }, get 61() { return 24523 }, get [symbol]() { return "2938523" } }, false],
+			[{ str: 364634, get 61() { return "24523" }, get [symbol]() { return 2938523 } }, false],
 
 			[{ str: 364634, 61: 24523, [symbol]: 2938523, anotherStr: 311 }, true],
 			[{ str: 364634, 61: 24523, [symbol]: 2938523, anotherStr: "not a number" }, true],
@@ -362,6 +367,8 @@ describe("is type with all PropertyKey types", () => {
 			[{ str: 364634, 61: 24523, [symbol]: 2938523, 46: new Date }, true],
 			[{ str: 364634, 61: 24523, [symbol]: 2938523, [Symbol()]: 239483 }, true],
 			[{ str: 364634, 61: 24523, [symbol]: 2938523, [Symbol()]: () => {} }, true],
+			[{ get str() { return 364634 }, 61: 24523, [symbol]: 2938523 }, true],
+			[{ get str() { return 364634 }, get 61() { return 24523 }, get [symbol]() { return 2938523 } }, true],
 		],
 	});
 });
