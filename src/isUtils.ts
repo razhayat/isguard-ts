@@ -1,6 +1,7 @@
 import { isArray } from "./isArray";
 import { isInstanceof } from "./isInstanceof";
 import { isLiteral } from "./isLiteral";
+import { isRefine } from "./isRefine";
 import { isTypeof } from "./isTypeof";
 import { isUnion } from "./isUnion";
 import { TypeGuard } from "./types";
@@ -18,6 +19,7 @@ export const isString = isTypeof("string");
 export const isBoolean = isTypeof("boolean");
 export const isSymbol = isTypeof("symbol");
 export const isFunction = isTypeof("function");
+export const isObject = isRefine(isTypeof("object"), object => !!object);
 export const isPropertyKey: TypeGuard<PropertyKey> = isUnion(isString, isNumber, isSymbol);
 
 export const isDate = isInstanceof(Date);
