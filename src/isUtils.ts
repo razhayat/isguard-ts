@@ -1,16 +1,17 @@
 import { isArray } from "./isArray";
 import { isInstanceof } from "./isInstanceof";
+import { isLiteral } from "./isLiteral";
+import { isRefine } from "./isRefine";
 import { isTypeof } from "./isTypeof";
 import { isUnion } from "./isUnion";
-import { isValue } from "./isValue";
 import { TypeGuard } from "./types";
 
-export const isNull = isValue(null);
-export const isUndefined = isValue(undefined);
-export const isNil = isUnion(isNull, isUndefined);
+export const isNull = isLiteral(null);
+export const isUndefined = isLiteral(undefined);
+export const isNil = isLiteral(null, undefined);
 
-export const isTrue = isValue(true);
-export const isFalse = isValue(false);
+export const isTrue = isLiteral(true);
+export const isFalse = isLiteral(false);
 
 export const isNumber = isTypeof("number");
 export const isBigint = isTypeof("bigint");
@@ -18,6 +19,7 @@ export const isString = isTypeof("string");
 export const isBoolean = isTypeof("boolean");
 export const isSymbol = isTypeof("symbol");
 export const isFunction = isTypeof("function");
+export const isObject = isRefine(isTypeof("object"), object => !!object);
 export const isPropertyKey: TypeGuard<PropertyKey> = isUnion(isString, isNumber, isSymbol);
 
 export const isDate = isInstanceof(Date);
@@ -29,8 +31,6 @@ export const isReferenceError = isInstanceof(ReferenceError);
 export const isSyntaxError = isInstanceof(SyntaxError);
 export const isTypeError = isInstanceof(TypeError);
 export const isURIError = isInstanceof(URIError);
-
-export const isObject: TypeGuard<object> = (value) => typeof value === "object" && value !== null;
 
 export const isNumberArray = isArray(isNumber);
 export const isStringArray = isArray(isString);

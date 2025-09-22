@@ -18,12 +18,12 @@ A powerful `typescript` library that helps you build type guards.<br/>
 + [isRecord](#is-record)
 + [isPartialRecord](#is-partial-record)
 + [isIndexRecord](#is-index-record)
-+ [isRecursive](#is-recursive)
++ [isLazy](#is-lazy)
 + [isInstanceof](#is-instanceof)
-+ [isValue](#is-value)
-+ [isValueUnion](#is-value-union)
++ [isLiteral](#is-literal)
 + [isOptional](#is-optional)
 + [isMaybe](#is-maybe)
++ [isRefine](#is-refine)
 
 ## Some of our utility type guards
 + isString, isNumber, isBoolean, isDate
@@ -53,15 +53,13 @@ type Extracted = Guarded<TypeGuard<number>>; // number
 
 ## Code Examples
 
->Note that these code examples may contain **Best Practice** sections<br/>
-You are advised to follow them closely when you write your code
-
 *<span id="is-type" ></span>*
 ### `isType<T>(template): TypeGuard<T>`
 Helps you create type guards for types and interfaces
 
->**Best Practice:** Pass the generic type argument into `isType`<br/>
-Otherwise optional fields might have an unexpected behavior
+> ***Best Practice:***
+> Pass the generic type argument into `isType` <br/>
+> Otherwise optional fields might have an unexpected behavior
 
 ```typescript
 import { isType, isString, isNumber } from "isguard-ts";
@@ -77,23 +75,6 @@ const isPerson = isType<Person>({
 });
 
 isPerson({ name: "Hello", age: 6 }); // true
-```
-
-`isType` also supports recursive types by passing a function as an argument
-```typescript
-import { isType, isNumber, isMaybe } from "isguard-ts";
-
-type Tree = {
-	value: number;
-	left: Tree | null;
-	right: Tree | null;
-};
-
-const isTree = isType<Tree>(isTreeParam => ({
-	value: isNumber,
-	left: isMaybe(isTreeParam), // isTreeParam === isTree
-	right: isMaybe(isTreeParam),
-}));
 ```
 
 For generic types you would need to create your own `TypeGuard` generator
@@ -116,8 +97,9 @@ const isNumberHolder: TypeGuard<ValueHolder<number>> = isValueHolder(isNumber);
 ### `isTuple<T>(template): TypeGuard<T>`
 Helps you create type guards for tuples
 
->**Best Practice:** Pass the generic type argument into `isTuple`<br/>
-Otherwise optional fields might have an unexpected behavior
+> ***Best Practice:***
+> Pass the generic type argument into `isTuple` <br/>
+> Otherwise optional fields might have an unexpected behavior
 
 ```typescript
 import { isTuple, isNumber, isOptionalString } from "isguard-ts";
@@ -131,24 +113,13 @@ isRow([6]); // true
 isRow(["Hello", "Bye"]); // false
 ```
 
-Just like `isType`, `isTuple` supports recursive tuples
-```typescript
-import { isTuple, isNumber, isMaybe } from "isguard-ts";
-
-type Row = [number, Row | null];
-
-const isRow = isTuple<Row>(isRowParam => [
-	isNumber,
-	isMaybe(isRowParam), // isRowParam === isRow
-]);
-```
-
 *<span id="is-union" ></span>*
 ### `isUnion<[T1, T2, ...]>(...guards): TypeGuard<T1 | T2 | ...>`
 Helps you create type guards for unions
 
->**Best Practice:** Add a type annotation to the result of `isUnion`<br/>
-This ensures the result is of the expected type
+> ***Best Practice:***
+> Add a type annotation to the result of `isUnion` <br/>
+> This ensures the result is of the expected type
 
 ```typescript
 import { isType, isNumber, isString, TypeGuard, isUnion } from "isguard-ts";
@@ -171,8 +142,9 @@ isC({ a: new Date() }); // false
 ### `isIntersection<[T1, T2, ...]>(...guards): TypeGuard<T1 & T2 & ...>`
 Helps you create type guards for intersections
 
->**Best Practice:** Add a type annotation to the result of `isIntersection`<br/>
-This ensures the result is of the expected type
+> ***Best Practice:***
+> Add a type annotation to the result of `isIntersection` <br/>
+> This ensures the result is of the expected type
 
 ```typescript
 import { isType, isNumber, isString, TypeGuard, isIntersection } from "isguard-ts";
@@ -274,40 +246,43 @@ import { isIndexRecord, isNumber } from "isguard-ts";
 const isNumberRecord = isIndexRecord(isNumber);
 ```
 
-*<span id="is-recursive" ></span>*
-### `isRecursive<T>(generator): TypeGuard<T>`
-Helps you create type guards for recursive types
+*<span id="is-lazy" ></span>*
+### `isLazy<T>(generator: () => TypeGuard<T>): TypeGuard<T>`
+Helps you lazy load a type guard.
+Useful for:
++ Creating type guards for recursive types
++ Resolving undefined errors due to circular imports
 
->**Best Practice:** Pass the generic type argument into `isRecursive`<br/>
-To ensure the `TypeGuard` returned is of the desired type
+> ***Important:***
+> Annotate the recursive guard to avoid typescript errors
 
 ```typescript
-import { isRecursive, isType, isNumber, isOptional } from "isguard-ts";
+import { isType, isNumber, isLazy, isOptional } from "isguard-ts";
 
 type Node = {
 	value: number;
 	next?: Node;
 };
 
-const isNode = isRecursive<Node>(isNodeParam => isType<Node>({
+const isNode: TypeGuard<Node> = isType<Node>({
 	value: isNumber,
-	next: isOptional(isNodeParam), // isNodeParam === isNode
-}));
+	next: isLazy(() => isOptional(isNode)),
+});
 ```
 
 ```typescript
-import { isRecursive, isTuple, isNumber, isOptional } from "isguard-ts";
+import { isTuple, isNumber, isLazy, isOptional } from "isguard-ts";
 
 type Row = [number, Row?];
 
-const isRow = isRecursive<Row>(isRowParam => isTuple<Row>([
+const isRow: TypeGuard<Row> = isTuple<Row>([
 	isNumber,
-	isOptional(isRowParam), // isRowParam === isRow
-]));
+	isLazy(() => isOptional(isRow)),
+]);
 ```
 
 ```typescript
-import { isRecursive, isUnion, isNumber, isString, isBoolean, isNull, isArray, isIndexRecord } from "isguard-ts";
+import { isUnion, isNumber, isString, isBoolean, isNull, isLazy, isArray, isIndexRecord } from "isguard-ts";
 
 type Json =
 	number |
@@ -317,14 +292,14 @@ type Json =
 	Json[] |
 	{ [key: string]: Json; };
 
-const isJson = isRecursive<Json>(isJsonParam => isUnion(
+const isJson: TypeGuard<Json> = isUnion(
 	isNumber,
 	isString,
 	isBoolean,
 	isNull,
-	isArray(isJsonParam), // isJsonParam === isJson
-	isIndexRecord(isJsonParam),
-));
+	isLazy(() => isArray(isJson)),
+	isLazy(() => isJson),
+);
 ```
 
 *<span id="is-instanceof" ></span>*
@@ -340,23 +315,15 @@ const isAnimal = isInstanceof(Animal);
 const isDog = isInstanceof(Dog);
 ```
 
-*<span id="is-value" ></span>*
-### `isValue<T>(value: T): TypeGuard<T>`
-Helps you create type guards for value literals
+*<span id="is-literal" ></span>*
+### `isLiteral<T extends Literal[]>(...literals: T): TypeGuard<T[number]>`
+Helps you create type guards for literals
 ```typescript
-import { isValue } from "isguard-ts";
+import { isLiteral } from "isguard-ts";
 
-const isHello = isValue("Hello");
-const is12 = isValue(12);
-```
-
-*<span id="is-value-union" ></span>*
-### `isValueUnion<[T1, T2, ...]>(values): TypeGuard<T1 | T2 | ...>`
-Helps you create type guards for union of value literals
-```typescript
-import { isValueUnion } from "isguard-ts";
-
-const isHelloOrBye = isValueUnion("Hello", "Bye");
+const isHello = isLiteral("Hello");
+const is12 = isLiteral(12);
+const isHelloOr12 = isLiteral("Hello", 12);
 ```
 
 *<span id="is-optional" ></span>*
@@ -375,6 +342,26 @@ Helps you create type guards for nullable types
 import { isMaybe, isNumber } from "isguard-ts";
 
 const isNumberOrNul = isMaybe(isNumber);
+```
+
+*<span id="is-refine" ></span>*
+### `isRefine<T, R>(guard: TypeGuard<T>, refinement: (value: T) => value is R): TypeGuard<R>`
+Helps you refine existing type guards. Can be used for:
++ Branded types (like Email, PositiveNumber and more)
++ Template literals (like \`Bye ${string}\`)
+
+> ***Warning:***
+> using `isRefine` can be unsafe because it let's you implement potentially false logic <br/>
+> Use at your own risk.
+
+```typescript
+import { isRefine, isString } from "isguard-ts";
+
+type Farewell = `Bye ${string}`;
+
+const isFarewell = isRefine(isString, (value: string): value is Farewell => {
+	return value.startsWith("Bye ");
+});
 ```
 
 *<span id="all-utility" ></span>*

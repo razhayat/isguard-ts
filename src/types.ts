@@ -12,6 +12,9 @@ export type TypeGuardTemplate<in out T, in out _U extends ExactEqual<T> = ExactE
 	-readonly [K in keyof T]-?: TypeGuard<T[K]>;
 };
 
+/**
+ * @deprecated this type is going to be removed in the next major version
+ */
 export type TypeGuardTemplateFunction<in out T, in out G = T, in out _U extends ExactEqual<T> = ExactEqual<T>> = {
 	(guard: TypeGuard<G>): TypeGuardTemplateParameter<T, G>;
 };
