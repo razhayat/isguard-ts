@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, TypeGuardTemplateParameter, isRecursive, isRegExp, isLazy, isLiteral, isRefine } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, isValue, isValueUnion, TypeGuard, TypeGuardTemplate, TypeGuardTemplateFunction, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, TypeGuardTemplateParameter, isRegExp, isLazy, isLiteral, isRefine } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exactly equal", () => {
@@ -643,48 +643,6 @@ describe("isIndexRecord", () => {
 		it("should accept different key types", () => {
 			const actual = isIndexRecord<number, string>(isString);
 			type Expected = TypeGuard<Record<number, string>>;
-
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
-		});
-	});
-});
-
-describe("isRecursive", () => {
-	describe("return type", () => {
-		it("should return TypeGuard<T>", () => {
-			type T = number | string | boolean | T[];
-
-			const actual = isRecursive<T>(isT => isUnion(
-				isNumber,
-				isString,
-				isBoolean,
-				isArray(isT),
-			));
-			type Expected = TypeGuard<T>;
-
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
-		});
-	});
-
-	describe("parameters", () => {
-		it("should accept a function that has a parameter of type TypeGuard<T>", () => {
-			type T = { a?: T };
-			type Parameter = Parameters<Parameters<typeof isRecursive<T>>[0]>[0];
-
-			expectTypeOf<Parameter>().toEqualTypeOf<TypeGuard<T>>();
-		});
-
-		it("should accept a function that returns TypeGuard<T>", () => {
-			type T = [number, T?];
-			type Return = ReturnType<Parameters<typeof isRecursive<T>>[0]>;
-
-			expectTypeOf<Return>().toEqualTypeOf<TypeGuard<T>>();
-		});
-
-		it("should accept a type that is not recursive", () => {
-			type NotRecursive = { a: string };
-			const actual = isRecursive<NotRecursive>(() => isType({ a: isString }));
-			type Expected = TypeGuard<NotRecursive>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
