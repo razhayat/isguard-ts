@@ -23,6 +23,7 @@ A powerful `typescript` library that helps you build type guards.<br/>
 + [isLiteral](#is-literal)
 + [isOptional](#is-optional)
 + [isMaybe](#is-maybe)
++ [isRefine](#is-refine)
 
 ## Some of our utility type guards
 + isString, isNumber, isBoolean, isDate
@@ -339,6 +340,26 @@ Helps you create type guards for nullable types
 import { isMaybe, isNumber } from "isguard-ts";
 
 const isNumberOrNul = isMaybe(isNumber);
+```
+
+*<span id="is-refine" ></span>*
+### `isRefine<T, R>(guard: TypeGuard<T>, refinement: (value: T) => value is R): TypeGuard<R>`
+Helps you refine existing type guards. Can be used for:
++ Branded types (like Email, PositiveNumber and more)
++ Template literals (like \`Bye ${string}\`)
+
+> ***Warning:***
+> using `isRefine` can be unsafe because it let's you implement potentially false logic. <br/>
+> Use at your own risk.
+
+```typescript
+import { isRefine, isString } from "isguard-ts";
+
+type Farewell = `Bye ${string}`;
+
+const isFarewell = isRefine(isString, (value: string): value is Farewell => {
+	return value.startsWith("Bye ");
+});
 ```
 
 *<span id="all-utility" ></span>*
