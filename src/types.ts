@@ -1,6 +1,7 @@
 type ExactEqual<T> = {
 	required: Required<T>;
-};
+	keys: keyof T;
+} & {};
 
 export type TypeGuard<in out T, in out _U extends ExactEqual<T> = ExactEqual<T>> = {
 	(value: unknown): value is T;

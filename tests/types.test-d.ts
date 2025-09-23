@@ -9,23 +9,69 @@ describe("TypeGuard type", () => {
 		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 	});
 
-	it("should not match derived types", () => {
-		type Base = TypeGuard<number>;
-		type Derived = TypeGuard<number | undefined>;
+	it("should be based on structural typing", () => {
+		type Type1 = { name: string; age: number; };
+		type Type2 = { name: string; age: number; };
 
-		expectTypeOf<Base>().not.toMatchTypeOf<Derived>();
+		expectTypeOf<Type1>().toEqualTypeOf<Type2>();
+		expectTypeOf<TypeGuard<Type1>>().toEqualTypeOf<TypeGuard<Type2>>();
 	});
 
 	it("should not match base types", () => {
-		type Derived = TypeGuard<number | undefined>;
-		type Base = TypeGuard<number>;
+		type Base = number | undefined;
+		type Derived = number;
 
-		expectTypeOf<Derived>().not.toMatchTypeOf<Base>();
+		expectTypeOf<Derived>().toMatchTypeOf<Base>();
+		expectTypeOf<TypeGuard<Derived>>().not.toMatchTypeOf<TypeGuard<Base>>();
+	});
+
+	it("should not match base types", () => {
+		type Base = { a: string; };
+		type Derived = Base & { b: number; };
+
+		expectTypeOf<Derived>().toMatchTypeOf<Base>();
+		expectTypeOf<TypeGuard<Derived>>().not.toMatchTypeOf<TypeGuard<Base>>();
+	});
+
+	it("should not match derived types", () => {
+		type Base = number | undefined;
+		type Derived = number;
+
+		expectTypeOf<Derived>().toMatchTypeOf<Base>();
+		expectTypeOf<TypeGuard<Base>>().not.toMatchTypeOf<TypeGuard<Derived>>();
+	});
+
+	it("should not match derived types", () => {
+		type Base = { a: string; };
+		type Derived = Base & { b: number; };
+
+		expectTypeOf<Derived>().toMatchTypeOf<Base>();
+		expectTypeOf<TypeGuard<Base>>().not.toMatchTypeOf<TypeGuard<Derived>>();
 	});
 
 	it("should not match mutually assignable types", () => {
 		type Type1 = { name: string };
 		type Type2 = Type1 & { age?: number };
+
+		expectTypeOf<Type1>().toMatchTypeOf<Type2>();
+		expectTypeOf<Type2>().toMatchTypeOf<Type1>();
+		expectTypeOf<TypeGuard<Type1>>().not.toMatchTypeOf<TypeGuard<Type2>>();
+		expectTypeOf<TypeGuard<Type2>>().not.toMatchTypeOf<TypeGuard<Type1>>();
+	});
+
+	it("should not match mutually assignable types", () => {
+		type Type1 = Record<never, unknown>;
+		type Type2 = Partial<{ hello: string }>;
+
+		expectTypeOf<Type1>().toMatchTypeOf<Type2>();
+		expectTypeOf<Type2>().toMatchTypeOf<Type1>();
+		expectTypeOf<TypeGuard<Type1>>().not.toMatchTypeOf<TypeGuard<Type2>>();
+		expectTypeOf<TypeGuard<Type2>>().not.toMatchTypeOf<TypeGuard<Type1>>();
+	});
+
+	it("should not match mutually assignable types", () => {
+		type Type1 = Record<never, unknown>;
+		type Type2 = { hello?: string };
 
 		expectTypeOf<Type1>().toMatchTypeOf<Type2>();
 		expectTypeOf<Type2>().toMatchTypeOf<Type1>();
@@ -716,9 +762,10 @@ describe("isType", () => {
 
 		it("should omit non index for tuples", () => {
 			const actual = isType([isNumber, isString]);
-			type Expected = TypeGuard<{ 0: number; 1: string }>;
+			type Actual = Guarded<typeof actual>;
+			type Expected = { 0: number; 1: string };
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 		});
 	});
 
