@@ -1,15 +1,20 @@
 import { isType } from "./isType";
-import { TypeGuard } from "./types";
-import { partialRecord, record } from "./utils";
+import { isOptional } from "./isUtils";
+import { TypeGuard, TypeGuardTemplate } from "./types";
 
-type AtLeastOneArray<T> = readonly [T, ...T[]];
-
-export const isRecord = <const K extends AtLeastOneArray<PropertyKey>, V>(keys: K, isValue: TypeGuard<V>) => {
-	return isType(record(keys, isValue));
+const createTemplate = <const K extends readonly PropertyKey[], V>(keys: K, isValue: TypeGuard<V>) => {
+	const entries = keys.map((key: K[number]) => [key, isValue] as const);
+	const template = Object.fromEntries(entries);
+	return template as TypeGuardTemplate<Record<K[number], V>>;
 };
 
-export const isPartialRecord = <const K extends AtLeastOneArray<PropertyKey>, V>(keys: K, isValue: TypeGuard<V>) => {
-	return isType(partialRecord(keys, isValue));
+export const isRecord = <const K extends readonly PropertyKey[], V>(keys: K, isValue: TypeGuard<V>) => {
+	return isType(createTemplate(keys, isValue));
+};
+
+export const isPartialRecord = <const K extends readonly PropertyKey[], V>(keys: K, isValue: TypeGuard<V>) => {
+	const template = createTemplate(keys, isOptional(isValue));
+	return isType(template as TypeGuardTemplate<Partial<Record<K[number], V>>>);
 };
 
 export const isIndexRecord = <K extends PropertyKey, V>(isValue: TypeGuard<V>): TypeGuard<Record<K, V>> => {
