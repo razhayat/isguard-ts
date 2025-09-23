@@ -139,6 +139,44 @@ describe("is partial record", () => {
 	});
 });
 
+describe("is partial record with symbol keys", () => {
+	const symbol = Symbol();
+
+	describedGuardTests({
+		guard: isPartialRecord([symbol], isString),
+		testCases: [
+			[undefined, false],
+			[null, false],
+
+			[{ [symbol]: 123 }, false],
+			[{ [symbol]: true }, false],
+			[{ [symbol]: null }, false],
+			[{ [symbol]: {} }, false],
+
+			[{}, true],
+			[[], true],
+			[new Date(), true],
+			["just a normal string", true],
+			[3131, true],
+			[2343n, true],
+			[true, true],
+			[symbol, true],
+			[() => { }, true],
+
+			[{ [Symbol("another symbol")]: 2423 }, true],
+			[{ [Symbol()]: 2423 }, true],
+			[{ [symbol]: "323532" }, true],
+			[{ [symbol]: "hello" }, true],
+			[{ [symbol]: "" }, true],
+			[{ [symbol]: String(42) }, true],
+			[{ [symbol]: undefined }, true],
+			[{ [symbol]: "test", extra: 123 }, true],
+			[{ extra: 123 }, true],
+			[Object.create({ [symbol]: "inherited" }), true],
+		],
+	});
+});
+
 describe("is indexRecord", () => {
 	describedGuardTests({
 		guard: isIndexRecord(isNumber),
