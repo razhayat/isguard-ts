@@ -5,6 +5,7 @@ import { isRefine } from "./isRefine";
 import { isTypeof } from "./isTypeof";
 import { isUnion } from "./isUnion";
 import { TypeGuard } from "./types";
+import { createTypeGuard } from "./utils";
 
 export const isNull = isLiteral(null);
 export const isUndefined = isLiteral(undefined);
@@ -49,5 +50,5 @@ export const isMaybeString = isMaybe(isString);
 export const isMaybeBoolean = isMaybe(isBoolean);
 export const isMaybeDate = isMaybe(isDate);
 
-export const isUnknown: TypeGuard<unknown> = (value): value is unknown => true;
-export const isNever: TypeGuard<never> = (value): value is never => false;
+export const isUnknown: TypeGuard<unknown> = createTypeGuard((value): value is unknown => true);
+export const isNever: TypeGuard<never> = createTypeGuard((value): value is never => false);

@@ -1,5 +1,6 @@
 import { TypeGuard } from "./types";
 import { isNumber } from "./isUtils";
+import { createTypeGuard } from "./utils";
 
 export type Enum = Record<string | number, string | number>;
 
@@ -13,7 +14,7 @@ const getEnumValues = (enumObj: Enum) => {
 
 export const isEnum = <T extends Enum>(enumObj: T): TypeGuard<T[keyof T]> => {
 	const enumValues: unknown[] = getEnumValues(enumObj);
-	return (value: unknown): value is T[keyof T] => {
+	return createTypeGuard((value: unknown): value is T[keyof T] => {
 		return enumValues.includes(value);
-	};
+	});
 };
