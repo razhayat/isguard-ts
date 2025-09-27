@@ -218,18 +218,24 @@ describe("TypeGuardTemplate type", () => {
 });
 
 describe("isArray return type", () => {
-	it("should return TypeGuard<number[]>", () => {
-		const actual = isArray(isNumber);
-		type Expected = TypeGuard<number[]>;
+	describe("return type", () => {
+		it("should return TypeGuard<number[]>", () => {
+			const actual = isArray(isNumber);
 
-		expectTypeOf(actual).toEqualTypeOf<Expected>();
-	});
+			expectTypeOf(actual).toEqualTypeOf<TypeGuard<number[]>>();
+		});
 
-	it("should return TypeGuard<string[][]>", () => {
-		const actual = isArray(isArray(isString));
-		type Expected = TypeGuard<string[][]>;
+		it("should return TypeGuard<string[][]>", () => {
+			const actual = isArray(isArray(isString));
 
-		expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<TypeGuard<string[][]>>();
+		});
+
+		it("should handle unions", () => {
+			const actual = isArray(isUnion(isNumber, isString));
+
+			expectTypeOf(actual).toEqualTypeOf<TypeGuard<(number | string)[]>>();
+		});
 	});
 });
 
