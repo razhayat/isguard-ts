@@ -20,7 +20,7 @@ describe("is recursive type", () => {
 
 	const isNode: TypeGuard<Node> = isType<Node>({
 		value: isNumber,
-		next: isLazy(() => isOptional(isNode)),
+		next: isLazy(() => isNode).optional(),
 	});
 
 	describedGuardTests({
@@ -123,7 +123,7 @@ describe("is recursive union", () => {
 
 describe("is recursive index record", () => {
 	type RecursiveIndexRecord = {
-		[key: string]: RecursiveIndexRecord;
+		[key: PropertyKey]: RecursiveIndexRecord;
 	};
 
 	const isRecursiveIndexRecord: TypeGuard<RecursiveIndexRecord> = isLazy(() => isIndexRecord(

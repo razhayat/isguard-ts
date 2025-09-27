@@ -79,6 +79,12 @@ describe("TypeGuard type", () => {
 		expectTypeOf<TypeGuard<Type2>>().not.toExtend<TypeGuard<Type1>>();
 	});
 
+	it("should have .optional() that receives no parameters and returns TypeGuard<T | undefined>", () => {
+		type T = { name: string; age: number; };
+
+		expectTypeOf<TypeGuard<T>>().toHaveProperty("optional").toEqualTypeOf<() => TypeGuard<T | undefined>>();
+	});
+
 	it("should have .array() that receives no parameters and returns TypeGuard<T[]>", () => {
 		type T = { name: string; age: number; };
 

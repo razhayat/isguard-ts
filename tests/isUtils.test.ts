@@ -120,6 +120,7 @@ describe("isPropertyKey", () => {
 describe("isOptional", () => {
 	describedGuardTests({
 		guard: isOptional(isString),
+		equivalentGuards: [isString.optional()],
 		testCases: [
 			[null, false],
 			[123, false],
