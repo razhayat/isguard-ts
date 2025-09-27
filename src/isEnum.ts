@@ -1,5 +1,4 @@
 import { TypeGuard } from "./types";
-import { isNumber } from "./isUtils";
 import { createTypeGuard } from "./utils";
 
 export type Enum = Record<string | number, string | number>;
@@ -7,7 +6,7 @@ export type Enum = Record<string | number, string | number>;
 const getEnumValues = (enumObj: Enum) => {
 	const map = new Map(Object.entries(enumObj));
 	Array.from(map.values()).forEach(value => {
-		isNumber(value) && map.delete(value.toString());
+		typeof value === "number" && map.delete(value.toString());
 	});
 	return Array.from(map.values());
 };
