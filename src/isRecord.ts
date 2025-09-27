@@ -12,8 +12,8 @@ export const isPartialRecord = <const K extends AtLeastOneArray<PropertyKey>, V>
 	return isType(partialRecord(keys, isValue));
 };
 
-export const isIndexRecord = <K extends PropertyKey, V>(isValue: TypeGuard<V>): TypeGuard<Record<K, V>> => {
-	return (value: unknown): value is Record<K, V> => {
+export const isIndexRecord = <V>(isValue: TypeGuard<V>): TypeGuard<Record<PropertyKey, V>> => {
+	return (value: unknown): value is Record<PropertyKey, V> => {
 		if (!(value instanceof Object) || value.constructor !== Object) {
 			return false;
 		}

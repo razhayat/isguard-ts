@@ -36,6 +36,8 @@ describe("is number array", () => {
 			[[1, 2, null], false],
 			[[1, 2, /regex/], false],
 			[[0, false, 0], false],
+			[[false, ,], false],
+			[[, "end"], false],
 
 			[Array<number | string>(20, 50, "string"), false],
 			[Array<string>("string"), false],
@@ -61,6 +63,11 @@ describe("is number array", () => {
 			[Array.of(1, 2, 3), true],
 			[Array(5).fill(2), true],
 			[Array(3).fill(Number(2)), true],
+
+			[[,], true],
+			[[, 73], true],
+			[[56, ,], true],
+			[[6, , , 324, 34], true],
 		],
 	});
 });
