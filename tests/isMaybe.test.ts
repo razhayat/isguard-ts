@@ -5,6 +5,7 @@ import { describedGuardTests } from "./utils";
 describe("isMaybe", () => {
 	describedGuardTests({
 		guard: isMaybe(isNumber),
+		equivalentGuards: [isNumber.maybe()],
 		testCases: [
 			[undefined, false],
 			[false, false],

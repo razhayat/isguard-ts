@@ -171,7 +171,7 @@ describe("is person interface", () => {
 			name: isString,
 			height: isNumber,
 			birthday: isDate,
-			deathday: isMaybe(isDate),
+			deathday: isDate.maybe(),
 			sex: isLiteral("M", "F"),
 		}),
 		testCases: [
