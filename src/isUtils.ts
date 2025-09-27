@@ -7,8 +7,8 @@ import { TypeGuard } from "./types";
 import { createTypeGuard } from "./utils";
 
 export const isNull = isLiteral(null);
-export const isUndefined = isLiteral(undefined);
-export const isNil = isLiteral(null, undefined);
+export const isUndefined = isLiteral(void 0);
+export const isNil = isLiteral(null, void 0);
 
 export const isTrue = isLiteral(true);
 export const isFalse = isLiteral(false);
