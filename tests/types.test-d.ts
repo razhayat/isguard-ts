@@ -646,7 +646,7 @@ describe("isRefine", () => {
 
 	describe("parameters", () => {
 		it("should accept TypeGuard as a first parameter", () => {
-			expectTypeOf(isRefine).parameter(0).toEqualTypeOf<TypeGuard<unknown>>();
+			expectTypeOf(isRefine<string, `Hi ${string}`>).parameter(0).toEqualTypeOf<TypeGuard<string>>();
 		});
 
 		it("should accept a typescript type guard as a second argument", () => {
