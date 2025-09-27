@@ -1,5 +1,6 @@
 import { isInstanceof } from "./isInstanceof";
 import { isLiteral } from "./isLiteral";
+import { isMaybe } from "./isMaybe";
 import { isRefine } from "./isRefine";
 import { isTypeof } from "./isTypeof";
 import { isUnion } from "./isUnion";
@@ -66,7 +67,6 @@ export const isOptionalBoolean = isBoolean.optional();
  */
 export const isOptionalDate = isDate.optional();
 
-export const isMaybe = <T>(guard: TypeGuard<T>) => isUnion(isNull, guard);
 export const isMaybeNumber = isMaybe(isNumber);
 export const isMaybeString = isMaybe(isString);
 export const isMaybeBoolean = isMaybe(isBoolean);
