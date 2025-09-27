@@ -21,62 +21,62 @@ describe("TypeGuard type", () => {
 		type Base = number | undefined;
 		type Derived = number;
 
-		expectTypeOf<Derived>().toMatchTypeOf<Base>();
-		expectTypeOf<TypeGuard<Derived>>().not.toMatchTypeOf<TypeGuard<Base>>();
+		expectTypeOf<Derived>().toExtend<Base>();
+		expectTypeOf<TypeGuard<Derived>>().not.toExtend<TypeGuard<Base>>();
 	});
 
 	it("should not match base types", () => {
 		type Base = { a: string; };
 		type Derived = Base & { b: number; };
 
-		expectTypeOf<Derived>().toMatchTypeOf<Base>();
-		expectTypeOf<TypeGuard<Derived>>().not.toMatchTypeOf<TypeGuard<Base>>();
+		expectTypeOf<Derived>().toExtend<Base>();
+		expectTypeOf<TypeGuard<Derived>>().not.toExtend<TypeGuard<Base>>();
 	});
 
 	it("should not match derived types", () => {
 		type Base = number | undefined;
 		type Derived = number;
 
-		expectTypeOf<Derived>().toMatchTypeOf<Base>();
-		expectTypeOf<TypeGuard<Base>>().not.toMatchTypeOf<TypeGuard<Derived>>();
+		expectTypeOf<Derived>().toExtend<Base>();
+		expectTypeOf<TypeGuard<Base>>().not.toExtend<TypeGuard<Derived>>();
 	});
 
 	it("should not match derived types", () => {
 		type Base = { a: string; };
 		type Derived = Base & { b: number; };
 
-		expectTypeOf<Derived>().toMatchTypeOf<Base>();
-		expectTypeOf<TypeGuard<Base>>().not.toMatchTypeOf<TypeGuard<Derived>>();
+		expectTypeOf<Derived>().toExtend<Base>();
+		expectTypeOf<TypeGuard<Base>>().not.toExtend<TypeGuard<Derived>>();
 	});
 
 	it("should not match mutually assignable types", () => {
 		type Type1 = { name: string };
 		type Type2 = Type1 & { age?: number };
 
-		expectTypeOf<Type1>().toMatchTypeOf<Type2>();
-		expectTypeOf<Type2>().toMatchTypeOf<Type1>();
-		expectTypeOf<TypeGuard<Type1>>().not.toMatchTypeOf<TypeGuard<Type2>>();
-		expectTypeOf<TypeGuard<Type2>>().not.toMatchTypeOf<TypeGuard<Type1>>();
+		expectTypeOf<Type1>().toExtend<Type2>();
+		expectTypeOf<Type2>().toExtend<Type1>();
+		expectTypeOf<TypeGuard<Type1>>().not.toExtend<TypeGuard<Type2>>();
+		expectTypeOf<TypeGuard<Type2>>().not.toExtend<TypeGuard<Type1>>();
 	});
 
 	it("should not match mutually assignable types", () => {
 		type Type1 = Record<never, unknown>;
 		type Type2 = Partial<{ hello: string }>;
 
-		expectTypeOf<Type1>().toMatchTypeOf<Type2>();
-		expectTypeOf<Type2>().toMatchTypeOf<Type1>();
-		expectTypeOf<TypeGuard<Type1>>().not.toMatchTypeOf<TypeGuard<Type2>>();
-		expectTypeOf<TypeGuard<Type2>>().not.toMatchTypeOf<TypeGuard<Type1>>();
+		expectTypeOf<Type1>().toExtend<Type2>();
+		expectTypeOf<Type2>().toExtend<Type1>();
+		expectTypeOf<TypeGuard<Type1>>().not.toExtend<TypeGuard<Type2>>();
+		expectTypeOf<TypeGuard<Type2>>().not.toExtend<TypeGuard<Type1>>();
 	});
 
 	it("should not match mutually assignable types", () => {
 		type Type1 = Record<never, unknown>;
 		type Type2 = { hello?: string };
 
-		expectTypeOf<Type1>().toMatchTypeOf<Type2>();
-		expectTypeOf<Type2>().toMatchTypeOf<Type1>();
-		expectTypeOf<TypeGuard<Type1>>().not.toMatchTypeOf<TypeGuard<Type2>>();
-		expectTypeOf<TypeGuard<Type2>>().not.toMatchTypeOf<TypeGuard<Type1>>();
+		expectTypeOf<Type1>().toExtend<Type2>();
+		expectTypeOf<Type2>().toExtend<Type1>();
+		expectTypeOf<TypeGuard<Type1>>().not.toExtend<TypeGuard<Type2>>();
+		expectTypeOf<TypeGuard<Type2>>().not.toExtend<TypeGuard<Type1>>();
 	});
 });
 
@@ -194,7 +194,7 @@ describe("TypeGuardTemplate type", () => {
 		type BaseTemplate = TypeGuardTemplate<Base>;
 		type DerivedTemplate = TypeGuardTemplate<Derived>;
 
-		expectTypeOf<BaseTemplate>().not.toMatchTypeOf<DerivedTemplate>();
+		expectTypeOf<BaseTemplate>().not.toExtend<DerivedTemplate>();
 	});
 
 	it("should not match base types", () => {
@@ -203,17 +203,17 @@ describe("TypeGuardTemplate type", () => {
 		type DerivedTemplate = TypeGuardTemplate<Derived>;
 		type BaseTemplate = TypeGuardTemplate<Base>;
 
-		expectTypeOf<DerivedTemplate>().not.toMatchTypeOf<BaseTemplate>();
+		expectTypeOf<DerivedTemplate>().not.toExtend<BaseTemplate>();
 	});
 
 	it("should not match mutually assignable types", () => {
 		type Type1 = { name?: string };
 		type Type2 = Type1 & { age?: number };
 
-		expectTypeOf<Type1>().toMatchTypeOf<Type2>();
-		expectTypeOf<Type2>().toMatchTypeOf<Type1>();
-		expectTypeOf<TypeGuardTemplate<Type1>>().not.toMatchTypeOf<TypeGuardTemplate<Type2>>();
-		expectTypeOf<TypeGuardTemplate<Type2>>().not.toMatchTypeOf<TypeGuardTemplate<Type1>>();
+		expectTypeOf<Type1>().toExtend<Type2>();
+		expectTypeOf<Type2>().toExtend<Type1>();
+		expectTypeOf<TypeGuardTemplate<Type1>>().not.toExtend<TypeGuardTemplate<Type2>>();
+		expectTypeOf<TypeGuardTemplate<Type2>>().not.toExtend<TypeGuardTemplate<Type1>>();
 	});
 });
 
@@ -516,14 +516,14 @@ describe("isRecord", () => {
 			const actual = isRecord(["a"], isNumber);
 			type Expected = TypeGuard<Record<"a" | "b", number>>;
 
-			expectTypeOf(actual).not.toMatchTypeOf<Expected>();
+			expectTypeOf(actual).not.toExtend<Expected>();
 		});
 
 		it("should not match when there are too many keys", () => {
 			const actual = isRecord(["a", "b", "c"], isNumber);
 			type Expected = TypeGuard<Record<"a" | "b", number>>;
 
-			expectTypeOf(actual).not.toMatchTypeOf<Expected>();
+			expectTypeOf(actual).not.toExtend<Expected>();
 		});
 	});
 
@@ -574,14 +574,14 @@ describe("isPartialRecord", () => {
 			const actual = isPartialRecord(["a"], isNumber);
 			type Expected = TypeGuard<Partial<Record<"a" | "b", number>>>;
 
-			expectTypeOf(actual).not.toMatchTypeOf<Expected>();
+			expectTypeOf(actual).not.toExtend<Expected>();
 		});
 
 		it("should not match when there are too many keys", () => {
 			const actual = isPartialRecord(["a", "b", "c"], isNumber);
 			type Expected = TypeGuard<Partial<Record<"a" | "b", number>>>;
 
-			expectTypeOf(actual).not.toMatchTypeOf<Expected>();
+			expectTypeOf(actual).not.toExtend<Expected>();
 		});
 	});
 
