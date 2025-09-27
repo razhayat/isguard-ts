@@ -6,6 +6,7 @@ type ExactEqual<T> = {
 export type TypeGuard<in out T, in out _U extends ExactEqual<T> = ExactEqual<T>> = {
 	(value: unknown): value is T;
 	array: () => TypeGuard<T[]>;
+	set: () => TypeGuard<Set<T>>;
 };
 
 export type Guarded<T extends TypeGuard<any, any>> = T extends TypeGuard<infer R> ? R : never;
