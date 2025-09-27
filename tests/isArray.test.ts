@@ -5,6 +5,7 @@ import { describedGuardTests } from "./utils";
 describe("is number array", () => {
 	describedGuardTests({
 		guard: isArray(isNumber),
+		equivalentGuards: [isNumber.array()],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -77,10 +78,13 @@ describe("is object array", () => {
 		name: string;
 	};
 
+	const isObj = isType<Obj>({
+		name: isString,
+	});
+
 	describedGuardTests({
-		guard: isType<Obj>({
-			name: isString,
-		}).array(),
+		guard: isArray(isObj),
+		equivalentGuards: [isObj.array()],
 		testCases: [
 			[null, false],
 			[undefined, false],
