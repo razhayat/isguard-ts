@@ -78,6 +78,8 @@ describe("is tuple with optional", () => {
 			[[-235, 345.34], true],
 			[[6], true],
 			[[NaN], true],
+			[[6, undefined], true],
+			[[1, ,], true],
 		],
 	});
 });
