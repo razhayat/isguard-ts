@@ -5,6 +5,7 @@ import { isNumber, isSet } from "../src";
 describe("is set", () => {
 	describedGuardTests({
 		guard: isSet(isNumber),
+		equivalentGuards: [isNumber.set()],
 		testCases: [
 			[null, false],
 			[undefined, false],

@@ -80,9 +80,15 @@ describe("TypeGuard type", () => {
 	});
 
 	it("should have .array() that receives no parameters and returns TypeGuard<T[]>", () => {
-		type T = { name: string; age: number };
+		type T = { name: string; age: number; };
 
 		expectTypeOf<TypeGuard<T>>().toHaveProperty("array").toEqualTypeOf<() => TypeGuard<T[]>>();
+	});
+
+	it("should have .set() that receives no parameters and returns TypeGuard<Set<T>>", () => {
+		type T = { value: { value: Date } };
+
+		expectTypeOf<TypeGuard<T>>().toHaveProperty("set").toEqualTypeOf<() => TypeGuard<Set<T>>>();
 	});
 });
 
