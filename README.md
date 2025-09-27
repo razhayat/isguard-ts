@@ -389,11 +389,6 @@ const isNull: TypeGuard<null>;
 const isUndefined: TypeGuard<undefined>;
 const isNil: TypeGuard<null | undefined>;
 
-const isMaybeNumber: TypeGuard<number | null>;
-const isMaybeString: TypeGuard<string | null>;
-const isMaybeBoolean: TypeGuard<boolean | null>;
-const isMaybeDate: TypeGuard<Date | null>;
-
 const isTrue: TypeGuard<true>;
 const isFalse: TypeGuard<false>;
 

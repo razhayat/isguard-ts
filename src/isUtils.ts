@@ -1,6 +1,5 @@
 import { isInstanceof } from "./isInstanceof";
 import { isLiteral } from "./isLiteral";
-import { isMaybe } from "./isMaybe";
 import { isRefine } from "./isRefine";
 import { isTypeof } from "./isTypeof";
 import { isUnion } from "./isUnion";
@@ -67,10 +66,22 @@ export const isOptionalBoolean = isBoolean.optional();
  */
 export const isOptionalDate = isDate.optional();
 
-export const isMaybeNumber = isMaybe(isNumber);
-export const isMaybeString = isMaybe(isString);
-export const isMaybeBoolean = isMaybe(isBoolean);
-export const isMaybeDate = isMaybe(isDate);
+/**
+ * @deprecated use `isNumber.maybe()` instead
+ */
+export const isMaybeNumber = isNumber.maybe();
+/**
+ * @deprecated use `isString.maybe()` instead
+ */
+export const isMaybeString = isString.maybe();
+/**
+ * @deprecated use `isBoolean.maybe()` instead
+ */
+export const isMaybeBoolean = isBoolean.maybe();
+/**
+ * @deprecated use `isDate.maybe()` instead
+ */
+export const isMaybeDate = isDate.maybe();
 
 export const isUnknown: TypeGuard<unknown> = createTypeGuard((value): value is unknown => true);
 export const isNever: TypeGuard<never> = createTypeGuard((value): value is never => false);
