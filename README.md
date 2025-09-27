@@ -27,7 +27,6 @@ A powerful `typescript` library that helps you build type guards.<br/>
 
 ## Some of our utility type guards
 + isString, isNumber, isBoolean, isDate
-+ isStringArray, isNumberArray, isBooleanArray, isDateArray
 + isNull, isUndefined, isNil
 + isUnknown - always returns `true`
 + isNever - always returns `false`
@@ -389,11 +388,6 @@ const isURIError: TypeGuard<URIError>;
 const isNull: TypeGuard<null>;
 const isUndefined: TypeGuard<undefined>;
 const isNil: TypeGuard<null | undefined>;
-
-const isNumberArray: TypeGuard<number[]>;
-const isStringArray: TypeGuard<string[]>;
-const isBooleanArray: TypeGuard<boolean[]>;
-const isDateArray: TypeGuard<Date[]>;
 
 const isOptionalNumber: TypeGuard<number | undefined>;
 const isOptionalString: TypeGuard<string | undefined>;

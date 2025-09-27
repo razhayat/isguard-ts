@@ -1,4 +1,3 @@
-import { isArray } from "./isArray";
 import { isInstanceof } from "./isInstanceof";
 import { isLiteral } from "./isLiteral";
 import { isRefine } from "./isRefine";
@@ -33,10 +32,22 @@ export const isSyntaxError = isInstanceof(SyntaxError);
 export const isTypeError = isInstanceof(TypeError);
 export const isURIError = isInstanceof(URIError);
 
-export const isNumberArray = isArray(isNumber);
-export const isStringArray = isArray(isString);
-export const isBooleanArray = isArray(isBoolean);
-export const isDateArray = isArray(isDate);
+/**
+ * @deprecated use `isNumber.array()` instead
+ */
+export const isNumberArray = isNumber.array();
+/**
+ * @deprecated use `isString.array()` instead
+ */
+export const isStringArray = isString.array();
+/**
+ * @deprecated use `isBoolean.array()` instead
+ */
+export const isBooleanArray = isBoolean.array();
+/**
+ * @deprecated use `isDate.array()` instead
+ */
+export const isDateArray = isDate.array();
 
 export const isOptional = <T>(guard: TypeGuard<T>) => isUnion(isUndefined, guard);
 export const isOptionalNumber = isOptional(isNumber);
