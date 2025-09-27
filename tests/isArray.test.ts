@@ -78,9 +78,9 @@ describe("is object array", () => {
 	};
 
 	describedGuardTests({
-		guard: isArray(isType<Obj>({
+		guard: isType<Obj>({
 			name: isString,
-		})),
+		}).array(),
 		testCases: [
 			[null, false],
 			[undefined, false],
