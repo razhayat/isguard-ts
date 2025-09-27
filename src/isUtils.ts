@@ -49,7 +49,6 @@ export const isBooleanArray = isBoolean.array();
  */
 export const isDateArray = isDate.array();
 
-export const isOptional = <T>(guard: TypeGuard<T>) => isUnion(isUndefined, guard);
 /**
  * @deprecated use `isNumber.optional()` instead
  */

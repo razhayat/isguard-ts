@@ -1,5 +1,4 @@
 import { isType } from "./isType";
-import { isOptional } from "./isUtils";
 import { TypeGuard, TypeGuardTemplate } from "./types";
 import { createTypeGuard } from "./utils";
 
@@ -14,7 +13,7 @@ export const isRecord = <const K extends readonly PropertyKey[], V>(keys: K, isV
 };
 
 export const isPartialRecord = <const K extends readonly PropertyKey[], V>(keys: K, isValue: TypeGuard<V>) => {
-	const template = createTemplate(keys, isOptional(isValue));
+	const template = createTemplate(keys, isValue.optional());
 	return isType(template as TypeGuardTemplate<Partial<Record<K[number], V>>>);
 };
 
