@@ -18,8 +18,8 @@ export const isPartialRecord = <const K extends readonly PropertyKey[], V>(keys:
 	return isType(template as TypeGuardTemplate<Partial<Record<K[number], V>>>);
 };
 
-export const isIndexRecord = <K extends PropertyKey, V>(isValue: TypeGuard<V>): TypeGuard<Record<K, V>> => {
-	return createTypeGuard((value: unknown): value is Record<K, V> => {
+export const isIndexRecord = <V>(isValue: TypeGuard<V>): TypeGuard<Record<PropertyKey, V>> => {
+	return createTypeGuard((value: unknown): value is Record<PropertyKey, V> => {
 		if (!(value instanceof Object) || value.constructor !== Object) {
 			return false;
 		}

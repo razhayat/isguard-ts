@@ -625,8 +625,8 @@ describe("isIndexRecord", () => {
 
 	describe("parameters", () => {
 		it("should accept different key types", () => {
-			const actual = isIndexRecord<number, string>(isString);
-			type Expected = TypeGuard<Record<number, string>>;
+			const actual = isIndexRecord<string>(isString);
+			type Expected = TypeGuard<Record<PropertyKey, string>>;
 
 			expectTypeOf(actual).toEqualTypeOf<Expected>();
 		});
