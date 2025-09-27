@@ -50,10 +50,22 @@ export const isBooleanArray = isBoolean.array();
 export const isDateArray = isDate.array();
 
 export const isOptional = <T>(guard: TypeGuard<T>) => isUnion(isUndefined, guard);
-export const isOptionalNumber = isOptional(isNumber);
-export const isOptionalString = isOptional(isString);
-export const isOptionalBoolean = isOptional(isBoolean);
-export const isOptionalDate = isOptional(isDate);
+/**
+ * @deprecated use `isNumber.optional()` instead
+ */
+export const isOptionalNumber = isNumber.optional();
+/**
+ * @deprecated use `isString.optional()` instead
+ */
+export const isOptionalString = isString.optional();
+/**
+ * @deprecated use `isBoolean.optional()` instead
+ */
+export const isOptionalBoolean = isBoolean.optional();
+/**
+ * @deprecated use `isDate.optional()` instead
+ */
+export const isOptionalDate = isDate.optional();
 
 export const isMaybe = <T>(guard: TypeGuard<T>) => isUnion(isNull, guard);
 export const isMaybeNumber = isMaybe(isNumber);
