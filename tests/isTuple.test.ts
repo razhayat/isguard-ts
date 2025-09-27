@@ -2,6 +2,32 @@ import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
 import { isTuple, isNumber, isOptional, isOptionalNumber, isString, isType } from "../src";
 
+describe("is empty tuple", () => {
+	describedGuardTests({
+		guard: isTuple<[]>([]),
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[new Array(2), false],
+			[56, false],
+			[56n, false],
+			[true, false],
+			[Symbol(), false],
+			["hello", false],
+			[{}, false],
+			[function() { return [] }, false],
+			[[undefined], false],
+			[[, undefined], false],
+			[[,], false],
+
+			[[], true],
+			[new Array(), true],
+			[Array(0), true],
+			[Array.from({ length: 0 }), true],
+		],
+	});
+});
+
 describe("is normal tuple", () => {
 	type Tuple = [string, number];
 
