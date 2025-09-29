@@ -9,6 +9,7 @@ export type TypeGuard<in out T, in out _U extends ExactEqual<T> = ExactEqual<T>>
 	maybe: () => TypeGuard<T | null>;
 	array: () => TypeGuard<T[]>;
 	set: () => TypeGuard<Set<T>>;
+	indexRecord: () => TypeGuard<Record<PropertyKey, T>>;
 	refine: <R extends T>(refinement: (value: T) => value is R) => TypeGuard<R>;
 };
 
