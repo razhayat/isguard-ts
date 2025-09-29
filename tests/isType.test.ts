@@ -301,12 +301,27 @@ describe("is type with all PropertyKey types", () => {
 		[symbol]: number;
 	};
 
+	const isAll = isType<All>({
+		str: isNumber,
+		61: isNumber,
+		[symbol]: isNumber,
+	});
+
+	const isAllGet = isType<All>({
+		get str() {
+			return isNumber;
+		},
+		get 61() {
+			return isNumber;
+		},
+		get [symbol]() {
+			return isNumber;
+		},
+	});
+
 	describedGuardTests({
-		guard: isType<All>({
-			str: isNumber,
-			61: isNumber,
-			[symbol]: isNumber,
-		}),
+		guard: isAll,
+		equivalentGuards: [isAllGet],
 		testCases: [
 			[null, false],
 			[undefined, false],
