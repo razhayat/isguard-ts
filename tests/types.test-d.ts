@@ -102,6 +102,13 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<TypeGuard<T>>().toHaveProperty("set").toEqualTypeOf<() => TypeGuard<Set<T>>>();
 	});
+
+	it("should have .refine() that receives a refinement function and returns TypeGuard<R>", () => {
+		type RefineResult = `I have ${number} apples`;
+		const refine = isString.refine<RefineResult>;
+
+		expectTypeOf(refine).toEqualTypeOf<(refinement: (value: string) => value is RefineResult) => TypeGuard<RefineResult>>();
+	});
 });
 
 describe("Guarded type", () => {
