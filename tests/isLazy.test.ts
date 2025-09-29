@@ -6,7 +6,12 @@ describe("is lazy", () => {
 	it("should not call the generator when called", () => {
 		const generator = vi.fn();
 
-		isLazy(generator);
+		const guard = isLazy(generator);
+		guard.optional();
+		guard.maybe();
+		guard.array();
+		guard.set();
+		guard.refine(isNumber);
 
 		expect(generator).not.toHaveBeenCalled();
 	});
