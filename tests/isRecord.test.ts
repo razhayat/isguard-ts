@@ -180,6 +180,7 @@ describe("is partial record with symbol keys", () => {
 describe("is indexRecord", () => {
 	describedGuardTests({
 		guard: isIndexRecord(isNumber),
+		equivalentGuards: [isNumber.indexRecord()],
 		testCases: [
 			[null, false],
 			[undefined, false],

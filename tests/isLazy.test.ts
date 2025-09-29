@@ -11,6 +11,7 @@ describe("is lazy", () => {
 		guard.maybe();
 		guard.array();
 		guard.set();
+		guard.indexRecord();
 		guard.refine(isNumber);
 
 		expect(generator).not.toHaveBeenCalled();
