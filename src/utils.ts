@@ -1,6 +1,7 @@
 import { isArray } from "./isArray";
 import { isMaybe } from "./isMaybe";
 import { isOptional } from "./isOptional";
+import { isRefine } from "./isRefine";
 import { isSet } from "./isSet";
 import { TypeGuard } from "./types";
 
@@ -10,6 +11,7 @@ export const createTypeGuard = <T>(func: (value: unknown) => value is T): TypeGu
 		maybe: () => isMaybe(guard),
 		array: () => isArray(guard),
 		set: () => isSet(guard),
+		refine: refinement => isRefine(guard, refinement),
 	} satisfies Omit<TypeGuard<T>, keyof typeof func>);
 
 	return guard;
