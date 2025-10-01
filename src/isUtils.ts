@@ -1,14 +1,14 @@
-import { isArray } from "./isArray";
 import { isInstanceof } from "./isInstanceof";
 import { isLiteral } from "./isLiteral";
 import { isRefine } from "./isRefine";
 import { isTypeof } from "./isTypeof";
 import { isUnion } from "./isUnion";
 import { TypeGuard } from "./types";
+import { createTypeGuard } from "./utils";
 
 export const isNull = isLiteral(null);
-export const isUndefined = isLiteral(undefined);
-export const isNil = isLiteral(null, undefined);
+export const isUndefined = isLiteral(void 0);
+export const isNil = isLiteral(null, void 0);
 
 export const isTrue = isLiteral(true);
 export const isFalse = isLiteral(false);
@@ -32,22 +32,56 @@ export const isSyntaxError = isInstanceof(SyntaxError);
 export const isTypeError = isInstanceof(TypeError);
 export const isURIError = isInstanceof(URIError);
 
-export const isNumberArray = isArray(isNumber);
-export const isStringArray = isArray(isString);
-export const isBooleanArray = isArray(isBoolean);
-export const isDateArray = isArray(isDate);
+/**
+ * @deprecated use `isNumber.array()` instead
+ */
+export const isNumberArray = isNumber.array();
+/**
+ * @deprecated use `isString.array()` instead
+ */
+export const isStringArray = isString.array();
+/**
+ * @deprecated use `isBoolean.array()` instead
+ */
+export const isBooleanArray = isBoolean.array();
+/**
+ * @deprecated use `isDate.array()` instead
+ */
+export const isDateArray = isDate.array();
 
-export const isOptional = <T>(guard: TypeGuard<T>) => isUnion(isUndefined, guard);
-export const isOptionalNumber = isOptional(isNumber);
-export const isOptionalString = isOptional(isString);
-export const isOptionalBoolean = isOptional(isBoolean);
-export const isOptionalDate = isOptional(isDate);
+/**
+ * @deprecated use `isNumber.optional()` instead
+ */
+export const isOptionalNumber = isNumber.optional();
+/**
+ * @deprecated use `isString.optional()` instead
+ */
+export const isOptionalString = isString.optional();
+/**
+ * @deprecated use `isBoolean.optional()` instead
+ */
+export const isOptionalBoolean = isBoolean.optional();
+/**
+ * @deprecated use `isDate.optional()` instead
+ */
+export const isOptionalDate = isDate.optional();
 
-export const isMaybe = <T>(guard: TypeGuard<T>) => isUnion(isNull, guard);
-export const isMaybeNumber = isMaybe(isNumber);
-export const isMaybeString = isMaybe(isString);
-export const isMaybeBoolean = isMaybe(isBoolean);
-export const isMaybeDate = isMaybe(isDate);
+/**
+ * @deprecated use `isNumber.maybe()` instead
+ */
+export const isMaybeNumber = isNumber.maybe();
+/**
+ * @deprecated use `isString.maybe()` instead
+ */
+export const isMaybeString = isString.maybe();
+/**
+ * @deprecated use `isBoolean.maybe()` instead
+ */
+export const isMaybeBoolean = isBoolean.maybe();
+/**
+ * @deprecated use `isDate.maybe()` instead
+ */
+export const isMaybeDate = isDate.maybe();
 
-export const isUnknown: TypeGuard<unknown> = (value): value is unknown => true;
-export const isNever: TypeGuard<never> = (value): value is never => false;
+export const isUnknown: TypeGuard<unknown> = createTypeGuard((value): value is unknown => true);
+export const isNever: TypeGuard<never> = createTypeGuard((value): value is never => false);

@@ -27,7 +27,6 @@ A powerful `typescript` library that helps you build type guards.<br/>
 
 ## Some of our utility type guards
 + isString, isNumber, isBoolean, isDate
-+ isStringArray, isNumberArray, isBooleanArray, isDateArray
 + isNull, isUndefined, isNil
 + isUnknown - always returns `true`
 + isNever - always returns `false`
@@ -102,11 +101,11 @@ Helps you create type guards for tuples
 > Otherwise optional fields might have an unexpected behavior
 
 ```typescript
-import { isTuple, isNumber, isOptionalString } from "isguard-ts";
+import { isTuple, isNumber, isString } from "isguard-ts";
 
 type Row = [number, string?];
 
-const isRow = isTuple<Row>([isNumber, isOptionalString]);
+const isRow = isTuple<Row>([isNumber, isString.optional()]);
 
 isRow([6, "Hello"]); // true
 isRow([6]); // true
@@ -389,21 +388,6 @@ const isURIError: TypeGuard<URIError>;
 const isNull: TypeGuard<null>;
 const isUndefined: TypeGuard<undefined>;
 const isNil: TypeGuard<null | undefined>;
-
-const isNumberArray: TypeGuard<number[]>;
-const isStringArray: TypeGuard<string[]>;
-const isBooleanArray: TypeGuard<boolean[]>;
-const isDateArray: TypeGuard<Date[]>;
-
-const isOptionalNumber: TypeGuard<number | undefined>;
-const isOptionalString: TypeGuard<string | undefined>;
-const isOptionalBoolean: TypeGuard<boolean | undefined>;
-const isOptionalDate: TypeGuard<Date | undefined>;
-
-const isMaybeNumber: TypeGuard<number | null>;
-const isMaybeString: TypeGuard<string | null>;
-const isMaybeBoolean: TypeGuard<boolean | null>;
-const isMaybeDate: TypeGuard<Date | null>;
 
 const isTrue: TypeGuard<true>;
 const isFalse: TypeGuard<false>;

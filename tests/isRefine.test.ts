@@ -3,12 +3,13 @@ import { isNumber, isRefine, isString } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is `Hello${string}`", () => {
-	const isStartsWithHello = isRefine(isString, (value): value is `Hello${string}` => {
+	const startWithHello = (value: string): value is `Hello${string}` => {
 		return value.startsWith("Hello");
-	});
+	};
 
 	describedGuardTests({
-		guard: isStartsWithHello,
+		guard: isRefine(isString, startWithHello),
+		equivalentGuards: [isString.refine(startWithHello)],
 		testCases: [
 			[null, false],
 			[undefined, false],

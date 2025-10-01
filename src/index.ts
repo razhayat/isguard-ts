@@ -5,6 +5,8 @@ export * from "./isIntersection";
 export * from "./isLazy";
 export * from "./isLiteral";
 export * from "./isMap";
+export * from "./isMaybe";
+export * from "./isOptional";
 export * from "./isRecord";
 export * from "./isRefine";
 export * from "./isSet";

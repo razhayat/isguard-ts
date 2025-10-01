@@ -1,20 +1,20 @@
-import { isOptional } from "./isUtils";
-import { TypeGuard, TypeGuardTemplate } from "./types";
+import { isArray } from "./isArray";
+import { isMaybe } from "./isMaybe";
+import { isOptional } from "./isOptional";
+import { isIndexRecord } from "./isRecord";
+import { isRefine } from "./isRefine";
+import { isSet } from "./isSet";
+import { TypeGuard } from "./types";
 
-export const record = <const K extends readonly PropertyKey[], V>(keys: K, isValue: TypeGuard<V>): TypeGuardTemplate<Record<K[number], V>> => {
-	const entries = keys.map((key: K[number]) => [key, isValue] as const);
-	return Object.fromEntries(entries) as TypeGuardTemplate<Record<K[number], V>>;
-};
+export const createTypeGuard = <T>(func: (value: unknown) => value is T): TypeGuard<T> => {
+	const guard: TypeGuard<T> = Object.assign(func, {
+		optional: () => isOptional(guard),
+		maybe: () => isMaybe(guard),
+		array: () => isArray(guard),
+		set: () => isSet(guard),
+		indexRecord: () => isIndexRecord(guard),
+		refine: refinement => isRefine(guard, refinement),
+	} satisfies Omit<TypeGuard<T>, keyof typeof func>);
 
-const partial = <T>(template: TypeGuardTemplate<T>): TypeGuardTemplate<Partial<T>> => {
-	const partialTemplate = Array.isArray(template) ? [] : {};
-	for (const key in template) {
-		Object.assign(partialTemplate, { [key]: isOptional(template[key]) });
-	}
-
-	return partialTemplate as TypeGuardTemplate<Partial<T>>;
-};
-
-export const partialRecord = <const K extends readonly PropertyKey[], V>(keys: K, isValue: TypeGuard<V>) => {
-	return partial(record(keys, isValue));
+	return guard;
 };
