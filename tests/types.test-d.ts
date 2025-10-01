@@ -154,6 +154,13 @@ describe("Guarded type", () => {
 
 		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 	});
+
+	it("should allow TypeGuard<never>", () => {
+		type Actual = Guarded<TypeGuard<never>>;
+		type Expected = never;
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
 });
 
 describe("TypeGuardTemplate type", () => {

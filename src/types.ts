@@ -1,3 +1,5 @@
+import { AnyTypeGuard } from "./internal";
+
 type ExactEqual<T> = {
 	required: Required<T>;
 	keys: keyof T;
@@ -13,7 +15,7 @@ export type TypeGuard<in out T, in out _U extends ExactEqual<T> = ExactEqual<T>>
 	refine: <R extends T>(refinement: (value: T) => value is R) => TypeGuard<R>;
 };
 
-export type Guarded<T extends TypeGuard<any, any>> = T extends TypeGuard<infer R> ? R : never;
+export type Guarded<T extends AnyTypeGuard> = T extends TypeGuard<infer R> ? R : never;
 
 export type TypeGuardTemplate<in out T, in out _U extends ExactEqual<T> = ExactEqual<T>> = {
 	-readonly [K in keyof T]-?: TypeGuard<T[K]>;
