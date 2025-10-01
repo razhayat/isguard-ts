@@ -1,6 +1,14 @@
-import { describe } from "vitest";
+import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isIntersection, isNumber, isType, isString } from "../src";
+import { isIntersection, isNumber, isType, isString, isBoolean } from "../src";
+
+describe("is intersection", () => {
+	it("should have .guards that contains all given guards in order", () => {
+		const isAAndB = isIntersection(isNumber, isBoolean);
+
+		expect(isAAndB.guards).toEqual([isNumber, isBoolean]);
+	});
+});
 
 describe("is empty intersection (unknown)", () => {
 	describedGuardTests({
