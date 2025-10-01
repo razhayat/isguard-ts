@@ -370,11 +370,11 @@ describe("isArray return type", () => {
 			expectTypeOf(actual).toExtend<TypeGuard<(number | string)[]>>();
 		});
 
-		it("should have .isArray that is equal to TypeGuard<T>", () => {
+		it("should have .isValue that is of type TypeGuard<T>", () => {
 			type T = { hello: Date; };
-			const actual = isArray(isType<T>({ hello: isDate })).isValue;
+			const actual = isArray(isType<T>({ hello: isDate }));
 
-			expectTypeOf(actual).toEqualTypeOf<TypeGuard<T>>();
+			expectTypeOf(actual.isValue).toEqualTypeOf<TypeGuard<T>>();
 		});
 	});
 });
@@ -390,6 +390,12 @@ describe("isEnum", () => {
 
 			expectTypeOf(actual).toEqualTypeOf<EnumTypeGuard<typeof Example>>();
 			expectTypeOf(actual).toExtend<TypeGuard<Example>>();
+		});
+
+		it("should have .enum that is of type TypeGuard<typeof Example>", () => {
+			const actual = isEnum(Example);
+
+			expectTypeOf(actual.enum).toEqualTypeOf<typeof Example>();
 		});
 	});
 
@@ -431,6 +437,13 @@ describe("isInstanceof", () => {
 			// @ts-expect-error
 			Example
 		);
+	});
+
+	it("should have .constructor that is of type TypeGuard<typeof Example>", () => {
+		class Example {}
+		const actual = isInstanceof(Example);
+
+		expectTypeOf(actual.constructor).toEqualTypeOf<typeof Example>();
 	});
 });
 
@@ -493,6 +506,12 @@ describe("isIntersection", () => {
 
 			expectTypeOf<Actual>().toEqualTypeOf<IntersectionTypeGuard<[A, B?]>>();
 			expectTypeOf<Actual>().toExtend<TypeGuard<A & (B | undefined)>>();
+		});
+
+		it("should have .guards that is of type TypeGuard<[TypeGuard<A>, TypeGuard<B>]>", () => {
+			const actual = isIntersection(isA, isB);
+
+			expectTypeOf(actual.guards).toEqualTypeOf<[TypeGuard<A>, TypeGuard<B>]>();
 		});
 	});
 
