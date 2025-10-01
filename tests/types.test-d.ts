@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, TypeGuard, TypeGuardTemplate, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, isRegExp, isLazy, isLiteral, isRefine, isOptional, isMaybe, ArrayTypeGuard, EnumTypeGuard, InstanceofTypeGuard, IntersectionTypeGuard } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, TypeGuard, TypeGuardTemplate, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, isRegExp, isLazy, isLiteral, isRefine, isOptional, isMaybe, ArrayTypeGuard, EnumTypeGuard, InstanceofTypeGuard, IntersectionTypeGuard, LazyTypeGuard } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exactly equal", () => {
@@ -10,6 +10,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<TypeGuard<Type1>>().toEqualTypeOf<TypeGuard<Type2>>();
 		expectTypeOf<ArrayTypeGuard<Type1>>().toEqualTypeOf<ArrayTypeGuard<Type2>>();
 		expectTypeOf<IntersectionTypeGuard<[Type1]>>().toEqualTypeOf<IntersectionTypeGuard<[Type2]>>();
+		expectTypeOf<LazyTypeGuard<Type1>>().toEqualTypeOf<LazyTypeGuard<Type2>>();
 	});
 
 	it("should be based on structural typing", () => {
@@ -20,6 +21,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<TypeGuard<Type1>>().toEqualTypeOf<TypeGuard<Type2>>();
 		expectTypeOf<ArrayTypeGuard<Type1>>().toEqualTypeOf<ArrayTypeGuard<Type2>>();
 		expectTypeOf<IntersectionTypeGuard<[Type1]>>().toEqualTypeOf<IntersectionTypeGuard<[Type2]>>();
+		expectTypeOf<LazyTypeGuard<Type1>>().toEqualTypeOf<LazyTypeGuard<Type2>>();
 	});
 
 	it("should not match base types", () => {
@@ -30,6 +32,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<TypeGuard<Derived>>().not.toExtend<TypeGuard<Base>>();
 		expectTypeOf<ArrayTypeGuard<Derived>>().not.toExtend<ArrayTypeGuard<Base>>();
 		expectTypeOf<IntersectionTypeGuard<[Derived]>>().not.toExtend<IntersectionTypeGuard<[Base]>>();
+		expectTypeOf<LazyTypeGuard<Derived>>().not.toExtend<LazyTypeGuard<Base>>();
 	});
 
 	it("should not match base types", () => {
@@ -40,6 +43,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<TypeGuard<Derived>>().not.toExtend<TypeGuard<Base>>();
 		expectTypeOf<ArrayTypeGuard<Derived>>().not.toExtend<ArrayTypeGuard<Base>>();
 		expectTypeOf<IntersectionTypeGuard<[Derived]>>().not.toExtend<IntersectionTypeGuard<[Base]>>();
+		expectTypeOf<LazyTypeGuard<Derived>>().not.toExtend<LazyTypeGuard<Base>>();
 	});
 
 	it("should not match base types", () => {
@@ -51,6 +55,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<ArrayTypeGuard<Derived>>().not.toExtend<ArrayTypeGuard<Base>>();
 		expectTypeOf<InstanceofTypeGuard<typeof Derived>>().not.toExtend<InstanceofTypeGuard<typeof Base>>();
 		expectTypeOf<IntersectionTypeGuard<[Derived]>>().not.toExtend<IntersectionTypeGuard<[Base]>>();
+		expectTypeOf<LazyTypeGuard<Derived>>().not.toExtend<LazyTypeGuard<Base>>();
 	});
 
 	it("should not match base types", () => {
@@ -61,6 +66,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<TypeGuard<Derived>>().not.toExtend<TypeGuard<Base>>();
 		expectTypeOf<ArrayTypeGuard<Derived>>().not.toExtend<ArrayTypeGuard<Base>>();
 		expectTypeOf<IntersectionTypeGuard<[Derived]>>().not.toExtend<IntersectionTypeGuard<[Base]>>();
+		expectTypeOf<LazyTypeGuard<Derived>>().not.toExtend<LazyTypeGuard<Base>>();
 	});
 
 	it("should not match derived types", () => {
@@ -71,6 +77,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<TypeGuard<Base>>().not.toExtend<TypeGuard<Derived>>();
 		expectTypeOf<ArrayTypeGuard<Base>>().not.toExtend<ArrayTypeGuard<Derived>>();
 		expectTypeOf<IntersectionTypeGuard<[Base]>>().not.toExtend<IntersectionTypeGuard<[Derived]>>();
+		expectTypeOf<LazyTypeGuard<Base>>().not.toExtend<LazyTypeGuard<Derived>>();
 	});
 
 	it("should not match derived types", () => {
@@ -81,6 +88,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<TypeGuard<Base>>().not.toExtend<TypeGuard<Derived>>();
 		expectTypeOf<ArrayTypeGuard<Base>>().not.toExtend<ArrayTypeGuard<Derived>>();
 		expectTypeOf<IntersectionTypeGuard<[Base]>>().not.toExtend<IntersectionTypeGuard<[Derived]>>();
+		expectTypeOf<LazyTypeGuard<Base>>().not.toExtend<LazyTypeGuard<Derived>>();
 	});
 
 	it("should not match derived types", () => {
@@ -92,6 +100,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<ArrayTypeGuard<Base>>().not.toExtend<ArrayTypeGuard<Derived>>();
 		expectTypeOf<InstanceofTypeGuard<typeof Base>>().not.toExtend<InstanceofTypeGuard<typeof Derived>>();
 		expectTypeOf<IntersectionTypeGuard<[Base]>>().not.toExtend<IntersectionTypeGuard<[Derived]>>();
+		expectTypeOf<LazyTypeGuard<Base>>().not.toExtend<LazyTypeGuard<Derived>>();
 	});
 
 	it("should not match mutually assignable types", () => {
@@ -109,6 +118,9 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<IntersectionTypeGuard<[Type1]>>().not.toExtend<IntersectionTypeGuard<[Type2]>>();
 		expectTypeOf<IntersectionTypeGuard<[Type2]>>().not.toExtend<IntersectionTypeGuard<[Type1]>>();
+
+		expectTypeOf<LazyTypeGuard<Type1>>().not.toExtend<LazyTypeGuard<Type2>>();
+		expectTypeOf<LazyTypeGuard<Type2>>().not.toExtend<LazyTypeGuard<Type1>>();
 	});
 
 	it("should not match mutually assignable types", () => {
@@ -126,6 +138,9 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<IntersectionTypeGuard<[Type1]>>().not.toExtend<IntersectionTypeGuard<[Type2]>>();
 		expectTypeOf<IntersectionTypeGuard<[Type2]>>().not.toExtend<IntersectionTypeGuard<[Type1]>>();
+
+		expectTypeOf<LazyTypeGuard<Type1>>().not.toExtend<LazyTypeGuard<Type2>>();
+		expectTypeOf<LazyTypeGuard<Type2>>().not.toExtend<LazyTypeGuard<Type1>>();
 	});
 
 	it("should not match mutually assignable types", () => {
@@ -143,6 +158,9 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<IntersectionTypeGuard<[Type1]>>().not.toExtend<IntersectionTypeGuard<[Type2]>>();
 		expectTypeOf<IntersectionTypeGuard<[Type2]>>().not.toExtend<IntersectionTypeGuard<[Type1]>>();
+
+		expectTypeOf<LazyTypeGuard<Type1>>().not.toExtend<LazyTypeGuard<Type2>>();
+		expectTypeOf<LazyTypeGuard<Type2>>().not.toExtend<LazyTypeGuard<Type1>>();
 	});
 
 	it("should not match mutually assignable types", () => {
@@ -163,6 +181,9 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<IntersectionTypeGuard<[Type1]>>().not.toExtend<IntersectionTypeGuard<[Type2]>>();
 		expectTypeOf<IntersectionTypeGuard<[Type2]>>().not.toExtend<IntersectionTypeGuard<[Type1]>>();
+
+		expectTypeOf<LazyTypeGuard<Type1>>().not.toExtend<LazyTypeGuard<Type2>>();
+		expectTypeOf<LazyTypeGuard<Type2>>().not.toExtend<LazyTypeGuard<Type1>>();
 	});
 
 	it("should have .optional() that receives no parameters and returns TypeGuard<T | undefined>", () => {
@@ -533,9 +554,9 @@ describe("isLazy", () => {
 	describe("return type", () => {
 		it("should return TypeGuard<A>", () => {
 			const actual = isLazy(() => isA);
-			type Expected = TypeGuard<A>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<LazyTypeGuard<A>>();
+			expectTypeOf(actual).toExtend<TypeGuard<A>>();
 		});
 	});
 

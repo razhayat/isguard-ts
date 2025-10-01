@@ -16,6 +16,13 @@ describe("is lazy", () => {
 
 		expect(generator).not.toHaveBeenCalled();
 	});
+
+	it("should have .generator that is equal to the given generator", () => {
+		const generator = () => isNumber;
+		const isLazyNumber = isLazy(generator);
+
+		expect(isLazyNumber.generator).toBe(generator);
+	});
 });
 
 describe("is recursive type", () => {
