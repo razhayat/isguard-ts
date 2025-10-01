@@ -1,4 +1,4 @@
-import { describe } from "vitest";
+import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
 import { isEnum } from "../src";
 
@@ -12,6 +12,14 @@ enum Example {
 }
 
 describe("is enum", () => {
+	it("should have .enum that is equal to the given enum", () => {
+		const isExample = isEnum(Example);
+
+		expect(isExample.enum).toBe(Example);
+	});
+});
+
+describe("is example enum", () => {
 	describedGuardTests({
 		guard: isEnum(Example),
 		testCases: [
