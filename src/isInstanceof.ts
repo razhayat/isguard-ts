@@ -1,10 +1,12 @@
 import { TypeGuard } from "./types";
-import { createTypeGuard } from "./utils";
+import { createTypeGuard } from "./internal";
 
 export type Constructor = abstract new (...args: any[]) => {};
 
 export const isInstanceof = <T extends Constructor>(constructor: T): TypeGuard<InstanceType<T>> => {
-	return createTypeGuard((value: unknown): value is InstanceType<T> => {
-		return value instanceof constructor;
+	return createTypeGuard<TypeGuard<InstanceType<T>>>({
+		func: value => {
+			return value instanceof constructor;
+		},
 	});
 };

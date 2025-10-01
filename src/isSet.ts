@@ -1,8 +1,10 @@
 import { TypeGuard } from "./types";
-import { createTypeGuard } from "./utils";
+import { createTypeGuard } from "./internal";
 
 export const isSet = <T>(isValue: TypeGuard<T>): TypeGuard<Set<T>> => {
-	return createTypeGuard((value: unknown): value is Set<T> => {
-		return value instanceof Set && [...value.values()].every(value => isValue(value));
+	return createTypeGuard<TypeGuard<Set<T>>>({
+		func: value => {
+			return value instanceof Set && [...value.values()].every(value => isValue(value));
+		},
 	});
 };

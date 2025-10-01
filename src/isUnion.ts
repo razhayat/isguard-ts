@@ -1,8 +1,10 @@
 import { TypeGuard, TypeGuardTemplate } from "./types";
-import { createTypeGuard } from "./utils";
+import { createTypeGuard } from "./internal";
 
 export const isUnion = <T extends readonly unknown[]>(...guards: TypeGuardTemplate<T>): TypeGuard<T[number]> => {
-	return createTypeGuard((value: unknown): value is T[number] => {
-		return guards.some(guard => guard(value));
+	return createTypeGuard<TypeGuard<T[number]>>({
+		func: value => {
+			return guards.some(guard => guard(value));
+		},
 	});
 };
