@@ -48,6 +48,15 @@ describe("TypeGuard type", () => {
 		expectTypeOf<InstanceofTypeGuard<typeof Derived>>().not.toExtend<InstanceofTypeGuard<typeof Base>>();
 	});
 
+	it("should not match base types", () => {
+		enum Derived { value }
+		type Base = Derived | null;
+
+		expectTypeOf<Derived>().toExtend<Base>();
+		expectTypeOf<TypeGuard<Derived>>().not.toExtend<TypeGuard<Base>>();
+		expectTypeOf<ArrayTypeGuard<Derived>>().not.toExtend<ArrayTypeGuard<Base>>();
+	});
+
 	it("should not match derived types", () => {
 		type Base = number | undefined;
 		type Derived = number;
@@ -66,7 +75,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<ArrayTypeGuard<Base>>().not.toExtend<ArrayTypeGuard<Derived>>();
 	});
 
-	it("should not match base types", () => {
+	it("should not match derived types", () => {
 		class Base { a: string = "a" }
 		class Derived extends Base { b: number = 12 }
 
