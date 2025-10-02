@@ -252,7 +252,7 @@ describe("TypeGuard type", () => {
 	it("should have .set() that receives no parameters and returns TypeGuard<Set<T>>", () => {
 		type T = Date[];
 
-		expectTypeOf<TypeGuard<T>>().toHaveProperty("set").toEqualTypeOf<() => TypeGuard<Set<T>>>();
+		expectTypeOf<TypeGuard<T>>().toHaveProperty("set").toEqualTypeOf<() => SetTypeGuard<T>>();
 	});
 
 	it("should have .indexRecord() that receives no parameters and returns TypeGuard<Record<PropertyKey, T>>", () => {
@@ -265,7 +265,7 @@ describe("TypeGuard type", () => {
 		type RefineResult = `I have ${number} apples`;
 		const refine = isString.refine<RefineResult>;
 
-		expectTypeOf(refine).toEqualTypeOf<(refinement: (value: string) => value is RefineResult) => TypeGuard<RefineResult>>();
+		expectTypeOf(refine).toEqualTypeOf<(refinement: (value: string) => value is RefineResult) => RefineTypeGuard<string, RefineResult>>();
 	});
 });
 

@@ -1,5 +1,7 @@
 import { AnyTypeGuard } from "./internal";
 import { ArrayTypeGuard } from "./isArray";
+import { RefineTypeGuard } from "./isRefine";
+import { SetTypeGuard } from "./isSet";
 
 type ExactEqual<T> = {
 	required: Required<T>;
@@ -11,9 +13,9 @@ export type TypeGuard<in out T, in out _U extends ExactEqual<T> = ExactEqual<T>>
 	optional: () => TypeGuard<T | undefined>;
 	maybe: () => TypeGuard<T | null>;
 	array: () => ArrayTypeGuard<T>;
-	set: () => TypeGuard<Set<T>>;
+	set: () => SetTypeGuard<T>;
 	indexRecord: () => TypeGuard<Record<PropertyKey, T>>;
-	refine: <R extends T>(refinement: (value: T) => value is R) => TypeGuard<R>;
+	refine: <R extends T>(refinement: (value: T) => value is R) => RefineTypeGuard<T, R>;
 };
 
 export type Guarded<T extends AnyTypeGuard> = T extends TypeGuard<infer R> ? R : never;
