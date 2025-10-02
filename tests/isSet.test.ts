@@ -1,8 +1,16 @@
-import { describe } from "vitest";
+import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
 import { isNumber, isSet } from "../src";
 
 describe("is set", () => {
+	it("should have .isValue that is equal to the given guard", () => {
+		const isNumberSet = isSet(isNumber);
+
+		expect(isNumberSet.isValue).toBe(isNumber);
+	});
+});
+
+describe("is number set", () => {
 	describedGuardTests({
 		guard: isSet(isNumber),
 		equivalentGuards: [isNumber.set()],

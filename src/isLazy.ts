@@ -1,8 +1,16 @@
 import { TypeGuard } from "./types";
-import { createTypeGuard } from "./utils";
+import { createTypeGuard } from "./internal";
 
-export const isLazy = <T>(generator: () => TypeGuard<T>): TypeGuard<T> => {
-	return createTypeGuard((value: unknown): value is T => {
-		return generator()(value);
+export type LazyTypeGuard<T> = TypeGuard<T> & {
+	generator: () => TypeGuard<T>;
+};
+
+export const isLazy = <T>(generator: () => TypeGuard<T>): LazyTypeGuard<T> => {
+	return createTypeGuard<LazyTypeGuard<T>>({
+		func: value => {
+			return generator()(value);
+		},
+		generator: generator,
 	});
 };
+

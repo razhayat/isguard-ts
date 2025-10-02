@@ -1,8 +1,15 @@
 import { TypeGuard } from "./types";
-import { createTypeGuard } from "./utils";
+import { createTypeGuard } from "./internal";
 
-export const isArray = <T>(guard: TypeGuard<T>): TypeGuard<T[]> => {
-	return createTypeGuard((value: unknown): value is T[] => {
-		return Array.isArray(value) && value.every(item => guard(item));
+export type ArrayTypeGuard<T> = TypeGuard<T[]> & {
+	isValue: TypeGuard<T>;
+};
+
+export const isArray = <T>(isValue: TypeGuard<T>): ArrayTypeGuard<T> => {
+	return createTypeGuard<ArrayTypeGuard<T>>({
+		func: value => {
+			return Array.isArray(value) && value.every(item => isValue(item));
+		},
+		isValue: isValue,
 	});
 };

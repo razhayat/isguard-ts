@@ -1,8 +1,17 @@
-import { describe } from "vitest";
+import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
 import { isMap, isNumber, isString } from "../src";
 
 describe("is map", () => {
+	it("should have .isKey and .isValue that are equal to the given guards", () => {
+		const isNumberStringMap = isMap(isNumber, isString);
+
+		expect(isNumberStringMap.isKey).toBe(isNumber);
+		expect(isNumberStringMap.isValue).toBe(isString);
+	});
+});
+
+describe("is Map<number, string>", () => {
 	describedGuardTests({
 		guard: isMap(isNumber, isString),
 		testCases: [

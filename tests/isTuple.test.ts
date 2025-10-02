@@ -1,6 +1,15 @@
-import { describe } from "vitest";
+import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isTuple, isNumber, isOptionalNumber, isString, isType } from "../src";
+import { isTuple, isNumber, isOptionalNumber, isString, isType, TypeGuard } from "../src";
+
+describe("is tuple", () => {
+	it("should have .template that is equal to the given template", () => {
+		const template: [TypeGuard<number>, TypeGuard<string>] = [isNumber, isString];
+		const is = isTuple(template);
+
+		expect(is.template).toBe(template);
+	});
+});
 
 describe("is empty tuple", () => {
 	describedGuardTests({

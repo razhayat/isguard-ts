@@ -1,6 +1,14 @@
-import { describe } from "vitest";
-import { isArray, isNumber, isString, isType } from "../src";
+import { describe, expect, it } from "vitest";
+import { isArray, isDate, isNumber, isString, isType } from "../src";
 import { describedGuardTests } from "./utils";
+
+describe("is array", () => {
+	it("should have .isValue that is equal to the given parameter", () => {
+		const isDateArray = isArray(isDate);
+
+		expect(isDateArray.isValue).toBe(isDate);
+	});
+});
 
 describe("is number array", () => {
 	describedGuardTests({
@@ -84,7 +92,7 @@ describe("is object array", () => {
 
 	describedGuardTests({
 		guard: isArray(isObj),
-		equivalentGuards: [isObj.array()],
+		equivalentGuards: [isObj.array(), isArray(isObj).isValue.array()],
 		testCases: [
 			[null, false],
 			[undefined, false],

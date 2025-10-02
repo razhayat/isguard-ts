@@ -1,6 +1,15 @@
-import { describe } from "vitest";
+import { describe, expect, it } from "vitest";
 import { isDate, isMaybe, isNumber, isType, isString, isOptionalString, isLiteral, isLazy, TypeGuard } from "../src";
 import { describedGuardTests } from "./utils";
+
+describe("is type", () => {
+	it("should have .template that is equal to the given template", () => {
+		const template = { name: isString, age: isNumber };
+		const is = isType(template);
+
+		expect(is.template).toBe(template);
+	});
+});
 
 describe("is empty type", () => {
 	describedGuardTests({

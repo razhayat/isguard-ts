@@ -1,6 +1,14 @@
-import { describe } from "vitest";
+import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
 import { isBoolean, isDate, isNumber, isString, isType, isUnion } from "../src";
+
+describe("is union", () => {
+	it("should have .guards that contains all given guards in order", () => {
+		const isAAndB = isUnion(isNumber, isBoolean);
+
+		expect(isAAndB.guards).toEqual([isNumber, isBoolean]);
+	});
+});
 
 describe("is empty union (never)", () => {
 	describedGuardTests({
@@ -58,6 +66,7 @@ describe("is { a: number; } | { b: string; }", () => {
 
 	describedGuardTests({
 		guard: isUnion(isA, isB),
+		equivalentGuards: [isUnion(isB, isA)],
 		testCases: [
 			[null, false],
 			[undefined, false],

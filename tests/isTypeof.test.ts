@@ -1,6 +1,14 @@
-import { describe } from "vitest";
+import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
 import { isBigint, isBoolean, isFunction, isNumber, isString, isSymbol, isTypeof } from "../src";
+
+describe("is typeof", () => {
+	it("should have .result that is equal to the given result", () => {
+		const isTypeofString = isTypeof("string")
+
+		expect(isTypeofString.result).toBe("string");
+	});
+});
 
 describe("is number", () => {
 	describedGuardTests({

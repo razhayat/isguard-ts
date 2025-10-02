@@ -1,5 +1,5 @@
 import { TypeGuard, TypeGuardTemplate } from "./types";
-import { createTypeGuard } from "./utils";
+import { createTypeGuard } from "./internal";
 
 type TupleToIntersection<T extends readonly unknown[]> = {
 	[K in keyof T]-?: (x: T[K]) => void;
@@ -7,8 +7,15 @@ type TupleToIntersection<T extends readonly unknown[]> = {
 	[key: number]: (x: infer I) => void;
 } ? I : never;
 
-export const isIntersection = <T extends readonly unknown[]>(...guards: TypeGuardTemplate<T>): TypeGuard<TupleToIntersection<T>> => {
-	return createTypeGuard((value: unknown): value is TupleToIntersection<T> => {
-		return guards.every(guard => guard(value));
+export type IntersectionTypeGuard<T extends readonly unknown[]> = TypeGuard<TupleToIntersection<T>> & {
+	guards: TypeGuardTemplate<T>;
+};
+
+export const isIntersection = <T extends readonly unknown[]>(...guards: TypeGuardTemplate<T>): IntersectionTypeGuard<T> => {
+	return createTypeGuard<IntersectionTypeGuard<T>>({
+		func: value => {
+			return guards.every(guard => guard(value));
+		},
+		guards: guards,
 	});
 };
