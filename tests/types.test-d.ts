@@ -15,6 +15,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<RefineTypeGuard<unknown, Type1>>().toEqualTypeOf<RefineTypeGuard<unknown, Type2>>();
 		expectTypeOf<SetTypeGuard<Type1>>().toEqualTypeOf<SetTypeGuard<Type2>>();
 		expectTypeOf<UnionTypeGuard<[Type1]>>().toEqualTypeOf<UnionTypeGuard<[Type2]>>();
+		expectTypeOf<TupleTypeGuard<[Type1]>>().toEqualTypeOf<TupleTypeGuard<[Type2]>>();
 	});
 
 	it("should be based on structural typing", () => {
@@ -29,6 +30,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<RefineTypeGuard<unknown, Type1>>().toEqualTypeOf<RefineTypeGuard<unknown, Type2>>();
 		expectTypeOf<SetTypeGuard<Type1>>().toEqualTypeOf<SetTypeGuard<Type2>>();
 		expectTypeOf<UnionTypeGuard<[Type1]>>().toEqualTypeOf<UnionTypeGuard<[Type2]>>();
+		expectTypeOf<TupleTypeGuard<[Type1]>>().toEqualTypeOf<TupleTypeGuard<[Type2]>>();
 	});
 
 	it("should not match base types", () => {
@@ -44,6 +46,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<RefineTypeGuard<unknown, Derived>>().not.toExtend<RefineTypeGuard<unknown, Base>>();
 		expectTypeOf<SetTypeGuard<Derived>>().not.toExtend<SetTypeGuard<Base>>();
 		expectTypeOf<UnionTypeGuard<[Derived]>>().not.toExtend<UnionTypeGuard<[Base]>>();
+		expectTypeOf<TupleTypeGuard<[Derived]>>().not.toExtend<TupleTypeGuard<[Base]>>();
 	});
 
 	it("should not match base types", () => {
@@ -58,6 +61,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<RefineTypeGuard<unknown, Derived>>().not.toExtend<RefineTypeGuard<unknown, Base>>();
 		expectTypeOf<SetTypeGuard<Derived>>().not.toExtend<SetTypeGuard<Base>>();
 		expectTypeOf<UnionTypeGuard<[Derived]>>().not.toExtend<UnionTypeGuard<[Base]>>();
+		expectTypeOf<TupleTypeGuard<[Derived]>>().not.toExtend<TupleTypeGuard<[Base]>>();
 	});
 
 	it("should not match base types", () => {
@@ -73,6 +77,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<RefineTypeGuard<unknown, Derived>>().not.toExtend<RefineTypeGuard<unknown, Base>>();
 		expectTypeOf<SetTypeGuard<Derived>>().not.toExtend<SetTypeGuard<Base>>();
 		expectTypeOf<UnionTypeGuard<[Derived]>>().not.toExtend<UnionTypeGuard<[Base]>>();
+		expectTypeOf<TupleTypeGuard<[Derived]>>().not.toExtend<TupleTypeGuard<[Base]>>();
 	});
 
 	it("should not match base types", () => {
@@ -87,6 +92,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<RefineTypeGuard<unknown, Derived>>().not.toExtend<RefineTypeGuard<unknown, Base>>();
 		expectTypeOf<SetTypeGuard<Derived>>().not.toExtend<SetTypeGuard<Base>>();
 		expectTypeOf<UnionTypeGuard<[Derived]>>().not.toExtend<UnionTypeGuard<[Base]>>();
+		expectTypeOf<TupleTypeGuard<[Derived]>>().not.toExtend<TupleTypeGuard<[Base]>>();
 	});
 
 	it("should not match derived types", () => {
@@ -102,6 +108,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<RefineTypeGuard<unknown, Base>>().not.toExtend<RefineTypeGuard<unknown, Derived>>();
 		expectTypeOf<SetTypeGuard<Base>>().not.toExtend<SetTypeGuard<Derived>>();
 		expectTypeOf<UnionTypeGuard<[Base]>>().not.toExtend<UnionTypeGuard<[Derived]>>();
+		expectTypeOf<TupleTypeGuard<[Base]>>().not.toExtend<TupleTypeGuard<[Derived]>>();
 	});
 
 	it("should not match derived types", () => {
@@ -116,6 +123,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<RefineTypeGuard<unknown, Base>>().not.toExtend<RefineTypeGuard<unknown, Derived>>();
 		expectTypeOf<SetTypeGuard<Base>>().not.toExtend<SetTypeGuard<Derived>>();
 		expectTypeOf<UnionTypeGuard<[Base]>>().not.toExtend<UnionTypeGuard<[Derived]>>();
+		expectTypeOf<TupleTypeGuard<[Base]>>().not.toExtend<TupleTypeGuard<[Derived]>>();
 	});
 
 	it("should not match derived types", () => {
@@ -131,6 +139,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<RefineTypeGuard<unknown, Base>>().not.toExtend<RefineTypeGuard<unknown, Derived>>();
 		expectTypeOf<SetTypeGuard<Base>>().not.toExtend<SetTypeGuard<Derived>>();
 		expectTypeOf<UnionTypeGuard<[Base]>>().not.toExtend<UnionTypeGuard<[Derived]>>();
+		expectTypeOf<TupleTypeGuard<[Base]>>().not.toExtend<TupleTypeGuard<[Derived]>>();
 	});
 
 	it("should not match mutually assignable types", () => {
@@ -160,6 +169,9 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<UnionTypeGuard<[Type1]>>().not.toExtend<UnionTypeGuard<[Type2]>>();
 		expectTypeOf<UnionTypeGuard<[Type2]>>().not.toExtend<UnionTypeGuard<[Type1]>>();
+
+		expectTypeOf<TupleTypeGuard<[Type1]>>().not.toExtend<TupleTypeGuard<[Type2]>>();
+		expectTypeOf<TupleTypeGuard<[Type2]>>().not.toExtend<TupleTypeGuard<[Type1]>>();
 	});
 
 	it("should not match mutually assignable types", () => {
@@ -189,6 +201,9 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<UnionTypeGuard<[Type1]>>().not.toExtend<UnionTypeGuard<[Type2]>>();
 		expectTypeOf<UnionTypeGuard<[Type2]>>().not.toExtend<UnionTypeGuard<[Type1]>>();
+
+		expectTypeOf<TupleTypeGuard<[Type1]>>().not.toExtend<TupleTypeGuard<[Type2]>>();
+		expectTypeOf<TupleTypeGuard<[Type2]>>().not.toExtend<TupleTypeGuard<[Type1]>>();
 	});
 
 	it("should not match mutually assignable types", () => {
@@ -218,6 +233,9 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<UnionTypeGuard<[Type1]>>().not.toExtend<UnionTypeGuard<[Type2]>>();
 		expectTypeOf<UnionTypeGuard<[Type2]>>().not.toExtend<UnionTypeGuard<[Type1]>>();
+
+		expectTypeOf<TupleTypeGuard<[Type1]>>().not.toExtend<TupleTypeGuard<[Type2]>>();
+		expectTypeOf<TupleTypeGuard<[Type2]>>().not.toExtend<TupleTypeGuard<[Type1]>>();
 	});
 
 	it("should not match mutually assignable types", () => {
@@ -250,6 +268,9 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<UnionTypeGuard<[Type1]>>().not.toExtend<UnionTypeGuard<[Type2]>>();
 		expectTypeOf<UnionTypeGuard<[Type2]>>().not.toExtend<UnionTypeGuard<[Type1]>>();
+
+		expectTypeOf<TupleTypeGuard<[Type1]>>().not.toExtend<TupleTypeGuard<[Type2]>>();
+		expectTypeOf<TupleTypeGuard<[Type2]>>().not.toExtend<TupleTypeGuard<[Type1]>>();
 	});
 
 	it("should have .optional() that receives no parameters and returns TypeGuard<T | undefined>", () => {
@@ -978,6 +999,12 @@ describe("isTuple", () => {
 
 			expectTypeOf(actual).toEqualTypeOf<TupleTypeGuard<Row>>();
 			expectTypeOf(actual).toExtend<TypeGuard<Row>>();
+		});
+
+		it("should have .template that is of type [TypeGuard<string>, TypeGuard<number>]", () => {
+			const actual = isTuple([isString, isNumber]);
+
+			expectTypeOf(actual.template).toEqualTypeOf<[TypeGuard<string>, TypeGuard<number>]>();
 		});
 	});
 
