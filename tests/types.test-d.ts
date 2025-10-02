@@ -439,35 +439,39 @@ describe("isEnum", () => {
 });
 
 describe("isInstanceof", () => {
-	it("should return TypeGuard<T>", () => {
-		class Example { }
-		const actual = isInstanceof(Example);
+	describe("return type", () => {
+		it("should return TypeGuard<T>", () => {
+			class Example { }
+			const actual = isInstanceof(Example);
 
-		expectTypeOf(actual).toEqualTypeOf<InstanceofTypeGuard<typeof Example>>();
-		expectTypeOf(actual).toExtend<TypeGuard<Example>>();
+			expectTypeOf(actual).toEqualTypeOf<InstanceofTypeGuard<typeof Example>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Example>>();
+		});
+
+		it("should have .constructor that is of type TypeGuard<typeof Example>", () => {
+			class Example {}
+			const actual = isInstanceof(Example);
+
+			expectTypeOf(actual.constructor).toEqualTypeOf<typeof Example>();
+		});
 	});
 
-	it("should accept abstract class", () => {
-		abstract class Example { }
-		const actual = isInstanceof(Example);
+	describe("parameters", () => {
+		it("should accept abstract class", () => {
+			abstract class Example { }
+			const actual = isInstanceof(Example);
 
-		expectTypeOf(actual).toEqualTypeOf<InstanceofTypeGuard<typeof Example>>();
-		expectTypeOf(actual).toExtend<TypeGuard<Example>>();
-	});
+			expectTypeOf(actual).toEqualTypeOf<InstanceofTypeGuard<typeof Example>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Example>>();
+		});
 
-	it("should not accept function constructor", () => {
-		function Example() { }
-		isInstanceof(
-			// @ts-expect-error
-			Example
-		);
-	});
-
-	it("should have .constructor that is of type TypeGuard<typeof Example>", () => {
-		class Example {}
-		const actual = isInstanceof(Example);
-
-		expectTypeOf(actual.constructor).toEqualTypeOf<typeof Example>();
+		it("should not accept function constructor", () => {
+			function Example() { }
+			isInstanceof(
+				// @ts-expect-error
+				Example
+			);
+		});
 	});
 });
 
