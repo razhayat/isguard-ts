@@ -6,12 +6,12 @@ import { isUnion } from "./isUnion";
 import { TypeGuard } from "./types";
 import { createTypeGuard } from "./internal";
 
-export const isNull = isLiteral(null);
-export const isUndefined = isLiteral(void 0);
-export const isNil = isLiteral(null, void 0);
+export const isNull: TypeGuard<null> = isLiteral(null);
+export const isUndefined: TypeGuard<undefined> = isLiteral(void 0);
+export const isNil: TypeGuard<null | undefined> = isLiteral(null, void 0);
 
-export const isTrue = isLiteral(true);
-export const isFalse = isLiteral(false);
+export const isTrue: TypeGuard<true> = isLiteral(true);
+export const isFalse: TypeGuard<false> = isLiteral(false);
 
 export const isNumber = isTypeof("number");
 export const isBigint = isTypeof("bigint");
@@ -22,15 +22,15 @@ export const isFunction = isTypeof("function");
 export const isObject = isRefine(isTypeof("object"), object => !!object);
 export const isPropertyKey: TypeGuard<PropertyKey> = isUnion(isString, isNumber, isSymbol);
 
-export const isDate = isInstanceof(Date);
-export const isRegExp = isInstanceof(RegExp);
-export const isError = 	isInstanceof(Error);
-export const isEvalError = isInstanceof(EvalError);
-export const isRangeError = isInstanceof(RangeError);
-export const isReferenceError = isInstanceof(ReferenceError);
-export const isSyntaxError = isInstanceof(SyntaxError);
-export const isTypeError = isInstanceof(TypeError);
-export const isURIError = isInstanceof(URIError);
+export const isDate: TypeGuard<Date> = isInstanceof(Date);
+export const isRegExp: TypeGuard<RegExp> = isInstanceof(RegExp);
+export const isError: TypeGuard<Error> = isInstanceof(Error);
+export const isEvalError: TypeGuard<EvalError> = isInstanceof(EvalError);
+export const isRangeError: TypeGuard<RangeError> = isInstanceof(RangeError);
+export const isReferenceError: TypeGuard<ReferenceError> = isInstanceof(ReferenceError);
+export const isSyntaxError: TypeGuard<SyntaxError> = isInstanceof(SyntaxError);
+export const isTypeError: TypeGuard<TypeError> = isInstanceof(TypeError);
+export const isURIError: TypeGuard<URIError> = isInstanceof(URIError);
 
 export const isUnknown: TypeGuard<unknown> = createTypeGuard<TypeGuard<unknown>>({
 	func: () => true,

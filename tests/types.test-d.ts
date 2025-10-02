@@ -1162,28 +1162,23 @@ describe("isUnion", () => {
 
 describe("is util types", () => {
 	test("isTrue should be TypeGuard<true>", () => {
-		expectTypeOf(isTrue).toEqualTypeOf<LiteralTypeGuard<readonly [true]>>();
-		expectTypeOf(isTrue).toExtend<TypeGuard<true>>();
+		expectTypeOf(isTrue).toEqualTypeOf<TypeGuard<true>>();
 	});
 
 	test("isFalse should be TypeGuard<false>", () => {
-		expectTypeOf(isFalse).toEqualTypeOf<LiteralTypeGuard<readonly [false]>>();
-		expectTypeOf(isFalse).toExtend<TypeGuard<false>>();
+		expectTypeOf(isFalse).toEqualTypeOf<TypeGuard<false>>();
 	});
 
 	test("isNull should be TypeGuard<null>", () => {
-		expectTypeOf(isNull).toEqualTypeOf<LiteralTypeGuard<readonly [null]>>();
-		expectTypeOf(isNull).toExtend<TypeGuard<null>>();
+		expectTypeOf(isNull).toEqualTypeOf<TypeGuard<null>>();
 	});
 
 	test("isUndefined should be TypeGuard<undefined>", () => {
-		expectTypeOf(isUndefined).toEqualTypeOf<LiteralTypeGuard<readonly [undefined]>>();
-		expectTypeOf(isUndefined).toExtend<TypeGuard<undefined>>();
+		expectTypeOf(isUndefined).toEqualTypeOf<TypeGuard<undefined>>();
 	});
 
 	test("isNil should be TypeGuard<null | undefined>", () => {
-		expectTypeOf(isNil).toEqualTypeOf<LiteralTypeGuard<readonly [null, undefined]>>();
-		expectTypeOf(isNil).toExtend<TypeGuard<null | undefined>>();
+		expectTypeOf(isNil).toEqualTypeOf<TypeGuard<null | undefined>>();
 	});
 
 	test("isNumber should be TypeGuard<number>", () => {
@@ -1211,52 +1206,44 @@ describe("is util types", () => {
 	});
 
 	test("isDate should be TypeGuard<Date>", () => {
-		expectTypeOf(isDate).toEqualTypeOf<InstanceofTypeGuard<typeof Date>>();
-		expectTypeOf(isDate).toExtend<TypeGuard<Date>>();
+		expectTypeOf(isDate).toEqualTypeOf<TypeGuard<Date>>();
 	});
 
 	test("isRegexp should be TypeGuard<RegExp>", () => {
-		expectTypeOf(isRegExp).toEqualTypeOf<InstanceofTypeGuard<typeof RegExp>>();
-		expectTypeOf(isRegExp).toExtend<TypeGuard<RegExp>>();
+		expectTypeOf(isRegExp).toEqualTypeOf<TypeGuard<RegExp>>();
 	});
 
 	test("isError should be TypeGuard<Error>", () => {
-		expectTypeOf(isError).toEqualTypeOf<InstanceofTypeGuard<typeof Error>>();
-		expectTypeOf(isError).toExtend<TypeGuard<Error>>();
+		expectTypeOf(isError).toEqualTypeOf<TypeGuard<Error>>();
 	});
 
 	test("isEvalError should be TypeGuard<EvalError>", () => {
-		expectTypeOf(isEvalError).toEqualTypeOf<InstanceofTypeGuard<typeof EvalError>>();
-		expectTypeOf(isEvalError).toExtend<TypeGuard<EvalError>>();
+		expectTypeOf(isEvalError).toEqualTypeOf<TypeGuard<EvalError>>();
 	});
 
 	test("isRangeError should be TypeGuard<RangeError>", () => {
-		expectTypeOf(isRangeError).toEqualTypeOf<InstanceofTypeGuard<typeof RangeError>>();
-		expectTypeOf(isRangeError).toExtend<TypeGuard<RangeError>>();
+		expectTypeOf(isRangeError).toEqualTypeOf<TypeGuard<RangeError>>();
 	});
 
 	test("isReferenceError should be TypeGuard<ReferenceError>", () => {
-		expectTypeOf(isReferenceError).toEqualTypeOf<InstanceofTypeGuard<typeof ReferenceError>>();
-		expectTypeOf(isReferenceError).toExtend<TypeGuard<ReferenceError>>();
+		expectTypeOf(isReferenceError).toEqualTypeOf<TypeGuard<ReferenceError>>();
 	});
 
 	test("isSyntaxError should be TypeGuard<SyntaxError>", () => {
-		expectTypeOf(isSyntaxError).toEqualTypeOf<InstanceofTypeGuard<typeof SyntaxError>>();
-		expectTypeOf(isSyntaxError).toExtend<TypeGuard<SyntaxError>>();
+		expectTypeOf(isSyntaxError).toEqualTypeOf<TypeGuard<SyntaxError>>();
 	});
 
 	test("isTypeError should be TypeGuard<TypeError>", () => {
-		expectTypeOf(isTypeError).toEqualTypeOf<InstanceofTypeGuard<typeof TypeError>>();
-		expectTypeOf(isTypeError).toExtend<TypeGuard<TypeError>>();
+		expectTypeOf(isTypeError).toEqualTypeOf<TypeGuard<TypeError>>();
 	});
 
 	test("isURIError should be TypeGuard<URIError>", () => {
-		expectTypeOf(isURIError).toEqualTypeOf<InstanceofTypeGuard<typeof URIError>>();
-		expectTypeOf(isURIError).toExtend<TypeGuard<URIError>>();
+		expectTypeOf(isURIError).toEqualTypeOf<TypeGuard<URIError>>();
 	});
 
 	test("isObject should be TypeGuard<object>", () => {
-		expectTypeOf(isObject).toEqualTypeOf<TypeGuard<object>>();
+		expectTypeOf(isObject).toEqualTypeOf<RefineTypeGuard<object | null, object>>();
+		expectTypeOf(isObject).toExtend<TypeGuard<object>>();
 	});
 
 	test("isNumberArray should be TypeGuard<number[]>", () => {
