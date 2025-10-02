@@ -1,6 +1,16 @@
-import { describe } from "vitest";
+import { describe, expect, it } from "vitest";
 import { isNumber, isRefine, isString } from "../src";
 import { describedGuardTests } from "./utils";
+
+describe("is refine", () => {
+	it("should have .isBase and .refinement that are equal to the given parameters", () => {
+		const refinement = (value: string): value is `Hello${string}` => value.startsWith("Hello");
+		const isStartWithHello = isRefine(isString, refinement);
+
+		expect(isStartWithHello.isBase).toBe(isString);
+		expect(isStartWithHello.refinement).toBe(refinement);
+	});
+});
 
 describe("is `Hello${string}`", () => {
 	const startWithHello = (value: string): value is `Hello${string}` => {

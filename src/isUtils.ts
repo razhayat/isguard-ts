@@ -19,7 +19,7 @@ export const isString = isTypeof("string");
 export const isBoolean = isTypeof("boolean");
 export const isSymbol = isTypeof("symbol");
 export const isFunction = isTypeof("function");
-export const isObject = isRefine(isTypeof("object"), object => !!object);
+export const isObject: TypeGuard<object> = isRefine(isTypeof("object"), object => !!object);
 export const isPropertyKey: TypeGuard<PropertyKey> = isUnion(isString, isNumber, isSymbol);
 
 export const isDate: TypeGuard<Date> = isInstanceof(Date);
