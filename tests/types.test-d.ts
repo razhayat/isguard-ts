@@ -565,6 +565,13 @@ describe("isLazy", () => {
 			expectTypeOf(actual).toEqualTypeOf<LazyTypeGuard<A>>();
 			expectTypeOf(actual).toExtend<TypeGuard<A>>();
 		});
+
+		it("should have .generator that is of type TypeGuard<() => TypeGuard<T>>", () => {
+			const generator = () => isString;
+			const actual = isLazy(generator);
+
+			expectTypeOf(actual.generator).toEqualTypeOf<() => TypeGuard<string>>();
+		});
 	});
 
 	describe("parameters", () => {
@@ -592,6 +599,12 @@ describe("isLiteral", () => {
 			expectTypeOf(actual).toEqualTypeOf<LiteralTypeGuard<readonly [12, false]>>();
 			expectTypeOf(actual).not.toEqualTypeOf<LiteralTypeGuard<readonly [false, 12]>>();
 			expectTypeOf(actual).toExtend<TypeGuard<12 | false>>();
+		});
+
+		it("should have .values that is of type TypeGuard<readonly [12, true]>", () => {
+			const actual = isLiteral(12, true);
+
+			expectTypeOf(actual.values).toEqualTypeOf<readonly [12, true]>();
 		});
 	});
 
@@ -678,6 +691,18 @@ describe("isMap", () => {
 
 			expectTypeOf(actual).toEqualTypeOf<MapTypeGuard<number, boolean>>();
 			expectTypeOf(actual).toExtend<TypeGuard<Map<number, boolean>>>();
+		});
+
+		it("should have .isKey that is of type TypeGuard<K>", () => {
+			const actual = isMap(isBoolean, isString);
+
+			expectTypeOf(actual.isKey).toEqualTypeOf<TypeGuard<boolean>>();
+		});
+
+		it("should have .isValue that is of type TypeGuard<V>", () => {
+			const actual = isMap(isBoolean, isString);
+
+			expectTypeOf(actual.isValue).toEqualTypeOf<TypeGuard<string>>();
 		});
 	});
 });
