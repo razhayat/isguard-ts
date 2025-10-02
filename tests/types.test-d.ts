@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, TypeGuard, TypeGuardTemplate, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, isRegExp, isLazy, isLiteral, isRefine, isOptional, isMaybe, ArrayTypeGuard, EnumTypeGuard, InstanceofTypeGuard, IntersectionTypeGuard, LazyTypeGuard } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, TypeGuard, TypeGuardTemplate, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, isRegExp, isLazy, isLiteral, isRefine, isOptional, isMaybe, ArrayTypeGuard, EnumTypeGuard, InstanceofTypeGuard, IntersectionTypeGuard, LazyTypeGuard, LiteralTypeGuard } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exactly equal", () => {
@@ -11,6 +11,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<ArrayTypeGuard<Type1>>().toEqualTypeOf<ArrayTypeGuard<Type2>>();
 		expectTypeOf<IntersectionTypeGuard<[Type1]>>().toEqualTypeOf<IntersectionTypeGuard<[Type2]>>();
 		expectTypeOf<LazyTypeGuard<Type1>>().toEqualTypeOf<LazyTypeGuard<Type2>>();
+		expectTypeOf<LiteralTypeGuard<[Type1]>>().toEqualTypeOf<LiteralTypeGuard<[Type2]>>();
 	});
 
 	it("should be based on structural typing", () => {
@@ -33,6 +34,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<ArrayTypeGuard<Derived>>().not.toExtend<ArrayTypeGuard<Base>>();
 		expectTypeOf<IntersectionTypeGuard<[Derived]>>().not.toExtend<IntersectionTypeGuard<[Base]>>();
 		expectTypeOf<LazyTypeGuard<Derived>>().not.toExtend<LazyTypeGuard<Base>>();
+		expectTypeOf<LiteralTypeGuard<[Derived]>>().not.toExtend<LiteralTypeGuard<[Base]>>();
 	});
 
 	it("should not match base types", () => {
@@ -78,6 +80,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<ArrayTypeGuard<Base>>().not.toExtend<ArrayTypeGuard<Derived>>();
 		expectTypeOf<IntersectionTypeGuard<[Base]>>().not.toExtend<IntersectionTypeGuard<[Derived]>>();
 		expectTypeOf<LazyTypeGuard<Base>>().not.toExtend<LazyTypeGuard<Derived>>();
+		expectTypeOf<LiteralTypeGuard<[Base]>>().not.toExtend<LiteralTypeGuard<[Derived]>>();
 	});
 
 	it("should not match derived types", () => {
@@ -574,16 +577,17 @@ describe("isLiteral", () => {
 	describe("return type", () => {
 		it("should return TypeGuard<12>", () => {
 			const actual = isLiteral(12);
-			type Expected = TypeGuard<12>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<LiteralTypeGuard<readonly [12]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<12>>();
 		});
 
 		it("should return TypeGuard<12 | false>", () => {
 			const actual = isLiteral(12, false);
-			type Expected = TypeGuard<12 | false>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<LiteralTypeGuard<readonly [12, false]>>();
+			expectTypeOf(actual).not.toEqualTypeOf<LiteralTypeGuard<readonly [false, 12]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<12 | false>>();
 		});
 	});
 
@@ -1129,23 +1133,28 @@ describe("isUnion", () => {
 
 describe("is util types", () => {
 	test("isTrue should be TypeGuard<true>", () => {
-		expectTypeOf(isTrue).toEqualTypeOf<TypeGuard<true>>();
+		expectTypeOf(isTrue).toEqualTypeOf<LiteralTypeGuard<readonly [true]>>();
+		expectTypeOf(isTrue).toExtend<TypeGuard<true>>();
 	});
 
 	test("isFalse should be TypeGuard<false>", () => {
-		expectTypeOf(isFalse).toEqualTypeOf<TypeGuard<false>>();
+		expectTypeOf(isFalse).toEqualTypeOf<LiteralTypeGuard<readonly [false]>>();
+		expectTypeOf(isFalse).toExtend<TypeGuard<false>>();
 	});
 
 	test("isNull should be TypeGuard<null>", () => {
-		expectTypeOf(isNull).toEqualTypeOf<TypeGuard<null>>();
+		expectTypeOf(isNull).toEqualTypeOf<LiteralTypeGuard<readonly [null]>>();
+		expectTypeOf(isNull).toExtend<TypeGuard<null>>();
 	});
 
 	test("isUndefined should be TypeGuard<undefined>", () => {
-		expectTypeOf(isUndefined).toEqualTypeOf<TypeGuard<undefined>>();
+		expectTypeOf(isUndefined).toEqualTypeOf<LiteralTypeGuard<readonly [undefined]>>();
+		expectTypeOf(isUndefined).toExtend<TypeGuard<undefined>>();
 	});
 
 	test("isNil should be TypeGuard<null | undefined>", () => {
-		expectTypeOf(isNil).toEqualTypeOf<TypeGuard<null | undefined>>();
+		expectTypeOf(isNil).toEqualTypeOf<LiteralTypeGuard<readonly [null, undefined]>>();
+		expectTypeOf(isNil).toExtend<TypeGuard<null | undefined>>();
 	});
 
 	test("isNumber should be TypeGuard<number>", () => {

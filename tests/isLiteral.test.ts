@@ -1,6 +1,15 @@
-import { describe } from "vitest";
+import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
 import { isLiteral } from "../src";
+
+describe("is literal", () => {
+	it("should have .values that is equal to the given values", () => {
+		const values = [1, "f", false, null, undefined, 4n] as const;
+		const is = isLiteral(...values);
+
+		expect(is.values).toEqual(values);
+	});
+});
 
 describe("is literal of nothing (never)", () => {
 	describedGuardTests({
