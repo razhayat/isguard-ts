@@ -1,5 +1,6 @@
 import { AnyTypeGuard } from "./internal";
 import { ArrayTypeGuard } from "./isArray";
+import { IndexRecordTypeGuard } from "./isRecord";
 import { RefineTypeGuard } from "./isRefine";
 import { SetTypeGuard } from "./isSet";
 
@@ -14,7 +15,7 @@ export type TypeGuard<in out T, in out _U extends ExactEqual<T> = ExactEqual<T>>
 	maybe: () => TypeGuard<T | null>;
 	array: () => ArrayTypeGuard<T>;
 	set: () => SetTypeGuard<T>;
-	indexRecord: () => TypeGuard<Record<PropertyKey, T>>;
+	indexRecord: () => IndexRecordTypeGuard<T>;
 	refine: <R extends T>(refinement: (value: T) => value is R) => RefineTypeGuard<T, R>;
 };
 

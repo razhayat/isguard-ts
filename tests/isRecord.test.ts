@@ -1,6 +1,6 @@
-import { describe } from "vitest";
+import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isBoolean, isIndexRecord, isLiteral, isNumber, isPartialRecord, isRecord, isString } from "../src";
+import { isBoolean, isDate, isIndexRecord, isLiteral, isNumber, isPartialRecord, isRecord, isString } from "../src";
 
 describe("is record", () => {
 	describedGuardTests({
@@ -177,7 +177,15 @@ describe("is partial record with symbol keys", () => {
 	});
 });
 
-describe("is indexRecord", () => {
+describe("is index record", () => {
+	it("should have .isValue that is equal to the given value", () => {
+		const is = isIndexRecord(isDate);
+
+		expect(is.isValue).toBe(isDate);
+	});
+});
+
+describe("is number index record", () => {
 	describedGuardTests({
 		guard: isIndexRecord(isNumber),
 		equivalentGuards: [isNumber.indexRecord()],

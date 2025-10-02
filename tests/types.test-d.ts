@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, TypeGuard, TypeGuardTemplate, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, isRegExp, isLazy, isLiteral, isRefine, isOptional, isMaybe, ArrayTypeGuard, EnumTypeGuard, InstanceofTypeGuard, IntersectionTypeGuard, LazyTypeGuard, LiteralTypeGuard, MapTypeGuard, RefineTypeGuard, SetTypeGuard, isTypeof, TypeofTypeGuard, UnionTypeGuard, TupleTypeGuard, TypeTypeGuard, TupleToObject } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, TypeGuard, TypeGuardTemplate, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, isRegExp, isLazy, isLiteral, isRefine, isOptional, isMaybe, ArrayTypeGuard, EnumTypeGuard, InstanceofTypeGuard, IntersectionTypeGuard, LazyTypeGuard, LiteralTypeGuard, MapTypeGuard, RefineTypeGuard, SetTypeGuard, isTypeof, TypeofTypeGuard, UnionTypeGuard, TupleTypeGuard, TypeTypeGuard, TupleToObject, IndexRecordTypeGuard } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exactly equal", () => {
@@ -279,7 +279,7 @@ describe("TypeGuard type", () => {
 	it("should have .indexRecord() that receives no parameters and returns TypeGuard<Record<PropertyKey, T>>", () => {
 		type T = number | string;
 
-		expectTypeOf<TypeGuard<T>>().toHaveProperty("indexRecord").toEqualTypeOf<() => TypeGuard<Record<PropertyKey, T>>>();
+		expectTypeOf<TypeGuard<T>>().toHaveProperty("indexRecord").toEqualTypeOf<() => IndexRecordTypeGuard<T>>();
 	});
 
 	it("should have .refine() that receives a refinement function and returns TypeGuard<R>", () => {
@@ -927,18 +927,9 @@ describe("isIndexRecord", () => {
 	describe("return type", () => {
 		it("should return Record<PropertyKey, number>", () => {
 			const actual = isIndexRecord(isNumber);
-			type Expected = TypeGuard<Record<PropertyKey, number>>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
-		});
-	});
-
-	describe("parameters", () => {
-		it("should accept different key types", () => {
-			const actual = isIndexRecord<string>(isString);
-			type Expected = TypeGuard<Record<PropertyKey, string>>;
-
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<IndexRecordTypeGuard<number>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Record<PropertyKey, number>>>();
 		});
 	});
 });
