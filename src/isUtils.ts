@@ -13,12 +13,12 @@ export const isNil: TypeGuard<null | undefined> = isLiteral(null, void 0);
 export const isTrue: TypeGuard<true> = isLiteral(true);
 export const isFalse: TypeGuard<false> = isLiteral(false);
 
-export const isNumber = isTypeof("number");
-export const isBigint = isTypeof("bigint");
-export const isString = isTypeof("string");
-export const isBoolean = isTypeof("boolean");
-export const isSymbol = isTypeof("symbol");
-export const isFunction = isTypeof("function");
+export const isNumber: TypeGuard<number> = isTypeof("number");
+export const isBigint: TypeGuard<bigint> = isTypeof("bigint");
+export const isString: TypeGuard<string> = isTypeof("string");
+export const isBoolean: TypeGuard<boolean> = isTypeof("boolean");
+export const isSymbol: TypeGuard<symbol> = isTypeof("symbol");
+export const isFunction: TypeGuard<Function> = isTypeof("function");
 export const isObject: TypeGuard<object> = isRefine(isTypeof("object"), object => !!object);
 export const isPropertyKey: TypeGuard<PropertyKey> = isUnion(isString, isNumber, isSymbol);
 
