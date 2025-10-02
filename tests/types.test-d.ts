@@ -16,6 +16,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<SetTypeGuard<Type1>>().toEqualTypeOf<SetTypeGuard<Type2>>();
 		expectTypeOf<UnionTypeGuard<[Type1]>>().toEqualTypeOf<UnionTypeGuard<[Type2]>>();
 		expectTypeOf<TupleTypeGuard<[Type1]>>().toEqualTypeOf<TupleTypeGuard<[Type2]>>();
+		expectTypeOf<IndexRecordTypeGuard<Type1>>().toEqualTypeOf<IndexRecordTypeGuard<Type2>>();
 	});
 
 	it("should be based on structural typing", () => {
@@ -32,6 +33,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<UnionTypeGuard<[Type1]>>().toEqualTypeOf<UnionTypeGuard<[Type2]>>();
 		expectTypeOf<TupleTypeGuard<[Type1]>>().toEqualTypeOf<TupleTypeGuard<[Type2]>>();
 		expectTypeOf<TypeTypeGuard<Type1>>().toEqualTypeOf<TypeTypeGuard<Type2>>();
+		expectTypeOf<IndexRecordTypeGuard<Type1>>().toEqualTypeOf<IndexRecordTypeGuard<Type2>>();
 	});
 
 	it("should not match base types", () => {
@@ -48,6 +50,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<SetTypeGuard<Derived>>().not.toExtend<SetTypeGuard<Base>>();
 		expectTypeOf<UnionTypeGuard<[Derived]>>().not.toExtend<UnionTypeGuard<[Base]>>();
 		expectTypeOf<TupleTypeGuard<[Derived]>>().not.toExtend<TupleTypeGuard<[Base]>>();
+		expectTypeOf<IndexRecordTypeGuard<Derived>>().not.toExtend<IndexRecordTypeGuard<Base>>();
 	});
 
 	it("should not match base types", () => {
@@ -64,6 +67,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<UnionTypeGuard<[Derived]>>().not.toExtend<UnionTypeGuard<[Base]>>();
 		expectTypeOf<TupleTypeGuard<[Derived]>>().not.toExtend<TupleTypeGuard<[Base]>>();
 		expectTypeOf<TypeTypeGuard<Derived>>().not.toExtend<TypeTypeGuard<Base>>();
+		expectTypeOf<IndexRecordTypeGuard<Derived>>().not.toExtend<IndexRecordTypeGuard<Base>>();
 	});
 
 	it("should not match base types", () => {
@@ -81,6 +85,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<UnionTypeGuard<[Derived]>>().not.toExtend<UnionTypeGuard<[Base]>>();
 		expectTypeOf<TupleTypeGuard<[Derived]>>().not.toExtend<TupleTypeGuard<[Base]>>();
 		expectTypeOf<TypeTypeGuard<Derived>>().not.toExtend<TypeTypeGuard<Base>>();
+		expectTypeOf<IndexRecordTypeGuard<Derived>>().not.toExtend<IndexRecordTypeGuard<Base>>();
 	});
 
 	it("should not match base types", () => {
@@ -96,6 +101,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<SetTypeGuard<Derived>>().not.toExtend<SetTypeGuard<Base>>();
 		expectTypeOf<UnionTypeGuard<[Derived]>>().not.toExtend<UnionTypeGuard<[Base]>>();
 		expectTypeOf<TupleTypeGuard<[Derived]>>().not.toExtend<TupleTypeGuard<[Base]>>();
+		expectTypeOf<IndexRecordTypeGuard<Derived>>().not.toExtend<IndexRecordTypeGuard<Base>>();
 	});
 
 	it("should not match derived types", () => {
@@ -112,6 +118,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<SetTypeGuard<Base>>().not.toExtend<SetTypeGuard<Derived>>();
 		expectTypeOf<UnionTypeGuard<[Base]>>().not.toExtend<UnionTypeGuard<[Derived]>>();
 		expectTypeOf<TupleTypeGuard<[Base]>>().not.toExtend<TupleTypeGuard<[Derived]>>();
+		expectTypeOf<IndexRecordTypeGuard<Base>>().not.toExtend<IndexRecordTypeGuard<Derived>>();
 	});
 
 	it("should not match derived types", () => {
@@ -128,6 +135,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<UnionTypeGuard<[Base]>>().not.toExtend<UnionTypeGuard<[Derived]>>();
 		expectTypeOf<TupleTypeGuard<[Base]>>().not.toExtend<TupleTypeGuard<[Derived]>>();
 		expectTypeOf<TypeTypeGuard<Base>>().not.toExtend<TypeTypeGuard<Derived>>();
+		expectTypeOf<IndexRecordTypeGuard<Base>>().not.toExtend<IndexRecordTypeGuard<Derived>>();
 	});
 
 	it("should not match derived types", () => {
@@ -145,6 +153,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<UnionTypeGuard<[Base]>>().not.toExtend<UnionTypeGuard<[Derived]>>();
 		expectTypeOf<TupleTypeGuard<[Base]>>().not.toExtend<TupleTypeGuard<[Derived]>>();
 		expectTypeOf<TypeTypeGuard<Base>>().not.toExtend<TypeTypeGuard<Derived>>();
+		expectTypeOf<IndexRecordTypeGuard<Base>>().not.toExtend<IndexRecordTypeGuard<Derived>>();
 	});
 
 	it("should not match mutually assignable types", () => {
@@ -180,6 +189,9 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<TypeTypeGuard<Type1>>().not.toExtend<TypeTypeGuard<Type2>>();
 		expectTypeOf<TypeTypeGuard<Type2>>().not.toExtend<TypeTypeGuard<Type1>>();
+
+		expectTypeOf<IndexRecordTypeGuard<Type1>>().not.toExtend<IndexRecordTypeGuard<Type2>>();
+		expectTypeOf<IndexRecordTypeGuard<Type2>>().not.toExtend<IndexRecordTypeGuard<Type1>>();
 	});
 
 	it("should not match mutually assignable types", () => {
@@ -215,6 +227,9 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<TypeTypeGuard<Type1>>().not.toExtend<TypeTypeGuard<Type2>>();
 		expectTypeOf<TypeTypeGuard<Type2>>().not.toExtend<TypeTypeGuard<Type1>>();
+
+		expectTypeOf<IndexRecordTypeGuard<Type1>>().not.toExtend<IndexRecordTypeGuard<Type2>>();
+		expectTypeOf<IndexRecordTypeGuard<Type2>>().not.toExtend<IndexRecordTypeGuard<Type1>>();
 	});
 
 	it("should not match mutually assignable types", () => {
@@ -250,6 +265,9 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<TypeTypeGuard<Type1>>().not.toExtend<TypeTypeGuard<Type2>>();
 		expectTypeOf<TypeTypeGuard<Type2>>().not.toExtend<TypeTypeGuard<Type1>>();
+
+		expectTypeOf<IndexRecordTypeGuard<Type1>>().not.toExtend<IndexRecordTypeGuard<Type2>>();
+		expectTypeOf<IndexRecordTypeGuard<Type2>>().not.toExtend<IndexRecordTypeGuard<Type1>>();
 	});
 
 	it("should not match mutually assignable types", () => {
@@ -288,6 +306,9 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<TypeTypeGuard<Type1>>().not.toExtend<TypeTypeGuard<Type2>>();
 		expectTypeOf<TypeTypeGuard<Type2>>().not.toExtend<TypeTypeGuard<Type1>>();
+
+		expectTypeOf<IndexRecordTypeGuard<Type1>>().not.toExtend<IndexRecordTypeGuard<Type2>>();
+		expectTypeOf<IndexRecordTypeGuard<Type2>>().not.toExtend<IndexRecordTypeGuard<Type1>>();
 	});
 
 	it("should have .optional() that receives no parameters and returns TypeGuard<T | undefined>", () => {
@@ -968,6 +989,12 @@ describe("isIndexRecord", () => {
 
 			expectTypeOf(actual).toEqualTypeOf<IndexRecordTypeGuard<number>>();
 			expectTypeOf(actual).toExtend<TypeGuard<Record<PropertyKey, number>>>();
+		});
+
+		it("should have .isValue that is of type TypeGuard<boolean>", () => {
+			const actual = isIndexRecord(isBoolean);
+
+			expectTypeOf(actual.isValue).toEqualTypeOf<TypeGuard<boolean>>();
 		});
 	});
 });
