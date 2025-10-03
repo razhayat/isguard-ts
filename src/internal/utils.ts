@@ -1,3 +1,4 @@
+import { TypeGuardTemplate } from "../types";
 import { AnyTypeGuard } from "./types";
 
 export const objectKeys = (object: {}): PropertyKey[] => {
@@ -8,4 +9,8 @@ export const createTemplate = <const K extends readonly PropertyKey[]>(keys: K, 
 	const entries = keys.map((key: K[number]) => [key, isValue(key)] as const);
 	const template = Object.fromEntries(entries);
 	return template as Record<K[number], AnyTypeGuard>;
+};
+
+export const partial = <T>(template: TypeGuardTemplate<T>): TypeGuardTemplate<Partial<T>> => {
+	return createTemplate(objectKeys(template), key => Reflect.get(template, key).optional()) as TypeGuardTemplate<Partial<T>>;
 };
