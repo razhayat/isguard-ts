@@ -353,16 +353,32 @@ describe("TypeGuard type", () => {
 		expectTypeOf<OptionalTypeGuard<Type2>>().not.toExtend<OptionalTypeGuard<Type1>>();
 	});
 
-	it("should have .optional() that receives no parameters and returns TypeGuard<T | undefined>", () => {
+	it("should have .optional() that receives no parameters and returns OptionalTypeGuard<T>", () => {
 		type T = number;
 
 		expectTypeOf<TypeGuard<T>>().toHaveProperty("optional").toEqualTypeOf<() => OptionalTypeGuard<T>>();
 	});
 
-	it("should have .maybe() that receives no parameters and returns TypeGuard<T | null>", () => {
+	it("should have .maybe() that receives no parameters and returns MaybeTypeGuard<T>", () => {
 		type T = { name: string; age: number; };
 
 		expectTypeOf<TypeGuard<T>>().toHaveProperty("maybe").toEqualTypeOf<() => MaybeTypeGuard<T>>();
+	});
+
+	it("should have .and() that receives no parameters and returns IntersectionTypeGuard<[T, ...I]>", () => {
+		type T = { obj: { name: string } };
+		type I = [{ obj: { age: number } }, { other: Date }];
+		const and = isType<T>({ obj: isType({ name: isString }) }).and<I>;
+
+		expectTypeOf(and).returns.toEqualTypeOf<IntersectionTypeGuard<[T, ...I]>>();
+	});
+
+	it("should have .or() that receives no parameters and returns UnionTypeGuard<[T, ...I]>", () => {
+		type T = [string, Date];
+		type I = [number, boolean, string];
+		const or = isTuple<T>([isString, isDate]).or<I>(isNumber, isBoolean, isString);
+
+		expectTypeOf(or).toEqualTypeOf<UnionTypeGuard<[T, ...I]>>();
 	});
 
 	it("should have .array() that receives no parameters and returns ArrayTypeGuard<T>", () => {
@@ -371,19 +387,19 @@ describe("TypeGuard type", () => {
 		expectTypeOf<TypeGuard<T>>().toHaveProperty("array").toEqualTypeOf<() => ArrayTypeGuard<T>>();
 	});
 
-	it("should have .set() that receives no parameters and returns TypeGuard<Set<T>>", () => {
+	it("should have .set() that receives no parameters and returns SetTypeGuard<T>", () => {
 		type T = Date[];
 
 		expectTypeOf<TypeGuard<T>>().toHaveProperty("set").toEqualTypeOf<() => SetTypeGuard<T>>();
 	});
 
-	it("should have .indexRecord() that receives no parameters and returns TypeGuard<Record<PropertyKey, T>>", () => {
+	it("should have .indexRecord() that receives no parameters and returns IndexRecordTypeGuard<T>", () => {
 		type T = number | string;
 
 		expectTypeOf<TypeGuard<T>>().toHaveProperty("indexRecord").toEqualTypeOf<() => IndexRecordTypeGuard<T>>();
 	});
 
-	it("should have .refine() that receives a refinement function and returns TypeGuard<R>", () => {
+	it("should have .refine() that receives a refinement function and returns RefineTypeGuard<T, R>", () => {
 		type RefineResult = `I have ${number} apples`;
 		const refine = isString.refine<RefineResult>;
 

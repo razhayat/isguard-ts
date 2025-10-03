@@ -60,7 +60,10 @@ describe("is { a: number } & { b: string }", () => {
 
 	describedGuardTests({
 		guard: isIntersection(isA, isB),
-		equivalentGuards: [isIntersection(isB, isA)],
+		equivalentGuards: [
+			isIntersection(isB, isA),
+			isA.and(isB),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -120,7 +123,11 @@ describe("is { a: number } & { b: string } & { c: boolean }", () => {
 
 	describedGuardTests({
 		guard: isIntersection(isA, isB, isC),
-		equivalentGuards: [isIntersection(isB, isC, isA)],
+		equivalentGuards: [
+			isIntersection(isB, isC, isA),
+			isA.and(isB, isC),
+			isC.and(isB, isC, isA),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -187,6 +194,7 @@ describe("is { obj: { a: string } } & { obj: { b: number } }", () => {
 
 	describedGuardTests({
 		guard: isIntersection(isA, isB),
+		equivalentGuards: [isIntersection(isB, isB, isB, isA)],
 		testCases: [
 			[null, false],
 			[undefined, false],
