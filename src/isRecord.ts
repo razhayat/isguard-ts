@@ -1,12 +1,6 @@
 import { isType } from "./isType";
 import { TypeGuard, TypeGuardTemplate } from "./types";
-import { createTypeGuard, objectKeys } from "./internal";
-
-const createTemplate = <const K extends readonly PropertyKey[], V>(keys: K, isValue: TypeGuard<V>) => {
-	const entries = keys.map((key: K[number]) => [key, isValue] as const);
-	const template = Object.fromEntries(entries);
-	return template as TypeGuardTemplate<Record<K[number], V>>;
-};
+import { createTemplate, createTypeGuard, objectKeys } from "./internal";
 
 export const isRecord = <const K extends readonly PropertyKey[], V>(keys: K, isValue: TypeGuard<V>) => {
 	return isType(createTemplate(keys, isValue));
