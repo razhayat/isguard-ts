@@ -1157,6 +1157,12 @@ describe("isType", () => {
 
 			expectTypeOf(actual.template).toEqualTypeOf<{ a: TypeGuard<number> }>();
 		});
+
+		it("should have .partial that is of type () => TypeTypeGuard<Partial<A>>", () => {
+			const actual = isType<A>({ a: isNumber });
+
+			expectTypeOf(actual.partial).toEqualTypeOf<() => TypeTypeGuard<Partial<A>>>();
+		});
 	});
 
 	describe("parameters", () => {
