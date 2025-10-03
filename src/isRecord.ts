@@ -1,14 +1,34 @@
-import { isType } from "./isType";
+import { isType, TypeTypeGuard } from "./isType";
 import { TypeGuard, TypeGuardTemplate } from "./types";
 import { createTemplate, createTypeGuard, objectKeys } from "./internal";
 
-export const isRecord = <const K extends readonly PropertyKey[], V>(keys: K, isValue: TypeGuard<V>) => {
-	const template = createTemplate(keys, () => isValue);
-	return isType(template as TypeGuardTemplate<Record<K[number], V>>);
+export type RecordTypeGuard<K extends readonly PropertyKey[], V> = TypeTypeGuard<Record<K[number], V>> & {
+	keys: K;
+	isValue: TypeGuard<V>;
 };
 
-export const isPartialRecord = <const K extends readonly PropertyKey[], V>(keys: K, isValue: TypeGuard<V>) => {
-	return isRecord(keys, isValue).partial();
+export const isRecord = <const K extends readonly PropertyKey[], V>(keys: K, isValue: TypeGuard<V>): RecordTypeGuard<K, V> => {
+	const template = createTemplate(keys, () => isValue);
+	const base = isType(template as TypeGuardTemplate<Record<K[number], V>>);
+
+	return Object.assign(base, {
+		keys: keys,
+		isValue: isValue,
+	} satisfies Omit<RecordTypeGuard<K, V>, keyof typeof base>);
+};
+
+export type PartialRecordTypeGuard<K extends readonly PropertyKey[], V> = TypeTypeGuard<Partial<Record<K[number], V>>> & {
+	keys: K;
+	isValue: TypeGuard<V>;
+};
+
+export const isPartialRecord = <const K extends readonly PropertyKey[], V>(keys: K, isValue: TypeGuard<V>): PartialRecordTypeGuard<K, V> => {
+	const base = isRecord(keys, isValue).partial();
+
+	return Object.assign(base, {
+		keys: keys,
+		isValue: isValue,
+	} satisfies Omit<PartialRecordTypeGuard<K, V>, keyof typeof base>);
 };
 
 export type IndexRecordTypeGuard<T> = TypeGuard<Record<PropertyKey, T>> & {

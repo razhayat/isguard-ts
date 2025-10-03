@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, TypeGuard, TypeGuardTemplate, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, isRegExp, isLazy, isLiteral, isRefine, isOptional, isMaybe, ArrayTypeGuard, EnumTypeGuard, InstanceofTypeGuard, IntersectionTypeGuard, LazyTypeGuard, LiteralTypeGuard, MapTypeGuard, RefineTypeGuard, SetTypeGuard, isTypeof, TypeofTypeGuard, UnionTypeGuard, TupleTypeGuard, TypeTypeGuard, TupleToObject, IndexRecordTypeGuard } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, TypeGuard, TypeGuardTemplate, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, isRegExp, isLazy, isLiteral, isRefine, isOptional, isMaybe, ArrayTypeGuard, EnumTypeGuard, InstanceofTypeGuard, IntersectionTypeGuard, LazyTypeGuard, LiteralTypeGuard, MapTypeGuard, RefineTypeGuard, SetTypeGuard, isTypeof, TypeofTypeGuard, UnionTypeGuard, TupleTypeGuard, TypeTypeGuard, TupleToObject, IndexRecordTypeGuard, RecordTypeGuard, PartialRecordTypeGuard } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exactly equal", () => {
@@ -871,7 +871,8 @@ describe("isRecord", () => {
 		it("should return TypeGuard<Record<'a' | 'b', number>>", () => {
 			const actual = isRecord(["a", "b"], isNumber);
 
-			expectTypeOf(actual).toEqualTypeOf<TypeTypeGuard<Record<"a" | "b", number>>>();
+			expectTypeOf(actual).toEqualTypeOf<RecordTypeGuard<readonly ["a", "b"], number>>();
+			expectTypeOf(actual).toExtend<TypeTypeGuard<Record<"a" | "b", number>>>();
 			expectTypeOf(actual).toExtend<TypeGuard<Record<"a" | "b", number>>>();
 		});
 
@@ -888,6 +889,18 @@ describe("isRecord", () => {
 
 			expectTypeOf(actual).not.toExtend<Expected>();
 		});
+
+		it("should have .keys that is of type readonly ['a', 'b', 'c']", () => {
+			const actual = isRecord(["a", "b", "c"], isDate);
+
+			expectTypeOf(actual.keys).toEqualTypeOf<readonly ["a", "b", "c"]>();
+		});
+
+		it("should have .isValue that is of type TypeGuard<Date>", () => {
+			const actual = isRecord(["a", "b", "c"], isDate);
+
+			expectTypeOf(actual.isValue).toEqualTypeOf<TypeGuard<Date>>();
+		});
 	});
 
 	describe("parameters", () => {
@@ -895,7 +908,8 @@ describe("isRecord", () => {
 			const keys = ["a", "b"] as const;
 			const actual = isRecord(keys, isDate);
 
-			expectTypeOf(actual).toEqualTypeOf<TypeTypeGuard<Record<"a" | "b", Date>>>();
+			expectTypeOf(actual).toEqualTypeOf<RecordTypeGuard<readonly ["a", "b"], Date>>();
+			expectTypeOf(actual).toExtend<TypeTypeGuard<Record<"a" | "b", Date>>>();
 			expectTypeOf(actual).toExtend<TypeGuard<Record<"a" | "b", Date>>>();
 		});
 
@@ -903,14 +917,16 @@ describe("isRecord", () => {
 			const symbol = Symbol();
 			const actual = isRecord(["a", 56, symbol], isNull);
 
-			expectTypeOf(actual).toEqualTypeOf<TypeTypeGuard<Record<"a" | 56 | typeof symbol, null>>>();
+			expectTypeOf(actual).toEqualTypeOf<RecordTypeGuard<readonly ["a", 56, typeof symbol], null>>();
+			expectTypeOf(actual).toExtend<TypeTypeGuard<Record<"a" | 56 | typeof symbol, null>>>();
 			expectTypeOf(actual).toExtend<TypeGuard<Record<"a" | 56 | typeof symbol, null>>>();
 		});
 
 		it("should accept empty array as keys", () => {
 			const actual = isRecord([], isNumber);
 
-			expectTypeOf(actual).toEqualTypeOf<TypeTypeGuard<Record<never, number>>>();
+			expectTypeOf(actual).toEqualTypeOf<RecordTypeGuard<readonly [], number>>();
+			expectTypeOf(actual).toExtend<TypeTypeGuard<Record<never, number>>>();
 			expectTypeOf(actual).toExtend<TypeGuard<Record<never, number>>>();
 		});
 
@@ -929,7 +945,8 @@ describe("isPartialRecord", () => {
 		it("should return TypeGuard<Partial<Record<'a' | 'b', number>>>", () => {
 			const actual = isPartialRecord(["a", "b"], isNumber);
 
-			expectTypeOf(actual).toEqualTypeOf<TypeTypeGuard<Partial<Record<"a" | "b", number>>>>();
+			expectTypeOf(actual).toEqualTypeOf<PartialRecordTypeGuard<readonly ["a", "b"], number>>();
+			expectTypeOf(actual).toExtend<TypeTypeGuard<Partial<Record<"a" | "b", number>>>>();
 			expectTypeOf(actual).toExtend<TypeGuard<Partial<Record<"a" | "b", number>>>>();
 		});
 
@@ -946,6 +963,18 @@ describe("isPartialRecord", () => {
 
 			expectTypeOf(actual).not.toExtend<Expected>();
 		});
+
+		it("should have .keys that is of type readonly ['a', 'b', 'c']", () => {
+			const actual = isPartialRecord(["a", "b", "c"], isDate);
+
+			expectTypeOf(actual.keys).toEqualTypeOf<readonly ["a", "b", "c"]>();
+		});
+
+		it("should have .isValue that is of type TypeGuard<Date>", () => {
+			const actual = isPartialRecord(["a", "b", "c"], isDate);
+
+			expectTypeOf(actual.isValue).toEqualTypeOf<TypeGuard<Date>>();
+		});
 	});
 
 	describe("parameters", () => {
@@ -953,7 +982,8 @@ describe("isPartialRecord", () => {
 			const keys = ["readonly", "keys"] as const;
 			const actual = isPartialRecord(keys, isBoolean);
 
-			expectTypeOf(actual).toEqualTypeOf<TypeTypeGuard<Partial<Record<"readonly" | "keys", boolean>>>>();
+			expectTypeOf(actual).toEqualTypeOf<PartialRecordTypeGuard<readonly ["readonly", "keys"], boolean>>();
+			expectTypeOf(actual).toExtend<TypeTypeGuard<Partial<Record<"readonly" | "keys", boolean>>>>();
 			expectTypeOf(actual).toExtend<TypeGuard<Partial<Record<"readonly" | "keys", boolean>>>>();
 		});
 
@@ -961,15 +991,17 @@ describe("isPartialRecord", () => {
 			const symbol = Symbol();
 			const actual = isPartialRecord(["a", 56, symbol], isUndefined);
 
-			expectTypeOf(actual).toEqualTypeOf<TypeTypeGuard<Partial<Record<"a" | 56 | typeof symbol, undefined>>>>();
+			expectTypeOf(actual).toEqualTypeOf<PartialRecordTypeGuard<readonly ["a", 56, typeof symbol], undefined>>();
+			expectTypeOf(actual).toExtend<TypeTypeGuard<Partial<Record<"a" | 56 | typeof symbol, undefined>>>>();
 			expectTypeOf(actual).toExtend<TypeGuard<Partial<Record<"a" | 56 | typeof symbol, undefined>>>>();
 		});
 
 		it("should accept empty array as keys", () => {
 			const actual = isPartialRecord([], isNumber);
 
-			expectTypeOf(actual).toEqualTypeOf<TypeTypeGuard<Partial<Record<never, number>>>>;
-			expectTypeOf(actual).toExtend<TypeGuard<Partial<Record<never, number>>>>;
+			expectTypeOf(actual).toEqualTypeOf<PartialRecordTypeGuard<readonly [], number>>();
+			expectTypeOf(actual).toExtend<TypeTypeGuard<Partial<Record<never, number>>>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Partial<Record<never, number>>>>();
 		});
 
 		it("should not accept Date as key", () => {

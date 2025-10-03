@@ -3,6 +3,22 @@ import { describedGuardTests } from "./utils";
 import { isBoolean, isDate, isIndexRecord, isLiteral, isNumber, isPartialRecord, isRecord, isString } from "../src";
 
 describe("is record", () => {
+	it("should have .keys that is equal to the given keys", () => {
+		const keys = ["a", "b", "c"] as const;
+		const is = isRecord(keys, isNumber);
+
+		expect(is.keys).toBe(keys);
+	});
+
+	it("should have .isValue that is equal to the given guard", () => {
+		const keys = ["a", "b", "c"] as const;
+		const is = isRecord(keys, isNumber);
+
+		expect(is.isValue).toBe(isNumber);
+	});
+});
+
+describe("is number record", () => {
 	describedGuardTests({
 		guard: isRecord(["num1", "num2", "num3"], isNumber),
 		testCases: [
@@ -118,6 +134,22 @@ describe("is record with symbol keys", () => {
 });
 
 describe("is partial record", () => {
+	it("should have .keys that is equal to the given keys", () => {
+		const keys = ["a", "b", "c"] as const;
+		const is = isPartialRecord(keys, isDate);
+
+		expect(is.keys).toBe(keys);
+	});
+
+	it("should have .isValue that is equal to the given guard", () => {
+		const keys = ["a", "b", "c"] as const;
+		const is = isPartialRecord(keys, isDate);
+
+		expect(is.isValue).toBe(isDate);
+	});
+});
+
+describe("is partial string record", () => {
 	describedGuardTests({
 		guard: isPartialRecord(["firstName", "secondName"], isString),
 		testCases: [
