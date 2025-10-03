@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isIntersection, isNumber, isType, isString, isBoolean } from "../src";
+import { isIntersection, isNumber, isType, isString, isBoolean, isUnknown } from "../src";
 
 describe("is intersection", () => {
 	it("should have .guards that contains all given guards in order", () => {
@@ -13,6 +13,7 @@ describe("is intersection", () => {
 describe("is empty intersection (unknown)", () => {
 	describedGuardTests({
 		guard: isIntersection(),
+		equivalentGuards: [isUnknown],
 		testCases: [
 			[null, true],
 			[undefined, true],

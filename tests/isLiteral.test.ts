@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isLiteral } from "../src";
+import { isLiteral, isNever } from "../src";
 
 describe("is literal", () => {
 	it("should have .values that is equal to the given values", () => {
@@ -14,6 +14,7 @@ describe("is literal", () => {
 describe("is literal of nothing (never)", () => {
 	describedGuardTests({
 		guard: isLiteral(),
+		equivalentGuards: [isNever],
 		testCases: [
 			[null, false],
 			[undefined, false],
