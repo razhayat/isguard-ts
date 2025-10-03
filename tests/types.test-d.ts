@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, TypeGuard, TypeGuardTemplate, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, isRegExp, isLazy, isLiteral, isRefine, isOptional, isMaybe, ArrayTypeGuard, EnumTypeGuard, InstanceofTypeGuard, IntersectionTypeGuard, LazyTypeGuard, LiteralTypeGuard, MapTypeGuard, RefineTypeGuard, SetTypeGuard, isTypeof, TypeofTypeGuard, UnionTypeGuard, TupleTypeGuard, TypeTypeGuard, TupleToObject, IndexRecordTypeGuard, RecordTypeGuard, PartialRecordTypeGuard } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, TypeGuard, TypeGuardTemplate, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, isRegExp, isLazy, isLiteral, isRefine, isOptional, isMaybe, ArrayTypeGuard, EnumTypeGuard, InstanceofTypeGuard, IntersectionTypeGuard, LazyTypeGuard, LiteralTypeGuard, MapTypeGuard, RefineTypeGuard, SetTypeGuard, isTypeof, TypeofTypeGuard, UnionTypeGuard, TupleTypeGuard, TypeTypeGuard, TupleToObject, IndexRecordTypeGuard, RecordTypeGuard, PartialRecordTypeGuard, MaybeTypeGuard } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exactly equal", () => {
@@ -17,6 +17,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<UnionTypeGuard<[Type1]>>().toEqualTypeOf<UnionTypeGuard<[Type2]>>();
 		expectTypeOf<TupleTypeGuard<[Type1]>>().toEqualTypeOf<TupleTypeGuard<[Type2]>>();
 		expectTypeOf<IndexRecordTypeGuard<Type1>>().toEqualTypeOf<IndexRecordTypeGuard<Type2>>();
+		expectTypeOf<MaybeTypeGuard<Type1>>().toEqualTypeOf<MaybeTypeGuard<Type2>>();
 	});
 
 	it("should be based on structural typing", () => {
@@ -34,6 +35,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<TupleTypeGuard<[Type1]>>().toEqualTypeOf<TupleTypeGuard<[Type2]>>();
 		expectTypeOf<TypeTypeGuard<Type1>>().toEqualTypeOf<TypeTypeGuard<Type2>>();
 		expectTypeOf<IndexRecordTypeGuard<Type1>>().toEqualTypeOf<IndexRecordTypeGuard<Type2>>();
+		expectTypeOf<MaybeTypeGuard<Type1>>().toEqualTypeOf<MaybeTypeGuard<Type2>>();
 	});
 
 	it("should not match base types", () => {
@@ -51,6 +53,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<UnionTypeGuard<[Derived]>>().not.toExtend<UnionTypeGuard<[Base]>>();
 		expectTypeOf<TupleTypeGuard<[Derived]>>().not.toExtend<TupleTypeGuard<[Base]>>();
 		expectTypeOf<IndexRecordTypeGuard<Derived>>().not.toExtend<IndexRecordTypeGuard<Base>>();
+		expectTypeOf<MaybeTypeGuard<Derived>>().not.toExtend<MaybeTypeGuard<Base>>();
 	});
 
 	it("should not match base types", () => {
@@ -68,6 +71,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<TupleTypeGuard<[Derived]>>().not.toExtend<TupleTypeGuard<[Base]>>();
 		expectTypeOf<TypeTypeGuard<Derived>>().not.toExtend<TypeTypeGuard<Base>>();
 		expectTypeOf<IndexRecordTypeGuard<Derived>>().not.toExtend<IndexRecordTypeGuard<Base>>();
+		expectTypeOf<MaybeTypeGuard<Derived>>().not.toExtend<MaybeTypeGuard<Base>>();
 	});
 
 	it("should not match base types", () => {
@@ -86,6 +90,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<TupleTypeGuard<[Derived]>>().not.toExtend<TupleTypeGuard<[Base]>>();
 		expectTypeOf<TypeTypeGuard<Derived>>().not.toExtend<TypeTypeGuard<Base>>();
 		expectTypeOf<IndexRecordTypeGuard<Derived>>().not.toExtend<IndexRecordTypeGuard<Base>>();
+		expectTypeOf<MaybeTypeGuard<Derived>>().not.toExtend<MaybeTypeGuard<Base>>();
 	});
 
 	it("should not match base types", () => {
@@ -102,6 +107,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<UnionTypeGuard<[Derived]>>().not.toExtend<UnionTypeGuard<[Base]>>();
 		expectTypeOf<TupleTypeGuard<[Derived]>>().not.toExtend<TupleTypeGuard<[Base]>>();
 		expectTypeOf<IndexRecordTypeGuard<Derived>>().not.toExtend<IndexRecordTypeGuard<Base>>();
+		expectTypeOf<MaybeTypeGuard<Derived>>().not.toExtend<MaybeTypeGuard<Base>>();
 	});
 
 	it("should not match derived types", () => {
@@ -119,6 +125,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<UnionTypeGuard<[Base]>>().not.toExtend<UnionTypeGuard<[Derived]>>();
 		expectTypeOf<TupleTypeGuard<[Base]>>().not.toExtend<TupleTypeGuard<[Derived]>>();
 		expectTypeOf<IndexRecordTypeGuard<Base>>().not.toExtend<IndexRecordTypeGuard<Derived>>();
+		expectTypeOf<MaybeTypeGuard<Base>>().not.toExtend<MaybeTypeGuard<Derived>>();
 	});
 
 	it("should not match derived types", () => {
@@ -136,6 +143,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<TupleTypeGuard<[Base]>>().not.toExtend<TupleTypeGuard<[Derived]>>();
 		expectTypeOf<TypeTypeGuard<Base>>().not.toExtend<TypeTypeGuard<Derived>>();
 		expectTypeOf<IndexRecordTypeGuard<Base>>().not.toExtend<IndexRecordTypeGuard<Derived>>();
+		expectTypeOf<MaybeTypeGuard<Base>>().not.toExtend<MaybeTypeGuard<Derived>>();
 	});
 
 	it("should not match derived types", () => {
@@ -154,6 +162,7 @@ describe("TypeGuard type", () => {
 		expectTypeOf<TupleTypeGuard<[Base]>>().not.toExtend<TupleTypeGuard<[Derived]>>();
 		expectTypeOf<TypeTypeGuard<Base>>().not.toExtend<TypeTypeGuard<Derived>>();
 		expectTypeOf<IndexRecordTypeGuard<Base>>().not.toExtend<IndexRecordTypeGuard<Derived>>();
+		expectTypeOf<MaybeTypeGuard<Base>>().not.toExtend<MaybeTypeGuard<Derived>>();
 	});
 
 	it("should not match mutually assignable types", () => {
@@ -192,6 +201,9 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<IndexRecordTypeGuard<Type1>>().not.toExtend<IndexRecordTypeGuard<Type2>>();
 		expectTypeOf<IndexRecordTypeGuard<Type2>>().not.toExtend<IndexRecordTypeGuard<Type1>>();
+
+		expectTypeOf<MaybeTypeGuard<Type1>>().not.toExtend<MaybeTypeGuard<Type2>>();
+		expectTypeOf<MaybeTypeGuard<Type2>>().not.toExtend<MaybeTypeGuard<Type1>>();
 	});
 
 	it("should not match mutually assignable types", () => {
@@ -230,6 +242,9 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<IndexRecordTypeGuard<Type1>>().not.toExtend<IndexRecordTypeGuard<Type2>>();
 		expectTypeOf<IndexRecordTypeGuard<Type2>>().not.toExtend<IndexRecordTypeGuard<Type1>>();
+
+		expectTypeOf<MaybeTypeGuard<Type1>>().not.toExtend<MaybeTypeGuard<Type2>>();
+		expectTypeOf<MaybeTypeGuard<Type2>>().not.toExtend<MaybeTypeGuard<Type1>>();
 	});
 
 	it("should not match mutually assignable types", () => {
@@ -268,6 +283,9 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<IndexRecordTypeGuard<Type1>>().not.toExtend<IndexRecordTypeGuard<Type2>>();
 		expectTypeOf<IndexRecordTypeGuard<Type2>>().not.toExtend<IndexRecordTypeGuard<Type1>>();
+
+		expectTypeOf<MaybeTypeGuard<Type1>>().not.toExtend<MaybeTypeGuard<Type2>>();
+		expectTypeOf<MaybeTypeGuard<Type2>>().not.toExtend<MaybeTypeGuard<Type1>>();
 	});
 
 	it("should not match mutually assignable types", () => {
@@ -309,6 +327,9 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<IndexRecordTypeGuard<Type1>>().not.toExtend<IndexRecordTypeGuard<Type2>>();
 		expectTypeOf<IndexRecordTypeGuard<Type2>>().not.toExtend<IndexRecordTypeGuard<Type1>>();
+
+		expectTypeOf<MaybeTypeGuard<Type1>>().not.toExtend<MaybeTypeGuard<Type2>>();
+		expectTypeOf<MaybeTypeGuard<Type2>>().not.toExtend<MaybeTypeGuard<Type1>>();
 	});
 
 	it("should have .optional() that receives no parameters and returns TypeGuard<T | undefined>", () => {
@@ -320,7 +341,7 @@ describe("TypeGuard type", () => {
 	it("should have .maybe() that receives no parameters and returns TypeGuard<T | null>", () => {
 		type T = { name: string; age: number; };
 
-		expectTypeOf<TypeGuard<T>>().toHaveProperty("maybe").toEqualTypeOf<() => TypeGuard<T | null>>();
+		expectTypeOf<TypeGuard<T>>().toHaveProperty("maybe").toEqualTypeOf<() => MaybeTypeGuard<T>>();
 	});
 
 	it("should have .array() that receives no parameters and returns ArrayTypeGuard<T>", () => {
@@ -834,7 +855,9 @@ describe("isMaybe", () => {
 		it("should return TypeGuard<T | null>", () => {
 			const actual = isMaybe(isDate);
 
-			expectTypeOf(actual).toEqualTypeOf<TypeGuard<Date | null>>();
+			expectTypeOf(actual).toEqualTypeOf<MaybeTypeGuard<Date>>();
+			expectTypeOf(actual).toExtend<UnionTypeGuard<[null, Date]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Date | null>>();
 		});
 	});
 });
@@ -1491,19 +1514,19 @@ describe("is util types", () => {
 	});
 
 	test("isMaybeNumber should be TypeGuard<number | null>", () => {
-		expectTypeOf(isMaybeNumber).toEqualTypeOf<TypeGuard<number | null>>();
+		expectTypeOf(isMaybeNumber).toExtend<TypeGuard<number | null>>();
 	});
 
 	test("isMaybeString should be TypeGuard<string | null>", () => {
-		expectTypeOf(isMaybeString).toEqualTypeOf<TypeGuard<string | null>>();
+		expectTypeOf(isMaybeString).toExtend<TypeGuard<string | null>>();
 	});
 
 	test("isMaybeBoolean should be TypeGuard<boolean | null>", () => {
-		expectTypeOf(isMaybeBoolean).toEqualTypeOf<TypeGuard<boolean | null>>();
+		expectTypeOf(isMaybeBoolean).toExtend<TypeGuard<boolean | null>>();
 	});
 
 	test("isMaybeDate should be TypeGuard<Date | null>", () => {
-		expectTypeOf(isMaybeDate).toEqualTypeOf<TypeGuard<Date | null>>();
+		expectTypeOf(isMaybeDate).toExtend<TypeGuard<Date | null>>();
 	});
 
 	test("isUnknown should be TypeGuard<unknown>", () => {

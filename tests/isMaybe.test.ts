@@ -1,8 +1,16 @@
-import { describe } from "vitest";
-import { isMaybe, isNumber } from "../src";
+import { describe, expect, it } from "vitest";
+import { isBoolean, isMaybe, isNumber } from "../src";
 import { describedGuardTests } from "./utils";
 
-describe("isMaybe", () => {
+describe("is maybe", () => {
+	it("should have .isValue that is equal to the given guard", () => {
+		const is = isMaybe(isBoolean);
+
+		expect(is.isValue).toBe(isBoolean);
+	});
+});
+
+describe("is maybe number", () => {
 	describedGuardTests({
 		guard: isMaybe(isNumber),
 		equivalentGuards: [isNumber.maybe()],

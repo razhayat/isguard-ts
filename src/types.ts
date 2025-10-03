@@ -1,5 +1,6 @@
 import { AnyTypeGuard } from "./internal";
 import { ArrayTypeGuard } from "./isArray";
+import { MaybeTypeGuard } from "./isMaybe";
 import { IndexRecordTypeGuard } from "./isRecord";
 import { RefineTypeGuard } from "./isRefine";
 import { SetTypeGuard } from "./isSet";
@@ -12,7 +13,7 @@ type ExactEqual<T> = {
 export type TypeGuard<in out T, in out _U extends ExactEqual<T> = ExactEqual<T>> = {
 	(value: unknown): value is T;
 	optional: () => TypeGuard<T | undefined>;
-	maybe: () => TypeGuard<T | null>;
+	maybe: () => MaybeTypeGuard<T>;
 	array: () => ArrayTypeGuard<T>;
 	set: () => SetTypeGuard<T>;
 	indexRecord: () => IndexRecordTypeGuard<T>;

@@ -90,4 +90,3 @@ export const isMaybeBoolean = isBoolean.maybe();
  * @deprecated use `isDate.maybe()` instead
  */
 export const isMaybeDate = isDate.maybe();
-
