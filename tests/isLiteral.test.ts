@@ -86,6 +86,7 @@ describe("is literal ('Empire!')", () => {
 describe("is 'apple' | 'orange' | 'banana' | 6", () => {
 	describedGuardTests({
 		guard: isLiteral("apple", "orange", "banana", 6),
+		equivalentGuards: [isLiteral("orange", "banana", "apple", 6)],
 		testCases: [
 			[null, false],
 			[undefined, false],
