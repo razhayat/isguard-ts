@@ -1,6 +1,6 @@
 import { isType } from "./isType";
 import { TypeGuard, TypeGuardTemplate } from "./types";
-import { createTypeGuard } from "./internal";
+import { createTypeGuard, objectKeys } from "./internal";
 
 const createTemplate = <const K extends readonly PropertyKey[], V>(keys: K, isValue: TypeGuard<V>) => {
 	const entries = keys.map((key: K[number]) => [key, isValue] as const);
@@ -24,12 +24,9 @@ export type IndexRecordTypeGuard<T> = TypeGuard<Record<PropertyKey, T>> & {
 export const isIndexRecord = <T>(isValue: TypeGuard<T>): IndexRecordTypeGuard<T> => {
 	return createTypeGuard<IndexRecordTypeGuard<T>>({
 		func: value => {
-			if (!(value instanceof Object) || value.constructor !== Object) {
-				return false;
-			}
-
-			const keys = [...Object.keys(value), ...Object.getOwnPropertySymbols(value)];
-			return keys.every(key => isValue((value as Record<PropertyKey, unknown>)[key]));
+			return value instanceof Object && value.constructor === Object && objectKeys(value).every(key => {
+				return isValue(Reflect.get(value, key));
+			});
 		},
 		isValue: isValue,
 	});

@@ -1,5 +1,5 @@
 import { TypeGuard, TypeGuardTemplate } from "./types";
-import { createTypeGuard } from "./internal";
+import { createTypeGuard, objectKeys } from "./internal";
 
 export type TupleToObject<T extends readonly unknown[]> = Pick<T, Extract<keyof T, `${number}`>>;
 
@@ -10,7 +10,7 @@ export type TypeTypeGuard<T extends object> = TypeGuard<IsTypeGuarded<T>> & {
 };
 
 export const isType = <T extends object>(template: TypeGuardTemplate<T>): TypeTypeGuard<T> => {
-	const keys = [...Object.keys(template), ...Object.getOwnPropertySymbols(template)];
+	const keys = objectKeys(template);
 
 	return createTypeGuard<TypeTypeGuard<T>>({
 		func: value => {
