@@ -1,11 +1,11 @@
-import { TypeGuard, TypeGuardTemplate } from "../types";
+import { AnyTypeGuard } from "./types";
 
 export const objectKeys = (object: {}): PropertyKey[] => {
 	return [...Object.keys(object), ...Object.getOwnPropertySymbols(object)];
 };
 
-export const createTemplate = <const K extends readonly PropertyKey[], V>(keys: K, isValue: TypeGuard<V>) => {
-	const entries = keys.map((key: K[number]) => [key, isValue] as const);
+export const createTemplate = <const K extends readonly PropertyKey[]>(keys: K, isValue: (key: K[number]) => AnyTypeGuard) => {
+	const entries = keys.map((key: K[number]) => [key, isValue(key)] as const);
 	const template = Object.fromEntries(entries);
-	return template as TypeGuardTemplate<Record<K[number], V>>;
+	return template as Record<K[number], AnyTypeGuard>;
 };
