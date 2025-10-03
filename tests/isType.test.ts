@@ -396,3 +396,62 @@ describe("is type with all PropertyKey types", () => {
 		],
 	});
 });
+
+describe("is type with .partial", () => {
+	const symbol = Symbol();
+
+	type All = {
+		str: number;
+		61: number;
+		[symbol]: number;
+	};
+
+	const x = true as unknown as Partial<All>;
+
+	describedGuardTests({
+		guard: isType<All>({
+			str: isNumber,
+			61: isNumber,
+			[symbol]: isNumber,
+		}).partial(),
+		testCases: [
+			[null, false],
+			[undefined, false],
+
+			[{ str: "not number" }, false],
+			[{ 61: "oops" }, false],
+			[{ [symbol]: [] }, false],
+			[{ str: 12, 61: "bad" }, false],
+			[{ str: "bad", [symbol]: 12 }, false],
+			[{ str: 12, 61: 24, [symbol]: null }, false],
+			[{ str: 12, 61: null, [symbol]: 42 }, false],
+			[{ get str() { return "bad" }, 61: 24 }, false],
+			[{ get 61() { return "wrong" }, [symbol]: 12 }, false],
+			[{ get [symbol]() { return "oops" }, str: 5 }, false],
+			[{ str: 1, 61: 2, [symbol]: 3, extra: "allowed" }, true],
+			[{ str: 1, 61: 2, [symbol]: "bad", extra: "still allowed" }, false],
+			[{ str: null }, false],
+
+			[true, true],
+			["{ str: 12 }", true],
+			[-0, true],
+			[[], true],
+			[{}, true],
+			[() => {}, true],
+			[{ extra: "value" }, true],
+
+			[{ str: 12 }, true],
+			[{ 61: 100 }, true],
+			[{ [symbol]: 42 }, true],
+			[{ str: 12, 61: 24 }, true],
+			[{ str: 12, [symbol]: 42 }, true],
+			[{ [symbol]: 42, 61: 24 }, true],
+			[{ str: 12, 61: 24, [symbol]: 42 }, true],
+			[{ get str() { return 12 }, 61: 24 }, true],
+			[{ get 61() { return 100 }, [symbol]: 12 }, true],
+			[{ get [symbol]() { return 42 }, str: 5 }, true],
+			[{ str: undefined }, true],
+			[{ str: -42 }, true],
+		],
+	});
+});
