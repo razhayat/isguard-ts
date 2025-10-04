@@ -350,8 +350,10 @@ describe("is type with all PropertyKey types", () => {
 			isAllGet,
 			isIntersection(isAll.pick("str", symbol), isType<Pick<All, 61>>({ 61: isNumber })),
 			isAllExtra.pick("str", 61, symbol),
+			isAll.pick("str", 61, symbol),
 			isIntersection(isAll.omit("str"), isType<Pick<All, "str">>({ str: isNumber })),
 			isAllExtra.omit("extra", 12, omitted),
+			isAll.omit(),
 		],
 		testCases: [
 			[null, false],
