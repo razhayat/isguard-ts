@@ -44,8 +44,16 @@ describe("is number record", () => {
 });
 
 describe("is Record<'a' | 'b', 'c', 'd'> record", () => {
+
+	const extraGuard = isRecord(["a", "b", "c"], isLiteral("c", "d"));
+	const guard = isRecord(["a", "b"], isLiteral("c", "d"));
+
 	describedGuardTests({
-		guard: isRecord(["a", "b"], isLiteral("c", "d")),
+		guard: guard,
+		equivalentGuards: [
+			extraGuard.pick("a", "b", "a"),
+			extraGuard.omit("c", "c"),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -150,8 +158,16 @@ describe("is partial record", () => {
 });
 
 describe("is partial string record", () => {
+
+	const extraGuard = isPartialRecord(["firstName", "secondName", "thirdName"], isString);
+	const guard = isPartialRecord(["firstName", "secondName"], isString);
+
 	describedGuardTests({
-		guard: isPartialRecord(["firstName", "secondName"], isString),
+		guard: guard,
+		equivalentGuards: [
+			extraGuard.pick("firstName", "secondName", "secondName"),
+			extraGuard.omit("thirdName", "thirdName"),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
