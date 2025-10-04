@@ -896,6 +896,12 @@ describe("isMaybe", () => {
 			expectTypeOf(actual).toExtend<UnionTypeGuard<[null, Date]>>();
 			expectTypeOf(actual).toExtend<TypeGuard<Date | null>>();
 		});
+
+		it("should have .unbox that is of type () => TypeGuard<T>", () => {
+			const actual = isMaybe(isDate);
+
+			expectTypeOf(actual.unbox).toEqualTypeOf<() => TypeGuard<Date>>();
+		});
 	});
 });
 
@@ -907,6 +913,12 @@ describe("isOptional", () => {
 			expectTypeOf(actual).toEqualTypeOf<OptionalTypeGuard<string>>();
 			expectTypeOf(actual).toExtend<UnionTypeGuard<[undefined, string]>>();
 			expectTypeOf(actual).toExtend<TypeGuard<string | undefined>>();
+		});
+
+		it("should have .unbox that is of type () => TypeGuard<T>", () => {
+			const actual = isOptional(isDate);
+
+			expectTypeOf(actual.unbox).toEqualTypeOf<() => TypeGuard<Date>>();
 		});
 	});
 });
