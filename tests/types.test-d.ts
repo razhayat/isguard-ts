@@ -746,11 +746,11 @@ describe("isLazy", () => {
 			expectTypeOf(actual).toExtend<TypeGuard<A>>();
 		});
 
-		it("should have .generator that is of type TypeGuard<() => TypeGuard<T>>", () => {
+		it("should have .unbox that is of type TypeGuard<() => TypeGuard<T>>", () => {
 			const generator = () => isString;
 			const actual = isLazy(generator);
 
-			expectTypeOf(actual.generator).toEqualTypeOf<() => TypeGuard<string>>();
+			expectTypeOf(actual.unbox).toEqualTypeOf<() => TypeGuard<string>>();
 		});
 	});
 

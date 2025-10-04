@@ -3,10 +3,10 @@ import { isBoolean, isMaybe, isNumber } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is maybe", () => {
-	it("should have .isValue that is equal to the given guard", () => {
+	it("should have .unbox that should return the unboxed guard", () => {
 		const is = isMaybe(isBoolean);
 
-		expect(is.isValue).toBe(isBoolean);
+		expect(is.unbox()).toBe(isBoolean);
 	});
 });
 

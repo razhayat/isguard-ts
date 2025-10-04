@@ -19,11 +19,11 @@ describe("is lazy", () => {
 		expect(generator).not.toHaveBeenCalled();
 	});
 
-	it("should have .generator that is equal to the given generator", () => {
+	it("should have .unbox that should return the unboxed guard", () => {
 		const generator = () => isNumber;
 		const isLazyNumber = isLazy(generator);
 
-		expect(isLazyNumber.generator).toBe(generator);
+		expect(isLazyNumber.unbox()).toBe(isNumber);
 	});
 });
 

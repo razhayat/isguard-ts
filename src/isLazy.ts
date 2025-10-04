@@ -2,7 +2,7 @@ import { TypeGuard } from "./types";
 import { createTypeGuard } from "./internal";
 
 export type LazyTypeGuard<T> = TypeGuard<T> & {
-	generator: () => TypeGuard<T>;
+	unbox: () => TypeGuard<T>;
 };
 
 export const isLazy = <T>(generator: () => TypeGuard<T>): LazyTypeGuard<T> => {
@@ -10,7 +10,7 @@ export const isLazy = <T>(generator: () => TypeGuard<T>): LazyTypeGuard<T> => {
 		func: value => {
 			return generator()(value);
 		},
-		generator: generator,
+		unbox: generator,
 	});
 };
 

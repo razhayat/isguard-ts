@@ -3,13 +3,13 @@ import { isUnion, UnionTypeGuard } from "./isUnion";
 import { TypeGuard } from "./types";
 
 export type MaybeTypeGuard<T> = UnionTypeGuard<[null, T]> & {
-	isValue: TypeGuard<T>;
+	unbox: () => TypeGuard<T>;
 };
 
-export const isMaybe = <T>(isValue: TypeGuard<T>): MaybeTypeGuard<T> => {
-	const base = isUnion(isLiteral(null), isValue);
+export const isMaybe = <T>(guard: TypeGuard<T>): MaybeTypeGuard<T> => {
+	const base = isUnion(isLiteral(null), guard);
 
 	return Object.assign(base, {
-		isValue: isValue,
+		unbox: () => guard,
 	} satisfies Omit<MaybeTypeGuard<T>, keyof typeof base>);
 };

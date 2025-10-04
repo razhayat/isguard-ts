@@ -3,11 +3,11 @@ import { isNumber, isOptional, isString } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is optional", () => {
-	it("should have .isValue that is equal to the given guard", () => {
+	it("should have .unbox that should return the unboxed guard", () => {
 		const isValue = isNumber.array();
 		const is = isOptional(isValue);
 
-		expect(is.isValue).toBe(isValue);
+		expect(is.unbox()).toBe(isValue);
 	});
 });
 
