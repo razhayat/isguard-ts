@@ -18,3 +18,13 @@ export const partial = <T>(template: TypeGuardTemplate<T>): TypeGuardTemplate<Pa
 export const pick = <T, K extends readonly (keyof T)[]>(template: TypeGuardTemplate<T>, keys: K): Pick<TypeGuardTemplate<T>, K[number]> => {
 	return createTemplate(keys, key => Reflect.get(template, key)) as Pick<TypeGuardTemplate<T>, K[number]>;
 };
+
+export const omit = <T, K extends readonly (keyof T)[]>(template: TypeGuardTemplate<T>, keys: K): Omit<TypeGuardTemplate<T>, K[number]> => {
+	const newTemplate = { ...template };
+
+	keys.forEach(key => {
+		delete newTemplate[key];
+	});
+
+	return newTemplate;
+};
