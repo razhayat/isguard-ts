@@ -1,5 +1,5 @@
 import { TypeGuard, TypeGuardTemplate } from "./types";
-import { createTypeGuard, objectKeys, partial } from "./internal";
+import { createTypeGuard, objectKeys, partial, pick } from "./internal";
 
 export type TupleToObject<T extends readonly unknown[]> = Pick<T, Extract<keyof T, `${number}`>>;
 
@@ -8,6 +8,7 @@ export type IsTypeGuarded<T> = [T] extends [readonly unknown[]] ? TupleToObject<
 export type TypeTypeGuard<T extends object> = TypeGuard<IsTypeGuarded<T>> & {
 	template: TypeGuardTemplate<T>;
 	partial: () => TypeTypeGuard<Partial<T>>;
+	pick: <const K extends readonly (keyof T)[]>(...keys: K) => TypeTypeGuard<Pick<T, K[number]>>;
 };
 
 export const isType = <T extends object>(template: TypeGuardTemplate<T>): TypeTypeGuard<T> => {
@@ -21,5 +22,6 @@ export const isType = <T extends object>(template: TypeGuardTemplate<T>): TypeTy
 		},
 		template: template,
 		partial: () => isType<Partial<T>>(partial(template)),
+		pick: (...keys) => isType(pick(template, keys)),
 	});
 };
