@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isDate, isMaybe, isNumber, isType, isString, isOptionalString, isLiteral, isLazy, TypeGuard, isBoolean } from "../src";
+import { isDate, isMaybe, isNumber, isType, isString, isOptionalString, isLiteral, isLazy, TypeGuard, isBoolean, isIntersection } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is type", () => {
@@ -348,7 +348,9 @@ describe("is type with all PropertyKey types", () => {
 		guard: isAll,
 		equivalentGuards: [
 			isAllGet,
+			isIntersection(isAll.omit("str"), isType({ str: isNumber })),
 			isAllExtra.pick("str", 61, symbol),
+			isAllExtra.omit("extra", 12, omitted),
 		],
 		testCases: [
 			[null, false],
