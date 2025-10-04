@@ -9,6 +9,8 @@ describe("is lazy", () => {
 		const guard = isLazy(generator);
 		guard.optional();
 		guard.maybe();
+		guard.and();
+		guard.or();
 		guard.array();
 		guard.set();
 		guard.indexRecord();
