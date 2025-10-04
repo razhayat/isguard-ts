@@ -1240,10 +1240,9 @@ describe("isTuple", () => {
 });
 
 describe("isType", () => {
-	type A = { a: number };
-
 	describe("return type", () => {
 		it("should return TypeGuard<A>", () => {
+			type A = { a: number };
 			const actual = isType<A>({ a: isNumber });
 
 			expectTypeOf(actual).toEqualTypeOf<TypeTypeGuard<A>>();
@@ -1259,15 +1258,31 @@ describe("isType", () => {
 		});
 
 		it("should have .template that is of type { a: TypeGuard<number> }", () => {
+			type A = { a: number };
 			const actual = isType<A>({ a: isNumber });
 
 			expectTypeOf(actual.template).toEqualTypeOf<{ a: TypeGuard<number> }>();
 		});
 
 		it("should have .partial that is of type () => TypeTypeGuard<Partial<A>>", () => {
+			type A = { a: number };
 			const actual = isType<A>({ a: isNumber });
 
 			expectTypeOf(actual.partial).toEqualTypeOf<() => TypeTypeGuard<Partial<A>>>();
+		});
+
+		it("should have .pick that is of type () => TypeTypeGuard<Partial<A>>", () => {
+			type A = { a: number; b: string; c: Date; };
+			const actual = isType<A>({ a: isNumber, b: isString, c: isDate }).pick("a", "c");
+
+			expectTypeOf(actual).toEqualTypeOf<TypeTypeGuard<Pick<A, "a" | "c">>>();
+		});
+
+		it("should have .omit that is of type () => TypeTypeGuard<Partial<A>>", () => {
+			type A = { a: number; b: string; c: Date; };
+			const actual = isType<A>({ a: isNumber, b: isString, c: isDate }).omit("c");
+
+			expectTypeOf(actual).toEqualTypeOf<TypeTypeGuard<Omit<A, "c">>>();
 		});
 	});
 
