@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isDate, isMaybe, isNumber, isType, isString, isOptionalString, isLiteral, isLazy, TypeGuard } from "../src";
+import { isDate, isMaybe, isNumber, isType, isString, isOptionalString, isLiteral, isLazy, TypeGuard, isBoolean } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is type", () => {
@@ -328,9 +328,28 @@ describe("is type with all PropertyKey types", () => {
 		},
 	});
 
+	const omitted = Symbol("omitted");
+	type AllExtra = All & {
+		extra: string;
+		12: Date;
+		[omitted]: boolean;
+	};
+
+	const isAllExtra = isType<AllExtra>({
+		str: isNumber,
+		61: isNumber,
+		[symbol]: isNumber,
+		extra: isString,
+		12: isDate,
+		[omitted]: isBoolean,
+	});
+
 	describedGuardTests({
 		guard: isAll,
-		equivalentGuards: [isAllGet],
+		equivalentGuards: [
+			isAllGet,
+			isAllExtra.pick("str", 61, symbol),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -391,6 +410,7 @@ describe("is type with all PropertyKey types", () => {
 			[{ str: 364634, 61: 24523, [symbol]: 2938523, 46: new Date }, true],
 			[{ str: 364634, 61: 24523, [symbol]: 2938523, [Symbol()]: 239483 }, true],
 			[{ str: 364634, 61: 24523, [symbol]: 2938523, [Symbol()]: () => {} }, true],
+			[{ str: 364634, 61: 24523, [symbol]: 2938523, extra: "", 12: new Date(), [omitted]: true }, true],
 			[{ get str() { return 364634 }, 61: 24523, [symbol]: 2938523 }, true],
 			[{ get str() { return 364634 }, get 61() { return 24523 }, get [symbol]() { return 2938523 } }, true],
 		],
