@@ -406,14 +406,19 @@ describe("is type with .partial", () => {
 		[symbol]: number;
 	};
 
-	const x = true as unknown as Partial<All>;
-
 	describedGuardTests({
 		guard: isType<All>({
 			str: isNumber,
 			61: isNumber,
 			[symbol]: isNumber,
 		}).partial(),
+		equivalentGuards: [
+			isType<Partial<All>>({
+				str: isNumber.optional(),
+				61: isNumber.optional(),
+				[symbol]: isNumber.optional(),
+			}),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
