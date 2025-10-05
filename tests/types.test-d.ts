@@ -319,8 +319,8 @@ describe("TypeGuard type", () => {
 		expectTypeOf<ArrayTypeGuard<Type1>>().not.toExtend<ArrayTypeGuard<Type2>>();
 		expectTypeOf<ArrayTypeGuard<Type2>>().not.toExtend<ArrayTypeGuard<Type1>>();
 
-		expectTypeOf<InstanceofTypeGuard<typeof Type1>>().not.toExtend<ArrayTypeGuard<typeof Type2>>();
-		expectTypeOf<InstanceofTypeGuard<typeof Type2>>().not.toExtend<ArrayTypeGuard<typeof Type1>>();
+		expectTypeOf<InstanceofTypeGuard<typeof Type1>>().not.toExtend<InstanceofTypeGuard<typeof Type2>>();
+		expectTypeOf<InstanceofTypeGuard<typeof Type2>>().not.toExtend<InstanceofTypeGuard<typeof Type1>>();
 
 		expectTypeOf<IntersectionTypeGuard<[Type1]>>().not.toExtend<IntersectionTypeGuard<[Type2]>>();
 		expectTypeOf<IntersectionTypeGuard<[Type2]>>().not.toExtend<IntersectionTypeGuard<[Type1]>>();
