@@ -10,10 +10,8 @@ For example, when making a change to your type, `isguard-ts` will inform you to 
 npm install isguard-ts
 ```
 
-## Some of our built-in types
+## Table of Contents
 + [TypeGuard](#type-guard)
-
-## Some of our built-in helper functions
 + [isType](#is-type)
 + [isTuple](#is-tuple)
 + [isUnion](#is-union)
@@ -31,15 +29,9 @@ npm install isguard-ts
 + [isOptional](#is-optional)
 + [isMaybe](#is-maybe)
 + [isRefine](#is-refine)
-
-## Some of our utility type guards
-+ isString, isNumber, isBoolean, isDate
-+ isNull, isUndefined, isNil
-+ isUnknown - always returns `true`
-+ isNever - always returns `false`
 + [and more](#all-utility)
 
-## Types
+## Usage
 
 *<span id="type-guard" ></span>*
 ### `TypeGuard<T>`
@@ -47,8 +39,6 @@ The most basic type - represents a type guard of `T`
 ```typescript
 type TypeGuard<T> = (value: unknown) => value is T;
 ```
-
-## Code Examples
 
 *<span id="is-type" ></span>*
 ### `isType<T>(template): TypeGuard<T>`
