@@ -6,8 +6,10 @@ export interface TypeGuardClass<T> {
 }
 
 export class TypeGuardClass<T> extends Function implements TypeGuard<T> {
-	constructor(func: (value: unknown) => boolean) {
-		super();
+	// @ts-expect-error
+	constructor(
+		func: (value: unknown) => boolean
+	) {
 		return Object.setPrototypeOf(func, new.target.prototype);
 	}
 
