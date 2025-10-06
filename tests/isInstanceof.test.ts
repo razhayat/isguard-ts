@@ -10,7 +10,7 @@ describe("is instanceof", () => {
 	it("should have .constructor that is equal to the given constructor", () => {
 		const isAnimal = isInstanceof(Animal);
 
-		expect(isAnimal.constructor).toBe(Animal);
+		expect(isAnimal.class).toBe(Animal);
 	});
 });
 

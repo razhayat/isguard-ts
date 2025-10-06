@@ -632,7 +632,7 @@ describe("isInstanceof", () => {
 			class Example {}
 			const actual = isInstanceof(Example);
 
-			expectTypeOf(actual.constructor).toEqualTypeOf<typeof Example>();
+			expectTypeOf(actual.class).toEqualTypeOf<typeof Example>();
 		});
 	});
 
