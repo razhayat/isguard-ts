@@ -5,6 +5,11 @@ A powerful typescript library that helps you build type guards quickly while mai
 `isguard-ts` utilizes the typescript compiler to ensure that its type guards are aligned with the guarded type.<br/>
 For example, when making a change to your type, `isguard-ts` will inform you to update your type guard as well.
 
+## Installation
+```
+npm install isguard-ts
+```
+
 ## Some of our built-in types
 + [TypeGuard](#type-guard)
 + [Guarded](#guarded)
