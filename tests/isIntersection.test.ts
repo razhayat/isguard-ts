@@ -1,10 +1,19 @@
-import { describe } from "vitest";
+import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isIntersection, isNumber, isType, isString } from "../src";
+import { isIntersection, isNumber, isType, isString, isBoolean, isUnknown } from "../src";
+
+describe("is intersection", () => {
+	it("should have .guards that contains all given guards in order", () => {
+		const isAAndB = isIntersection(isNumber, isBoolean);
+
+		expect(isAAndB.guards).toEqual([isNumber, isBoolean]);
+	});
+});
 
 describe("is empty intersection (unknown)", () => {
 	describedGuardTests({
 		guard: isIntersection(),
+		equivalentGuards: [isUnknown],
 		testCases: [
 			[null, true],
 			[undefined, true],
@@ -51,6 +60,10 @@ describe("is { a: number } & { b: string }", () => {
 
 	describedGuardTests({
 		guard: isIntersection(isA, isB),
+		equivalentGuards: [
+			isIntersection(isB, isA),
+			isA.and(isB),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -98,6 +111,62 @@ describe("is { a: number } & { b: string }", () => {
 	});
 });
 
+describe("is { a: number } & { b: string } & { c: boolean }", () => {
+	type A = { a: number };
+	const isA = isType<A>({ a: isNumber });
+
+	type B = { b: string };
+	const isB = isType<B>({ b: isString });
+
+	type C = { c: boolean };
+	const isC = isType<C>({ c: isBoolean });
+
+	describedGuardTests({
+		guard: isIntersection(isA, isB, isC),
+		equivalentGuards: [
+			isIntersection(isB, isC, isA),
+			isA.and(isB, isC),
+			isC.and(isB, isC, isA),
+		],
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[false, false],
+			[{}, false],
+			[[], false],
+			[4, false],
+			["{ a: 12, b: 'string', c: true }", false],
+			[Symbol(4), false],
+			[(v: string) => v, false],
+			[[12, "a", true], false],
+			[Promise.resolve(), false],
+
+			[{ a: 12 }, false],
+			[{ b: "hello" }, false],
+			[{ c: true }, false],
+			[{ a: 12, b: "hi" }, false],
+			[{ b: "yo", c: false }, false],
+			[{ a: 1, c: true }, false],
+
+			[{ a: undefined, b: "hi", c: true }, false],
+			[{ a: 0, b: undefined, c: true }, false],
+			[{ a: 0, b: "ok", c: null }, false],
+			[{ a: "not", b: "string", c: true }, false],
+			[{ a: [], b: {}, c: () => {} }, false],
+
+			[{ a: 42, b: "test", c: true }, true],
+			[{ a: 0, b: "zero", c: false }, true],
+			[{ b: "string", a: 9.81, c: true }, true],
+			[{ c: false, b: "nested", a: 1 }, true],
+
+			[{ a: 100, b: "yes", c: true, extra: null }, true],
+			[{ a: 1, b: "x", c: false, d: [1, 2, 3] }, true],
+			[{ a: 0, b: "test", c: true, func() {} }, true],
+			[{ a: -5, b: "b", c: false, [Symbol("meta")]: "extra" }, true],
+		],
+	});
+});
+
 describe("is { obj: { a: string } } & { obj: { b: number } }", () => {
 	type A = {
 		obj: {
@@ -125,6 +194,7 @@ describe("is { obj: { a: string } } & { obj: { b: number } }", () => {
 
 	describedGuardTests({
 		guard: isIntersection(isA, isB),
+		equivalentGuards: [isIntersection(isB, isB, isB, isA)],
 		testCases: [
 			[null, false],
 			[undefined, false],

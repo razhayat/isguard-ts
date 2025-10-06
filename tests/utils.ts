@@ -3,7 +3,7 @@ import { isBigint, isBoolean, isFunction, isNumber, isString, isSymbol, isUndefi
 
 export type DescribedGuardTestsProps<T> = {
 	guard: TypeGuard<T>;
-	equivalentGuards?: TypeGuard<T>[];
+	equivalentGuards?: TypeGuard<NoInfer<T>>[];
 	description?: (input: string, result: boolean, guardIndex: number) => string;
 	testCases: [input: unknown, result: boolean, stringifyInput?: string | ((input: unknown) => string)][];
 };

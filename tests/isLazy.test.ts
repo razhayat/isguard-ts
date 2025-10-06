@@ -9,12 +9,21 @@ describe("is lazy", () => {
 		const guard = isLazy(generator);
 		guard.optional();
 		guard.maybe();
+		guard.and();
+		guard.or();
 		guard.array();
 		guard.set();
 		guard.indexRecord();
 		guard.refine(isNumber);
 
 		expect(generator).not.toHaveBeenCalled();
+	});
+
+	it("should have .unbox that should return the unboxed guard", () => {
+		const generator = () => isNumber;
+		const isLazyNumber = isLazy(generator);
+
+		expect(isLazyNumber.unbox()).toBe(isNumber);
 	});
 });
 

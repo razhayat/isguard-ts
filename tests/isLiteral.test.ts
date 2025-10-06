@@ -1,10 +1,20 @@
-import { describe } from "vitest";
+import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isLiteral } from "../src";
+import { isLiteral, isNever } from "../src";
+
+describe("is literal", () => {
+	it("should have .values that is equal to the given values", () => {
+		const values = [1, "f", false, null, undefined, 4n] as const;
+		const is = isLiteral(...values);
+
+		expect(is.values).toEqual(values);
+	});
+});
 
 describe("is literal of nothing (never)", () => {
 	describedGuardTests({
 		guard: isLiteral(),
+		equivalentGuards: [isNever],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -76,6 +86,7 @@ describe("is literal ('Empire!')", () => {
 describe("is 'apple' | 'orange' | 'banana' | 6", () => {
 	describedGuardTests({
 		guard: isLiteral("apple", "orange", "banana", 6),
+		equivalentGuards: [isLiteral("orange", "banana", "apple", 6)],
 		testCases: [
 			[null, false],
 			[undefined, false],

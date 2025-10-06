@@ -1,8 +1,17 @@
-import { describe } from "vitest";
-import { isOptional, isString } from "../src";
+import { describe, expect, it } from "vitest";
+import { isNumber, isOptional, isString } from "../src";
 import { describedGuardTests } from "./utils";
 
-describe("isOptional", () => {
+describe("is optional", () => {
+	it("should have .unbox that should return the unboxed guard", () => {
+		const isValue = isNumber.array();
+		const is = isOptional(isValue);
+
+		expect(is.unbox()).toBe(isValue);
+	});
+});
+
+describe("is optional string", () => {
 	describedGuardTests({
 		guard: isOptional(isString),
 		equivalentGuards: [isString.optional()],

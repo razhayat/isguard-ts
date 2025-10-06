@@ -1,12 +1,24 @@
 import { describe, it, expectTypeOf, test } from "vitest";
-import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, TypeGuard, TypeGuardTemplate, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, isRegExp, isLazy, isLiteral, isRefine, isOptional, isMaybe } from "../src";
+import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, TypeGuard, TypeGuardTemplate, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, isRegExp, isLazy, isLiteral, isRefine, isOptional, isMaybe, ArrayTypeGuard, EnumTypeGuard, InstanceofTypeGuard, IntersectionTypeGuard, LazyTypeGuard, LiteralTypeGuard, MapTypeGuard, RefineTypeGuard, SetTypeGuard, isTypeof, TypeofTypeGuard, UnionTypeGuard, TupleTypeGuard, TypeTypeGuard, TupleToObject, IndexRecordTypeGuard, RecordTypeGuard, PartialRecordTypeGuard, MaybeTypeGuard, OptionalTypeGuard } from "../src";
 
 describe("TypeGuard type", () => {
 	it("should be exactly equal", () => {
-		type Actual = TypeGuard<number>;
-		type Expected = TypeGuard<number>;
+		type Type1 = number;
+		type Type2 = number;
 
-		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+		expectTypeOf<Type1>().toEqualTypeOf<Type2>();
+		expectTypeOf<TypeGuard<Type1>>().toEqualTypeOf<TypeGuard<Type2>>();
+		expectTypeOf<ArrayTypeGuard<Type1>>().toEqualTypeOf<ArrayTypeGuard<Type2>>();
+		expectTypeOf<IntersectionTypeGuard<[Type1]>>().toEqualTypeOf<IntersectionTypeGuard<[Type2]>>();
+		expectTypeOf<LazyTypeGuard<Type1>>().toEqualTypeOf<LazyTypeGuard<Type2>>();
+		expectTypeOf<LiteralTypeGuard<[Type1]>>().toEqualTypeOf<LiteralTypeGuard<[Type2]>>();
+		expectTypeOf<RefineTypeGuard<unknown, Type1>>().toEqualTypeOf<RefineTypeGuard<unknown, Type2>>();
+		expectTypeOf<SetTypeGuard<Type1>>().toEqualTypeOf<SetTypeGuard<Type2>>();
+		expectTypeOf<UnionTypeGuard<[Type1]>>().toEqualTypeOf<UnionTypeGuard<[Type2]>>();
+		expectTypeOf<TupleTypeGuard<[Type1]>>().toEqualTypeOf<TupleTypeGuard<[Type2]>>();
+		expectTypeOf<IndexRecordTypeGuard<Type1>>().toEqualTypeOf<IndexRecordTypeGuard<Type2>>();
+		expectTypeOf<MaybeTypeGuard<Type1>>().toEqualTypeOf<MaybeTypeGuard<Type2>>();
+		expectTypeOf<OptionalTypeGuard<Type1>>().toEqualTypeOf<OptionalTypeGuard<Type2>>();
 	});
 
 	it("should be based on structural typing", () => {
@@ -15,6 +27,17 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<Type1>().toEqualTypeOf<Type2>();
 		expectTypeOf<TypeGuard<Type1>>().toEqualTypeOf<TypeGuard<Type2>>();
+		expectTypeOf<ArrayTypeGuard<Type1>>().toEqualTypeOf<ArrayTypeGuard<Type2>>();
+		expectTypeOf<IntersectionTypeGuard<[Type1]>>().toEqualTypeOf<IntersectionTypeGuard<[Type2]>>();
+		expectTypeOf<LazyTypeGuard<Type1>>().toEqualTypeOf<LazyTypeGuard<Type2>>();
+		expectTypeOf<RefineTypeGuard<unknown, Type1>>().toEqualTypeOf<RefineTypeGuard<unknown, Type2>>();
+		expectTypeOf<SetTypeGuard<Type1>>().toEqualTypeOf<SetTypeGuard<Type2>>();
+		expectTypeOf<UnionTypeGuard<[Type1]>>().toEqualTypeOf<UnionTypeGuard<[Type2]>>();
+		expectTypeOf<TupleTypeGuard<[Type1]>>().toEqualTypeOf<TupleTypeGuard<[Type2]>>();
+		expectTypeOf<TypeTypeGuard<Type1>>().toEqualTypeOf<TypeTypeGuard<Type2>>();
+		expectTypeOf<IndexRecordTypeGuard<Type1>>().toEqualTypeOf<IndexRecordTypeGuard<Type2>>();
+		expectTypeOf<MaybeTypeGuard<Type1>>().toEqualTypeOf<MaybeTypeGuard<Type2>>();
+		expectTypeOf<OptionalTypeGuard<Type1>>().toEqualTypeOf<OptionalTypeGuard<Type2>>();
 	});
 
 	it("should not match base types", () => {
@@ -23,6 +46,17 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<Derived>().toExtend<Base>();
 		expectTypeOf<TypeGuard<Derived>>().not.toExtend<TypeGuard<Base>>();
+		expectTypeOf<ArrayTypeGuard<Derived>>().not.toExtend<ArrayTypeGuard<Base>>();
+		expectTypeOf<IntersectionTypeGuard<[Derived]>>().not.toExtend<IntersectionTypeGuard<[Base]>>();
+		expectTypeOf<LazyTypeGuard<Derived>>().not.toExtend<LazyTypeGuard<Base>>();
+		expectTypeOf<LiteralTypeGuard<[Derived]>>().not.toExtend<LiteralTypeGuard<[Base]>>();
+		expectTypeOf<RefineTypeGuard<unknown, Derived>>().not.toExtend<RefineTypeGuard<unknown, Base>>();
+		expectTypeOf<SetTypeGuard<Derived>>().not.toExtend<SetTypeGuard<Base>>();
+		expectTypeOf<UnionTypeGuard<[Derived]>>().not.toExtend<UnionTypeGuard<[Base]>>();
+		expectTypeOf<TupleTypeGuard<[Derived]>>().not.toExtend<TupleTypeGuard<[Base]>>();
+		expectTypeOf<IndexRecordTypeGuard<Derived>>().not.toExtend<IndexRecordTypeGuard<Base>>();
+		expectTypeOf<MaybeTypeGuard<Derived>>().not.toExtend<MaybeTypeGuard<Base>>();
+		expectTypeOf<OptionalTypeGuard<Derived>>().not.toExtend<OptionalTypeGuard<Base>>();
 	});
 
 	it("should not match base types", () => {
@@ -31,6 +65,55 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<Derived>().toExtend<Base>();
 		expectTypeOf<TypeGuard<Derived>>().not.toExtend<TypeGuard<Base>>();
+		expectTypeOf<ArrayTypeGuard<Derived>>().not.toExtend<ArrayTypeGuard<Base>>();
+		expectTypeOf<IntersectionTypeGuard<[Derived]>>().not.toExtend<IntersectionTypeGuard<[Base]>>();
+		expectTypeOf<LazyTypeGuard<Derived>>().not.toExtend<LazyTypeGuard<Base>>();
+		expectTypeOf<RefineTypeGuard<unknown, Derived>>().not.toExtend<RefineTypeGuard<unknown, Base>>();
+		expectTypeOf<SetTypeGuard<Derived>>().not.toExtend<SetTypeGuard<Base>>();
+		expectTypeOf<UnionTypeGuard<[Derived]>>().not.toExtend<UnionTypeGuard<[Base]>>();
+		expectTypeOf<TupleTypeGuard<[Derived]>>().not.toExtend<TupleTypeGuard<[Base]>>();
+		expectTypeOf<TypeTypeGuard<Derived>>().not.toExtend<TypeTypeGuard<Base>>();
+		expectTypeOf<IndexRecordTypeGuard<Derived>>().not.toExtend<IndexRecordTypeGuard<Base>>();
+		expectTypeOf<MaybeTypeGuard<Derived>>().not.toExtend<MaybeTypeGuard<Base>>();
+		expectTypeOf<OptionalTypeGuard<Derived>>().not.toExtend<OptionalTypeGuard<Base>>();
+	});
+
+	it("should not match base types", () => {
+		class Base { a: string = "a" }
+		class Derived extends Base { b: number = 12 }
+
+		expectTypeOf<Derived>().toExtend<Base>();
+		expectTypeOf<TypeGuard<Derived>>().not.toExtend<TypeGuard<Base>>();
+		expectTypeOf<ArrayTypeGuard<Derived>>().not.toExtend<ArrayTypeGuard<Base>>();
+		expectTypeOf<InstanceofTypeGuard<typeof Derived>>().not.toExtend<InstanceofTypeGuard<typeof Base>>();
+		expectTypeOf<IntersectionTypeGuard<[Derived]>>().not.toExtend<IntersectionTypeGuard<[Base]>>();
+		expectTypeOf<LazyTypeGuard<Derived>>().not.toExtend<LazyTypeGuard<Base>>();
+		expectTypeOf<RefineTypeGuard<unknown, Derived>>().not.toExtend<RefineTypeGuard<unknown, Base>>();
+		expectTypeOf<SetTypeGuard<Derived>>().not.toExtend<SetTypeGuard<Base>>();
+		expectTypeOf<UnionTypeGuard<[Derived]>>().not.toExtend<UnionTypeGuard<[Base]>>();
+		expectTypeOf<TupleTypeGuard<[Derived]>>().not.toExtend<TupleTypeGuard<[Base]>>();
+		expectTypeOf<TypeTypeGuard<Derived>>().not.toExtend<TypeTypeGuard<Base>>();
+		expectTypeOf<IndexRecordTypeGuard<Derived>>().not.toExtend<IndexRecordTypeGuard<Base>>();
+		expectTypeOf<MaybeTypeGuard<Derived>>().not.toExtend<MaybeTypeGuard<Base>>();
+		expectTypeOf<OptionalTypeGuard<Derived>>().not.toExtend<OptionalTypeGuard<Base>>();
+	});
+
+	it("should not match base types", () => {
+		enum Derived { value }
+		type Base = Derived | null;
+
+		expectTypeOf<Derived>().toExtend<Base>();
+		expectTypeOf<TypeGuard<Derived>>().not.toExtend<TypeGuard<Base>>();
+		expectTypeOf<ArrayTypeGuard<Derived>>().not.toExtend<ArrayTypeGuard<Base>>();
+		expectTypeOf<IntersectionTypeGuard<[Derived]>>().not.toExtend<IntersectionTypeGuard<[Base]>>();
+		expectTypeOf<LazyTypeGuard<Derived>>().not.toExtend<LazyTypeGuard<Base>>();
+		expectTypeOf<RefineTypeGuard<unknown, Derived>>().not.toExtend<RefineTypeGuard<unknown, Base>>();
+		expectTypeOf<SetTypeGuard<Derived>>().not.toExtend<SetTypeGuard<Base>>();
+		expectTypeOf<UnionTypeGuard<[Derived]>>().not.toExtend<UnionTypeGuard<[Base]>>();
+		expectTypeOf<TupleTypeGuard<[Derived]>>().not.toExtend<TupleTypeGuard<[Base]>>();
+		expectTypeOf<IndexRecordTypeGuard<Derived>>().not.toExtend<IndexRecordTypeGuard<Base>>();
+		expectTypeOf<MaybeTypeGuard<Derived>>().not.toExtend<MaybeTypeGuard<Base>>();
+		expectTypeOf<OptionalTypeGuard<Derived>>().not.toExtend<OptionalTypeGuard<Base>>();
 	});
 
 	it("should not match derived types", () => {
@@ -39,6 +122,17 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<Derived>().toExtend<Base>();
 		expectTypeOf<TypeGuard<Base>>().not.toExtend<TypeGuard<Derived>>();
+		expectTypeOf<ArrayTypeGuard<Base>>().not.toExtend<ArrayTypeGuard<Derived>>();
+		expectTypeOf<IntersectionTypeGuard<[Base]>>().not.toExtend<IntersectionTypeGuard<[Derived]>>();
+		expectTypeOf<LazyTypeGuard<Base>>().not.toExtend<LazyTypeGuard<Derived>>();
+		expectTypeOf<LiteralTypeGuard<[Base]>>().not.toExtend<LiteralTypeGuard<[Derived]>>();
+		expectTypeOf<RefineTypeGuard<unknown, Base>>().not.toExtend<RefineTypeGuard<unknown, Derived>>();
+		expectTypeOf<SetTypeGuard<Base>>().not.toExtend<SetTypeGuard<Derived>>();
+		expectTypeOf<UnionTypeGuard<[Base]>>().not.toExtend<UnionTypeGuard<[Derived]>>();
+		expectTypeOf<TupleTypeGuard<[Base]>>().not.toExtend<TupleTypeGuard<[Derived]>>();
+		expectTypeOf<IndexRecordTypeGuard<Base>>().not.toExtend<IndexRecordTypeGuard<Derived>>();
+		expectTypeOf<MaybeTypeGuard<Base>>().not.toExtend<MaybeTypeGuard<Derived>>();
+		expectTypeOf<OptionalTypeGuard<Base>>().not.toExtend<OptionalTypeGuard<Derived>>();
 	});
 
 	it("should not match derived types", () => {
@@ -47,6 +141,37 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<Derived>().toExtend<Base>();
 		expectTypeOf<TypeGuard<Base>>().not.toExtend<TypeGuard<Derived>>();
+		expectTypeOf<ArrayTypeGuard<Base>>().not.toExtend<ArrayTypeGuard<Derived>>();
+		expectTypeOf<IntersectionTypeGuard<[Base]>>().not.toExtend<IntersectionTypeGuard<[Derived]>>();
+		expectTypeOf<LazyTypeGuard<Base>>().not.toExtend<LazyTypeGuard<Derived>>();
+		expectTypeOf<RefineTypeGuard<unknown, Base>>().not.toExtend<RefineTypeGuard<unknown, Derived>>();
+		expectTypeOf<SetTypeGuard<Base>>().not.toExtend<SetTypeGuard<Derived>>();
+		expectTypeOf<UnionTypeGuard<[Base]>>().not.toExtend<UnionTypeGuard<[Derived]>>();
+		expectTypeOf<TupleTypeGuard<[Base]>>().not.toExtend<TupleTypeGuard<[Derived]>>();
+		expectTypeOf<TypeTypeGuard<Base>>().not.toExtend<TypeTypeGuard<Derived>>();
+		expectTypeOf<IndexRecordTypeGuard<Base>>().not.toExtend<IndexRecordTypeGuard<Derived>>();
+		expectTypeOf<MaybeTypeGuard<Base>>().not.toExtend<MaybeTypeGuard<Derived>>();
+		expectTypeOf<OptionalTypeGuard<Base>>().not.toExtend<OptionalTypeGuard<Derived>>();
+	});
+
+	it("should not match derived types", () => {
+		class Base { a: string = "a" }
+		class Derived extends Base { b: number = 12 }
+
+		expectTypeOf<Derived>().toExtend<Base>();
+		expectTypeOf<TypeGuard<Base>>().not.toExtend<TypeGuard<Derived>>();
+		expectTypeOf<ArrayTypeGuard<Base>>().not.toExtend<ArrayTypeGuard<Derived>>();
+		expectTypeOf<InstanceofTypeGuard<typeof Base>>().not.toExtend<InstanceofTypeGuard<typeof Derived>>();
+		expectTypeOf<IntersectionTypeGuard<[Base]>>().not.toExtend<IntersectionTypeGuard<[Derived]>>();
+		expectTypeOf<LazyTypeGuard<Base>>().not.toExtend<LazyTypeGuard<Derived>>();
+		expectTypeOf<RefineTypeGuard<unknown, Base>>().not.toExtend<RefineTypeGuard<unknown, Derived>>();
+		expectTypeOf<SetTypeGuard<Base>>().not.toExtend<SetTypeGuard<Derived>>();
+		expectTypeOf<UnionTypeGuard<[Base]>>().not.toExtend<UnionTypeGuard<[Derived]>>();
+		expectTypeOf<TupleTypeGuard<[Base]>>().not.toExtend<TupleTypeGuard<[Derived]>>();
+		expectTypeOf<TypeTypeGuard<Base>>().not.toExtend<TypeTypeGuard<Derived>>();
+		expectTypeOf<IndexRecordTypeGuard<Base>>().not.toExtend<IndexRecordTypeGuard<Derived>>();
+		expectTypeOf<MaybeTypeGuard<Base>>().not.toExtend<MaybeTypeGuard<Derived>>();
+		expectTypeOf<OptionalTypeGuard<Base>>().not.toExtend<OptionalTypeGuard<Derived>>();
 	});
 
 	it("should not match mutually assignable types", () => {
@@ -55,8 +180,42 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<Type1>().toExtend<Type2>();
 		expectTypeOf<Type2>().toExtend<Type1>();
+
 		expectTypeOf<TypeGuard<Type1>>().not.toExtend<TypeGuard<Type2>>();
 		expectTypeOf<TypeGuard<Type2>>().not.toExtend<TypeGuard<Type1>>();
+
+		expectTypeOf<ArrayTypeGuard<Type1>>().not.toExtend<ArrayTypeGuard<Type2>>();
+		expectTypeOf<ArrayTypeGuard<Type2>>().not.toExtend<ArrayTypeGuard<Type1>>();
+
+		expectTypeOf<IntersectionTypeGuard<[Type1]>>().not.toExtend<IntersectionTypeGuard<[Type2]>>();
+		expectTypeOf<IntersectionTypeGuard<[Type2]>>().not.toExtend<IntersectionTypeGuard<[Type1]>>();
+
+		expectTypeOf<LazyTypeGuard<Type1>>().not.toExtend<LazyTypeGuard<Type2>>();
+		expectTypeOf<LazyTypeGuard<Type2>>().not.toExtend<LazyTypeGuard<Type1>>();
+
+		expectTypeOf<RefineTypeGuard<unknown, Type1>>().not.toExtend<RefineTypeGuard<unknown, Type2>>();
+		expectTypeOf<RefineTypeGuard<unknown, Type2>>().not.toExtend<RefineTypeGuard<unknown, Type1>>();
+
+		expectTypeOf<SetTypeGuard<Type1>>().not.toExtend<SetTypeGuard<Type2>>();
+		expectTypeOf<SetTypeGuard<Type2>>().not.toExtend<SetTypeGuard<Type1>>();
+
+		expectTypeOf<UnionTypeGuard<[Type1]>>().not.toExtend<UnionTypeGuard<[Type2]>>();
+		expectTypeOf<UnionTypeGuard<[Type2]>>().not.toExtend<UnionTypeGuard<[Type1]>>();
+
+		expectTypeOf<TupleTypeGuard<[Type1]>>().not.toExtend<TupleTypeGuard<[Type2]>>();
+		expectTypeOf<TupleTypeGuard<[Type2]>>().not.toExtend<TupleTypeGuard<[Type1]>>();
+
+		expectTypeOf<TypeTypeGuard<Type1>>().not.toExtend<TypeTypeGuard<Type2>>();
+		expectTypeOf<TypeTypeGuard<Type2>>().not.toExtend<TypeTypeGuard<Type1>>();
+
+		expectTypeOf<IndexRecordTypeGuard<Type1>>().not.toExtend<IndexRecordTypeGuard<Type2>>();
+		expectTypeOf<IndexRecordTypeGuard<Type2>>().not.toExtend<IndexRecordTypeGuard<Type1>>();
+
+		expectTypeOf<MaybeTypeGuard<Type1>>().not.toExtend<MaybeTypeGuard<Type2>>();
+		expectTypeOf<MaybeTypeGuard<Type2>>().not.toExtend<MaybeTypeGuard<Type1>>();
+
+		expectTypeOf<OptionalTypeGuard<Type1>>().not.toExtend<OptionalTypeGuard<Type2>>();
+		expectTypeOf<OptionalTypeGuard<Type2>>().not.toExtend<OptionalTypeGuard<Type1>>();
 	});
 
 	it("should not match mutually assignable types", () => {
@@ -65,8 +224,42 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<Type1>().toExtend<Type2>();
 		expectTypeOf<Type2>().toExtend<Type1>();
+
 		expectTypeOf<TypeGuard<Type1>>().not.toExtend<TypeGuard<Type2>>();
 		expectTypeOf<TypeGuard<Type2>>().not.toExtend<TypeGuard<Type1>>();
+
+		expectTypeOf<ArrayTypeGuard<Type1>>().not.toExtend<ArrayTypeGuard<Type2>>();
+		expectTypeOf<ArrayTypeGuard<Type2>>().not.toExtend<ArrayTypeGuard<Type1>>();
+
+		expectTypeOf<IntersectionTypeGuard<[Type1]>>().not.toExtend<IntersectionTypeGuard<[Type2]>>();
+		expectTypeOf<IntersectionTypeGuard<[Type2]>>().not.toExtend<IntersectionTypeGuard<[Type1]>>();
+
+		expectTypeOf<LazyTypeGuard<Type1>>().not.toExtend<LazyTypeGuard<Type2>>();
+		expectTypeOf<LazyTypeGuard<Type2>>().not.toExtend<LazyTypeGuard<Type1>>();
+
+		expectTypeOf<RefineTypeGuard<unknown, Type1>>().not.toExtend<RefineTypeGuard<unknown, Type2>>();
+		expectTypeOf<RefineTypeGuard<unknown, Type2>>().not.toExtend<RefineTypeGuard<unknown, Type1>>();
+
+		expectTypeOf<SetTypeGuard<Type1>>().not.toExtend<SetTypeGuard<Type2>>();
+		expectTypeOf<SetTypeGuard<Type2>>().not.toExtend<SetTypeGuard<Type1>>();
+
+		expectTypeOf<UnionTypeGuard<[Type1]>>().not.toExtend<UnionTypeGuard<[Type2]>>();
+		expectTypeOf<UnionTypeGuard<[Type2]>>().not.toExtend<UnionTypeGuard<[Type1]>>();
+
+		expectTypeOf<TupleTypeGuard<[Type1]>>().not.toExtend<TupleTypeGuard<[Type2]>>();
+		expectTypeOf<TupleTypeGuard<[Type2]>>().not.toExtend<TupleTypeGuard<[Type1]>>();
+
+		expectTypeOf<TypeTypeGuard<Type1>>().not.toExtend<TypeTypeGuard<Type2>>();
+		expectTypeOf<TypeTypeGuard<Type2>>().not.toExtend<TypeTypeGuard<Type1>>();
+
+		expectTypeOf<IndexRecordTypeGuard<Type1>>().not.toExtend<IndexRecordTypeGuard<Type2>>();
+		expectTypeOf<IndexRecordTypeGuard<Type2>>().not.toExtend<IndexRecordTypeGuard<Type1>>();
+
+		expectTypeOf<MaybeTypeGuard<Type1>>().not.toExtend<MaybeTypeGuard<Type2>>();
+		expectTypeOf<MaybeTypeGuard<Type2>>().not.toExtend<MaybeTypeGuard<Type1>>();
+
+		expectTypeOf<OptionalTypeGuard<Type1>>().not.toExtend<OptionalTypeGuard<Type2>>();
+		expectTypeOf<OptionalTypeGuard<Type2>>().not.toExtend<OptionalTypeGuard<Type1>>();
 	});
 
 	it("should not match mutually assignable types", () => {
@@ -75,45 +268,142 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf<Type1>().toExtend<Type2>();
 		expectTypeOf<Type2>().toExtend<Type1>();
+
 		expectTypeOf<TypeGuard<Type1>>().not.toExtend<TypeGuard<Type2>>();
 		expectTypeOf<TypeGuard<Type2>>().not.toExtend<TypeGuard<Type1>>();
+
+		expectTypeOf<ArrayTypeGuard<Type1>>().not.toExtend<ArrayTypeGuard<Type2>>();
+		expectTypeOf<ArrayTypeGuard<Type2>>().not.toExtend<ArrayTypeGuard<Type1>>();
+
+		expectTypeOf<IntersectionTypeGuard<[Type1]>>().not.toExtend<IntersectionTypeGuard<[Type2]>>();
+		expectTypeOf<IntersectionTypeGuard<[Type2]>>().not.toExtend<IntersectionTypeGuard<[Type1]>>();
+
+		expectTypeOf<LazyTypeGuard<Type1>>().not.toExtend<LazyTypeGuard<Type2>>();
+		expectTypeOf<LazyTypeGuard<Type2>>().not.toExtend<LazyTypeGuard<Type1>>();
+
+		expectTypeOf<RefineTypeGuard<unknown, Type1>>().not.toExtend<RefineTypeGuard<unknown, Type2>>();
+		expectTypeOf<RefineTypeGuard<unknown, Type2>>().not.toExtend<RefineTypeGuard<unknown, Type1>>();
+
+		expectTypeOf<SetTypeGuard<Type1>>().not.toExtend<SetTypeGuard<Type2>>();
+		expectTypeOf<SetTypeGuard<Type2>>().not.toExtend<SetTypeGuard<Type1>>();
+
+		expectTypeOf<UnionTypeGuard<[Type1]>>().not.toExtend<UnionTypeGuard<[Type2]>>();
+		expectTypeOf<UnionTypeGuard<[Type2]>>().not.toExtend<UnionTypeGuard<[Type1]>>();
+
+		expectTypeOf<TupleTypeGuard<[Type1]>>().not.toExtend<TupleTypeGuard<[Type2]>>();
+		expectTypeOf<TupleTypeGuard<[Type2]>>().not.toExtend<TupleTypeGuard<[Type1]>>();
+
+		expectTypeOf<TypeTypeGuard<Type1>>().not.toExtend<TypeTypeGuard<Type2>>();
+		expectTypeOf<TypeTypeGuard<Type2>>().not.toExtend<TypeTypeGuard<Type1>>();
+
+		expectTypeOf<IndexRecordTypeGuard<Type1>>().not.toExtend<IndexRecordTypeGuard<Type2>>();
+		expectTypeOf<IndexRecordTypeGuard<Type2>>().not.toExtend<IndexRecordTypeGuard<Type1>>();
+
+		expectTypeOf<MaybeTypeGuard<Type1>>().not.toExtend<MaybeTypeGuard<Type2>>();
+		expectTypeOf<MaybeTypeGuard<Type2>>().not.toExtend<MaybeTypeGuard<Type1>>();
+
+		expectTypeOf<OptionalTypeGuard<Type1>>().not.toExtend<OptionalTypeGuard<Type2>>();
+		expectTypeOf<OptionalTypeGuard<Type2>>().not.toExtend<OptionalTypeGuard<Type1>>();
 	});
 
-	it("should have .optional() that receives no parameters and returns TypeGuard<T | undefined>", () => {
+	it("should not match mutually assignable types", () => {
+		class Type1 { field1: Date = new Date() }
+		class Type2 extends Type1 { field2?: string };
+
+		expectTypeOf<Type1>().toExtend<Type2>();
+		expectTypeOf<Type2>().toExtend<Type1>();
+
+		expectTypeOf<TypeGuard<Type1>>().not.toExtend<TypeGuard<Type2>>();
+		expectTypeOf<TypeGuard<Type2>>().not.toExtend<TypeGuard<Type1>>();
+
+		expectTypeOf<ArrayTypeGuard<Type1>>().not.toExtend<ArrayTypeGuard<Type2>>();
+		expectTypeOf<ArrayTypeGuard<Type2>>().not.toExtend<ArrayTypeGuard<Type1>>();
+
+		expectTypeOf<InstanceofTypeGuard<typeof Type1>>().not.toExtend<InstanceofTypeGuard<typeof Type2>>();
+		expectTypeOf<InstanceofTypeGuard<typeof Type2>>().not.toExtend<InstanceofTypeGuard<typeof Type1>>();
+
+		expectTypeOf<IntersectionTypeGuard<[Type1]>>().not.toExtend<IntersectionTypeGuard<[Type2]>>();
+		expectTypeOf<IntersectionTypeGuard<[Type2]>>().not.toExtend<IntersectionTypeGuard<[Type1]>>();
+
+		expectTypeOf<LazyTypeGuard<Type1>>().not.toExtend<LazyTypeGuard<Type2>>();
+		expectTypeOf<LazyTypeGuard<Type2>>().not.toExtend<LazyTypeGuard<Type1>>();
+
+		expectTypeOf<RefineTypeGuard<unknown, Type1>>().not.toExtend<RefineTypeGuard<unknown, Type2>>();
+		expectTypeOf<RefineTypeGuard<unknown, Type2>>().not.toExtend<RefineTypeGuard<unknown, Type1>>();
+
+		expectTypeOf<SetTypeGuard<Type1>>().not.toExtend<SetTypeGuard<Type2>>();
+		expectTypeOf<SetTypeGuard<Type2>>().not.toExtend<SetTypeGuard<Type1>>();
+
+		expectTypeOf<UnionTypeGuard<[Type1]>>().not.toExtend<UnionTypeGuard<[Type2]>>();
+		expectTypeOf<UnionTypeGuard<[Type2]>>().not.toExtend<UnionTypeGuard<[Type1]>>();
+
+		expectTypeOf<TupleTypeGuard<[Type1]>>().not.toExtend<TupleTypeGuard<[Type2]>>();
+		expectTypeOf<TupleTypeGuard<[Type2]>>().not.toExtend<TupleTypeGuard<[Type1]>>();
+
+		expectTypeOf<TypeTypeGuard<Type1>>().not.toExtend<TypeTypeGuard<Type2>>();
+		expectTypeOf<TypeTypeGuard<Type2>>().not.toExtend<TypeTypeGuard<Type1>>();
+
+		expectTypeOf<IndexRecordTypeGuard<Type1>>().not.toExtend<IndexRecordTypeGuard<Type2>>();
+		expectTypeOf<IndexRecordTypeGuard<Type2>>().not.toExtend<IndexRecordTypeGuard<Type1>>();
+
+		expectTypeOf<MaybeTypeGuard<Type1>>().not.toExtend<MaybeTypeGuard<Type2>>();
+		expectTypeOf<MaybeTypeGuard<Type2>>().not.toExtend<MaybeTypeGuard<Type1>>();
+
+		expectTypeOf<OptionalTypeGuard<Type1>>().not.toExtend<OptionalTypeGuard<Type2>>();
+		expectTypeOf<OptionalTypeGuard<Type2>>().not.toExtend<OptionalTypeGuard<Type1>>();
+	});
+
+	it("should have .optional() that receives no parameters and returns OptionalTypeGuard<T>", () => {
 		type T = number;
 
-		expectTypeOf<TypeGuard<T>>().toHaveProperty("optional").toEqualTypeOf<() => TypeGuard<T | undefined>>();
+		expectTypeOf<TypeGuard<T>>().toHaveProperty("optional").toEqualTypeOf<() => OptionalTypeGuard<T>>();
 	});
 
-	it("should have .maybe() that receives no parameters and returns TypeGuard<T | null>", () => {
+	it("should have .maybe() that receives no parameters and returns MaybeTypeGuard<T>", () => {
 		type T = { name: string; age: number; };
 
-		expectTypeOf<TypeGuard<T>>().toHaveProperty("maybe").toEqualTypeOf<() => TypeGuard<T | null>>();
+		expectTypeOf<TypeGuard<T>>().toHaveProperty("maybe").toEqualTypeOf<() => MaybeTypeGuard<T>>();
 	});
 
-	it("should have .array() that receives no parameters and returns TypeGuard<T[]>", () => {
+	it("should have .and() that receives no parameters and returns IntersectionTypeGuard<[T, ...I]>", () => {
+		type T = { obj: { name: string } };
+		type I = [{ obj: { age: number } }, { other: Date }];
+		const and = isType<T>({ obj: isType({ name: isString }) }).and<I>;
+
+		expectTypeOf(and).returns.toEqualTypeOf<IntersectionTypeGuard<[T, ...I]>>();
+	});
+
+	it("should have .or() that receives no parameters and returns UnionTypeGuard<[T, ...I]>", () => {
+		type T = [string, Date];
+		type I = [number, boolean, string];
+		const or = isTuple<T>([isString, isDate]).or<I>(isNumber, isBoolean, isString);
+
+		expectTypeOf(or).toEqualTypeOf<UnionTypeGuard<[T, ...I]>>();
+	});
+
+	it("should have .array() that receives no parameters and returns ArrayTypeGuard<T>", () => {
 		type T = [number, string];
 
-		expectTypeOf<TypeGuard<T>>().toHaveProperty("array").toEqualTypeOf<() => TypeGuard<T[]>>();
+		expectTypeOf<TypeGuard<T>>().toHaveProperty("array").toEqualTypeOf<() => ArrayTypeGuard<T>>();
 	});
 
-	it("should have .set() that receives no parameters and returns TypeGuard<Set<T>>", () => {
+	it("should have .set() that receives no parameters and returns SetTypeGuard<T>", () => {
 		type T = Date[];
 
-		expectTypeOf<TypeGuard<T>>().toHaveProperty("set").toEqualTypeOf<() => TypeGuard<Set<T>>>();
+		expectTypeOf<TypeGuard<T>>().toHaveProperty("set").toEqualTypeOf<() => SetTypeGuard<T>>();
 	});
 
-	it("should have .indexRecord() that receives no parameters and returns TypeGuard<Record<PropertyKey, T>>", () => {
+	it("should have .indexRecord() that receives no parameters and returns IndexRecordTypeGuard<T>", () => {
 		type T = number | string;
 
-		expectTypeOf<TypeGuard<T>>().toHaveProperty("indexRecord").toEqualTypeOf<() => TypeGuard<Record<PropertyKey, T>>>();
+		expectTypeOf<TypeGuard<T>>().toHaveProperty("indexRecord").toEqualTypeOf<() => IndexRecordTypeGuard<T>>();
 	});
 
-	it("should have .refine() that receives a refinement function and returns TypeGuard<R>", () => {
+	it("should have .refine() that receives a refinement function and returns RefineTypeGuard<T, R>", () => {
 		type RefineResult = `I have ${number} apples`;
 		const refine = isString.refine<RefineResult>;
 
-		expectTypeOf(refine).toEqualTypeOf<(refinement: (value: string) => value is RefineResult) => TypeGuard<RefineResult>>();
+		expectTypeOf(refine).toEqualTypeOf<(refinement: (value: string) => value is RefineResult) => RefineTypeGuard<string, RefineResult>>();
 	});
 });
 
@@ -151,6 +441,13 @@ describe("Guarded type", () => {
 	it("should not extract recursively", () => {
 		type Actual = Guarded<TypeGuard<TypeGuard<Date>>>;
 		type Expected = TypeGuard<Date>;
+
+		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+	});
+
+	it("should allow TypeGuard<never>", () => {
+		type Actual = Guarded<TypeGuard<never>>;
+		type Expected = never;
 
 		expectTypeOf<Actual>().toEqualTypeOf<Expected>();
 	});
@@ -259,19 +556,29 @@ describe("isArray return type", () => {
 		it("should return TypeGuard<number[]>", () => {
 			const actual = isArray(isNumber);
 
-			expectTypeOf(actual).toEqualTypeOf<TypeGuard<number[]>>();
+			expectTypeOf(actual).toEqualTypeOf<ArrayTypeGuard<number>>();
+			expectTypeOf(actual).toExtend<TypeGuard<number[]>>();
 		});
 
 		it("should return TypeGuard<string[][]>", () => {
 			const actual = isArray(isArray(isString));
 
-			expectTypeOf(actual).toEqualTypeOf<TypeGuard<string[][]>>();
+			expectTypeOf(actual).toEqualTypeOf<ArrayTypeGuard<string[]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<string[][]>>();
 		});
 
 		it("should handle unions", () => {
 			const actual = isArray(isUnion(isNumber, isString));
 
-			expectTypeOf(actual).toEqualTypeOf<TypeGuard<(number | string)[]>>();
+			expectTypeOf(actual).toEqualTypeOf<ArrayTypeGuard<number | string>>();
+			expectTypeOf(actual).toExtend<TypeGuard<(number | string)[]>>();
+		});
+
+		it("should have .isValue that is of type TypeGuard<T>", () => {
+			type T = { hello: Date; };
+			const actual = isArray(isType<T>({ hello: isDate }));
+
+			expectTypeOf(actual.isValue).toEqualTypeOf<TypeGuard<T>>();
 		});
 	});
 });
@@ -284,9 +591,15 @@ describe("isEnum", () => {
 	describe("return type", () => {
 		it("should return TypeGuard<T>", () => {
 			const actual = isEnum(Example);
-			type Expected = TypeGuard<Example>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<EnumTypeGuard<typeof Example>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Example>>();
+		});
+
+		it("should have .enum that is of type TypeGuard<typeof Example>", () => {
+			const actual = isEnum(Example);
+
+			expectTypeOf(actual.enum).toEqualTypeOf<typeof Example>();
 		});
 	});
 
@@ -306,28 +619,39 @@ describe("isEnum", () => {
 });
 
 describe("isInstanceof", () => {
-	it("should return TypeGuard<T>", () => {
-		class Example { }
-		const actual = isInstanceof(Example);
-		type Expected = TypeGuard<Example>;
+	describe("return type", () => {
+		it("should return TypeGuard<T>", () => {
+			class Example { }
+			const actual = isInstanceof(Example);
 
-		expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<InstanceofTypeGuard<typeof Example>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Example>>();
+		});
+
+		it("should have .class that is of type TypeGuard<typeof Example>", () => {
+			class Example {}
+			const actual = isInstanceof(Example);
+
+			expectTypeOf(actual.class).toEqualTypeOf<typeof Example>();
+		});
 	});
 
-	it("should accept abstract class", () => {
-		abstract class Example { }
-		const actual = isInstanceof(Example);
-		type Expected = TypeGuard<Example>;
+	describe("parameters", () => {
+		it("should accept abstract class", () => {
+			abstract class Example { }
+			const actual = isInstanceof(Example);
 
-		expectTypeOf(actual).toEqualTypeOf<Expected>();
-	});
+			expectTypeOf(actual).toEqualTypeOf<InstanceofTypeGuard<typeof Example>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Example>>();
+		});
 
-	it("should not accept function constructor", () => {
-		function Example() { }
-		isInstanceof(
-			// @ts-expect-error
-			Example
-		);
+		it("should not accept function constructor", () => {
+			function Example() { }
+			isInstanceof(
+				// @ts-expect-error
+				Example
+			);
+		});
 	});
 });
 
@@ -343,51 +667,59 @@ describe("isIntersection", () => {
 	describe("return type", () => {
 		it("should return TypeGuard<unknown>", () => {
 			const actual = isIntersection();
-			type Expected = TypeGuard<unknown>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<IntersectionTypeGuard<[]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<unknown>>();
 		});
 
 		it("should return TypeGuard<A>", () => {
 			const actual = isIntersection(isA);
-			type Expected = TypeGuard<A>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<IntersectionTypeGuard<[A]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<A>>();
 		});
 
 		it("should return TypeGuard<A & B>", () => {
 			const actual = isIntersection(isA, isB);
-			type Expected = TypeGuard<A & B>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<IntersectionTypeGuard<[A, B]>>();
+			expectTypeOf(actual).not.toEqualTypeOf<IntersectionTypeGuard<[B, A]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<A & B>>();
 		});
 
 		it("should return TypeGuard<A & B & C>", () => {
 			const actual = isIntersection(isA, isB, isC);
-			type Expected = TypeGuard<A & B & C>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<IntersectionTypeGuard<[A, B, C]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<A & B & C>>();
 		});
 
 		it("should return TypeGuard<A & (B | C)>", () => {
 			const actual = isIntersection(isA, isUnion(isB, isC));
-			type Expected = TypeGuard<A & (B | C)>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<IntersectionTypeGuard<[A, B | C]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<A & (B | C)>>();
 		});
 
 		it("should return TypeGuard<A & B>", () => {
 			const actual = isIntersection(isA, isB, isA);
-			type Expected = TypeGuard<A & B>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<IntersectionTypeGuard<[A, B, A]>>();
+			expectTypeOf(actual).not.toEqualTypeOf<IntersectionTypeGuard<[A, B]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<A & B>>();
 		});
 
 		it("should handle optional items", () => {
 			type Actual = ReturnType<typeof isIntersection<[A, B?]>>;
-			type Expected = TypeGuard<A & (B | undefined)>;
 
-			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+			expectTypeOf<Actual>().toEqualTypeOf<IntersectionTypeGuard<[A, B?]>>();
+			expectTypeOf<Actual>().toExtend<TypeGuard<A & (B | undefined)>>();
+		});
+
+		it("should have .guards that is of type [TypeGuard<A>, TypeGuard<B>]", () => {
+			const actual = isIntersection(isA, isB);
+
+			expectTypeOf(actual.guards).toEqualTypeOf<[TypeGuard<A>, TypeGuard<B>]>();
 		});
 	});
 
@@ -409,9 +741,16 @@ describe("isLazy", () => {
 	describe("return type", () => {
 		it("should return TypeGuard<A>", () => {
 			const actual = isLazy(() => isA);
-			type Expected = TypeGuard<A>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<LazyTypeGuard<A>>();
+			expectTypeOf(actual).toExtend<TypeGuard<A>>();
+		});
+
+		it("should have .unbox that is of type TypeGuard<() => TypeGuard<T>>", () => {
+			const generator = () => isString;
+			const actual = isLazy(generator);
+
+			expectTypeOf(actual.unbox).toEqualTypeOf<() => TypeGuard<string>>();
 		});
 	});
 
@@ -429,16 +768,23 @@ describe("isLiteral", () => {
 	describe("return type", () => {
 		it("should return TypeGuard<12>", () => {
 			const actual = isLiteral(12);
-			type Expected = TypeGuard<12>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<LiteralTypeGuard<readonly [12]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<12>>();
 		});
 
 		it("should return TypeGuard<12 | false>", () => {
 			const actual = isLiteral(12, false);
-			type Expected = TypeGuard<12 | false>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<LiteralTypeGuard<readonly [12, false]>>();
+			expectTypeOf(actual).not.toEqualTypeOf<LiteralTypeGuard<readonly [false, 12]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<12 | false>>();
+		});
+
+		it("should have .values that is of type TypeGuard<readonly [12, true]>", () => {
+			const actual = isLiteral(12, true);
+
+			expectTypeOf(actual.values).toEqualTypeOf<readonly [12, true]>();
 		});
 	});
 
@@ -522,9 +868,21 @@ describe("isMap", () => {
 	describe("return type", () => {
 		it("should return TypeGuard<Map<K, V>>", () => {
 			const actual = isMap(isNumber, isBoolean);
-			type Expected = TypeGuard<Map<number, boolean>>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<MapTypeGuard<number, boolean>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Map<number, boolean>>>();
+		});
+
+		it("should have .isKey that is of type TypeGuard<K>", () => {
+			const actual = isMap(isBoolean, isString);
+
+			expectTypeOf(actual.isKey).toEqualTypeOf<TypeGuard<boolean>>();
+		});
+
+		it("should have .isValue that is of type TypeGuard<V>", () => {
+			const actual = isMap(isBoolean, isString);
+
+			expectTypeOf(actual.isValue).toEqualTypeOf<TypeGuard<string>>();
 		});
 	});
 });
@@ -534,7 +892,15 @@ describe("isMaybe", () => {
 		it("should return TypeGuard<T | null>", () => {
 			const actual = isMaybe(isDate);
 
-			expectTypeOf(actual).toEqualTypeOf<TypeGuard<Date | null>>();
+			expectTypeOf(actual).toEqualTypeOf<MaybeTypeGuard<Date>>();
+			expectTypeOf(actual).toExtend<UnionTypeGuard<[null, Date]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Date | null>>();
+		});
+
+		it("should have .unbox that is of type () => TypeGuard<T>", () => {
+			const actual = isMaybe(isDate);
+
+			expectTypeOf(actual.unbox).toEqualTypeOf<() => TypeGuard<Date>>();
 		});
 	});
 });
@@ -544,7 +910,15 @@ describe("isOptional", () => {
 		it("should return TypeGuard<T | undefined>", () => {
 			const actual = isOptional(isString);
 
-			expectTypeOf(actual).toEqualTypeOf<TypeGuard<string | undefined>>();
+			expectTypeOf(actual).toEqualTypeOf<OptionalTypeGuard<string>>();
+			expectTypeOf(actual).toExtend<UnionTypeGuard<[undefined, string]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<string | undefined>>();
+		});
+
+		it("should have .unbox that is of type () => TypeGuard<T>", () => {
+			const actual = isOptional(isDate);
+
+			expectTypeOf(actual.unbox).toEqualTypeOf<() => TypeGuard<Date>>();
 		});
 	});
 });
@@ -553,9 +927,15 @@ describe("isSet", () => {
 	describe("return type", () => {
 		it("should return TypeGuard<Set<T>>", () => {
 			const actual = isSet(isString);
-			type Expected = TypeGuard<Set<string>>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<SetTypeGuard<string>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Set<string>>>();
+		});
+
+		it("should have .isValue that is of type TypeGuard<string>", () => {
+			const actual = isSet(isDate);
+
+			expectTypeOf(actual.isValue).toEqualTypeOf<TypeGuard<Date>>();
 		});
 	});
 });
@@ -564,9 +944,10 @@ describe("isRecord", () => {
 	describe("return type", () => {
 		it("should return TypeGuard<Record<'a' | 'b', number>>", () => {
 			const actual = isRecord(["a", "b"], isNumber);
-			type Expected = TypeGuard<Record<"a" | "b", number>>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<RecordTypeGuard<readonly ["a", "b"], number>>();
+			expectTypeOf(actual).toExtend<TypeTypeGuard<Record<"a" | "b", number>>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Record<"a" | "b", number>>>();
 		});
 
 		it("should not match when there are missing keys", () => {
@@ -582,30 +963,45 @@ describe("isRecord", () => {
 
 			expectTypeOf(actual).not.toExtend<Expected>();
 		});
+
+		it("should have .keys that is of type readonly ['a', 'b', 'c']", () => {
+			const actual = isRecord(["a", "b", "c"], isDate);
+
+			expectTypeOf(actual.keys).toEqualTypeOf<readonly ["a", "b", "c"]>();
+		});
+
+		it("should have .isValue that is of type TypeGuard<Date>", () => {
+			const actual = isRecord(["a", "b", "c"], isDate);
+
+			expectTypeOf(actual.isValue).toEqualTypeOf<TypeGuard<Date>>();
+		});
 	});
 
 	describe("parameters", () => {
 		it("should accept readonly keys", () => {
 			const keys = ["a", "b"] as const;
 			const actual = isRecord(keys, isDate);
-			type Expected = TypeGuard<Record<"a" | "b", Date>>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<RecordTypeGuard<readonly ["a", "b"], Date>>();
+			expectTypeOf(actual).toExtend<TypeTypeGuard<Record<"a" | "b", Date>>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Record<"a" | "b", Date>>>();
 		});
 
 		it("should accept string, number or symbol as keys", () => {
 			const symbol = Symbol();
 			const actual = isRecord(["a", 56, symbol], isNull);
-			type Expected = TypeGuard<Record<"a" | 56 | typeof symbol, null>>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<RecordTypeGuard<readonly ["a", 56, typeof symbol], null>>();
+			expectTypeOf(actual).toExtend<TypeTypeGuard<Record<"a" | 56 | typeof symbol, null>>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Record<"a" | 56 | typeof symbol, null>>>();
 		});
 
 		it("should accept empty array as keys", () => {
 			const actual = isRecord([], isNumber);
-			type Expected = TypeGuard<Record<never, number>>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>;
+			expectTypeOf(actual).toEqualTypeOf<RecordTypeGuard<readonly [], number>>();
+			expectTypeOf(actual).toExtend<TypeTypeGuard<Record<never, number>>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Record<never, number>>>();
 		});
 
 		it("should not accept Date as key", () => {
@@ -622,9 +1018,10 @@ describe("isPartialRecord", () => {
 	describe("return type", () => {
 		it("should return TypeGuard<Partial<Record<'a' | 'b', number>>>", () => {
 			const actual = isPartialRecord(["a", "b"], isNumber);
-			type Expected = TypeGuard<Partial<Record<"a" | "b", number>>>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<PartialRecordTypeGuard<readonly ["a", "b"], number>>();
+			expectTypeOf(actual).toExtend<TypeTypeGuard<Partial<Record<"a" | "b", number>>>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Partial<Record<"a" | "b", number>>>>();
 		});
 
 		it("should not match when there are missing keys", () => {
@@ -640,30 +1037,45 @@ describe("isPartialRecord", () => {
 
 			expectTypeOf(actual).not.toExtend<Expected>();
 		});
+
+		it("should have .keys that is of type readonly ['a', 'b', 'c']", () => {
+			const actual = isPartialRecord(["a", "b", "c"], isDate);
+
+			expectTypeOf(actual.keys).toEqualTypeOf<readonly ["a", "b", "c"]>();
+		});
+
+		it("should have .isValue that is of type TypeGuard<Date>", () => {
+			const actual = isPartialRecord(["a", "b", "c"], isDate);
+
+			expectTypeOf(actual.isValue).toEqualTypeOf<TypeGuard<Date>>();
+		});
 	});
 
 	describe("parameters", () => {
 		it("should accept readonly keys", () => {
 			const keys = ["readonly", "keys"] as const;
 			const actual = isPartialRecord(keys, isBoolean);
-			type Expected = TypeGuard<Partial<Record<"readonly" | "keys", boolean>>>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<PartialRecordTypeGuard<readonly ["readonly", "keys"], boolean>>();
+			expectTypeOf(actual).toExtend<TypeTypeGuard<Partial<Record<"readonly" | "keys", boolean>>>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Partial<Record<"readonly" | "keys", boolean>>>>();
 		});
 
 		it("should accept string, number or symbol as keys", () => {
 			const symbol = Symbol();
 			const actual = isPartialRecord(["a", 56, symbol], isUndefined);
-			type Expected = TypeGuard<Partial<Record<"a" | 56 | typeof symbol, undefined>>>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<PartialRecordTypeGuard<readonly ["a", 56, typeof symbol], undefined>>();
+			expectTypeOf(actual).toExtend<TypeTypeGuard<Partial<Record<"a" | 56 | typeof symbol, undefined>>>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Partial<Record<"a" | 56 | typeof symbol, undefined>>>>();
 		});
 
 		it("should accept empty array as keys", () => {
 			const actual = isPartialRecord([], isNumber);
-			type Expected = TypeGuard<Partial<Record<never, number>>>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>;
+			expectTypeOf(actual).toEqualTypeOf<PartialRecordTypeGuard<readonly [], number>>();
+			expectTypeOf(actual).toExtend<TypeTypeGuard<Partial<Record<never, number>>>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Partial<Record<never, number>>>>();
 		});
 
 		it("should not accept Date as key", () => {
@@ -680,18 +1092,15 @@ describe("isIndexRecord", () => {
 	describe("return type", () => {
 		it("should return Record<PropertyKey, number>", () => {
 			const actual = isIndexRecord(isNumber);
-			type Expected = TypeGuard<Record<PropertyKey, number>>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<IndexRecordTypeGuard<number>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Record<PropertyKey, number>>>();
 		});
-	});
 
-	describe("parameters", () => {
-		it("should accept different key types", () => {
-			const actual = isIndexRecord<string>(isString);
-			type Expected = TypeGuard<Record<PropertyKey, string>>;
+		it("should have .isValue that is of type TypeGuard<boolean>", () => {
+			const actual = isIndexRecord(isBoolean);
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual.isValue).toEqualTypeOf<TypeGuard<boolean>>();
 		});
 	});
 });
@@ -701,9 +1110,23 @@ describe("isRefine", () => {
 		it("should return TypeGuard<Farewell>", () => {
 			type Farewell = `Bye ${string}`;
 			const actual = isRefine(isString, (value): value is Farewell => true);
-			type Expected = TypeGuard<Farewell>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<RefineTypeGuard<string, Farewell>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Farewell>>();
+		});
+
+		it("should have .isBase that is of type TypeGuard<string>", () => {
+			type Farewell = `Bye ${string}`;
+			const actual = isRefine(isString, (value): value is Farewell => true);
+
+			expectTypeOf(actual.isBase).toEqualTypeOf<TypeGuard<string>>();
+		});
+
+		it("should have .refinement that is of type (value: string) => value is Farewell", () => {
+			type Farewell = `Bye ${string}`;
+			const actual = isRefine(isString, (value): value is Farewell => true);
+
+			expectTypeOf(actual.refinement).toEqualTypeOf<(value: string) => value is Farewell>();
 		});
 	});
 
@@ -723,9 +1146,15 @@ describe("isTuple", () => {
 		it("should return TypeGuard<Row>", () => {
 			type Row = [number, string];
 			const actual = isTuple<Row>([isNumber, isString]);
-			type Expected = TypeGuard<Row>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<TupleTypeGuard<Row>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Row>>();
+		});
+
+		it("should have .template that is of type [TypeGuard<string>, TypeGuard<number>]", () => {
+			const actual = isTuple([isString, isNumber]);
+
+			expectTypeOf(actual.template).toEqualTypeOf<[TypeGuard<string>, TypeGuard<number>]>();
 		});
 	});
 
@@ -733,9 +1162,9 @@ describe("isTuple", () => {
 		it("should accept readonly tuples", () => {
 			type Tuple = readonly [number, undefined];
 			const actual = isTuple<Tuple>([isNumber, isUndefined]);
-			type Expected = TypeGuard<Tuple>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<TupleTypeGuard<Tuple>>();
+			expectTypeOf(actual).toExtend<TypeGuard<Tuple>>();
 		});
 
 		it("should not accept a number", () => {
@@ -811,22 +1240,49 @@ describe("isTuple", () => {
 });
 
 describe("isType", () => {
-	type A = { a: number };
-
 	describe("return type", () => {
 		it("should return TypeGuard<A>", () => {
+			type A = { a: number };
 			const actual = isType<A>({ a: isNumber });
-			type Expected = TypeGuard<A>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<TypeTypeGuard<A>>();
+			expectTypeOf(actual).toExtend<TypeGuard<A>>();
 		});
 
 		it("should omit non index for tuples", () => {
-			const actual = isType([isNumber, isString]);
-			type Actual = Guarded<typeof actual>;
-			type Expected = { 0: number; 1: string };
+			type Row = [number, string]
+			const actual = isType<Row>([isNumber, isString]);
 
-			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<TypeTypeGuard<Row>>();
+			expectTypeOf(actual).toExtend<TypeGuard<TupleToObject<Row>>>();
+		});
+
+		it("should have .template that is of type { a: TypeGuard<number> }", () => {
+			type A = { a: number };
+			const actual = isType<A>({ a: isNumber });
+
+			expectTypeOf(actual.template).toEqualTypeOf<{ a: TypeGuard<number> }>();
+		});
+
+		it("should have .partial that is of type () => TypeTypeGuard<Partial<A>>", () => {
+			type A = { a: number };
+			const actual = isType<A>({ a: isNumber });
+
+			expectTypeOf(actual.partial).toEqualTypeOf<() => TypeTypeGuard<Partial<A>>>();
+		});
+
+		it("should have .pick that is of type () => TypeTypeGuard<Partial<A>>", () => {
+			type A = { a: number; b: string; c: Date; };
+			const actual = isType<A>({ a: isNumber, b: isString, c: isDate }).pick("a", "c");
+
+			expectTypeOf(actual).toEqualTypeOf<TypeTypeGuard<Pick<A, "a" | "c">>>();
+		});
+
+		it("should have .omit that is of type () => TypeTypeGuard<Partial<A>>", () => {
+			type A = { a: number; b: string; c: Date; };
+			const actual = isType<A>({ a: isNumber, b: isString, c: isDate }).omit("c");
+
+			expectTypeOf(actual).toEqualTypeOf<TypeTypeGuard<Omit<A, "c">>>();
 		});
 	});
 
@@ -912,6 +1368,23 @@ describe("isType", () => {
 	});
 });
 
+describe("isTypeof", () => {
+	describe("return type", () => {
+		it("should return TypeGuard<string>", () => {
+			const actual = isTypeof("string");
+
+			expectTypeOf(actual).toEqualTypeOf<TypeofTypeGuard<"string">>();
+			expectTypeOf(actual).toExtend<TypeGuard<string>>();
+		});
+
+		it("should have .result that is of type 'number'", () => {
+			const actual = isTypeof("number");
+
+			expectTypeOf(actual.result).toEqualTypeOf<"number">();
+		});
+	});
+});
+
 describe("isUnion", () => {
 	type A = { a: number };
 	type B = { b: number };
@@ -924,51 +1397,58 @@ describe("isUnion", () => {
 	describe("return type", () => {
 		it("should return TypeGuard<never>", () => {
 			const actual = isUnion();
-			type Expected = TypeGuard<never>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<UnionTypeGuard<[]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<never>>();
 		});
 
 		it("should return TypeGuard<A>", () => {
 			const actual = isUnion(isA);
-			type Expected = TypeGuard<A>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<UnionTypeGuard<[A]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<A>>();
 		});
 
 		it("should return TypeGuard<A | B>", () => {
 			const actual = isUnion(isA, isB);
-			type Expected = TypeGuard<A | B>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<UnionTypeGuard<[A, B]>>();
+			expectTypeOf(actual).not.toEqualTypeOf<UnionTypeGuard<[B, A]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<A | B>>();
 		});
 
 		it("should return TypeGuard<A | B | C>", () => {
 			const actual = isUnion(isA, isB, isC);
-			type Expected = TypeGuard<A | B | C>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<UnionTypeGuard<[A, B, C]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<A | B | C>>();
 		});
 
 		it("should return TypeGuard<A | (B & C)>", () => {
 			const actual = isUnion(isA, isIntersection(isB, isC));
-			type Expected = TypeGuard<A | (B & C)>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<UnionTypeGuard<[A, B & C]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<A | (B & C)>>();
 		});
 
 		it("should return TypeGuard<A | B>", () => {
 			const actual = isUnion(isA, isB, isA);
-			type Expected = TypeGuard<A | B>;
 
-			expectTypeOf(actual).toEqualTypeOf<Expected>();
+			expectTypeOf(actual).toEqualTypeOf<UnionTypeGuard<[A, B, A]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<A | B>>();
 		});
 
 		it("should handle optional items", () => {
 			type Actual = ReturnType<typeof isUnion<[A, B?]>>;
-			type Expected = TypeGuard<A | B | undefined>;
 
-			expectTypeOf<Actual>().toEqualTypeOf<Expected>();
+			expectTypeOf<Actual>().toEqualTypeOf<UnionTypeGuard<[A, B?]>>();
+			expectTypeOf<Actual>().toExtend<TypeGuard<A | B | undefined>>();
+		});
+
+		it("should have .guards that is of type [TypeGuard<A>, TypeGuard<B>]", () => {
+			const actual = isUnion(isA, isB);
+
+			expectTypeOf(actual.guards).toEqualTypeOf<[TypeGuard<A>, TypeGuard<B>]>();
 		});
 	});
 
@@ -1068,51 +1548,51 @@ describe("is util types", () => {
 	});
 
 	test("isNumberArray should be TypeGuard<number[]>", () => {
-		expectTypeOf(isNumberArray).toEqualTypeOf<TypeGuard<number[]>>();
+		expectTypeOf(isNumberArray).toExtend<TypeGuard<number[]>>();
 	});
 
 	test("isStringArray should be TypeGuard<string[]>", () => {
-		expectTypeOf(isStringArray).toEqualTypeOf<TypeGuard<string[]>>();
+		expectTypeOf(isStringArray).toExtend<TypeGuard<string[]>>();
 	});
 
 	test("isBooleanArray should be TypeGuard<boolean[]>", () => {
-		expectTypeOf(isBooleanArray).toEqualTypeOf<TypeGuard<boolean[]>>();
+		expectTypeOf(isBooleanArray).toExtend<TypeGuard<boolean[]>>();
 	});
 
 	test("isDateArray should be TypeGuard<Date[]>", () => {
-		expectTypeOf(isDateArray).toEqualTypeOf<TypeGuard<Date[]>>();
+		expectTypeOf(isDateArray).toExtend<TypeGuard<Date[]>>();
 	});
 
 	test("isOptionalNumber should be TypeGuard<number | undefined>", () => {
-		expectTypeOf(isOptionalNumber).toEqualTypeOf<TypeGuard<number | undefined>>();
+		expectTypeOf(isOptionalNumber).toExtend<TypeGuard<number | undefined>>();
 	});
 
 	test("isOptionalString should be TypeGuard<string | undefined>", () => {
-		expectTypeOf(isOptionalString).toEqualTypeOf<TypeGuard<string | undefined>>();
+		expectTypeOf(isOptionalString).toExtend<TypeGuard<string | undefined>>();
 	});
 
 	test("isOptionalBoolean should be TypeGuard<boolean | undefined>", () => {
-		expectTypeOf(isOptionalBoolean).toEqualTypeOf<TypeGuard<boolean | undefined>>();
+		expectTypeOf(isOptionalBoolean).toExtend<TypeGuard<boolean | undefined>>();
 	});
 
 	test("isOptionalDate should be TypeGuard<Date | undefined>", () => {
-		expectTypeOf(isOptionalDate).toEqualTypeOf<TypeGuard<Date | undefined>>();
+		expectTypeOf(isOptionalDate).toExtend<TypeGuard<Date | undefined>>();
 	});
 
 	test("isMaybeNumber should be TypeGuard<number | null>", () => {
-		expectTypeOf(isMaybeNumber).toEqualTypeOf<TypeGuard<number | null>>();
+		expectTypeOf(isMaybeNumber).toExtend<TypeGuard<number | null>>();
 	});
 
 	test("isMaybeString should be TypeGuard<string | null>", () => {
-		expectTypeOf(isMaybeString).toEqualTypeOf<TypeGuard<string | null>>();
+		expectTypeOf(isMaybeString).toExtend<TypeGuard<string | null>>();
 	});
 
 	test("isMaybeBoolean should be TypeGuard<boolean | null>", () => {
-		expectTypeOf(isMaybeBoolean).toEqualTypeOf<TypeGuard<boolean | null>>();
+		expectTypeOf(isMaybeBoolean).toExtend<TypeGuard<boolean | null>>();
 	});
 
 	test("isMaybeDate should be TypeGuard<Date | null>", () => {
-		expectTypeOf(isMaybeDate).toEqualTypeOf<TypeGuard<Date | null>>();
+		expectTypeOf(isMaybeDate).toExtend<TypeGuard<Date | null>>();
 	});
 
 	test("isUnknown should be TypeGuard<unknown>", () => {

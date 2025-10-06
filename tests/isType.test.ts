@@ -1,6 +1,15 @@
-import { describe } from "vitest";
-import { isDate, isMaybe, isNumber, isType, isString, isOptionalString, isLiteral, isLazy, TypeGuard } from "../src";
+import { describe, expect, it } from "vitest";
+import { isDate, isMaybe, isNumber, isType, isString, isOptionalString, isLiteral, isLazy, TypeGuard, isBoolean, isIntersection } from "../src";
 import { describedGuardTests } from "./utils";
+
+describe("is type", () => {
+	it("should have .template that is equal to the given template", () => {
+		const template = { name: isString, age: isNumber };
+		const is = isType(template);
+
+		expect(is.template).toBe(template);
+	});
+});
 
 describe("is empty type", () => {
 	describedGuardTests({
@@ -319,9 +328,33 @@ describe("is type with all PropertyKey types", () => {
 		},
 	});
 
+	const omitted = Symbol("omitted");
+	type AllExtra = All & {
+		extra: string;
+		12: Date;
+		[omitted]: boolean;
+	};
+
+	const isAllExtra = isType<AllExtra>({
+		str: isNumber,
+		61: isNumber,
+		[symbol]: isNumber,
+		extra: isString,
+		12: isDate,
+		[omitted]: isBoolean,
+	});
+
 	describedGuardTests({
 		guard: isAll,
-		equivalentGuards: [isAllGet],
+		equivalentGuards: [
+			isAllGet,
+			isIntersection(isAll.pick("str", symbol), isType<Pick<All, 61>>({ 61: isNumber })),
+			isAllExtra.pick("str", 61, symbol),
+			isAll.pick("str", 61, symbol),
+			isIntersection(isAll.omit("str"), isType<Pick<All, "str">>({ str: isNumber })),
+			isAllExtra.omit("extra", 12, omitted),
+			isAll.omit(),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -382,8 +415,73 @@ describe("is type with all PropertyKey types", () => {
 			[{ str: 364634, 61: 24523, [symbol]: 2938523, 46: new Date }, true],
 			[{ str: 364634, 61: 24523, [symbol]: 2938523, [Symbol()]: 239483 }, true],
 			[{ str: 364634, 61: 24523, [symbol]: 2938523, [Symbol()]: () => {} }, true],
+			[{ str: 364634, 61: 24523, [symbol]: 2938523, extra: "", 12: new Date(), [omitted]: true }, true],
 			[{ get str() { return 364634 }, 61: 24523, [symbol]: 2938523 }, true],
 			[{ get str() { return 364634 }, get 61() { return 24523 }, get [symbol]() { return 2938523 } }, true],
+		],
+	});
+});
+
+describe("is type with .partial", () => {
+	const symbol = Symbol();
+
+	type All = {
+		str: number;
+		61: number;
+		[symbol]: number;
+	};
+
+	describedGuardTests({
+		guard: isType<All>({
+			str: isNumber,
+			61: isNumber,
+			[symbol]: isNumber,
+		}).partial(),
+		equivalentGuards: [
+			isType<Partial<All>>({
+				str: isNumber.optional(),
+				61: isNumber.optional(),
+				[symbol]: isNumber.optional(),
+			}),
+		],
+		testCases: [
+			[null, false],
+			[undefined, false],
+
+			[{ str: "not number" }, false],
+			[{ 61: "oops" }, false],
+			[{ [symbol]: [] }, false],
+			[{ str: 12, 61: "bad" }, false],
+			[{ str: "bad", [symbol]: 12 }, false],
+			[{ str: 12, 61: 24, [symbol]: null }, false],
+			[{ str: 12, 61: null, [symbol]: 42 }, false],
+			[{ get str() { return "bad" }, 61: 24 }, false],
+			[{ get 61() { return "wrong" }, [symbol]: 12 }, false],
+			[{ get [symbol]() { return "oops" }, str: 5 }, false],
+			[{ str: 1, 61: 2, [symbol]: 3, extra: "allowed" }, true],
+			[{ str: 1, 61: 2, [symbol]: "bad", extra: "still allowed" }, false],
+			[{ str: null }, false],
+
+			[true, true],
+			["{ str: 12 }", true],
+			[-0, true],
+			[[], true],
+			[{}, true],
+			[() => {}, true],
+			[{ extra: "value" }, true],
+
+			[{ str: 12 }, true],
+			[{ 61: 100 }, true],
+			[{ [symbol]: 42 }, true],
+			[{ str: 12, 61: 24 }, true],
+			[{ str: 12, [symbol]: 42 }, true],
+			[{ [symbol]: 42, 61: 24 }, true],
+			[{ str: 12, 61: 24, [symbol]: 42 }, true],
+			[{ get str() { return 12 }, 61: 24 }, true],
+			[{ get 61() { return 100 }, [symbol]: 12 }, true],
+			[{ get [symbol]() { return 42 }, str: 5 }, true],
+			[{ str: undefined }, true],
+			[{ str: -42 }, true],
 		],
 	});
 });
