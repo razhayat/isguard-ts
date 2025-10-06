@@ -7,7 +7,7 @@ class Dog extends Animal { woof: string = "woof" }
 class Cat extends Animal { meow: string = "meow" }
 
 describe("is instanceof", () => {
-	it("should have .constructor that is equal to the given constructor", () => {
+	it("should have .class that is equal to the given constructor", () => {
 		const isAnimal = isInstanceof(Animal);
 
 		expect(isAnimal.class).toBe(Animal);

@@ -4,9 +4,9 @@ import { isBoolean, isDate, isNever, isNumber, isString, isType, isUnion } from 
 
 describe("is union", () => {
 	it("should have .guards that contains all given guards in order", () => {
-		const isAAndB = isUnion(isNumber, isBoolean);
+		const is = isUnion(isNumber, isBoolean);
 
-		expect(isAAndB.guards).toEqual([isNumber, isBoolean]);
+		expect(is.guards).toEqual([isNumber, isBoolean]);
 	});
 });
 

@@ -13,5 +13,5 @@ export type TypeTypeGuard<T extends object> = TypeGuard<IsTypeGuarded<T>> & {
 };
 
 export const isType = <T extends object>(template: TypeGuardTemplate<T>): TypeTypeGuard<T> => {
-	return new TypeTypeGuardClass(template);
+	return new TypeTypeGuardClass<T>(template);
 };

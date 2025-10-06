@@ -628,7 +628,7 @@ describe("isInstanceof", () => {
 			expectTypeOf(actual).toExtend<TypeGuard<Example>>();
 		});
 
-		it("should have .constructor that is of type TypeGuard<typeof Example>", () => {
+		it("should have .class that is of type TypeGuard<typeof Example>", () => {
 			class Example {}
 			const actual = isInstanceof(Example);
 
