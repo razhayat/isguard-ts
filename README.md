@@ -13,21 +13,21 @@ npm install isguard-ts
 ## Table of Contents
 + [TypeGuard](#type-guard)
 + [isType](#is-type)
-+ [isTuple](#is-tuple)
++ [isOptional](#is-optional)
++ [isMaybe](#is-maybe)
++ [isArray](#is-array)
++ [isLiteral](#is-literal)
 + [isUnion](#is-union)
 + [isIntersection](#is-intersection)
-+ [isArray](#is-array)
-+ [isEnum](#is-enum)
-+ [isSet](#is-set)
-+ [isMap](#is-map)
 + [isRecord](#is-record)
 + [isPartialRecord](#is-partial-record)
 + [isIndexRecord](#is-index-record)
 + [isLazy](#is-lazy)
++ [isTuple](#is-tuple)
++ [isEnum](#is-enum)
++ [isSet](#is-set)
++ [isMap](#is-map)
 + [isInstanceof](#is-instanceof)
-+ [isLiteral](#is-literal)
-+ [isOptional](#is-optional)
-+ [isMaybe](#is-maybe)
 + [isRefine](#is-refine)
 + [and more](#all-utility)
 
@@ -80,24 +80,48 @@ const isValueHolder = <T>(isValue: TypeGuard<T>): TypeGuard<ValueHolder<T>> => {
 
 const isNumberHolder: TypeGuard<ValueHolder<number>> = isValueHolder(isNumber);
 ```
-*<span id="is-tuple" ></span>*
-### `isTuple`
-Helps you create type guards for tuples
 
-> ***Best Practice:***
-> Pass the generic type argument into `isTuple` <br/>
-> Otherwise optional fields might have an unexpected behavior
-
+*<span id="is-optional" ></span>*
+### `isOptional`
+Helps you create type guards for optional types
 ```typescript
-import { isTuple, isNumber, isString } from "isguard-ts";
+import { isOptional, isNumber } from "isguard-ts";
 
-type Row = [number, string?];
+const isNumberOrUndefined = isOptional(isNumber);
+```
 
-const isRow = isTuple<Row>([isNumber, isString.optional()]);
+*<span id="is-maybe" ></span>*
+### `isMaybe`
+Helps you create type guards for nullable types
+```typescript
+import { isMaybe, isNumber } from "isguard-ts";
 
-isRow([6, "Hello"]); // true
-isRow([6]); // true
-isRow(["Hello", "Bye"]); // false
+const isNumberOrNul = isMaybe(isNumber);
+```
+
+*<span id="is-array" ></span>*
+### `isArray`
+Helps you create type guards for arrays
+```typescript
+import { isType, isNumber, isArray } from "isguard-ts";
+
+type Test = {
+	a: number;
+};
+
+const isTest = isType<Test>({ a: isNumber });
+const isTestArray = isArray(isTest);
+```
+
+*<span id="is-literal" ></span>*
+### `isLiteral`
+Helps you create type guards for literals
+```typescript
+import { isLiteral } from "isguard-ts";
+
+const isHello = isLiteral("Hello");
+const is12 = isLiteral(12);
+const isHelloOr12 = isLiteral("Hello", 12);
 ```
 
 *<span id="is-union" ></span>*
@@ -144,58 +168,6 @@ const isA = isType<A>({ a: isNumber });
 const isB = isType<B>({ b: isString });
 
 const isC: TypeGuard<C> = isIntersection(isA, isB);
-```
-
-*<span id="is-array" ></span>*
-### `isArray`
-Helps you create type guards for arrays
-```typescript
-import { isType, isNumber, isArray } from "isguard-ts";
-
-type Test = {
-	a: number;
-};
-
-const isTest = isType<Test>({ a: isNumber });
-const isTestArray = isArray(isTest);
-```
-
-*<span id="is-enum" ></span>*
-### `isEnum`
-Helps you create type guards for enums
-```typescript
-import { isEnum } from "isguard-ts";
-
-enum Direction {
-	up = 0,
-	down = 1,
-	left = 2,
-	right = 3,
-}
-
-const isDirection = isEnum(Direction);
-
-isDirection(Direction.up); // true
-isDirection(2); // true
-isDirection("hello"); // false
-```
-
-*<span id="is-set" ></span>*
-### `isSet`
-Helps you create type guards for sets
-```typescript
-import { isSet, isNumber } from "isguard-ts";
-
-const isNumberSet = isSet(isNumber);
-```
-
-*<span id="is-map" ></span>*
-### `isMap`
-Helps you create type guards for maps
-```typescript
-import { isMap, isString, isBoolean } from "isguard-ts";
-
-const isStringBooleanMap = isMap(isString, isBoolean);
 ```
 
 *<span id="is-record" ></span>*
@@ -289,6 +261,64 @@ const isJson: TypeGuard<Json> = isUnion(
 );
 ```
 
+*<span id="is-tuple" ></span>*
+### `isTuple`
+Helps you create type guards for tuples
+
+> ***Best Practice:***
+> Pass the generic type argument into `isTuple` <br/>
+> Otherwise optional fields might have an unexpected behavior
+
+```typescript
+import { isTuple, isNumber, isString } from "isguard-ts";
+
+type Row = [number, string?];
+
+const isRow = isTuple<Row>([isNumber, isString.optional()]);
+
+isRow([6, "Hello"]); // true
+isRow([6]); // true
+isRow(["Hello", "Bye"]); // false
+```
+
+*<span id="is-enum" ></span>*
+### `isEnum`
+Helps you create type guards for enums
+```typescript
+import { isEnum } from "isguard-ts";
+
+enum Direction {
+	up = 0,
+	down = 1,
+	left = 2,
+	right = 3,
+}
+
+const isDirection = isEnum(Direction);
+
+isDirection(Direction.up); // true
+isDirection(2); // true
+isDirection("hello"); // false
+```
+
+*<span id="is-set" ></span>*
+### `isSet`
+Helps you create type guards for sets
+```typescript
+import { isSet, isNumber } from "isguard-ts";
+
+const isNumberSet = isSet(isNumber);
+```
+
+*<span id="is-map" ></span>*
+### `isMap`
+Helps you create type guards for maps
+```typescript
+import { isMap, isString, isBoolean } from "isguard-ts";
+
+const isStringBooleanMap = isMap(isString, isBoolean);
+```
+
 *<span id="is-instanceof" ></span>*
 ### `isInstanceof`
 Helps you create type guards for classes
@@ -300,35 +330,6 @@ class Dog extends Animal { }
 
 const isAnimal = isInstanceof(Animal);
 const isDog = isInstanceof(Dog);
-```
-
-*<span id="is-literal" ></span>*
-### `isLiteral`
-Helps you create type guards for literals
-```typescript
-import { isLiteral } from "isguard-ts";
-
-const isHello = isLiteral("Hello");
-const is12 = isLiteral(12);
-const isHelloOr12 = isLiteral("Hello", 12);
-```
-
-*<span id="is-optional" ></span>*
-### `isOptional`
-Helps you create type guards for optional types
-```typescript
-import { isOptional, isNumber } from "isguard-ts";
-
-const isNumberOrUndefined = isOptional(isNumber);
-```
-
-*<span id="is-maybe" ></span>*
-### `isMaybe`
-Helps you create type guards for nullable types
-```typescript
-import { isMaybe, isNumber } from "isguard-ts";
-
-const isNumberOrNul = isMaybe(isNumber);
 ```
 
 *<span id="is-refine" ></span>*
