@@ -12,7 +12,6 @@ npm install isguard-ts
 
 ## Some of our built-in types
 + [TypeGuard](#type-guard)
-+ [Guarded](#guarded)
 
 ## Some of our built-in helper functions
 + [isType](#is-type)
@@ -47,15 +46,6 @@ npm install isguard-ts
 The most basic type - represents a type guard of `T`
 ```typescript
 type TypeGuard<T> = (value: unknown) => value is T;
-```
-
-*<span id="guarded" ></span>*
-### `Guarded<T>`
-Extracts `T` out of `TypeGuard<T>`
-```typescript
-import { Guarded, TypeGuard } from "isguard-ts";
-
-type Extracted = Guarded<TypeGuard<number>>; // number
 ```
 
 ## Code Examples
