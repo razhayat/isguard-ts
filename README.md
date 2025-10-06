@@ -1,6 +1,9 @@
 # isguard-ts
-A powerful `typescript` library that helps you build type guards.<br/>
-`isguard-ts` utilizes the `typescript` compiler to ensure the type guards are type safe and fast to create.
+
+A powerful typescript library that helps you build type guards quickly while maintaining type safety.
+
+`isguard-ts` utilizes the typescript compiler to ensure that its type guards are aligned with the guarded type.<br/>
+For example, when making a change to your type, `isguard-ts` will inform you to update your type guard as well.
 
 ## Some of our built-in types
 + [TypeGuard](#type-guard)
