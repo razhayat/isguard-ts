@@ -41,7 +41,7 @@ type TypeGuard<T> = (value: unknown) => value is T;
 ```
 
 *<span id="is-type" ></span>*
-### `isType<T>(template): TypeGuard<T>`
+### `isType`
 Helps you create type guards for types and interfaces
 
 > ***Best Practice:***
@@ -81,7 +81,7 @@ const isValueHolder = <T>(isValue: TypeGuard<T>): TypeGuard<ValueHolder<T>> => {
 const isNumberHolder: TypeGuard<ValueHolder<number>> = isValueHolder(isNumber);
 ```
 *<span id="is-tuple" ></span>*
-### `isTuple<T>(template): TypeGuard<T>`
+### `isTuple`
 Helps you create type guards for tuples
 
 > ***Best Practice:***
@@ -101,7 +101,7 @@ isRow(["Hello", "Bye"]); // false
 ```
 
 *<span id="is-union" ></span>*
-### `isUnion<[T1, T2, ...]>(...guards): TypeGuard<T1 | T2 | ...>`
+### `isUnion`
 Helps you create type guards for unions
 
 > ***Best Practice:***
@@ -126,7 +126,7 @@ isC({ a: new Date() }); // false
 ```
 
 *<span id="is-intersection" ></span>*
-### `isIntersection<[T1, T2, ...]>(...guards): TypeGuard<T1 & T2 & ...>`
+### `isIntersection`
 Helps you create type guards for intersections
 
 > ***Best Practice:***
@@ -147,7 +147,7 @@ const isC: TypeGuard<C> = isIntersection(isA, isB);
 ```
 
 *<span id="is-array" ></span>*
-### `isArray<T>(guard: TypeGuard<T>): TypeGuard<T[]>`
+### `isArray`
 Helps you create type guards for arrays
 ```typescript
 import { isType, isNumber, isArray } from "isguard-ts";
@@ -161,7 +161,7 @@ const isTestArray = isArray(isTest);
 ```
 
 *<span id="is-enum" ></span>*
-### `isEnum<T>(enumObj: T): TypeGuard<T[keyof T]>`
+### `isEnum`
 Helps you create type guards for enums
 ```typescript
 import { isEnum } from "isguard-ts";
@@ -181,7 +181,7 @@ isDirection("hello"); // false
 ```
 
 *<span id="is-set" ></span>*
-### `isSet<T>(guard: TypeGuard<T>): TypeGuard<Set<T>>`
+### `isSet`
 Helps you create type guards for sets
 ```typescript
 import { isSet, isNumber } from "isguard-ts";
@@ -190,7 +190,7 @@ const isNumberSet = isSet(isNumber);
 ```
 
 *<span id="is-map" ></span>*
-### `isMap<K, V>(isKey: TypeGuard<K>, isValue: TypeGuard<V>): TypeGuard<Map<K, V>>`
+### `isMap`
 Helps you create type guards for maps
 ```typescript
 import { isMap, isString, isBoolean } from "isguard-ts";
@@ -199,7 +199,7 @@ const isStringBooleanMap = isMap(isString, isBoolean);
 ```
 
 *<span id="is-record" ></span>*
-### `isRecord<K, V>(keys: K, isValue: TypeGuard<V>): TypeGuard<Record<K[number], V>>`
+### `isRecord`
 Helps you create type guards for records
 ```typescript
 import { isRecord, isNumber } from "isguard-ts";
@@ -212,7 +212,7 @@ const isTimeUnitToMillisecond = isRecord(timeUnits, isNumber);
 ```
 
 *<span id="is-partial-record" ></span>*
-### `isPartialRecord<K, V>(keys: K, isValue: TypeGuard<V>): TypeGuard<Partial<Record<K[number], V>>>`
+### `isPartialRecord`
 Works just like `isRecord` but allows for `undefined` values
 ```typescript
 import { isPartialRecord, isNumber } from "isguard-ts";
@@ -225,7 +225,7 @@ const isPartialTimeUnitToMillisecond = isPartialRecord(timeUnits, isNumber);
 ```
 
 *<span id="is-index-record" ></span>*
-### `isIndexRecord<V>(isValue: TypeGuard<V>): TypeGuard<Record<PropertyKey, V>>`
+### `isIndexRecord`
 Works just like `isRecord` but checks only the `values` and not the `keys`
 ```typescript
 import { isIndexRecord, isNumber } from "isguard-ts";
@@ -234,7 +234,7 @@ const isNumberRecord = isIndexRecord(isNumber);
 ```
 
 *<span id="is-lazy" ></span>*
-### `isLazy<T>(generator: () => TypeGuard<T>): TypeGuard<T>`
+### `isLazy`
 Helps you lazy load a type guard.
 Useful for:
 + Creating type guards for recursive types
@@ -290,7 +290,7 @@ const isJson: TypeGuard<Json> = isUnion(
 ```
 
 *<span id="is-instanceof" ></span>*
-### `isInstanceof<T>(constructor): TypeGuard<T>`
+### `isInstanceof`
 Helps you create type guards for classes
 ```typescript
 import { isInstanceof } from "isguard-ts";
@@ -303,7 +303,7 @@ const isDog = isInstanceof(Dog);
 ```
 
 *<span id="is-literal" ></span>*
-### `isLiteral<T extends Literal[]>(...literals: T): TypeGuard<T[number]>`
+### `isLiteral`
 Helps you create type guards for literals
 ```typescript
 import { isLiteral } from "isguard-ts";
@@ -314,7 +314,7 @@ const isHelloOr12 = isLiteral("Hello", 12);
 ```
 
 *<span id="is-optional" ></span>*
-### `isOptional<T>(guard: TypeGuard<T>): TypeGuard<T | undefined>`
+### `isOptional`
 Helps you create type guards for optional types
 ```typescript
 import { isOptional, isNumber } from "isguard-ts";
@@ -323,7 +323,7 @@ const isNumberOrUndefined = isOptional(isNumber);
 ```
 
 *<span id="is-maybe" ></span>*
-### `isMaybe<T>(guard: TypeGuard<T>): TypeGuard<T | null>`
+### `isMaybe`
 Helps you create type guards for nullable types
 ```typescript
 import { isMaybe, isNumber } from "isguard-ts";
@@ -332,7 +332,7 @@ const isNumberOrNul = isMaybe(isNumber);
 ```
 
 *<span id="is-refine" ></span>*
-### `isRefine<T, R>(guard: TypeGuard<T>, refinement: (value: T) => value is R): TypeGuard<R>`
+### `isRefine`
 Helps you refine existing type guards. Can be used for:
 + Branded types (like Email, PositiveNumber and more)
 + Template literals (like \`Bye ${string}\`)
