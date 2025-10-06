@@ -30,8 +30,9 @@ npm install isguard-ts
 + [isInstanceof](#is-instanceof)
 + [isRefine](#is-refine)
 + [utility type guards](#all-utility)
++ [generic types](#generic-types)
 
-## Usage
+## Basic Usage
 
 *<span id="type-guard" ></span>*
 ### `TypeGuard<T>`
@@ -62,23 +63,6 @@ const isPerson = isType<Person>({
 });
 
 isPerson({ name: "Hello", age: 6 }); // true
-```
-
-For generic types you would need to create your own `TypeGuard` generator
-```typescript
-import { TypeGuard, isType, isNumber } from "isguard-ts";
-
-type ValueHolder<T> = {
-	value: T;
-};
-
-const isValueHolder = <T>(isValue: TypeGuard<T>) => {
-	return isType<ValueHolder<T>>({
-		value: isValue,
-	});
-};
-
-const isNumberHolder = isValueHolder(isNumber);
 ```
 
 *<span id="is-optional" ></span>*
@@ -383,4 +367,25 @@ const isFalse: TypeGuard<false>;
 
 const isUnknown: TypeGuard<unknown>;
 const isNever: TypeGuard<never>;
+```
+
+## Advanced Usage
+
+*<span id="generic-types" ></span>*
+### Generic Types
+When creating type guards for generic types, you need to create your own `TypeGuard` generator
+```typescript
+import { TypeGuard, isType, isNumber } from "isguard-ts";
+
+type ValueHolder<T> = {
+	value: T;
+};
+
+const isValueHolder = <T>(isValue: TypeGuard<T>) => {
+	return isType<ValueHolder<T>>({
+		value: isValue,
+	});
+};
+
+const isNumberHolder = isValueHolder(isNumber);
 ```
