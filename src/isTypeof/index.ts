@@ -1,5 +1,5 @@
-import { TypeGuard } from "./types";
-import { createTypeGuard } from "./internal";
+import { TypeGuard } from "../types";
+import { TypeofTypeGuardClass } from "./internal";
 
 export type TypeByTypeOfResult = {
 	string: string;
@@ -19,10 +19,5 @@ export type TypeofTypeGuard<T extends TypeofResult> = TypeGuard<TypeByTypeOfResu
 };
 
 export const isTypeof = <T extends TypeofResult>(result: T): TypeofTypeGuard<T> => {
-	return createTypeGuard<TypeofTypeGuard<T>>({
-		func: value => {
-			return typeof value === result;
-		},
-		result: result,
-	});
+	return new TypeofTypeGuardClass<T>(result);
 };
