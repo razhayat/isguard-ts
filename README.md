@@ -29,7 +29,7 @@ npm install isguard-ts
 + [isMap](#is-map)
 + [isInstanceof](#is-instanceof)
 + [isRefine](#is-refine)
-+ [and more](#all-utility)
++ [utility type guards](#all-utility)
 
 ## Usage
 
@@ -353,7 +353,7 @@ const isFarewell = isRefine(isString, (value: string): value is Farewell => {
 ```
 
 *<span id="all-utility" ></span>*
-## All utility type guards
+### Built-in Utility Type Guards
 ```typescript
 const isNumber: TypeGuard<number>;
 const isBigint: TypeGuard<bigint>;
