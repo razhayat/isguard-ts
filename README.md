@@ -72,13 +72,13 @@ type ValueHolder<T> = {
 	value: T;
 };
 
-const isValueHolder = <T>(isValue: TypeGuard<T>): TypeGuard<ValueHolder<T>> => {
+const isValueHolder = <T>(isValue: TypeGuard<T>) => {
 	return isType<ValueHolder<T>>({
 		value: isValue,
 	});
 };
 
-const isNumberHolder: TypeGuard<ValueHolder<number>> = isValueHolder(isNumber);
+const isNumberHolder = isValueHolder(isNumber);
 ```
 
 *<span id="is-optional" ></span>*
