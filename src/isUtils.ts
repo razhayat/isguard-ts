@@ -4,7 +4,7 @@ import { isRefine } from "./isRefine";
 import { isTypeof } from "./isTypeof";
 import { isUnion } from "./isUnion";
 import { TypeGuard } from "./types";
-import { createTypeGuard } from "./internal";
+import { TypeGuardClass } from "./internal";
 
 export const isNull: TypeGuard<null> = isLiteral(null);
 export const isUndefined: TypeGuard<undefined> = isLiteral(void 0);
@@ -32,13 +32,8 @@ export const isSyntaxError: TypeGuard<SyntaxError> = isInstanceof(SyntaxError);
 export const isTypeError: TypeGuard<TypeError> = isInstanceof(TypeError);
 export const isURIError: TypeGuard<URIError> = isInstanceof(URIError);
 
-export const isUnknown: TypeGuard<unknown> = createTypeGuard<TypeGuard<unknown>>({
-	func: () => true,
-});
-
-export const isNever: TypeGuard<never> = createTypeGuard<TypeGuard<never>>({
-	func: () => false,
-});
+export const isUnknown: TypeGuard<unknown> = new TypeGuardClass<unknown>(() => true);
+export const isNever: TypeGuard<never> = new TypeGuardClass<never>(() => false);
 
 /**
  * @deprecated use `isNumber.array()` instead
