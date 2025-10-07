@@ -12,6 +12,7 @@ npm install isguard-ts
 
 ## Table of Contents
 + [TypeGuard](#type-guard)
+*<p></p>*
 + [isType](#is-type)
 + [isOptional](#is-optional)
 + [isMaybe](#is-maybe)
@@ -29,6 +30,7 @@ npm install isguard-ts
 + [isMap](#is-map)
 + [isInstanceof](#is-instanceof)
 + [isRefine](#is-refine)
+*<p></p>*
 + [utility type guards](#all-utility)
 + [generic types](#generic-types)
 + [recursive types](#recursive-types)
