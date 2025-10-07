@@ -30,12 +30,15 @@ describe("is animal", () => {
 			[{ __proto__: Animal.prototype }, true],
 			[new Animal, true],
 			[new Animal(), true],
+			[Object.create(Animal.prototype), true],
 			[{ __proto__: new Dog }, true],
 			[new Dog, true],
 			[new Dog(), true],
+			[Object.create(Dog.prototype), true],
 			[{ __proto__: { __proto__: new Cat() } }, true],
 			[new Cat, true],
 			[new Cat(), true],
+			[Object.create(Cat.prototype), true],
 		],
 	});
 });
