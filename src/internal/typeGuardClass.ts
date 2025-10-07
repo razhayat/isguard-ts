@@ -13,35 +13,35 @@ export class TypeGuardClass<T> extends Function implements TypeGuard<T> {
 		return Object.setPrototypeOf(func, new.target.prototype);
 	}
 
-	optional(): OptionalTypeGuard<T> {
+	public optional(): OptionalTypeGuard<T> {
 		return isOptional(this);
 	}
 
-	maybe(): MaybeTypeGuard<T> {
+	public maybe(): MaybeTypeGuard<T> {
 		return isMaybe(this);
 	}
 
-	and<I extends readonly unknown[]>(...guards: TypeGuardTemplate<I, any>): IntersectionTypeGuard<[T, ...I]> {
+	public and<I extends readonly unknown[]>(...guards: TypeGuardTemplate<I, any>): IntersectionTypeGuard<[T, ...I]> {
 		return isIntersection<[T, ...I]>(this, ...guards);
 	}
 
-	or<I extends readonly unknown[]>(...guards: TypeGuardTemplate<I, any>): UnionTypeGuard<[T, ...I]> {
+	public or<I extends readonly unknown[]>(...guards: TypeGuardTemplate<I, any>): UnionTypeGuard<[T, ...I]> {
 		return isUnion<[T, ...I]>(this, ...guards);
 	}
 
-	array(): ArrayTypeGuard<T> {
+	public array(): ArrayTypeGuard<T> {
 		return isArray(this);
 	}
 
-	set(): SetTypeGuard<T> {
+	public set(): SetTypeGuard<T> {
 		return isSet(this);
 	}
 
-	indexRecord(): IndexRecordTypeGuard<T> {
+	public indexRecord(): IndexRecordTypeGuard<T> {
 		return isIndexRecord(this);
 	}
 
-	refine<R extends T>(refinement: (value: T) => value is R): RefineTypeGuard<T, R> {
+	public refine<R extends T>(refinement: (value: T) => value is R): RefineTypeGuard<T, R> {
 		return isRefine(this, refinement);
 	}
 }
