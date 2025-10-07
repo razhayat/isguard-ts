@@ -138,10 +138,21 @@ describe("is tree type", () => {
 		value: isNumber,
 		left: isLazy(() => isMaybe(isTree)),
 		right: isLazy(() => isMaybe(isTree)),
-	})
+	});
+
+	const isTreeWithGet: TypeGuard<Tree> = isType<Tree>({
+		value: isNumber,
+		get left() {
+			return isTreeWithGet.maybe();
+		},
+		get right() {
+			return isTreeWithGet.maybe()
+		},
+	});
 
 	describedGuardTests({
 		guard: isTree,
+		equivalentGuards: [isTreeWithGet],
 		testCases: [
 			[null, false],
 			[undefined, false],
