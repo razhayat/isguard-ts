@@ -90,7 +90,19 @@ Helps you create type guards for literals
 ```typescript
 const isHello = isLiteral("Hello");
 const is12 = isLiteral(12);
-const isHelloOr12 = isLiteral("Hello", 12);
+```
+
+`isLiteral` can receive multiple values
+
+> ***Best Practice:***
+> Use the `satisfies` keyword on the result of `isLiteral` when passing multiple values <br/>
+> This ensures the result is of the expected type
+
+```typescript
+const directions = ["up", "down", "left", "right"] as const;
+type Direction = (typeof directions)[number];
+
+const isDirection = isLiteral(...directions) satisfies TypeGuard<Direction>;
 ```
 
 *<span id="is-union" ></span>*
