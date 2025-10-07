@@ -1,7 +1,7 @@
 import { TypeGuard } from "../types";
 import { EnumTypeGuardClass } from "./internal";
 
-export type Enum = Record<string | number, string | number>;
+export type Enum = Readonly<Record<string, string | number>>;
 
 export type EnumTypeGuard<T extends Enum> = TypeGuard<T[keyof T]> & {
 	enum: T;
