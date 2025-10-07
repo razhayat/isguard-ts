@@ -18,8 +18,10 @@ export class EnumTypeGuardClass<T extends Enum> extends TypeGuardClass<T[keyof T
 	private getEnumValues() {
 		const map = new Map(Object.entries(this.enum));
 
-		Array.from(map.values()).forEach(value => {
-			typeof value === "number" && map.delete(value.toString());
+		Array.from(map.entries()).forEach(([key, value]) => {
+			if (typeof value === "number" && map.get(value.toString()) === key) {
+				map.delete(value.toString());
+			}
 		});
 
 		return Array.from(map.values());
