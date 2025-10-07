@@ -1,8 +1,24 @@
-import { describe } from "vitest";
+import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isBoolean, isIndexRecord, isLiteral, isNumber, isPartialRecord, isRecord, isString } from "../src";
+import { isBoolean, isDate, isIndexRecord, isLiteral, isNumber, isPartialRecord, isRecord, isString } from "../src";
 
 describe("is record", () => {
+	it("should have .keys that is equal to the given keys", () => {
+		const keys = ["a", "b", "c"] as const;
+		const is = isRecord(keys, isNumber);
+
+		expect(is.keys).toBe(keys);
+	});
+
+	it("should have .isValue that is equal to the given guard", () => {
+		const keys = ["a", "b", "c"] as const;
+		const is = isRecord(keys, isNumber);
+
+		expect(is.isValue).toBe(isNumber);
+	});
+});
+
+describe("is number record", () => {
 	describedGuardTests({
 		guard: isRecord(["num1", "num2", "num3"], isNumber),
 		testCases: [
@@ -28,8 +44,16 @@ describe("is record", () => {
 });
 
 describe("is Record<'a' | 'b', 'c', 'd'> record", () => {
+
+	const extraGuard = isRecord(["a", "b", "c"], isLiteral("c", "d"));
+	const guard = isRecord(["a", "b"], isLiteral("c", "d"));
+
 	describedGuardTests({
-		guard: isRecord(["a", "b"], isLiteral("c", "d")),
+		guard: guard,
+		equivalentGuards: [
+			extraGuard.pick("a", "b", "a"),
+			extraGuard.omit("c", "c"),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -118,8 +142,32 @@ describe("is record with symbol keys", () => {
 });
 
 describe("is partial record", () => {
+	it("should have .keys that is equal to the given keys", () => {
+		const keys = ["a", "b", "c"] as const;
+		const is = isPartialRecord(keys, isDate);
+
+		expect(is.keys).toBe(keys);
+	});
+
+	it("should have .isValue that is equal to the given guard", () => {
+		const keys = ["a", "b", "c"] as const;
+		const is = isPartialRecord(keys, isDate);
+
+		expect(is.isValue).toBe(isDate);
+	});
+});
+
+describe("is partial string record", () => {
+
+	const extraGuard = isPartialRecord(["firstName", "secondName", "thirdName"], isString);
+	const guard = isPartialRecord(["firstName", "secondName"], isString);
+
 	describedGuardTests({
-		guard: isPartialRecord(["firstName", "secondName"], isString),
+		guard: guard,
+		equivalentGuards: [
+			extraGuard.pick("firstName", "secondName", "secondName"),
+			extraGuard.omit("thirdName", "thirdName"),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -139,9 +187,56 @@ describe("is partial record", () => {
 	});
 });
 
-describe("is indexRecord", () => {
+describe("is partial record with symbol keys", () => {
+	const symbol = Symbol();
+
+	describedGuardTests({
+		guard: isPartialRecord([symbol], isString),
+		testCases: [
+			[undefined, false],
+			[null, false],
+
+			[{ [symbol]: 123 }, false],
+			[{ [symbol]: true }, false],
+			[{ [symbol]: null }, false],
+			[{ [symbol]: {} }, false],
+
+			[{}, true],
+			[[], true],
+			[new Date(), true],
+			["just a normal string", true],
+			[3131, true],
+			[2343n, true],
+			[true, true],
+			[symbol, true],
+			[() => { }, true],
+
+			[{ [Symbol("another symbol")]: 2423 }, true],
+			[{ [Symbol()]: 2423 }, true],
+			[{ [symbol]: "323532" }, true],
+			[{ [symbol]: "hello" }, true],
+			[{ [symbol]: "" }, true],
+			[{ [symbol]: String(42) }, true],
+			[{ [symbol]: undefined }, true],
+			[{ [symbol]: "test", extra: 123 }, true],
+			[{ extra: 123 }, true],
+			[Object.create({ [symbol]: "inherited" }), true],
+		],
+	});
+});
+
+describe("is index record", () => {
+	it("should have .isValue that is equal to the given value", () => {
+		const is = isIndexRecord(isDate);
+
+		expect(is.isValue).toBe(isDate);
+	});
+});
+
+describe("is number index record", () => {
 	describedGuardTests({
 		guard: isIndexRecord(isNumber),
+		equivalentGuards: [isNumber.indexRecord()],
 		testCases: [
 			[null, false],
 			[undefined, false],

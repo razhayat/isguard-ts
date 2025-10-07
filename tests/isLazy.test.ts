@@ -6,9 +6,24 @@ describe("is lazy", () => {
 	it("should not call the generator when called", () => {
 		const generator = vi.fn();
 
-		isLazy(generator);
+		const guard = isLazy(generator);
+		guard.optional();
+		guard.maybe();
+		guard.and();
+		guard.or();
+		guard.array();
+		guard.set();
+		guard.indexRecord();
+		guard.refine(isNumber);
 
 		expect(generator).not.toHaveBeenCalled();
+	});
+
+	it("should have .unbox that should return the unboxed guard", () => {
+		const generator = () => isNumber;
+		const isLazyNumber = isLazy(generator);
+
+		expect(isLazyNumber.unbox()).toBe(isNumber);
 	});
 });
 
@@ -20,7 +35,7 @@ describe("is recursive type", () => {
 
 	const isNode: TypeGuard<Node> = isType<Node>({
 		value: isNumber,
-		next: isLazy(() => isOptional(isNode)),
+		next: isLazy(() => isNode).optional(),
 	});
 
 	describedGuardTests({
@@ -123,7 +138,7 @@ describe("is recursive union", () => {
 
 describe("is recursive index record", () => {
 	type RecursiveIndexRecord = {
-		[key: string]: RecursiveIndexRecord;
+		[key: PropertyKey]: RecursiveIndexRecord;
 	};
 
 	const isRecursiveIndexRecord: TypeGuard<RecursiveIndexRecord> = isLazy(() => isIndexRecord(

@@ -1,10 +1,19 @@
-import { describe } from "vitest";
+import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isBoolean, isDate, isNumber, isString, isType, isUnion } from "../src";
+import { isBoolean, isDate, isNever, isNumber, isString, isType, isUnion } from "../src";
+
+describe("is union", () => {
+	it("should have .guards that contains all given guards in order", () => {
+		const is = isUnion(isNumber, isBoolean);
+
+		expect(is.guards).toEqual([isNumber, isBoolean]);
+	});
+});
 
 describe("is empty union (never)", () => {
 	describedGuardTests({
 		guard: isUnion(),
+		equivalentGuards: [isNever],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -27,6 +36,10 @@ describe("is empty union (never)", () => {
 describe("is Date | number | string | boolean", () => {
 	describedGuardTests({
 		guard: isUnion(isDate, isNumber, isString, isBoolean),
+		equivalentGuards: [
+			isUnion(isNumber, isBoolean, isDate, isString),
+			isBoolean.or(isString, isDate, isNumber),
+		],
 		testCases: [
 			[new Date(), true],
 			[0, true],
@@ -58,6 +71,11 @@ describe("is { a: number; } | { b: string; }", () => {
 
 	describedGuardTests({
 		guard: isUnion(isA, isB),
+		equivalentGuards: [
+			isUnion(isB, isA),
+			isUnion(isB, isA, isA),
+			isB.or(isA),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],

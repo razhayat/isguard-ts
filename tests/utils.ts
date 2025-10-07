@@ -3,7 +3,8 @@ import { isBigint, isBoolean, isFunction, isNumber, isString, isSymbol, isUndefi
 
 export type DescribedGuardTestsProps<T> = {
 	guard: TypeGuard<T>;
-	description?: (input: string, result: boolean) => string;
+	equivalentGuards?: TypeGuard<NoInfer<T>>[];
+	description?: (input: string, result: boolean, guardIndex: number) => string;
 	testCases: [input: unknown, result: boolean, stringifyInput?: string | ((input: unknown) => string)][];
 };
 
@@ -11,8 +12,8 @@ export const guardTest = <T>(input: unknown, guard: TypeGuard<T>, result: boolea
 	return () => expect(guard(input)).toBe(result);
 };
 
-export const defaultDescription = (input: string, result: boolean) => {
-	return `should return ${result} for ${input}`;
+export const defaultDescription = (input: string, result: boolean, guardIndex: number) => {
+	return `guard #${guardIndex + 1} should return ${result} for ${input}`;
 };
 
 export const objectStringify = (input: object) => {
@@ -67,12 +68,18 @@ export const defaultStringifyInput = (input: unknown): string => {
 
 export const describedGuardTests = <T>({
 	guard,
+	equivalentGuards = [],
 	description = defaultDescription,
 	testCases,
 }: DescribedGuardTestsProps<T>) => {
+	const guards = [guard, ...equivalentGuards];
+
 	testCases.forEach(testCase => {
 		const [input, result, testCaseStringifyInput = defaultStringifyInput] = testCase;
 		const inputStr = isString(testCaseStringifyInput) ? testCaseStringifyInput : testCaseStringifyInput(input);
-		it(description(inputStr, result), guardTest(input, guard, result));
+
+		guards.forEach((guard, guardIndex) => {
+			it(description(inputStr, result, guardIndex), guardTest(input, guard, result));
+		});
 	});
 };
