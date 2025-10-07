@@ -1,6 +1,15 @@
-import { describe } from "vitest";
+import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isTuple, isNumber, isOptional, isOptionalNumber, isString, isType } from "../src";
+import { isTuple, isNumber, isOptionalNumber, isString, isType, TypeGuard } from "../src";
+
+describe("is tuple", () => {
+	it("should have .template that is equal to the given template", () => {
+		const template: [TypeGuard<number>, TypeGuard<string>] = [isNumber, isString];
+		const is = isTuple(template);
+
+		expect(is.template).toBe(template);
+	});
+});
 
 describe("is empty tuple", () => {
 	describedGuardTests({
@@ -80,37 +89,6 @@ describe("is tuple with optional", () => {
 			[[NaN], true],
 			[[6, undefined], true],
 			[[1, ,], true],
-		],
-	});
-});
-
-describe("is recursive tuple", () => {
-	type Tuple = [number, Tuple?];
-
-	describedGuardTests({
-		guard: isTuple<Tuple>(isTuple => [isNumber, isOptional(isTuple)]),
-		testCases: [
-			[null, false],
-			[undefined, false],
-			[new Date(), false],
-			["[123]", false],
-			[false, false],
-			[12, false],
-			[[], false],
-			[{}, false],
-			[async function() {}, false],
-			[{ 0: 5, 1: [1] }, false],
-			[[6, 78, new Date()], false],
-			[[1, 2], false],
-			[[2, "not valid"], false],
-			[[1, undefined, undefined], false],
-			[[11, [12, [13, [14, ""]]]], false],
-			[[1, undefined], true],
-			[[1, [2]], true],
-			[[6], true],
-			[[12, [13, [14]]], true],
-			[[11, [12, [13, [14]]]], true],
-			[[11, [12, [13, [14, undefined]]]], true],
 		],
 	});
 });

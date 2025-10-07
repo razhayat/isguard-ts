@@ -1,10 +1,18 @@
-import { describe } from "vitest";
+import { describe, expect, it } from "vitest";
 import { isDate, isError, isEvalError, isInstanceof, isRangeError, isReferenceError, isRegExp, isSyntaxError, isTypeError, isURIError } from "../src";
 import { describedGuardTests } from "./utils";
 
 class Animal { }
-class Dog extends Animal { }
-class Cat extends Animal { }
+class Dog extends Animal { woof: string = "woof" }
+class Cat extends Animal { meow: string = "meow" }
+
+describe("is instanceof", () => {
+	it("should have .class that is equal to the given constructor", () => {
+		const isAnimal = isInstanceof(Animal);
+
+		expect(isAnimal.class).toBe(Animal);
+	});
+});
 
 describe("is animal", () => {
 	describedGuardTests({
@@ -22,12 +30,15 @@ describe("is animal", () => {
 			[{ __proto__: Animal.prototype }, true],
 			[new Animal, true],
 			[new Animal(), true],
+			[Object.create(Animal.prototype), true],
 			[{ __proto__: new Dog }, true],
 			[new Dog, true],
 			[new Dog(), true],
+			[Object.create(Dog.prototype), true],
 			[{ __proto__: { __proto__: new Cat() } }, true],
 			[new Cat, true],
 			[new Cat(), true],
+			[Object.create(Cat.prototype), true],
 		],
 	});
 });
