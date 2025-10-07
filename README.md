@@ -31,6 +31,7 @@ npm install isguard-ts
 + [isRefine](#is-refine)
 + [utility type guards](#all-utility)
 + [generic types](#generic-types)
++ [recursive types](#recursive-types)
 
 ## Basic Usage
 
@@ -177,42 +178,16 @@ isIndexRecord(isNumber); // or isNumber.indexRecord();
 ### `isLazy`
 Helps you lazy load a type guard.
 Useful for:
-+ Creating type guards for recursive types
 + Resolving undefined errors due to circular imports
-
-> ***Important:***
-> Annotate the recursive guard to avoid typescript errors
++ Creating type guards for [recursive types](#recursive-types)
 
 ```typescript
-type Node = {
-	value: number;
-	next?: Node;
-};
+import { isPerson } from "./some-module";
 
-const isNode: TypeGuard<Node> = isType<Node>({
-	value: isNumber,
-	next: isLazy(() => isOptional(isNode)),
-});
+const isPeople = isLazy(() => isPerson).array();
 ```
 
-```typescript
-type Json =
-	number |
-	string |
-	boolean |
-	null |
-	Json[] |
-	{ [key: string]: Json; };
-
-const isJson: TypeGuard<Json> = isUnion(
-	isNumber,
-	isString,
-	isBoolean,
-	isNull,
-	isLazy(() => isArray(isJson)),
-	isLazy(() => isJson),
-);
-```
+In the example above `isPerson`, imported from `./some-module`, might be undefined when `isPeople` is being created, due to circular imports. So `isPerson.array()` would throw an error. `isLazy` solves this issue by accessing `isPerson` only when needed.
 
 *<span id="is-tuple" ></span>*
 ### `isTuple`
@@ -345,4 +320,59 @@ const isValueHolder = <T>(isValue: TypeGuard<T>) => {
 };
 
 const isNumberHolder = isValueHolder(isNumber);
+```
+
+*<span id="recursive-types" ></span>*
+### Recursive Types
+
+> ***Important:***
+> Annotate the recursive guard to avoid typescript errors
+
+One way to build recursive type guards is by using [`isLazy`](#is-lazy)
+
+```typescript
+type Json =
+	number |
+	string |
+	boolean |
+	null |
+	Json[] |
+	{ [key: string]: Json; };
+
+const isJson: TypeGuard<Json> = isUnion(
+	isNumber,
+	isString,
+	isBoolean,
+	isNull,
+	isLazy(() => isArray(isJson)),
+	isLazy(() => isJson),
+);
+```
+
+```typescript
+type Tree = {
+	value: number;
+	left?: Tree;
+	right?: Tree;
+};
+
+const isTree: TypeGuard<Tree> = isType<Tree>({
+	value: isNumber,
+	left: isLazy(() => isTree).optional(),
+	right: isLazy(() => isTree).optional(),
+});
+```
+
+Another way (though less recommended) is by using a `getter`
+
+```typescript
+const isTree: TypeGuard<Tree> = isType<Tree>({
+	value: isNumber,
+	get left() {
+		return isTree.optional();
+	},
+	get right() {
+		return isTree.optional();
+	},
+});
 ```
