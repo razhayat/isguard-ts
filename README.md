@@ -50,8 +50,6 @@ Helps you create type guards for types and interfaces
 > Otherwise optional fields might have an unexpected behavior
 
 ```typescript
-import { isType, isString, isNumber } from "isguard-ts";
-
 type Person = {
 	name: string;
 	age: number;
@@ -69,8 +67,6 @@ isPerson({ name: "Hello", age: 6 }); // true
 ### `isOptional`
 Helps you create type guards for optional (potentially `undefined`) types
 ```typescript
-import { isOptional, isNumber } from "isguard-ts";
-
 isOptional(isNumber); // or isNumber.optional();
 ```
 
@@ -78,8 +74,6 @@ isOptional(isNumber); // or isNumber.optional();
 ### `isMaybe`
 Helps you create type guards for nullable (potentially `null`) types
 ```typescript
-import { isMaybe, isNumber } from "isguard-ts";
-
 isMaybe(isNumber); // or isNumber.maybe();
 ```
 
@@ -87,8 +81,6 @@ isMaybe(isNumber); // or isNumber.maybe();
 ### `isArray`
 Helps you create type guards for arrays
 ```typescript
-import { isArray, isBoolean } from "isguard-ts";
-
 isArray(isBoolean); // or isBoolean.array();
 ```
 
@@ -96,8 +88,6 @@ isArray(isBoolean); // or isBoolean.array();
 ### `isLiteral`
 Helps you create type guards for literals
 ```typescript
-import { isLiteral } from "isguard-ts";
-
 const isHello = isLiteral("Hello");
 const is12 = isLiteral(12);
 const isHelloOr12 = isLiteral("Hello", 12);
@@ -112,8 +102,6 @@ Helps you create type guards for unions
 > This ensures the result is of the expected type
 
 ```typescript
-import { isType, isNumber, isString, isUnion, TypeGuard } from "isguard-ts";
-
 type A = { a: number };
 type B = { b: string };
 type C = A | B;
@@ -133,8 +121,6 @@ Helps you create type guards for intersections
 > This ensures the result is of the expected type
 
 ```typescript
-import { isType, isNumber, isString, isIntersection, TypeGuard } from "isguard-ts";
-
 type A = { a: number };
 type B = { b: string };
 type C = A & B;
@@ -149,8 +135,6 @@ isIntersection(isA, isB) satisfies TypeGuard<C>; // or isA.and(isB);
 ### `isRecord`
 Helps you create type guards for records
 ```typescript
-import { isRecord, isNumber } from "isguard-ts";
-
 const timeUnits = ["second", "minute", "hour"] as const;
 type TimeUnit = (typeof timeUnits)[number];
 
@@ -162,8 +146,6 @@ isRecord(timeUnits, isNumber);
 ### `isPartialRecord`
 Works just like `isRecord` but allows for `undefined` values
 ```typescript
-import { isPartialRecord, isNumber } from "isguard-ts";
-
 const timeUnits = ["second", "minute", "hour"] as const;
 type TimeUnit = (typeof timeUnits)[number];
 
@@ -175,8 +157,6 @@ isPartialRecord(timeUnits, isNumber);
 ### `isIndexRecord`
 Works just like `isRecord` but checks only the values and not the keys
 ```typescript
-import { isIndexRecord, isNumber } from "isguard-ts";
-
 isIndexRecord(isNumber); // or isNumber.indexRecord();
 // Record<PropertyKey, number>
 ```
@@ -192,8 +172,6 @@ Useful for:
 > Annotate the recursive guard to avoid typescript errors
 
 ```typescript
-import { isType, isNumber, isLazy, isOptional } from "isguard-ts";
-
 type Node = {
 	value: number;
 	next?: Node;
@@ -206,8 +184,6 @@ const isNode: TypeGuard<Node> = isType<Node>({
 ```
 
 ```typescript
-import { isUnion, isNumber, isString, isBoolean, isNull, isLazy, isArray, isIndexRecord } from "isguard-ts";
-
 type Json =
 	number |
 	string |
@@ -235,8 +211,6 @@ Helps you create type guards for tuples
 > Otherwise optional fields might have an unexpected behavior
 
 ```typescript
-import { isTuple, isNumber, isString } from "isguard-ts";
-
 type Row = [number, string?];
 
 const isRow = isTuple<Row>([isNumber, isString.optional()]);
@@ -250,8 +224,6 @@ isRow(["Hello", "Bye"]); // false
 ### `isEnum`
 Helps you create type guards for enums
 ```typescript
-import { isEnum } from "isguard-ts";
-
 enum Direction {
 	up = 0,
 	down = 1,
@@ -270,8 +242,6 @@ isDirection("hello"); // false
 ### `isSet`
 Helps you create type guards for sets
 ```typescript
-import { isSet, isNumber } from "isguard-ts";
-
 isSet(isNumber); // or isNumber.set();
 // Set<number>
 ```
@@ -280,8 +250,6 @@ isSet(isNumber); // or isNumber.set();
 ### `isMap`
 Helps you create type guards for maps
 ```typescript
-import { isMap, isString, isBoolean } from "isguard-ts";
-
 isMap(isString, isBoolean);
 // Map<string, boolean>
 ```
@@ -290,8 +258,6 @@ isMap(isString, isBoolean);
 ### `isInstanceof`
 Helps you create type guards for classes
 ```typescript
-import { isInstanceof } from "isguard-ts";
-
 abstract class Animal { }
 class Dog extends Animal { }
 
@@ -310,8 +276,6 @@ Helps you refine existing type guards. Can be used for:
 > Use at your own risk.
 
 ```typescript
-import { isRefine, isString } from "isguard-ts";
-
 type Farewell = `Bye ${string}`;
 
 const isFarewell = isRefine(isString, (value: string): value is Farewell => {
@@ -358,8 +322,6 @@ const isNever: TypeGuard<never>;
 ### Generic Types
 When creating type guards for generic types, you need to create your own `TypeGuard` generator
 ```typescript
-import { TypeGuard, isType, isNumber } from "isguard-ts";
-
 type ValueHolder<T> = {
 	value: T;
 };
