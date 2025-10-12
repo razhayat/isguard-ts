@@ -5,12 +5,16 @@ export interface TypeGuardClass<T> {
 	(value: unknown): value is T;
 }
 
-export class TypeGuardClass<T> implements TypeGuard<T> {
-	constructor(
-		func: (value: unknown) => boolean
-	) {
-		return Object.setPrototypeOf(func, new.target.prototype);
+export abstract class TypeGuardClass<T> implements TypeGuard<T> {
+	public constructor() {
+		const newThis = (value: unknown) => {
+			return (newThis as TypeGuardClass<T>).is(value);
+		};
+
+		return Object.setPrototypeOf(newThis, new.target.prototype);
 	}
+
+	protected abstract is(value: unknown): boolean;
 
 	public optional(): OptionalTypeGuard<T> {
 		return isOptional(this);

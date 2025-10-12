@@ -6,8 +6,10 @@ export class ArrayTypeGuardClass<T> extends TypeGuardClass<T[]> implements Array
 	public constructor(
 		public readonly isValue: TypeGuard<T>,
 	) {
-		super(value => {
-			return Array.isArray(value) && value.every(item => isValue(item));
-		});
+		super();
+	}
+
+	protected is(value: unknown) {
+		return Array.isArray(value) && value.every(item => this.isValue(item));
 	}
 }

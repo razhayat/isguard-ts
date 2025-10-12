@@ -6,9 +6,11 @@ export class LazyTypeGuardClass<T> extends TypeGuardClass<T> implements LazyType
 	public constructor(
 		private readonly generator: () => TypeGuard<T>
 	) {
-		super(value => {
-			return generator()(value);
-		});
+		super();
+	}
+
+	protected is(value: unknown) {
+		return this.generator()(value);
 	}
 
 	public unbox(): TypeGuard<T> {

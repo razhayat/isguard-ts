@@ -5,9 +5,11 @@ export class LiteralTypeGuardClass<T extends readonly Literal[]> extends TypeGua
 	public constructor(
 		public readonly values: T,
 	) {
-		super(value => {
-			const unknownValues: readonly unknown[] = values;
-			return unknownValues.includes(value);
-		});
+		super();
+	}
+
+	protected is(value: unknown) {
+		const unknownValues: readonly unknown[] = this.values;
+		return unknownValues.includes(value);
 	}
 }

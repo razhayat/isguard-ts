@@ -27,10 +27,12 @@ export class IndexRecordTypeGuardClass<T> extends TypeGuardClass<Record<Property
 	public constructor(
 		public readonly isValue: TypeGuard<T>,
 	) {
-		super(value => {
-			return value instanceof Object && value.constructor === Object && objectKeys(value).every(key => {
-				return isValue(Reflect.get(value, key));
-			});
+		super();
+	}
+
+	protected is(value: unknown) {
+		return value instanceof Object && value.constructor === Object && objectKeys(value).every(key => {
+			return this.isValue(Reflect.get(value, key));
 		});
 	}
 }

@@ -12,8 +12,10 @@ export class IntersectionTypeGuardClass<T extends readonly unknown[]> extends Ty
 	public constructor(
 		public readonly guards: TypeGuardTemplate<T>
 	) {
-		super(value => {
-			return guards.every(guard => guard(value));
-		});
+		super();
+	}
+
+	protected is(value: unknown) {
+		return this.guards.every(guard => guard(value));
 	}
 }

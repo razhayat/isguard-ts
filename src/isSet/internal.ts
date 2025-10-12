@@ -6,8 +6,10 @@ export class SetTypeGuardClass<T> extends TypeGuardClass<Set<T>> implements SetT
 	public constructor(
 		public readonly isValue: TypeGuard<T>
 	) {
-		super(value => {
-			return value instanceof Set && [...value.values()].every(value => isValue(value));
-		});
+		super();
+	}
+
+	protected is(value: unknown) {
+		return value instanceof Set && [...value.values()].every(value => this.isValue(value));
 	}
 }

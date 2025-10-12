@@ -7,8 +7,12 @@ export class MapTypeGuardClass<K, V> extends TypeGuardClass<Map<K, V>> implement
 		public readonly isKey: TypeGuard<K>,
 		public readonly isValue: TypeGuard<V>,
 	) {
-		super(value => {
-			return value instanceof Map && [...value.entries()].every(([key, value]) => isKey(key) && isValue(value));
+		super();
+	}
+
+	protected is(value: unknown) {
+		return value instanceof Map && [...value.entries()].every(([key, value]) => {
+			return this.isKey(key) && this.isValue(value)
 		});
 	}
 }

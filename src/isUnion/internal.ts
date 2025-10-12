@@ -6,8 +6,10 @@ export class UnionTypeGuardClass<T extends readonly unknown[]> extends TypeGuard
 	public constructor(
 		public readonly guards: TypeGuardTemplate<T>,
 	) {
-		super(value => {
-			return guards.some(guard => guard(value));
-		});
+		super();
+	}
+
+	protected is(value: unknown) {
+		return this.guards.some(guard => guard(value));
 	}
 }

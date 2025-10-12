@@ -7,8 +7,10 @@ export class RefineTypeGuardClass<T, R extends T> extends TypeGuardClass<R> impl
 		public readonly isBase: TypeGuard<T>,
 		public readonly refinement: (value: T) => value is R,
 	) {
-		super(value => {
-			return isBase(value) && refinement(value);
-		});
+		super();
+	}
+
+	protected is(value: unknown) {
+		return this.isBase(value) && this.refinement(value);
 	}
 }

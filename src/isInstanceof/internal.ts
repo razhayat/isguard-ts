@@ -5,10 +5,12 @@ export class InstanceofTypeGuardClass<T extends Constructor> extends TypeGuardCl
 	public readonly class: T;
 
 	public constructor(classConstructor: T) {
-		super(value => {
-			return value instanceof classConstructor;
-		});
+		super();
 
 		this.class = classConstructor;
+	}
+
+	protected is(value: unknown) {
+		return value instanceof this.class;
 	}
 }
