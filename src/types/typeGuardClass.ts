@@ -5,8 +5,7 @@ export interface TypeGuardClass<T> {
 	(value: unknown): value is T;
 }
 
-export class TypeGuardClass<T> extends Function implements TypeGuard<T> {
-	// @ts-expect-error
+export class TypeGuardClass<T> implements TypeGuard<T> {
 	constructor(
 		func: (value: unknown) => boolean
 	) {
