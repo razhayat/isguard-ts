@@ -1,12 +1,5 @@
+import { ArrayTypeGuard, IndexRecordTypeGuard, IntersectionTypeGuard, MaybeTypeGuard, OptionalTypeGuard, RefineTypeGuard, SetTypeGuard, UnionTypeGuard } from ".";
 import { AnyTypeGuard } from "./internal";
-import { ArrayTypeGuard } from "./isArray";
-import { IntersectionTypeGuard } from "./isIntersection";
-import { MaybeTypeGuard } from "./isMaybe";
-import { OptionalTypeGuard } from "./isOptional";
-import { IndexRecordTypeGuard } from "./isRecord";
-import { RefineTypeGuard } from "./isRefine";
-import { SetTypeGuard } from "./isSet";
-import { UnionTypeGuard } from "./isUnion";
 
 type ExactEqual<T> = {
 	required: Required<T>;

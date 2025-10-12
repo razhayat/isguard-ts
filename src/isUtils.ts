@@ -1,9 +1,4 @@
-import { isInstanceof } from "./isInstanceof";
-import { isLiteral } from "./isLiteral";
-import { isRefine } from "./isRefine";
-import { isTypeof } from "./isTypeof";
-import { isUnion } from "./isUnion";
-import { TypeGuard } from "./types";
+import { isInstanceof, isLiteral, isRefine, isTypeof, isUnion, TypeGuard } from ".";
 import { TypeGuardClass } from "./internal";
 
 export const isNull: TypeGuard<null> = isLiteral(null);
