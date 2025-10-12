@@ -1,6 +1,6 @@
 import { SetTypeGuard } from ".";
-import { TypeGuardClass } from "../internal";
 import { TypeGuard } from "../types";
+import { TypeGuardClass } from "../types/internal";
 
 export class SetTypeGuardClass<T> extends TypeGuardClass<Set<T>> implements SetTypeGuard<T> {
 	public constructor(

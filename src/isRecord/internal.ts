@@ -1,7 +1,8 @@
-import { createTemplate, objectKeys, TypeGuardClass } from "../internal";
 import { IndexRecordTypeGuard, isRecord, PartialRecordTypeGuard, RecordTypeGuard } from "../isRecord";
 import { TypeTypeGuardClass } from "../isType/internal";
 import { TypeGuard, TypeGuardTemplate } from "../types";
+import { TypeGuardClass } from "../types/internal";
+import { createTemplate, objectKeys } from "../utils/internal";
 
 export class RecordTypeGuardClass<K extends readonly PropertyKey[], V> extends TypeTypeGuardClass<Record<K[number], V>> implements RecordTypeGuard<K, V> {
 	public constructor(

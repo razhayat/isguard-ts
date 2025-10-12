@@ -1,4 +1,4 @@
-import { ArrayTypeGuard, IndexRecordTypeGuard, IntersectionTypeGuard, MaybeTypeGuard, OptionalTypeGuard, RefineTypeGuard, SetTypeGuard, UnionTypeGuard } from ".";
+import { ArrayTypeGuard, IndexRecordTypeGuard, IntersectionTypeGuard, MaybeTypeGuard, OptionalTypeGuard, RefineTypeGuard, SetTypeGuard, UnionTypeGuard } from "..";
 import { AnyTypeGuard } from "./internal";
 
 type ExactEqual<T> = {

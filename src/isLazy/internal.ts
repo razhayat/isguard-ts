@@ -1,6 +1,6 @@
-import { TypeGuardClass } from "../internal";
 import { LazyTypeGuard } from "../isLazy";
 import { TypeGuard } from "../types";
+import { TypeGuardClass } from "../types/internal";
 
 export class LazyTypeGuardClass<T> extends TypeGuardClass<T> implements LazyTypeGuard<T> {
 	public constructor(

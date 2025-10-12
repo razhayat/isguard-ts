@@ -1,5 +1,5 @@
-import { isInstanceof, isLiteral, isRefine, isTypeof, isUnion, TypeGuard } from ".";
-import { TypeGuardClass } from "./internal";
+import { isInstanceof, isLiteral, isRefine, isTypeof, isUnion, TypeGuard } from "..";
+import { TypeGuardClass } from "../types/internal";
 
 export const isNull: TypeGuard<null> = isLiteral(null);
 export const isUndefined: TypeGuard<undefined> = isLiteral(void 0);

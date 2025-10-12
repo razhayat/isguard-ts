@@ -1,6 +1,7 @@
 import { IsTypeGuarded, TypeTypeGuard, isType } from ".";
-import { TypeGuardClass, objectKeys, partial, pick, omit } from "../internal";
 import { TypeGuardTemplate } from "../types";
+import { TypeGuardClass } from "../types/internal";
+import { objectKeys, partial, pick, omit } from "../utils/internal";
 
 export class TypeTypeGuardClass<T extends object> extends TypeGuardClass<IsTypeGuarded<T>> implements TypeTypeGuard<T> {
 	public constructor(

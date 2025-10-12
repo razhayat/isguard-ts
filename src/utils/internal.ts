@@ -1,5 +1,5 @@
 import { TypeGuardTemplate } from "../types";
-import { AnyTypeGuard } from "./types";
+import { AnyTypeGuard } from "../types/internal";
 
 export const objectKeys = (object: {}): PropertyKey[] => {
 	return [...Object.keys(object), ...Object.getOwnPropertySymbols(object)];
