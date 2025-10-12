@@ -1,6 +1,6 @@
-import { TypeGuardClass } from "../internal";
 import { IntersectionTypeGuard } from "../isIntersection";
 import { TypeGuardTemplate } from "../types";
+import { TypeGuardClass } from "../types/internal";
 
 export type TupleToIntersection<T extends readonly unknown[]> = {
 	[K in keyof T]-?: (x: T[K]) => void;
@@ -12,8 +12,10 @@ export class IntersectionTypeGuardClass<T extends readonly unknown[]> extends Ty
 	public constructor(
 		public readonly guards: TypeGuardTemplate<T>
 	) {
-		super(value => {
-			return guards.every(guard => guard(value));
-		});
+		super();
+	}
+
+	protected is(value: unknown) {
+		return this.guards.every(guard => guard(value));
 	}
 }

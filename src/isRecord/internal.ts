@@ -1,7 +1,8 @@
-import { createTemplate, objectKeys, TypeGuardClass } from "../internal";
 import { IndexRecordTypeGuard, isRecord, PartialRecordTypeGuard, RecordTypeGuard } from "../isRecord";
 import { TypeTypeGuardClass } from "../isType/internal";
 import { TypeGuard, TypeGuardTemplate } from "../types";
+import { TypeGuardClass } from "../types/internal";
+import { createTemplate, objectKeys } from "../utils/internal";
 
 export class RecordTypeGuardClass<K extends readonly PropertyKey[], V> extends TypeTypeGuardClass<Record<K[number], V>> implements RecordTypeGuard<K, V> {
 	public constructor(
@@ -26,10 +27,12 @@ export class IndexRecordTypeGuardClass<T> extends TypeGuardClass<Record<Property
 	public constructor(
 		public readonly isValue: TypeGuard<T>,
 	) {
-		super(value => {
-			return value instanceof Object && value.constructor === Object && objectKeys(value).every(key => {
-				return isValue(Reflect.get(value, key));
-			});
+		super();
+	}
+
+	protected is(value: unknown) {
+		return value instanceof Object && value.constructor === Object && objectKeys(value).every(key => {
+			return this.isValue(Reflect.get(value, key));
 		});
 	}
 }

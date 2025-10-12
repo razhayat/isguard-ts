@@ -1,18 +1,21 @@
 import { Enum, EnumTypeGuard } from ".";
-import { TypeGuardClass } from "../internal";
+import { TypeGuardClass } from "../types/internal";
 
 export class EnumTypeGuardClass<T extends Enum> extends TypeGuardClass<T[keyof T]> implements EnumTypeGuard<T> {
 	public readonly enum: T;
+	private readonly _values: unknown[];
 
 	public constructor(
 		enumObj: T
 	) {
-		super(value => {
-			return enumValues.includes(value);
-		});
+		super();
 
 		this.enum = enumObj;
-		const enumValues: unknown[] = this.getEnumValues();
+		this._values = this.getEnumValues();
+	}
+
+	protected is(value: unknown) {
+		return this._values.includes(value);
 	}
 
 	private getEnumValues() {

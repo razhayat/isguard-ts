@@ -1,13 +1,15 @@
 import { ArrayTypeGuard } from ".";
-import { TypeGuardClass } from "../internal";
 import { TypeGuard } from "../types";
+import { TypeGuardClass } from "../types/internal";
 
 export class ArrayTypeGuardClass<T> extends TypeGuardClass<T[]> implements ArrayTypeGuard<T> {
 	public constructor(
 		public readonly isValue: TypeGuard<T>,
 	) {
-		super(value => {
-			return Array.isArray(value) && value.every(item => isValue(item));
-		});
+		super();
+	}
+
+	protected is(value: unknown) {
+		return Array.isArray(value) && value.every(item => this.isValue(item));
 	}
 }
