@@ -1,5 +1,5 @@
 import { isInstanceof, isLiteral, isRefine, isTypeof, isUnion, TypeGuard } from "..";
-import { TypeGuardClass } from "../types/internal";
+import { NeverTypeGuardClass, UnknownTypeGuardClass } from "./internal";
 
 export const isNull: TypeGuard<null> = isLiteral(null);
 export const isUndefined: TypeGuard<undefined> = isLiteral(void 0);
@@ -27,8 +27,8 @@ export const isSyntaxError: TypeGuard<SyntaxError> = isInstanceof(SyntaxError);
 export const isTypeError: TypeGuard<TypeError> = isInstanceof(TypeError);
 export const isURIError: TypeGuard<URIError> = isInstanceof(URIError);
 
-export const isUnknown: TypeGuard<unknown> = new TypeGuardClass<unknown>(() => true);
-export const isNever: TypeGuard<never> = new TypeGuardClass<never>(() => false);
+export const isUnknown: TypeGuard<unknown> = new UnknownTypeGuardClass();
+export const isNever: TypeGuard<never> = new NeverTypeGuardClass();
 
 /**
  * @deprecated use `isNumber.array()` instead
