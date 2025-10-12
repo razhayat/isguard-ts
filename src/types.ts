@@ -8,14 +8,14 @@ type ExactEqual<T> = {
 
 export type TypeGuard<in out T, in out _U extends ExactEqual<T> = ExactEqual<T>> = {
 	(value: unknown): value is T;
-	optional: () => OptionalTypeGuard<T>;
-	maybe: () => MaybeTypeGuard<T>;
-	and: <I extends readonly unknown[]>(...guards: TypeGuardTemplate<I>) => IntersectionTypeGuard<[T, ...I]>;
-	or: <I extends readonly unknown[]>(...guards: TypeGuardTemplate<I>) => UnionTypeGuard<[T, ...I]>;
-	array: () => ArrayTypeGuard<T>;
-	set: () => SetTypeGuard<T>;
-	indexRecord: () => IndexRecordTypeGuard<T>;
-	refine: <R extends T>(refinement: (value: T) => value is R) => RefineTypeGuard<T, R>;
+	optional(): OptionalTypeGuard<T>;
+	maybe(): MaybeTypeGuard<T>;
+	and<I extends readonly unknown[]>(...guards: TypeGuardTemplate<I>): IntersectionTypeGuard<[T, ...I]>;
+	or<I extends readonly unknown[]>(...guards: TypeGuardTemplate<I>): UnionTypeGuard<[T, ...I]>;
+	array(): ArrayTypeGuard<T>;
+	set(): SetTypeGuard<T>;
+	indexRecord(): IndexRecordTypeGuard<T>;
+	refine<R extends T>(refinement: (value: T) => value is R): RefineTypeGuard<T, R>;
 };
 
 export type Guarded<T extends AnyTypeGuard> = T extends TypeGuard<infer R> ? R : never;
