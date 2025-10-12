@@ -5,7 +5,8 @@ export interface TypeGuardClass<T> {
 	(value: unknown): value is T;
 }
 
-export abstract class TypeGuardClass<T> implements TypeGuard<T> {
+export abstract class TypeGuardClass<T> extends Function implements TypeGuard<T> {
+	// @ts-expect-error
 	public constructor() {
 		const newThis = (value: unknown) => {
 			return (newThis as TypeGuardClass<T>).is(value);
