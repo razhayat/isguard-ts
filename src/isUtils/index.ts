@@ -50,33 +50,33 @@ export const isDateArray = isDate.array();
 /**
  * @deprecated use `isNumber.optional()` instead
  */
-export const isOptionalNumber = isNumber.optional();
+export const isOptionalNumber: TypeGuard<number | undefined> = isUnion(isUndefined, isNumber);
 /**
  * @deprecated use `isString.optional()` instead
  */
-export const isOptionalString = isString.optional();
+export const isOptionalString: TypeGuard<string | undefined> = isUnion(isUndefined, isString);
 /**
  * @deprecated use `isBoolean.optional()` instead
  */
-export const isOptionalBoolean = isBoolean.optional();
+export const isOptionalBoolean: TypeGuard<boolean | undefined> = isUnion(isUndefined, isBoolean);
 /**
  * @deprecated use `isDate.optional()` instead
  */
-export const isOptionalDate = isDate.optional();
+export const isOptionalDate: TypeGuard<Date | undefined> = isUnion(isUndefined, isDate);
 
 /**
  * @deprecated use `isNumber.maybe()` instead
  */
-export const isMaybeNumber = isNumber.maybe();
+export const isMaybeNumber: TypeGuard<number | null> = isUnion(isNull, isNumber);
 /**
  * @deprecated use `isString.maybe()` instead
  */
-export const isMaybeString = isString.maybe();
+export const isMaybeString: TypeGuard<string | null> = isUnion(isNull, isString);
 /**
  * @deprecated use `isBoolean.maybe()` instead
  */
-export const isMaybeBoolean = isBoolean.maybe();
+export const isMaybeBoolean: TypeGuard<boolean | null> = isUnion(isNull, isBoolean);
 /**
  * @deprecated use `isDate.maybe()` instead
  */
-export const isMaybeDate = isDate.maybe();
+export const isMaybeDate: TypeGuard<Date | null> = isUnion(isNull, isDate);
