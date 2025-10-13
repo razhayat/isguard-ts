@@ -1,5 +1,4 @@
-import { RefineTypeGuard } from ".";
-import { TypeGuard } from "../types";
+import { RefineTypeGuard, TypeGuard } from "..";
 import { TypeGuardClass } from "../types/internal";
 
 export class RefineTypeGuardClass<T, R extends T> extends TypeGuardClass<R> implements RefineTypeGuard<T, R> {

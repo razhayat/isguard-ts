@@ -1,5 +1,4 @@
-import { ArrayTypeGuard, IndexRecordTypeGuard, IntersectionTypeGuard, isArray, isIndexRecord, isIntersection, isMaybe, isOptional, isRefine, isSet, isUnion, MaybeTypeGuard, OptionalTypeGuard, RefineTypeGuard, SetTypeGuard, UnionTypeGuard } from "..";
-import { TypeGuard, TypeGuardTemplate } from ".";
+import { ArrayTypeGuard, IndexRecordTypeGuard, IntersectionTypeGuard, isArray, isIndexRecord, isIntersection, isMaybe, isOptional, isRefine, isSet, isUnion, MaybeTypeGuard, OptionalTypeGuard, RefineTypeGuard, SetTypeGuard, UnionTypeGuard, TypeGuard, TypeGuardTemplate } from "..";
 
 export interface TypeGuardClass<T> {
 	(value: unknown): value is T;

@@ -1,5 +1,5 @@
+import { TypeGuard } from "..";
 import { MapTypeGuardClass } from "./internal";
-import { TypeGuard } from "../types";
 
 export type MapTypeGuard<K, V> = TypeGuard<Map<K, V>> & {
 	isKey: TypeGuard<K>;

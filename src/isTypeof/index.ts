@@ -1,4 +1,4 @@
-import { TypeGuard } from "../types";
+import { TypeGuard } from "..";
 import { TypeofTypeGuardClass } from "./internal";
 
 export type TypeByTypeOfResult = {

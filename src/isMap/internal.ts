@@ -1,5 +1,4 @@
-import { MapTypeGuard } from ".";
-import { TypeGuard } from "../types";
+import { MapTypeGuard, TypeGuard } from "..";
 import { TypeGuardClass } from "../types/internal";
 
 export class MapTypeGuardClass<K, V> extends TypeGuardClass<Map<K, V>> implements MapTypeGuard<K, V> {

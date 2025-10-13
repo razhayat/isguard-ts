@@ -1,5 +1,4 @@
-import { IntersectionTypeGuard } from "../isIntersection";
-import { TypeGuardTemplate } from "../types";
+import { IntersectionTypeGuard, TypeGuardTemplate } from "..";
 import { TypeGuardClass } from "../types/internal";
 
 export type TupleToIntersection<T extends readonly unknown[]> = {

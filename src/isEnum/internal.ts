@@ -1,4 +1,4 @@
-import { Enum, EnumTypeGuard } from ".";
+import { Enum, EnumTypeGuard } from "..";
 import { TypeGuardClass } from "../types/internal";
 
 export class EnumTypeGuardClass<T extends Enum> extends TypeGuardClass<T[keyof T]> implements EnumTypeGuard<T> {

@@ -1,7 +1,5 @@
-import { isLiteral } from "../isLiteral";
-import { OptionalTypeGuard } from "../isOptional";
+import { OptionalTypeGuard, TypeGuard, isLiteral } from "..";
 import { UnionTypeGuardClass } from "../isUnion/internal";
-import { TypeGuard } from "../types";
 
 export class OptionalTypeGuardClass<T> extends UnionTypeGuardClass<[undefined, T]> implements OptionalTypeGuard<T> {
 	public constructor(

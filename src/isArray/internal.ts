@@ -1,5 +1,4 @@
-import { ArrayTypeGuard } from ".";
-import { TypeGuard } from "../types";
+import { ArrayTypeGuard, TypeGuard } from "..";
 import { TypeGuardClass } from "../types/internal";
 
 export class ArrayTypeGuardClass<T> extends TypeGuardClass<T[]> implements ArrayTypeGuard<T> {

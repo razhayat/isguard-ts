@@ -1,4 +1,4 @@
-import { TypeGuard } from "../types";
+import { TypeGuard } from "..";
 import { EnumTypeGuardClass } from "./internal";
 
 export type Enum = Readonly<Record<string, string | number>>;

@@ -1,5 +1,4 @@
-import { TupleTypeGuard } from ".";
-import { TypeGuardTemplate } from "../types";
+import { TupleTypeGuard, TypeGuardTemplate } from "..";
 import { TypeGuardClass } from "../types/internal";
 
 export class TupleTypeGuardClass<T extends readonly unknown[]> extends TypeGuardClass<T> implements TupleTypeGuard<T> {

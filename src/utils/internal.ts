@@ -1,4 +1,4 @@
-import { TypeGuardTemplate } from "../types";
+import { TypeGuardTemplate } from "..";
 import { AnyTypeGuard } from "../types/internal";
 
 export const objectKeys = (object: {}): PropertyKey[] => {
