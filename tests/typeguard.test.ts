@@ -2,8 +2,16 @@ import { describe, it, expect } from "vitest";
 import { isBigint, isBoolean, isDate, isNumber, isString } from "../src";
 
 describe("TypeGuard", () => {
-	it("should extend Function", () => {
+	it("should be instanceof Function", () => {
 		expect(isNumber instanceof Function).toBe(true);
+	});
+
+	it("should have Function.prototype in its prototype chain", () => {
+		expect(Function.prototype.isPrototypeOf(isString)).toBe(true);
+	});
+
+	it("should be typeof function", () => {
+		expect(typeof isBoolean === "function").toBe(true);
 	});
 
 	it("should work with Array.every", () => {
