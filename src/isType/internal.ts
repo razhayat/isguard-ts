@@ -1,5 +1,4 @@
-import { TypeTypeGuard, isType } from ".";
-import { TypeGuardTemplate } from "../types";
+import { TypeTypeGuard, isType, TypeGuardTemplate } from "..";
 import { TypeGuardClass } from "../types/internal";
 import { objectKeys, partial, pick, omit } from "../utils/internal";
 

@@ -1,6 +1,5 @@
-import { IndexRecordTypeGuard, isRecord, PartialRecordTypeGuard, RecordTypeGuard } from "../isRecord";
+import { IndexRecordTypeGuard, isRecord, PartialRecordTypeGuard, RecordTypeGuard, TypeGuard, TypeGuardTemplate } from "..";
 import { TypeTypeGuardClass } from "../isType/internal";
-import { TypeGuard, TypeGuardTemplate } from "../types";
 import { TypeGuardClass } from "../types/internal";
 import { createTemplate, objectKeys } from "../utils/internal";
 

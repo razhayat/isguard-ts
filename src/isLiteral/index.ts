@@ -1,4 +1,4 @@
-import { TypeGuard } from "../types";
+import { TypeGuard } from "..";
 import { LiteralTypeGuardClass } from "./internal";
 
 export type Literal = string | number | bigint | boolean | null | undefined;

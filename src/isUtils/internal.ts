@@ -1,4 +1,4 @@
-import { TypeGuard } from "../types";
+import { TypeGuard } from "..";
 import { TypeGuardClass } from "../types/internal";
 
 export class UnknownTypeGuardClass extends TypeGuardClass<unknown> implements TypeGuard<unknown> {

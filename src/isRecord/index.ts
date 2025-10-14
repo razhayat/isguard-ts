@@ -1,5 +1,4 @@
-import { TypeTypeGuard } from "../isType";
-import { TypeGuard } from "../types";
+import { TypeTypeGuard, TypeGuard } from "..";
 import { RecordTypeGuardClass, PartialRecordTypeGuardClass, IndexRecordTypeGuardClass } from "./internal";
 
 export type RecordTypeGuard<K extends readonly PropertyKey[], V> = TypeTypeGuard<Record<K[number], V>> & {

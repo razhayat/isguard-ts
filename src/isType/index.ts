@@ -1,4 +1,4 @@
-import { TypeGuard, TypeGuardTemplate } from "../types";
+import { TypeGuard, TypeGuardTemplate } from "..";
 import { TypeTypeGuardClass } from "./internal";
 
 export type TypeTypeGuard<T extends object> = TypeGuard<T> & {

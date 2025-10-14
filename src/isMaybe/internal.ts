@@ -1,13 +1,11 @@
-import { isLiteral } from "../isLiteral";
-import { MaybeTypeGuard } from "../isMaybe";
+import { isNull, MaybeTypeGuard, TypeGuard } from "..";
 import { UnionTypeGuardClass } from "../isUnion/internal";
-import { TypeGuard } from "../types";
 
 export class MaybeTypeGuardClass<T> extends UnionTypeGuardClass<[null, T]> implements MaybeTypeGuard<T> {
 	public constructor(
 		private readonly guard: TypeGuard<T>,
 	) {
-		super([isLiteral(null), guard]);
+		super([isNull, guard]);
 	}
 
 	public unbox(): TypeGuard<T> {

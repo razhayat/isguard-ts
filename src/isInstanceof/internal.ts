@@ -1,4 +1,4 @@
-import { Constructor, InstanceofTypeGuard } from "../isInstanceof";
+import { Constructor, InstanceofTypeGuard } from "..";
 import { TypeGuardClass } from "../types/internal";
 
 export class InstanceofTypeGuardClass<T extends Constructor> extends TypeGuardClass<InstanceType<T>> implements InstanceofTypeGuard<T> {
