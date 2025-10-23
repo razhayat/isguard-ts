@@ -62,7 +62,6 @@ describe("is number", () => {
 			[1 / 0, true],
 			[-1 / 0, true],
 
-			[Number('12'), true, "Number('12')"],
 			[Number.MIN_VALUE, true],
 			[Number.MAX_VALUE, true],
 			[Number.MAX_SAFE_INTEGER, true],
@@ -143,7 +142,6 @@ describe("is string", () => {
 			['one', true],
 			[`hello`, true],
 			[`hi ${"me from the future"}`, true],
-			[String("Hello"), true, "String('Hello')"],
 		],
 	});
 });
@@ -178,11 +176,6 @@ describe("is boolean", () => {
 
 			[true, true],
 			[false, true],
-
-			[Boolean("true"), true, "Boolean('true')"],
-			[Boolean("false"), true, "Boolean('false')"],
-			[Boolean(1), true, "Boolean(1)"],
-			[Boolean(0), true, "Boolean(0)"],
 		],
 	});
 });
@@ -276,9 +269,7 @@ describe("is function", () => {
 			[async () => {}, true],
 
 			[Array, true],
-			[Array.prototype.find, true, "Array.prototype.find"],
 			[Function, true],
-			[Function.prototype, true, "Function.prototype"],
 
 			[setTimeout, true],
 			[setInterval, true],

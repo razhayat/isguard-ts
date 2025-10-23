@@ -42,12 +42,12 @@ describe("is native enum", () => {
 			[Symbol(Example.three), false],
 			[Example, false],
 
-			[Example.one, true, "Example.one"],
-			[Example.two, true, "Example.two"],
-			[Example.three, true, "Example.three"],
-			[Example.apple, true, "Example.apple"],
-			[Example.banana, true, "Example.banana"],
-			[Example.orange, true, "Example.orange"],
+			[Example.one, true, { stringify: "Example.one" }],
+			[Example.two, true, { stringify: "Example.two" }],
+			[Example.three, true, { stringify: "Example.three" }],
+			[Example.apple, true, { stringify: "Example.apple" }],
+			[Example.banana, true, { stringify: "Example.banana" }],
+			[Example.orange, true, { stringify: "Example.orange" }],
 
 			["yami", true],
 			[0, true],
@@ -86,22 +86,22 @@ describe("is enum like", () => {
 			["12", false],
 			["no", false],
 
-			[enumLike.hello, true, "enumLike.hello"],
+			[enumLike.hello, true, { stringify: "enumLike.hello" }],
 			[12, true],
 
-			[enumLike.hi, true, "enumLike.hi"],
+			[enumLike.hi, true, { stringify: "enumLike.hi" }],
 			["hi", true],
 
-			[enumLike.bye, true, "enumLike.bye"],
+			[enumLike.bye, true, { stringify: "enumLike.bye" }],
 			[46, true],
 
-			[enumLike[12], true, "enumLike[12]"],
+			[enumLike[12], true, { stringify: "enumLike[12]" }],
 			["if it was a regular enum it would be hello", true],
 
-			[enumLike[45], true, "enumLike[45]"],
+			[enumLike[45], true, { stringify: "enumLike[45]" }],
 			["bye", true],
 
-			[enumLike.no, true, "enumLike.no"],
+			[enumLike.no, true, { stringify: "enumLike.no" }],
 			[1, true],
 		],
 	});

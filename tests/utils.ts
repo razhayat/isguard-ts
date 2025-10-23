@@ -1,11 +1,15 @@
 import { expect, it } from "vitest";
 import { isBigint, isBoolean, isFunction, isNumber, isString, isSymbol, isUndefined, TypeGuard } from "../src";
 
+export type TestCaseOptions = {
+	stringify?: string | ((input: unknown) => string);
+}
+
 export type DescribedGuardTestsProps<T> = {
 	guard: TypeGuard<T>;
 	equivalentGuards?: TypeGuard<NoInfer<T>>[];
 	description?: (input: string, result: boolean, guardIndex: number) => string;
-	testCases: [input: unknown, result: boolean, stringifyInput?: string | ((input: unknown) => string)][];
+	testCases: [input: unknown, result: boolean, options?: TestCaseOptions][];
 };
 
 export const guardTest = <T>(input: unknown, guard: TypeGuard<T>, result: boolean) => {
@@ -75,8 +79,10 @@ export const describedGuardTests = <T>({
 	const guards = [guard, ...equivalentGuards];
 
 	testCases.forEach(testCase => {
-		const [input, result, testCaseStringifyInput = defaultStringifyInput] = testCase;
-		const inputStr = isString(testCaseStringifyInput) ? testCaseStringifyInput : testCaseStringifyInput(input);
+		const [input, result, options = {}] = testCase;
+		const { stringify = defaultStringifyInput } = options;
+
+		const inputStr = isString(stringify) ? stringify : stringify(input);
 
 		guards.forEach((guard, guardIndex) => {
 			it(description(inputStr, result, guardIndex), guardTest(input, guard, result));
