@@ -177,6 +177,53 @@ describe("is tree type", () => {
 	});
 });
 
+describe("is recursive pick type", () => {
+	type PickParent = {
+		a: number;
+		b: Pick<PickParent, "b">[];
+	};
+
+	const isPickParent: TypeTypeGuard<PickParent> = isType<PickParent>({
+		a: isNumber,
+		b: isLazy(() => isPickParent.pick("b")).array(),
+	});
+
+	const isB: TypeTypeGuard<Pick<PickParent, "b">> = isType<Pick<PickParent, "b">>({
+		b: isLazy(() => isB).array(),
+	});
+
+	const isPickParent2 = isType<PickParent>({
+		a: isNumber,
+		b: isB.array(),
+	});
+
+	describedGuardTests({
+		guard: isPickParent,
+		equivalentGuards: [isPickParent2],
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[12, false],
+			["hello", false],
+			[[], false],
+			[{}, false],
+
+			[{ a: 1 }, false],
+			[{ b: [] }, false],
+			[{ a: "oops", b: [] }, false],
+			[{ a: 1, b: [{ b: null }] }, false],
+			[{ a: 3, b: [{ b: [{ a: 5 }] }] }, false],
+			[{ a: 3, b: [{ b: [{ b: [] }, { b: [{ b: 12 }] }] }] }, false],
+
+			[{ a: 1, b: [] }, true],
+			[{ a: 2, b: [{ b: [] }] }, true],
+			[{ a: 3, b: [{ b: [{ b: [] }] }] }, true],
+			[{ a: 3, b: [{ b: [{ b: [] }, { b: [{ b: [] }] }] }] }, true],
+			[{ a: 3, b: [{ b: [{ b: [{ b: [] }] }] }] }, true],
+		],
+	});
+});
+
 describe("is person interface", () => {
 	interface Person {
 		name: string;
