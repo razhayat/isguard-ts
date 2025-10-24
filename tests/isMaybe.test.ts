@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isBoolean, isMaybe, isNumber } from "../src";
+import { isBoolean, isMaybe, isNull, isNumber, isUnion } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is maybe", () => {
@@ -13,7 +13,10 @@ describe("is maybe", () => {
 describe("is maybe number", () => {
 	describedGuardTests({
 		guard: isMaybe(isNumber),
-		equivalentGuards: [isNumber.maybe()],
+		equivalentGuards: [
+			isNumber.maybe(),
+			isUnion(isNumber, isNull),
+		],
 		testCases: [
 			[undefined, false],
 			[false, false],

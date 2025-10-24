@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isNumber, isOptional, isString } from "../src";
+import { isNumber, isOptional, isString, isUndefined, isUnion } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is optional", () => {
@@ -14,7 +14,10 @@ describe("is optional", () => {
 describe("is optional string", () => {
 	describedGuardTests({
 		guard: isOptional(isString),
-		equivalentGuards: [isString.optional()],
+		equivalentGuards: [
+			isString.optional(),
+			isUnion(isString, isUndefined),
+		],
 		testCases: [
 			[null, false],
 			[123, false],
