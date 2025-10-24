@@ -53,6 +53,19 @@ describe("is number array", () => {
 			[new Array<number | string>(20, 50, "string"), false],
 			[new Array<string>("string"), false],
 
+			[new Array(35), false],
+			[Array(90), false],
+			[[,], false],
+			[[, 73], false],
+			[[56, ,], false],
+			[[6, , , 324, 34], false],
+
+			[Array(), true],
+			[new Array, true],
+			[new Array(20, 60), true],
+			[Array(20, 50), true],
+
+
 			[[], true],
 			[[6, -6, 6.66], true],
 			[[1, NaN, 3], true],
@@ -61,22 +74,10 @@ describe("is number array", () => {
 			[[-1000000, 5000000, 0], true],
 			[[654, Number(234), -54], true],
 
-			[new Array, true],
-			[new Array(35), true],
-			[new Array(20, 60), true],
-			[Array(), true],
-			[Array(90), true],
-			[Array(20, 50), true],
-
 			[Array.from([1, 2, 3]), true],
 			[Array.of(1, 2, 3), true],
 			[Array(5).fill(2), true],
 			[Array(3).fill(Number(2)), true],
-
-			[[,], true],
-			[[, 73], true],
-			[[56, ,], true],
-			[[6, , , 324, 34], true],
 		],
 	});
 });
