@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isBoolean, isDate, isIndexRecord, isLiteral, isNumber, isPartialRecord, isRecord, isString } from "../src";
+import { isBoolean, isDate, isIndexRecord, isLiteral, isNumber, isPartialRecord, isRecord, isString, isType } from "../src";
 
 describe("is record", () => {
 	it("should have .keys that is equal to the given keys", () => {
@@ -19,8 +19,17 @@ describe("is record", () => {
 });
 
 describe("is number record", () => {
-	describedGuardTests({
+	type T = Record<"num1" | "num2" | "num3", number>;
+
+	describedGuardTests<T>({
 		guard: isRecord(["num1", "num2", "num3"], isNumber),
+		equivalentGuards: [
+			isType<T>({
+				num1: isNumber,
+				num2: isNumber,
+				num3: isNumber,
+			}),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -158,15 +167,20 @@ describe("is partial record", () => {
 });
 
 describe("is partial string record", () => {
+	type T = Partial<Record<"firstName" | "secondName", string>>;
 
 	const extraGuard = isPartialRecord(["firstName", "secondName", "thirdName"], isString);
 	const guard = isPartialRecord(["firstName", "secondName"], isString);
 
-	describedGuardTests({
+	describedGuardTests<T>({
 		guard: guard,
 		equivalentGuards: [
 			extraGuard.pick("firstName", "secondName", "secondName"),
 			extraGuard.omit("thirdName", "thirdName"),
+			isType<T>({
+				firstName: isString.optional(),
+				secondName: isString.optional(),
+			}),
 		],
 		testCases: [
 			[null, false],
