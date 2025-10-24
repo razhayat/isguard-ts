@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isArray, isDate, isNumber, isString, isType } from "../src";
+import { isArray, isDate, isNumber, isString, isType, isUndefined } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is array", () => {
@@ -78,6 +78,49 @@ describe("is number array", () => {
 			[Array.of(1, 2, 3), true],
 			[Array(5).fill(2), true],
 			[Array(3).fill(Number(2)), true],
+		],
+	});
+});
+
+describe("is undefined array", () => {
+	describedGuardTests({
+		guard: isArray(isUndefined),
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[NaN, false],
+			[{}, false],
+			[Object.create(null), false],
+			[-1, false],
+			[new Date(), false],
+			[/regex/, false],
+			[() => undefined, false],
+			[{ length: 13 }, false],
+			[{ length: 2, 0: undefined, 1: undefined }, false],
+			[new Set<number>([1, 2, 3]), false],
+			[new Set<number>(), false],
+			[new Map([[1, 2], [2, 3]]), false],
+
+			[[new Date()], false],
+			[[[], undefined], false],
+			[[undefined, 4, undefined], false],
+			[["undefined", undefined], false],
+			[[undefined, undefined, undefined, false, undefined], false],
+
+			[[], true],
+			[[undefined], true],
+			[[undefined, undefined], true],
+			[[undefined, undefined, undefined], true],
+			[[void 0, void undefined, undefined, void null, void function() {}], true],
+
+			[new Array(35), true],
+			[Array(90), true],
+			[Array(1000).fill(undefined), true],
+			[[,], true],
+			[[, void 0], true],
+			[[undefined, ,], true],
+			[[void 4, , , undefined, undefined], true],
+			[[void undefined, , , undefined, undefined, , , ,], true],
 		],
 	});
 });
