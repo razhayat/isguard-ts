@@ -1,17 +1,21 @@
 import { ArrayTypeGuard, IndexRecordTypeGuard, IntersectionTypeGuard, isArray, isIndexRecord, isIntersection, isMaybe, isOptional, isRefine, isSet, isUnion, MaybeTypeGuard, OptionalTypeGuard, RefineTypeGuard, SetTypeGuard, UnionTypeGuard, TypeGuard, TypeGuardTemplate } from "..";
 
+class ExtensibleFunction extends Function {
+	// @ts-expect-error
+	public constructor(
+		func: Function
+	) {
+		return Object.setPrototypeOf(func, new.target.prototype);
+	}
+}
+
 export interface TypeGuardClass<T> {
 	(value: unknown): value is T;
 }
 
-export abstract class TypeGuardClass<T> extends Function implements TypeGuard<T> {
-	// @ts-expect-error
+export abstract class TypeGuardClass<T> extends ExtensibleFunction implements TypeGuard<T> {
 	public constructor() {
-		const newThis = (value: unknown) => {
-			return (newThis as TypeGuardClass<T>).is(value);
-		};
-
-		return Object.setPrototypeOf(newThis, new.target.prototype);
+		super((value: unknown) => this.is(value));
 	}
 
 	protected abstract is(value: unknown): boolean;
