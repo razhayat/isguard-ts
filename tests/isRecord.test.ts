@@ -255,6 +255,18 @@ describe("is index record", () => {
 });
 
 describe("is number index record", () => {
+	class AllIHaveIsNumberFields {
+		public constructor(
+			public num1: number,
+			public num2: number,
+			public num3: number,
+		) {
+
+		}
+
+		public static evenAStaticNumberField: number = 12;
+	}
+
 	describedGuardTests({
 		guard: isIndexRecord(isNumber),
 		equivalentGuards: [isNumber.indexRecord()],
@@ -264,15 +276,41 @@ describe("is number index record", () => {
 			[21, false],
 			[23n, false],
 			["4", false],
+			[true, false],
+			[false, false],
 			[new Date(), false],
-			[{ hello: "bye" }, false],
-			[{ hi: 12, bye: 6, blue: "kvdkdm" }, false],
+			[new Set(), false],
+			[new Map(), false],
+			[new AllIHaveIsNumberFields(1, 2, 3), false],
+			[/this is my regex! not yours/, false],
 			[[], false],
-			[{ [Symbol()]: "45" }, false],
+			[[213], false],
+
+			[Object.create(null), false, { stringify: "Object.create(null)", invertZod: true }],
+			[Object.create(Date.prototype), false, { stringify: "Object.create(Date.prototype)" }],
+			[Object.create(AllIHaveIsNumberFields.prototype), false, { stringify: "Object.create(AllIHaveIsNumberFields.prototype)" }],
+
+			[{ hello: "bye" }, false],
+			[{ 61: "not a number" }, false],
+			[{ [Symbol()]: 89987987987987897897n }, false],
+			[{ hi: 12, bye: 6, blue: "kvdkdm" }, false],
+			[{ 64634: 12, [Symbol()]: 6, blue: "kvdkdm" }, false],
+
 			[{}, true],
 			[{ hi: 12 }, true],
+			[{ 0: 5, length: 1 }, true],
 			[{ hi: 12, bye: 6 }, true],
+			[{ 12: 12 }, true],
+			[{ 12: 12, 56: 6 }, true],
+			[{ 12: 12, bye: 6 }, true],
 			[{ [Symbol()]: 45 }, true],
+			[{ [Symbol()]: 45, [Symbol()]: 45 }, true],
+			[{ [Symbol()]: 45, 56: 12 }, true],
+			[{ str: 78, 79: 80, [Symbol()]: 90 }, true],
+
+			[Object.create(Object.prototype), true, { stringify: "Object.create(Object.prototype)" }],
+			[Object.create({}), true, { stringify: "Object.create({})" }],
+			[Object.create({ name: 12 }), true, { stringify: "Object.create({ name: 12 })" }],
 		],
 	});
 });
