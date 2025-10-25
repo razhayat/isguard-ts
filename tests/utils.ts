@@ -1,4 +1,4 @@
-import { expect, it, test } from "vitest";
+import { expect, test } from "vitest";
 import { isBigint, isBoolean, isFunction, isNumber, isString, isSymbol, isUndefined, TypeGuard } from "../src";
 
 export type TestCaseOptions = {
@@ -9,16 +9,7 @@ export type TestCaseOptions = {
 export type DescribedGuardTestsProps<T> = {
 	guard: TypeGuard<T>;
 	equivalentGuards?: TypeGuard<NoInfer<T>>[];
-	description?: (input: string, result: boolean, guardIndex: number) => string;
 	testCases: [input: unknown, result: boolean, options?: TestCaseOptions][];
-};
-
-export const guardTest = <T>(input: unknown, guard: TypeGuard<T>, result: boolean) => {
-	return () => expect(guard(input)).toBe(result);
-};
-
-export const defaultDescription = (input: string, result: boolean, guardIndex: number) => {
-	return `guard #${guardIndex + 1} should return ${result} for ${input}`;
 };
 
 export const objectStringify = (input: object) => {
@@ -74,7 +65,6 @@ export const defaultStringifyInput = (input: unknown): string => {
 export const describedGuardTests = <T>({
 	guard,
 	equivalentGuards = [],
-	description = defaultDescription,
 	testCases,
 }: DescribedGuardTestsProps<T>) => {
 	const guards = [guard, ...equivalentGuards];
@@ -90,7 +80,9 @@ export const describedGuardTests = <T>({
 		const inputStr = isString(stringify) ? stringify : stringify(input);
 
 		guards.forEach((guard, guardIndex) => {
-			it(description(inputStr, result, guardIndex), guardTest(input, guard, result));
+			test(`guard #${guardIndex + 1} should return ${result} for ${inputStr}`, () => {
+				expect(guard(input)).toBe(result);
+			});
 		});
 
 		const zodResult = invertZod ? !result : result;
