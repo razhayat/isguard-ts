@@ -9,3 +9,5 @@ const createPlugin = <T>(module: string): () => T => {
 		};
 	}
 };
+
+export const zod = createPlugin<typeof import("zod")>("zod");
