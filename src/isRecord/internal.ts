@@ -1,5 +1,6 @@
 import { IndexRecordTypeGuard, isRecord, PartialRecordTypeGuard, RecordTypeGuard, TypeGuard, TypeGuardTemplate } from "..";
 import { TypeTypeGuardClass } from "../isType/internal";
+import { zod } from "../plugins/internal";
 import { TypeGuardClass } from "../types/internal";
 import { createTemplate, objectKeys } from "../utils/internal";
 
@@ -33,5 +34,15 @@ export class IndexRecordTypeGuardClass<T> extends TypeGuardClass<Record<Property
 		return value instanceof Object && value.constructor === Object && objectKeys(value).every(key => {
 			return this.isValue(Reflect.get(value, key));
 		});
+	}
+
+	protected toZod() {
+		const keys = zod().union([
+			zod().number(),
+			zod().string(),
+			zod().symbol(),
+		]);
+
+		return zod().record(keys, this.isValue.zod());
 	}
 }

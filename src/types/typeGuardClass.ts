@@ -1,3 +1,4 @@
+import { ZodType } from "zod";
 import { ArrayTypeGuard, IndexRecordTypeGuard, IntersectionTypeGuard, isArray, isIndexRecord, isIntersection, isMaybe, isOptional, isRefine, isSet, isUnion, MaybeTypeGuard, OptionalTypeGuard, RefineTypeGuard, SetTypeGuard, UnionTypeGuard, TypeGuard, TypeGuardTemplate } from "..";
 
 class ExtensibleFunction extends Function {
@@ -14,6 +15,8 @@ export interface TypeGuardClass<T> {
 }
 
 export abstract class TypeGuardClass<T> extends ExtensibleFunction implements TypeGuard<T> {
+	private _zod: ZodType<T> | undefined;
+
 	public constructor() {
 		super((value: unknown) => this.is(value));
 	}
@@ -51,4 +54,10 @@ export abstract class TypeGuardClass<T> extends ExtensibleFunction implements Ty
 	public refine<R extends T>(refinement: (value: T) => value is R): RefineTypeGuard<T, R> {
 		return isRefine(this, refinement);
 	}
+
+	public zod(): ZodType<T> {
+		return this._zod ??= this.toZod();
+	}
+
+	protected abstract toZod(): ZodType<T>;
 }

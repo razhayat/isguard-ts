@@ -1,4 +1,5 @@
 import { RefineTypeGuard, TypeGuard } from "..";
+import { zod } from "../plugins/internal";
 import { TypeGuardClass } from "../types/internal";
 
 export class RefineTypeGuardClass<T, R extends T> extends TypeGuardClass<R> implements RefineTypeGuard<T, R> {
@@ -11,5 +12,9 @@ export class RefineTypeGuardClass<T, R extends T> extends TypeGuardClass<R> impl
 
 	protected is(value: unknown) {
 		return this.isBase(value) && this.refinement(value);
+	}
+
+	protected toZod() {
+		return zod().custom<R>(value => this(value));
 	}
 }

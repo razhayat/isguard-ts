@@ -1,4 +1,5 @@
 import { LazyTypeGuard, TypeGuard } from "..";
+import { zod } from "../plugins/internal";
 import { TypeGuardClass } from "../types/internal";
 
 export class LazyTypeGuardClass<T> extends TypeGuardClass<T> implements LazyTypeGuard<T> {
@@ -10,6 +11,10 @@ export class LazyTypeGuardClass<T> extends TypeGuardClass<T> implements LazyType
 
 	protected is(value: unknown) {
 		return this.generator()(value);
+	}
+
+	protected toZod() {
+		return zod().lazy(() => this.generator().zod());
 	}
 
 	public unbox(): TypeGuard<T> {

@@ -11,4 +11,8 @@ export class ArrayTypeGuardClass<T> extends TypeGuardClass<T[]> implements Array
 	protected is(value: unknown) {
 		return Array.isArray(value) && [...value].every(item => this.isValue(item));
 	}
+
+	protected toZod() {
+		return this.isValue.zod().array();
+	}
 }
