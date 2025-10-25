@@ -37,12 +37,6 @@ export class IndexRecordTypeGuardClass<T> extends TypeGuardClass<Record<Property
 	}
 
 	protected toZod() {
-		const keys = zod().union([
-			zod().number(),
-			zod().string(),
-			zod().symbol(),
-		]);
-
-		return zod().record(keys, this.isValue.zod());
+		return zod().record(zod().any(), this.isValue.zod());
 	}
 }
