@@ -15,6 +15,6 @@ export class LiteralTypeGuardClass<T extends readonly Literal[]> extends TypeGua
 	}
 
 	protected toZod() {
-		return this.values.length ? zod().literal(this.values) : zod().never();
+		return this.values.length ? zod().union(this.values.map(value => zod().literal(value))) : zod().never();
 	}
 }
