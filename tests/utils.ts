@@ -68,7 +68,7 @@ export const describedGuardTests = <T>({
 	testCases,
 }: DescribedGuardTestsProps<T>) => {
 	const guards = [guard, ...equivalentGuards];
-	const zodGuards = guards.map(guard => guard.zod());
+	const zodSchemas = guards.map(guard => guard.zod());
 
 	testCases.forEach((testCase, testCaseIndex) => {
 		const [input, result, options = {}] = testCase;
@@ -86,9 +86,9 @@ export const describedGuardTests = <T>({
 		});
 
 		const zodResult = invertZod ? !result : result;
-		zodGuards.forEach((guard, guardIndex) => {
-			test(`case #${testCaseIndex + 1} - zod schema #${guardIndex + 1} should return ${zodResult} for ${inputStr}`, () => {
-				expect(guard.safeParse(input).success).toBe(zodResult);
+		zodSchemas.forEach((schema, schemaIndex) => {
+			test(`case #${testCaseIndex + 1} - zod schema #${schemaIndex + 1} should return ${zodResult} for ${inputStr}`, () => {
+				expect(schema.safeParse(input).success).toBe(zodResult);
 			});
 		});
 	});
