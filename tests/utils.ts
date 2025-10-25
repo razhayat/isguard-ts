@@ -70,7 +70,7 @@ export const describedGuardTests = <T>({
 	const guards = [guard, ...equivalentGuards];
 	const zodGuards = guards.map(guard => guard.zod());
 
-	testCases.forEach(testCase => {
+	testCases.forEach((testCase, testCaseIndex) => {
 		const [input, result, options = {}] = testCase;
 		const {
 			stringify = defaultStringifyInput,
@@ -80,14 +80,14 @@ export const describedGuardTests = <T>({
 		const inputStr = typeof stringify === "string" ? stringify : stringify(input);
 
 		guards.forEach((guard, guardIndex) => {
-			test(`guard #${guardIndex + 1} should return ${result} for ${inputStr}`, () => {
+			test(`case #${testCaseIndex + 1} - guard #${guardIndex + 1} should return ${result} for ${inputStr}`, () => {
 				expect(guard(input)).toBe(result);
 			});
 		});
 
 		const zodResult = invertZod ? !result : result;
 		zodGuards.forEach((guard, guardIndex) => {
-			test(`zod schema #${guardIndex + 1} should return ${zodResult} for ${inputStr}`, () => {
+			test(`case #${testCaseIndex + 1} - zod schema #${guardIndex + 1} should return ${zodResult} for ${inputStr}`, () => {
 				expect(guard.safeParse(input).success).toBe(zodResult);
 			});
 		});
