@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { isBigint, isBoolean, isFunction, isNumber, isString, isSymbol, isUndefined, TypeGuard } from "../src";
+import { TypeGuard } from "../src";
 
 export type TestCaseOptions = {
 	stringify?: string | ((input: unknown) => string);
@@ -30,7 +30,7 @@ export const constructorStringify = (constructor: Function, ...args: unknown[]) 
 };
 
 export const defaultStringifyInput = (input: unknown): string => {
-	if (isUndefined(input)) {
+	if (input === void 0) {
 		return "undefined";
 	}
 
@@ -39,15 +39,15 @@ export const defaultStringifyInput = (input: unknown): string => {
 		return `[${itemsStr}]`;
 	}
 
-	if (isNumber(input) || isBoolean(input) || isSymbol(input) || isFunction(input)) {
+	if (typeof input === "number" || typeof input === "boolean" || typeof input === "symbol" || typeof input === "function") {
 		return input.toString();
 	}
 
-	if (isString(input)) {
+	if (typeof input === "string") {
 		return `"${input}"`;
 	}
 
-	if (isBigint(input)) {
+	if (typeof input === "bigint") {
 		return `${input}n`;
 	}
 
@@ -77,7 +77,7 @@ export const describedGuardTests = <T>({
 			invertZod = false,
 		} = options;
 
-		const inputStr = isString(stringify) ? stringify : stringify(input);
+		const inputStr = typeof stringify === "string" ? stringify : stringify(input);
 
 		guards.forEach((guard, guardIndex) => {
 			test(`guard #${guardIndex + 1} should return ${result} for ${inputStr}`, () => {
