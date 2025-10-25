@@ -95,8 +95,8 @@ describe("is enum like", () => {
 			[enumLike.bye, true, { stringify: "enumLike.bye" }],
 			[46, true],
 
-			[enumLike[12], true, { stringify: "enumLike[12]" }],
-			["if it was a regular enum it would be hello", true],
+			[enumLike[12], true, { stringify: "enumLike[12]", invertZod: true }],
+			["if it was a regular enum it would be hello", true, { invertZod: true }],
 
 			[enumLike[45], true, { stringify: "enumLike[45]" }],
 			["bye", true],

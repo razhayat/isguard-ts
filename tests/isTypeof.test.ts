@@ -54,20 +54,15 @@ describe("is number", () => {
 			[3.1e4, true],
 			[-3.1e4, true],
 
-			[NaN, true],
-			[-NaN, true],
-			[Infinity, true],
-			[-Infinity, true],
-			[0 / 0, true],
-			[1 / 0, true],
-			[-1 / 0, true],
+			[NaN, true, { invertZod: true }],
+			[-NaN, true, { invertZod: true }],
+			[Infinity, true, { invertZod: true }],
+			[-Infinity, true, { invertZod: true }],
 
 			[Number.MIN_VALUE, true],
 			[Number.MAX_VALUE, true],
 			[Number.MAX_SAFE_INTEGER, true],
 			[Number.EPSILON, true],
-			[Number.POSITIVE_INFINITY, true],
-			[Number.NEGATIVE_INFINITY, true],
 		],
 	});
 });
@@ -233,10 +228,13 @@ describe("is typeof object", () => {
 			["Bye", false],
 			[() => {}, false],
 			[function () {}, false],
+
 			[new Date(), true],
+			[new Map(), true],
+			[new Set(), true],
 			[/1267/, true],
-			[[], true],
-			[[1, null, 3], true],
+			[[], true, { invertZod: true }],
+			[[1, null, 3], true, { invertZod: true }],
 			[{}, true],
 		],
 	});

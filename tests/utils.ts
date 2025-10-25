@@ -1,9 +1,10 @@
-import { expect, it } from "vitest";
+import { expect, it, test } from "vitest";
 import { isBigint, isBoolean, isFunction, isNumber, isString, isSymbol, isUndefined, TypeGuard } from "../src";
 
 export type TestCaseOptions = {
 	stringify?: string | ((input: unknown) => string);
-}
+	invertZod?: boolean;
+};
 
 export type DescribedGuardTestsProps<T> = {
 	guard: TypeGuard<T>;
@@ -77,15 +78,26 @@ export const describedGuardTests = <T>({
 	testCases,
 }: DescribedGuardTestsProps<T>) => {
 	const guards = [guard, ...equivalentGuards];
+	const zodGuards = guards.map(guard => guard.zod());
 
 	testCases.forEach(testCase => {
 		const [input, result, options = {}] = testCase;
-		const { stringify = defaultStringifyInput } = options;
+		const {
+			stringify = defaultStringifyInput,
+			invertZod = false,
+		} = options;
 
 		const inputStr = isString(stringify) ? stringify : stringify(input);
 
 		guards.forEach((guard, guardIndex) => {
 			it(description(inputStr, result, guardIndex), guardTest(input, guard, result));
+		});
+
+		const zodResult = invertZod ? !result : result;
+		zodGuards.forEach((guard, guardIndex) => {
+			test(`zod schema #${guardIndex + 1} should return ${zodResult} for ${inputStr}`, () => {
+				expect(guard.safeParse(input).success).toBe(zodResult);
+			});
 		});
 	});
 };

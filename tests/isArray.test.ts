@@ -68,7 +68,7 @@ describe("is number array", () => {
 
 			[[], true],
 			[[6, -6, 6.66], true],
-			[[1, NaN, 3], true],
+			[[1, NaN, 3], true, { invertZod: true }],
 			[[-1, 0, 1], true],
 			[[-0.1, 2.5, 7.9], true],
 			[[-1000000, 5000000, 0], true],
@@ -189,8 +189,8 @@ describe("is object array", () => {
 			[[{ name: "Alice", extra: "prop" }, { name: "Bob" }], true],
 			[[{ name: "Bob" }, { name: "Charlie", value: "extra" }], true],
 
-			[[() => {}, { name: "function has a name" }], true],
-			[[() => {}, function() {}], true],
+			[[() => {}, { name: "function has a name" }], true, { invertZod: true }],
+			[[() => {}, function() {}], true, { invertZod: true }],
 		],
 	});
 });
