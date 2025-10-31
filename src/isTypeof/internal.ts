@@ -25,7 +25,7 @@ export class TypeofTypeGuardClass<T extends TypeofResult> extends TypeGuardClass
 			boolean: () => z.boolean(),
 			symbol: () => z.symbol(),
 			undefined: () => z.undefined(),
-			object: () => z.object().nullable(),
+			object: () => z.object({}).nullable(),
 			function: () => z.function(),
 		};
 
