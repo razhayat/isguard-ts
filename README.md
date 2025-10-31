@@ -34,6 +34,8 @@ npm install isguard-ts
 + [utility type guards](#all-utility)
 + [generic types](#generic-types)
 + [recursive types](#recursive-types)
+*<p></p>*
++ [zod](#zod)
 
 ## Basic Usage
 
@@ -378,3 +380,33 @@ const isTree: TypeGuard<Tree> = isType<Tree>({
 	},
 });
 ```
+
+## Plugins
+
+*<span id="zod" ></span>*
+### Zod
+Any `TypeGuard` has a `.zod()` method that returns a `zod` schema which represents the guarded type.
+To use this feature you **must have zod installed** through npm. The supported versions of zod start with `zod@3.2.0` and end with `zod@5.0.0` (not included)
+
+```typescript
+const ZodNumber = isNumber.zod(); // same as z.number()
+
+type Person = {
+	name: string;
+};
+
+const isPerson = isType<Person>({
+	name: isString,
+});
+
+const ZodPerson = isPerson.zod(); // same as z.object({ name: z.string() })
+```
+
+> **<span style="font-size: 1.4em" >Important</span>**
+>
+> The schema returned by `.zod()` might not exactly represent the guarded type in certain edge cases.<br/>
+> For example: `isNumber(NaN)` returns `true` while `z.number()` marks `NaN` as invalid.</br>
+>
+> The differences vary between zod versions, but these are the most common
+> + Non finite numbers (`NaN, Infinity, -Infinity`) are valid when using `isguard-ts` but not when using `zod`
+> + `zod` ignores symbol property keys while `isguard-ts` doesn't<br/>
