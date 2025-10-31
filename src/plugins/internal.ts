@@ -5,6 +5,7 @@ const createPlugin = <T>(module: string): () => T => {
 	}
 	catch (error) {
 		return () => {
+			console.error(`${module} must be installed in order to use this feature`);
 			throw error;
 		};
 	}
