@@ -55,7 +55,7 @@
 		"url": "https://github.com/razhayat/isguard-ts"
 	},
 	"peerDependencies": {
-		"zod": ">= 3.0.0 < 5.0.0"
+		"zod": ">= 3.20.0 < 5.0.0"
 	},
 	"peerDependenciesMeta": {
 		"zod": {
