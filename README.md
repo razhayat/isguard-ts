@@ -339,12 +339,12 @@ One way to build recursive type guards is by using [`isLazy`](#is-lazy)
 
 ```typescript
 type Json =
-	number |
-	string |
-	boolean |
-	null |
-	Json[] |
-	{ [key: string]: Json; };
+	| number
+	| string
+	| boolean
+	| null
+	| Json[]
+	| { [key: string]: Json; };
 
 const isJson: TypeGuard<Json> = isUnion(
 	isNumber,
