@@ -14,7 +14,10 @@ describe("is literal", () => {
 describe("is literal of nothing (never)", () => {
 	describedGuardTests({
 		guard: isLiteral(),
-		equivalentGuards: [isNever],
+		equivalentGuards: [
+			isNever,
+			isLiteral("1234", 56, false).extract(),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -36,8 +39,13 @@ describe("is literal of nothing (never)", () => {
 });
 
 describe("is literal (56)", () => {
+	const guard = isLiteral(56);
+
 	describedGuardTests({
-		guard: isLiteral(56),
+		guard: guard,
+		equivalentGuards: [
+			guard.extract(56),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -60,8 +68,13 @@ describe("is literal (56)", () => {
 });
 
 describe("is literal ('Empire!')", () => {
+	const guard = isLiteral("Empire!");
+
 	describedGuardTests({
-		guard: isLiteral("Empire!"),
+		guard: guard,
+		equivalentGuards: [
+			guard.extract("Empire!", "Empire!"),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -72,6 +85,10 @@ describe("is literal ('Empire!')", () => {
 			["empire!", false],
 			["EMPIRE!", false],
 			["EmPiRE!", false],
+			["Empire!moreAfter", false],
+			["Empire!Empire!", false],
+			["Empire! Empire!", false],
+			["!reipmE", false],
 			[new Date(), false],
 			[[], false],
 			[{}, false],
@@ -84,9 +101,14 @@ describe("is literal ('Empire!')", () => {
 });
 
 describe("is 'apple' | 'orange' | 'banana' | 6", () => {
+	const guard = isLiteral("apple", "orange", "banana", 6);
+
 	describedGuardTests({
-		guard: isLiteral("apple", "orange", "banana", 6),
-		equivalentGuards: [isLiteral("orange", "banana", "apple", 6)],
+		guard: guard,
+		equivalentGuards: [
+			isLiteral("orange", "banana", "apple", 6),
+			guard.extract("banana", 6, "orange", "apple"),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -108,8 +130,13 @@ describe("is 'apple' | 'orange' | 'banana' | 6", () => {
 });
 
 describe("is 'apple' | 12 | 34n | true | null | undefined", () => {
+	const guard = isLiteral("apple", 12, 34n, true, null, undefined);
+
 	describedGuardTests({
-		guard: isLiteral("apple", 12, 34n, true, null, undefined),
+		guard: guard,
+		equivalentGuards: [
+			guard.extract(true, void 0, 34n, "apple", null, 12),
+		],
 		testCases: [
 			[6.001, false],
 			[5.999, false],

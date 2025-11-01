@@ -797,6 +797,20 @@ describe("isLiteral", () => {
 
 			expectTypeOf(actual.values).toEqualTypeOf<readonly [12, true]>();
 		});
+
+		it("should have .extract() that returns LiteralTypeGuard<[true]>", () => {
+			const actual = isLiteral(12, true, "hello").extract(true);
+
+			expectTypeOf(actual).toEqualTypeOf<LiteralTypeGuard<[true]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<true>>();
+		});
+
+		it("should have .extract() that only accepts available values", () => {
+			isLiteral(12, true, "hello").extract(
+				// @ts-expect-error
+				"not hello",
+			);
+		});
 	});
 
 	describe("parameters", () => {
