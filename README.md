@@ -415,5 +415,5 @@ const ZodPerson = isPerson.zod(); // same as z.object({ name: z.string() })
 > For example: `isNumber(NaN)` returns `true` while `z.number()` marks `NaN` as invalid.</br>
 >
 > The differences vary between zod versions, but these are the most common
-> + Non finite numbers (`NaN, Infinity, -Infinity`) are valid when using `isguard-ts` but not when using `zod`
+> + Non finite numbers (`NaN, Infinity, -Infinity`) are valid when using `isguard-ts` but invalid when using `zod`
 > + `zod` ignores symbol property keys while `isguard-ts` doesn't<br/>
