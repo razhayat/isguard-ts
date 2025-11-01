@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isArray, isDate, isNumber, isString, isType } from "../src";
+import { isArray, isDate, isNumber, isString, isType, isUndefined } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is array", () => {
@@ -53,30 +53,74 @@ describe("is number array", () => {
 			[new Array<number | string>(20, 50, "string"), false],
 			[new Array<string>("string"), false],
 
+			[new Array(35), false],
+			[Array(90), false],
+			[[,], false],
+			[[, 73], false],
+			[[56, ,], false],
+			[[6, , , 324, 34], false],
+
+			[Array(), true],
+			[new Array, true],
+			[new Array(20, 60), true],
+			[Array(20, 50), true],
+
+
 			[[], true],
 			[[6, -6, 6.66], true],
-			[[1, NaN, 3], true],
+			[[1, NaN, 3], true, { invertZod: true }],
 			[[-1, 0, 1], true],
 			[[-0.1, 2.5, 7.9], true],
 			[[-1000000, 5000000, 0], true],
 			[[654, Number(234), -54], true],
 
-			[new Array, true],
-			[new Array(35), true],
-			[new Array(20, 60), true],
-			[Array(), true],
-			[Array(90), true],
-			[Array(20, 50), true],
-
 			[Array.from([1, 2, 3]), true],
 			[Array.of(1, 2, 3), true],
 			[Array(5).fill(2), true],
 			[Array(3).fill(Number(2)), true],
+		],
+	});
+});
 
+describe("is undefined array", () => {
+	describedGuardTests({
+		guard: isArray(isUndefined),
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[NaN, false],
+			[{}, false],
+			[Object.create(null), false],
+			[-1, false],
+			[new Date(), false],
+			[/regex/, false],
+			[() => undefined, false],
+			[{ length: 13 }, false],
+			[{ length: 2, 0: undefined, 1: undefined }, false],
+			[new Set<number>([1, 2, 3]), false],
+			[new Set<number>(), false],
+			[new Map([[1, 2], [2, 3]]), false],
+
+			[[new Date()], false],
+			[[[], undefined], false],
+			[[undefined, 4, undefined], false],
+			[["undefined", undefined], false],
+			[[undefined, undefined, undefined, false, undefined], false],
+
+			[[], true],
+			[[undefined], true],
+			[[undefined, undefined], true],
+			[[undefined, undefined, undefined], true],
+			[[void 0, void undefined, undefined, void null, void function() {}], true],
+
+			[new Array(35), true],
+			[Array(90), true],
+			[Array(1000).fill(undefined), true],
 			[[,], true],
-			[[, 73], true],
-			[[56, ,], true],
-			[[6, , , 324, 34], true],
+			[[, void 0], true],
+			[[undefined, ,], true],
+			[[void 4, , , undefined, undefined], true],
+			[[void undefined, , , undefined, undefined, , , ,], true],
 		],
 	});
 });
@@ -145,8 +189,8 @@ describe("is object array", () => {
 			[[{ name: "Alice", extra: "prop" }, { name: "Bob" }], true],
 			[[{ name: "Bob" }, { name: "Charlie", value: "extra" }], true],
 
-			[[() => {}, { name: "function has a name" }], true],
-			[[() => {}, function() {}], true],
+			[[() => {}, { name: "function has a name" }], true, { invertZod: true }],
+			[[() => {}, function() {}], true, { invertZod: true }],
 		],
 	});
 });

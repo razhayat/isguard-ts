@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isDate, isMaybe, isNumber, isType, isString, isOptionalString, isLiteral, isLazy, TypeGuard, isBoolean, isIntersection } from "../src";
+import { isDate, isMaybe, isNumber, isType, isString, isOptionalString, isLiteral, isLazy, TypeGuard, isBoolean, isIntersection, TypeTypeGuard } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is type", () => {
@@ -17,19 +17,22 @@ describe("is empty type", () => {
 		testCases: [
 			[null, false],
 			[undefined, false],
-			[12, true],
-			[12n, true],
-			[true, true],
-			[false, true],
-			[Symbol(), true],
-			["vsfbsdf", true],
+
+			[12, true, { invertZod: true }],
+			[12n, true, { invertZod: true }],
+			[true, true, { invertZod: true }],
+			[false, true, { invertZod: true }],
+			[Symbol(), true, { invertZod: true }],
+			["vsfbsdf", true, { invertZod: true }],
 			[{}, true],
-			[[], true],
-			[[12, () => {}, "string"], true],
+			[[], true, { invertZod: true }],
+			[[12, () => {}, "string"], true, { invertZod: true }],
 			[new Map(), true],
+			[new Set(), true],
 			[new String(), true],
-			[function() {}, true],
-			[() => {}, true],
+			[new Date(), true],
+			[function() {}, true, { invertZod: true }],
+			[() => {}, true, { invertZod: true }],
 			[/[436rbf]/, true],
 			[{ 56: "no" }, true],
 			[{ hello: "yes" }, true],
@@ -177,6 +180,53 @@ describe("is tree type", () => {
 	});
 });
 
+describe("is recursive pick type", () => {
+	type PickParent = {
+		a: number;
+		b: Pick<PickParent, "b">[];
+	};
+
+	const isPickParent: TypeTypeGuard<PickParent> = isType<PickParent>({
+		a: isNumber,
+		b: isLazy(() => isPickParent.pick("b")).array(),
+	});
+
+	const isB: TypeTypeGuard<Pick<PickParent, "b">> = isType<Pick<PickParent, "b">>({
+		b: isLazy(() => isB).array(),
+	});
+
+	const isPickParent2 = isType<PickParent>({
+		a: isNumber,
+		b: isB.array(),
+	});
+
+	describedGuardTests({
+		guard: isPickParent,
+		equivalentGuards: [isPickParent2],
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[12, false],
+			["hello", false],
+			[[], false],
+			[{}, false],
+
+			[{ a: 1 }, false],
+			[{ b: [] }, false],
+			[{ a: "oops", b: [] }, false],
+			[{ a: 1, b: [{ b: null }] }, false],
+			[{ a: 3, b: [{ b: [{ a: 5 }] }] }, false],
+			[{ a: 3, b: [{ b: [{ b: [] }, { b: [{ b: 12 }] }] }] }, false],
+
+			[{ a: 1, b: [] }, true],
+			[{ a: 2, b: [{ b: [] }] }, true],
+			[{ a: 3, b: [{ b: [{ b: [] }] }] }, true],
+			[{ a: 3, b: [{ b: [{ b: [] }, { b: [{ b: [] }] }] }] }, true],
+			[{ a: 3, b: [{ b: [{ b: [{ b: [] }] }] }] }, true],
+		],
+	});
+});
+
 describe("is person interface", () => {
 	interface Person {
 		name: string;
@@ -243,8 +293,8 @@ describe("is tuple like type", () => {
 			[{}, false],
 			[new Set(), false],
 			[{ 0: "Hello", 1: 6 }, true],
-			[["Hello", 6], true],
-			[["Bye", 7, new Date()], true],
+			[["Hello", 6], true, { invertZod: true }],
+			[["Bye", 7, new Date()], true, { invertZod: true }],
 			[{ 0: new Date(), 1: 6 }, false],
 			[{ 0: "Hello", 1: 6, age: 56 }, true],
 		],
@@ -270,8 +320,8 @@ describe("is tuple type", () => {
 			[[], false],
 			[{}, false],
 			[{ 0: "Hello", 1: 6 }, true],
-			[["Hello", 6], true],
-			[["Bye", 7, new Date()], true],
+			[["Hello", 6], true, { invertZod: true }],
+			[["Bye", 7, new Date()], true, { invertZod: true }],
 			[{ 0: new Date(), 1: 6 }, false],
 			[{ 0: "Hello", 1: 6, age: 56 }, true],
 		],
@@ -406,7 +456,7 @@ describe("is type with all PropertyKey types", () => {
 			[{ str: "", 61: null }, false],
 			[{ str: 0.35, 61: Array }, false],
 			[{ 61: new Set, str: 783 }, false],
-			[{ 61: 18327.4, str: -7216.3 }, false],
+			[{ 61: 18327.4, str: -7216.3 }, false, { invertZod: true }],
 
 			[{ str: [], 61: () => {}, [symbol]: undefined }, false],
 			[{ [symbol]: 6.6, str: null, 61: true }, false],
@@ -414,10 +464,10 @@ describe("is type with all PropertyKey types", () => {
 			[{ str: Infinity, [symbol]: 534n, 61: "" }, false],
 			[{  61: 53, str: {}, [symbol]: 12 }, false],
 			[{ 61: () => {}, str: 3213, [symbol]: 5372 }, false],
-			[{ str: 23948, [symbol]: null, 61: 2421 }, false],
+			[{ str: 23948, [symbol]: null, 61: 2421 }, false, { invertZod: true }],
 			[{ str: 364634, 61: 24523, [symbol]: 2938523 }, true],
 			[{ get str() { return "364634" }, 61: 24523, [symbol]: 2938523 }, false],
-			[{ get str() { return 364634 }, get 61() { return 24523 }, get [symbol]() { return "2938523" } }, false],
+			[{ get str() { return 364634 }, get 61() { return 24523 }, get [symbol]() { return "2938523" } }, false, { invertZod: true }],
 			[{ str: 364634, get 61() { return "24523" }, get [symbol]() { return 2938523 } }, false],
 
 			[{ str: 364634, 61: 24523, [symbol]: 2938523, anotherStr: 311 }, true],
@@ -461,24 +511,24 @@ describe("is type with .partial", () => {
 
 			[{ str: "not number" }, false],
 			[{ 61: "oops" }, false],
-			[{ [symbol]: [] }, false],
+			[{ [symbol]: [] }, false, { invertZod: true }],
 			[{ str: 12, 61: "bad" }, false],
 			[{ str: "bad", [symbol]: 12 }, false],
-			[{ str: 12, 61: 24, [symbol]: null }, false],
+			[{ str: 12, 61: 24, [symbol]: null }, false, { invertZod: true }],
 			[{ str: 12, 61: null, [symbol]: 42 }, false],
 			[{ get str() { return "bad" }, 61: 24 }, false],
 			[{ get 61() { return "wrong" }, [symbol]: 12 }, false],
-			[{ get [symbol]() { return "oops" }, str: 5 }, false],
+			[{ get [symbol]() { return "oops" }, str: 5 }, false, { invertZod: true }],
 			[{ str: 1, 61: 2, [symbol]: 3, extra: "allowed" }, true],
-			[{ str: 1, 61: 2, [symbol]: "bad", extra: "still allowed" }, false],
+			[{ str: 1, 61: 2, [symbol]: "bad", extra: "still allowed" }, false, { invertZod: true }],
 			[{ str: null }, false],
 
-			[true, true],
-			["{ str: 12 }", true],
-			[-0, true],
-			[[], true],
+			[true, true, { invertZod: true }],
+			["{ str: 12 }", true, { invertZod: true }],
+			[-0, true, { invertZod: true }],
+			[[], true, { invertZod: true }],
 			[{}, true],
-			[() => {}, true],
+			[() => {}, true, { invertZod: true }],
 			[{ extra: "value" }, true],
 
 			[{ str: 12 }, true],

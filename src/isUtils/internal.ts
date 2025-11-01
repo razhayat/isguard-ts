@@ -1,4 +1,5 @@
 import { TypeGuard } from "..";
+import { zod } from "../plugins/internal";
 import { TypeGuardClass } from "../types/internal";
 
 export class UnknownTypeGuardClass extends TypeGuardClass<unknown> implements TypeGuard<unknown> {
@@ -9,6 +10,10 @@ export class UnknownTypeGuardClass extends TypeGuardClass<unknown> implements Ty
 	protected is() {
 		return true;
 	}
+
+	protected toZod() {
+		return zod().unknown();
+	}
 }
 
 export class NeverTypeGuardClass extends TypeGuardClass<never> implements TypeGuard<never> {
@@ -18,5 +23,9 @@ export class NeverTypeGuardClass extends TypeGuardClass<never> implements TypeGu
 
 	protected is() {
 		return false;
+	}
+
+	protected toZod() {
+		return zod().never();
 	}
 }

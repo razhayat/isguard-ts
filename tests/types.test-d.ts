@@ -1,5 +1,6 @@
 import { describe, it, expectTypeOf, test } from "vitest";
 import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, TypeGuard, TypeGuardTemplate, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, isRegExp, isLazy, isLiteral, isRefine, isOptional, isMaybe, ArrayTypeGuard, EnumTypeGuard, InstanceofTypeGuard, IntersectionTypeGuard, LazyTypeGuard, LiteralTypeGuard, MapTypeGuard, RefineTypeGuard, SetTypeGuard, isTypeof, TypeofTypeGuard, UnionTypeGuard, TupleTypeGuard, TypeTypeGuard, IndexRecordTypeGuard, RecordTypeGuard, PartialRecordTypeGuard, MaybeTypeGuard, OptionalTypeGuard } from "../src";
+import { ZodType } from "zod";
 
 describe("TypeGuard type", () => {
 	it("should extend a typescript type guard", () => {
@@ -408,6 +409,12 @@ describe("TypeGuard type", () => {
 		const refine = isString.refine<RefineResult>;
 
 		expectTypeOf(refine).toEqualTypeOf<(refinement: (value: string) => value is RefineResult) => RefineTypeGuard<string, RefineResult>>();
+	});
+
+	it("should have .zod() that receives no parameters and returns ZodType<T>", () => {
+		type T = [{ num: number }];
+
+		expectTypeOf<TypeGuard<T>>().toHaveProperty("zod").toEqualTypeOf<() => ZodType<T>>();
 	});
 });
 

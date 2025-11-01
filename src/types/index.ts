@@ -1,3 +1,4 @@
+import { ZodType } from "zod";
 import { ArrayTypeGuard, IndexRecordTypeGuard, IntersectionTypeGuard, MaybeTypeGuard, OptionalTypeGuard, RefineTypeGuard, SetTypeGuard, UnionTypeGuard } from "..";
 import { AnyTypeGuard } from "./internal";
 
@@ -16,6 +17,7 @@ export type TypeGuard<in out T, in out _U extends ExactEqual<T> = ExactEqual<T>>
 	set(): SetTypeGuard<T>;
 	indexRecord(): IndexRecordTypeGuard<T>;
 	refine<R extends T>(refinement: (value: T) => value is R): RefineTypeGuard<T, R>;
+	zod(): ZodType<T>;
 };
 
 export type Guarded<T extends AnyTypeGuard> = T extends TypeGuard<infer R> ? R : never;

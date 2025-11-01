@@ -1,19 +1,15 @@
-import { expect, it } from "vitest";
-import { isBigint, isBoolean, isFunction, isNumber, isString, isSymbol, isUndefined, TypeGuard } from "../src";
+import { expect, test } from "vitest";
+import { TypeGuard } from "../src";
+
+export type TestCaseOptions = {
+	stringify?: string | ((input: unknown) => string);
+	invertZod?: boolean;
+};
 
 export type DescribedGuardTestsProps<T> = {
 	guard: TypeGuard<T>;
 	equivalentGuards?: TypeGuard<NoInfer<T>>[];
-	description?: (input: string, result: boolean, guardIndex: number) => string;
-	testCases: [input: unknown, result: boolean, stringifyInput?: string | ((input: unknown) => string)][];
-};
-
-export const guardTest = <T>(input: unknown, guard: TypeGuard<T>, result: boolean) => {
-	return () => expect(guard(input)).toBe(result);
-};
-
-export const defaultDescription = (input: string, result: boolean, guardIndex: number) => {
-	return `guard #${guardIndex + 1} should return ${result} for ${input}`;
+	testCases: [input: unknown, result: boolean, options?: TestCaseOptions][];
 };
 
 export const objectStringify = (input: object) => {
@@ -34,7 +30,7 @@ export const constructorStringify = (constructor: Function, ...args: unknown[]) 
 };
 
 export const defaultStringifyInput = (input: unknown): string => {
-	if (isUndefined(input)) {
+	if (input === void 0) {
 		return "undefined";
 	}
 
@@ -43,15 +39,15 @@ export const defaultStringifyInput = (input: unknown): string => {
 		return `[${itemsStr}]`;
 	}
 
-	if (isNumber(input) || isBoolean(input) || isSymbol(input) || isFunction(input)) {
+	if (typeof input === "number" || typeof input === "boolean" || typeof input === "symbol" || typeof input === "function") {
 		return input.toString();
 	}
 
-	if (isString(input)) {
+	if (typeof input === "string") {
 		return `"${input}"`;
 	}
 
-	if (isBigint(input)) {
+	if (typeof input === "bigint") {
 		return `${input}n`;
 	}
 
@@ -69,17 +65,31 @@ export const defaultStringifyInput = (input: unknown): string => {
 export const describedGuardTests = <T>({
 	guard,
 	equivalentGuards = [],
-	description = defaultDescription,
 	testCases,
 }: DescribedGuardTestsProps<T>) => {
 	const guards = [guard, ...equivalentGuards];
+	const zodSchemas = guards.map(guard => guard.zod());
 
-	testCases.forEach(testCase => {
-		const [input, result, testCaseStringifyInput = defaultStringifyInput] = testCase;
-		const inputStr = isString(testCaseStringifyInput) ? testCaseStringifyInput : testCaseStringifyInput(input);
+	testCases.forEach((testCase, testCaseIndex) => {
+		const [input, result, options = {}] = testCase;
+		const {
+			stringify = defaultStringifyInput,
+			invertZod = false,
+		} = options;
+
+		const inputStr = typeof stringify === "string" ? stringify : stringify(input);
 
 		guards.forEach((guard, guardIndex) => {
-			it(description(inputStr, result, guardIndex), guardTest(input, guard, result));
+			test(`case #${testCaseIndex + 1} - guard #${guardIndex + 1} should return ${result} for ${inputStr}`, () => {
+				expect(guard(input)).toBe(result);
+			});
+		});
+
+		const zodResult = invertZod ? !result : result;
+		zodSchemas.forEach((schema, schemaIndex) => {
+			test(`case #${testCaseIndex + 1} - zod schema #${schemaIndex + 1} should return ${zodResult} for ${inputStr}`, () => {
+				expect(schema.safeParse(input).success).toBe(zodResult);
+			});
 		});
 	});
 };

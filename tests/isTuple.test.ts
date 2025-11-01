@@ -86,7 +86,7 @@ describe("is tuple with optional", () => {
 			[[5, 6], true],
 			[[-235, 345.34], true],
 			[[6], true],
-			[[NaN], true],
+			[[NaN], true, { invertZod: true }],
 			[[6, undefined], true],
 			[[1, ,], true],
 		],
