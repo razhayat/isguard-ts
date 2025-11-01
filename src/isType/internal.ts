@@ -24,7 +24,7 @@ export class TypeTypeGuardClass<T extends object> extends TypeGuardClass<T> impl
 	protected toZod() {
 		const entries = this._keys.map(key => [
 			key,
-			zod().lazy(() => Reflect.get(this.template, key).zod()),
+			Reflect.get(this.template, key).zod(),
 		]);
 
 		return zod().object(Object.fromEntries(entries)) as ZodType<T>;
