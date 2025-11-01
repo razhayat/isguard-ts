@@ -1,4 +1,4 @@
-import { IndexRecordTypeGuard, isRecord, PartialRecordTypeGuard, RecordTypeGuard, TypeGuard, TypeGuardTemplate } from "..";
+import { IndexRecordTypeGuard, PartialRecordTypeGuard, RecordTypeGuard, TypeGuard, TypeGuardTemplate } from "..";
 import { TypeTypeGuardClass } from "../isType/internal";
 import { zod } from "../plugins/internal";
 import { TypeGuardClass } from "../types/internal";
@@ -19,7 +19,9 @@ export class PartialRecordTypeGuardClass<K extends readonly PropertyKey[], V> ex
 		public readonly keys: K,
 		public readonly isValue: TypeGuard<V>,
 	) {
-		super(isRecord(keys, isValue).partial().template);
+		const optionalIsValue = isValue.optional()
+		const template = createTemplate(keys, () => optionalIsValue);
+		super(template as TypeGuardTemplate<Partial<Record<K[number], V>>>);
 	}
 }
 
