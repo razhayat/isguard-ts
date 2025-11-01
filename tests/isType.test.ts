@@ -13,7 +13,11 @@ describe("is type", () => {
 
 describe("is empty type", () => {
 	describedGuardTests({
-		guard: isType({}),
+		guard: isType<{}>({}),
+		equivalentGuards: [
+			isType({ name: isString }).pick(),
+			isType({ name: isString }).omit("name"),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
