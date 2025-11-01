@@ -21,4 +21,9 @@ export class LiteralTypeGuardClass<T extends readonly Literal[]> extends TypeGua
 	public extract<V extends readonly T[number][]>(...values: V): LiteralTypeGuard<V> {
 		return isLiteral(...values);
 	}
+
+	public exclude<V extends readonly T[number][]>(...values: V): LiteralTypeGuard<Exclude<T[number], V[number]>[]> {
+		const excludedValues = this.values.filter((value): value is Exclude<T[number], V[number]> => !values.includes(value));
+		return isLiteral(...excludedValues);
+	}
 }
