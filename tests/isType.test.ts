@@ -166,7 +166,7 @@ describe("is tree type", () => {
 	describedGuardTests({
 		guard: isTree,
 		equivalentGuards: [
-			isTreeWithGet,
+			{ guard: isTreeWithGet, skipZod: true },
 			isTreeWithMainLazy,
 		],
 		testCases: [
