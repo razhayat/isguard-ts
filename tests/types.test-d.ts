@@ -811,6 +811,20 @@ describe("isLiteral", () => {
 				"not hello",
 			);
 		});
+
+		it("should have .exclude() that returns LiteralTypeGuard<(12 | true)[]>", () => {
+			const actual = isLiteral(12, true, "hello").exclude("hello");
+
+			expectTypeOf(actual).toEqualTypeOf<LiteralTypeGuard<(12 | true)[]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<12 | true>>();
+		});
+
+		it("should have .exclude() that only accepts available values", () => {
+			isLiteral(12, true, "hello").exclude(
+				// @ts-expect-error
+				"not hello",
+			);
+		});
 	});
 
 	describe("parameters", () => {
