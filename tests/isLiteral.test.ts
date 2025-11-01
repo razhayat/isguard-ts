@@ -9,6 +9,21 @@ describe("is literal", () => {
 
 		expect(is.values).toEqual(values);
 	});
+
+	it("should have .extract() that extracts only the given values", () => {
+		const values = [1, "f", false, null, undefined, 4n] as const;
+		const extractedValues = ["f", 4n, undefined] as const;
+		const is = isLiteral(...values).extract(...extractedValues);
+
+		expect(is.values).toEqual(extractedValues);
+	});
+
+	it("should have .exclude() that excludes only the given values", () => {
+		const values = [1, "f", false, null, undefined, 4n] as const;
+		const is = isLiteral(...values).exclude(false, undefined, 4n);
+
+		expect(is.values).toEqual([1, "f", null]);
+	});
 });
 
 describe("is literal of nothing (never)", () => {
