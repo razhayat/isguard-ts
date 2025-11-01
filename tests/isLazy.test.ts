@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { isArray, isIndexRecord, isLazy, isNumber, isOptional, isTuple, isType, isUnion, TypeGuard } from "../src";
+import { isArray, isIndexRecord, isLazy, isLiteral, isNumber, isOptional, isTuple, isType, isUnion, TypeGuard } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is lazy", () => {
@@ -25,6 +25,20 @@ describe("is lazy", () => {
 		const isLazyNumber = isLazy(generator);
 
 		expect(isLazyNumber.unbox()).toBe(isNumber);
+	});
+
+	it("should memo its inner guard", () => {
+		const generator = vi.fn();
+
+		const isHello = isLazy(() => {
+			generator();
+			return isLiteral("hello");
+		});
+
+		isHello(123);
+		isHello(123);
+
+		expect(generator).toHaveBeenCalledOnce();
 	});
 });
 
