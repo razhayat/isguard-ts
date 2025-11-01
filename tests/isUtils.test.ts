@@ -17,10 +17,10 @@ describe("is object", () => {
 			[false, false],
 			[/[]/, true],
 			[{ hello: 12 }, true],
-			[[2, null, "bye"], true],
+			[[2, null, "bye"], true, { invertZod: true }],
 			[new Set(), true],
 			[new Map(), true],
-			[[new Date()], true],
+			[[new Date()], true, { invertZod: true }],
 			[Object.create({}), true],
 		],
 	});
