@@ -13,7 +13,11 @@ describe("is type", () => {
 
 describe("is empty type", () => {
 	describedGuardTests({
-		guard: isType({}),
+		guard: isType<{}>({}),
+		equivalentGuards: [
+			isType({ name: isString }).pick(),
+			isType({ name: isString }).omit("name"),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -153,9 +157,18 @@ describe("is tree type", () => {
 		},
 	});
 
+	const isTreeWithMainLazy: TypeGuard<Tree> = isLazy(() => isType<Tree>({
+		value: isNumber,
+		left: isTreeWithMainLazy.maybe(),
+		right: isTreeWithMainLazy.maybe(),
+	}));
+
 	describedGuardTests({
 		guard: isTree,
-		equivalentGuards: [isTreeWithGet],
+		equivalentGuards: [
+			isTreeWithGet,
+			isTreeWithMainLazy,
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],

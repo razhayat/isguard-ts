@@ -76,6 +76,7 @@ describe("is { a: number; } | { b: string; }", () => {
 			isUnion(isB, isA),
 			isUnion(isB, isA, isA),
 			isB.or(isA),
+			isUnion(isA, isB, isNever),
 		],
 		testCases: [
 			[null, false],
