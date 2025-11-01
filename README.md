@@ -393,7 +393,7 @@ const isTree: TypeGuard<Tree> = isType<Tree>({
 *<span id="zod" ></span>*
 ### Zod
 Any `TypeGuard` has a `.zod()` method that returns a `zod` schema which represents the guarded type.
-To use this feature you **must have zod installed** through npm. The supported versions of zod start with `zod@3.2.0` and end with `zod@5.0.0` (not included)
+To use this feature you **must have zod installed** through npm. The supported versions of zod start with `zod@3.20.0` and end with `zod@5.0.0` (not included)
 
 ```typescript
 const ZodNumber = isNumber.zod(); // same as z.number()
