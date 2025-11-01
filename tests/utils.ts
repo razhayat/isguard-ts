@@ -1,6 +1,11 @@
 import { expect, test } from "vitest";
 import { TypeGuard } from "../src";
 
+export type TypeGuardOptions<T> = {
+	guard: TypeGuard<T>;
+	skipZod?: boolean;
+};
+
 export type TestCaseOptions = {
 	stringify?: string | ((input: unknown) => string);
 	invertZod?: boolean;
@@ -8,7 +13,7 @@ export type TestCaseOptions = {
 
 export type DescribedGuardTestsProps<T> = {
 	guard: TypeGuard<T>;
-	equivalentGuards?: TypeGuard<NoInfer<T>>[];
+	equivalentGuards?: (TypeGuard<NoInfer<T>> | TypeGuardOptions<NoInfer<T>>)[];
 	testCases: [input: unknown, result: boolean, options?: TestCaseOptions][];
 };
 
@@ -67,8 +72,8 @@ export const describedGuardTests = <T>({
 	equivalentGuards = [],
 	testCases,
 }: DescribedGuardTestsProps<T>) => {
-	const guards = [guard, ...equivalentGuards];
-	const zodSchemas = guards.map(guard => guard.zod());
+	const guardOptions = [guard, ...equivalentGuards].map<TypeGuardOptions<T>>(guard => typeof guard === "function" ? { guard } : guard);
+	const zodSchemas = guardOptions.filter(({ skipZod }) => !skipZod).map(({ guard }) => guard.zod());
 
 	testCases.forEach((testCase, testCaseIndex) => {
 		const [input, result, options = {}] = testCase;
@@ -79,7 +84,7 @@ export const describedGuardTests = <T>({
 
 		const inputStr = typeof stringify === "string" ? stringify : stringify(input);
 
-		guards.forEach((guard, guardIndex) => {
+		guardOptions.forEach(({ guard }, guardIndex) => {
 			test(`case #${testCaseIndex + 1} - guard #${guardIndex + 1} should return ${result} for ${inputStr}`, () => {
 				expect(guard(input)).toBe(result);
 			});
