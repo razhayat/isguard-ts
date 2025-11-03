@@ -1,6 +1,6 @@
 {
 	"name": "isguard-ts",
-	"version": "3.0.2",
+	"version": "3.1.0",
 	"description": "a typescript library for building type guards quickly while maintaining type safety",
 	"main": "dist/index.js",
 	"scripts": {
