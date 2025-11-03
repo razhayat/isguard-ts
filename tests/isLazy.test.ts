@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { isArray, isIndexRecord, isLazy, isLiteral, isNumber, isOptional, isTuple, isType, isUnion, TypeGuard } from "../src";
+import { isArray, isIndexRecord, isLazy, isLiteral, isNumber, isOptional, isTuple, isType, isUndefined, isUnion, TypeGuard } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is lazy", () => {
@@ -53,8 +53,16 @@ describe("is recursive type", () => {
 		next: isLazy(() => isNode).optional(),
 	});
 
+	const isCompletelyLazyNode: TypeGuard<Node> = isLazy(() => isType<Node>({
+		value: isNumber,
+		next: isCompletelyLazyNode.optional(),
+	}));
+
 	describedGuardTests({
 		guard: isNode,
+		equivalentGuards: [
+			isCompletelyLazyNode,
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -85,8 +93,16 @@ describe("is recursive tuple", () => {
 		isOptional(isLazy(() => isRow)),
 	]);
 
+	const isCompletelyLazyRow: TypeGuard<Row> = isLazy(() => isTuple<Row>([
+		isNumber,
+		isUnion(isCompletelyLazyRow, isUndefined),
+	]));
+
 	describedGuardTests({
 		guard: isRow,
+		equivalentGuards: [
+			{ guard: isCompletelyLazyRow, skipZod: true },
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -121,8 +137,16 @@ describe("is recursive union", () => {
 		isLazy(() => isArray(isNumbers))
 	);
 
+	const isCompletelyLazyNumbers: TypeGuard<Numbers> = isLazy(() => isUnion(
+		isNumber,
+		isCompletelyLazyNumbers.array(),
+	));
+
 	describedGuardTests({
 		guard: isNumbers,
+		equivalentGuards: [
+			isCompletelyLazyNumbers,
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -156,12 +180,19 @@ describe("is recursive index record", () => {
 		[key: PropertyKey]: RecursiveIndexRecord;
 	};
 
-	const isRecursiveIndexRecord: TypeGuard<RecursiveIndexRecord> = isLazy(() => isIndexRecord(
-		isRecursiveIndexRecord,
-	));
+	const isRecursiveIndexRecord: TypeGuard<RecursiveIndexRecord> = isIndexRecord(
+		isLazy(() => isRecursiveIndexRecord),
+	);
+
+	const isCompletelyLazyRecursiveIndexRecord: TypeGuard<RecursiveIndexRecord> = isLazy(() => {
+		return isCompletelyLazyRecursiveIndexRecord.indexRecord();
+	});
 
 	describedGuardTests({
 		guard: isRecursiveIndexRecord,
+		equivalentGuards: [
+			isCompletelyLazyRecursiveIndexRecord,
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -195,6 +226,7 @@ describe("is recursive index record", () => {
 describe("non recursive type", () => {
 	describedGuardTests({
 		guard: isLazy<number>(() => isNumber),
+		equivalentGuards: [isNumber],
 		testCases: [
 			[null, false],
 			[undefined, false],
