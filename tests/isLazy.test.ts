@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { isArray, isIndexRecord, isLazy, isLiteral, isNumber, isOptional, isTuple, isType, isUndefined, isUnion, TypeGuard } from "../src";
+import { isArray, isIndexRecord, isLazy, isLiteral, isNumber, isOptional, isTuple, isType, isUnion, TypeGuard } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is lazy", () => {
@@ -95,7 +95,7 @@ describe("is recursive tuple", () => {
 
 	const isCompletelyLazyRow: TypeGuard<Row> = isLazy(() => isTuple<Row>([
 		isNumber,
-		isUnion(isCompletelyLazyRow, isUndefined),
+		isCompletelyLazyRow.optional(),
 	]));
 
 	describedGuardTests({
