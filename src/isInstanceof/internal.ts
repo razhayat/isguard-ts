@@ -1,4 +1,5 @@
-import { Constructor, InstanceofTypeGuard } from "../isInstanceof";
+import { Constructor, InstanceofTypeGuard } from "..";
+import { zod } from "../plugins/internal";
 import { TypeGuardClass } from "../types/internal";
 
 export class InstanceofTypeGuardClass<T extends Constructor> extends TypeGuardClass<InstanceType<T>> implements InstanceofTypeGuard<T> {
@@ -12,5 +13,9 @@ export class InstanceofTypeGuardClass<T extends Constructor> extends TypeGuardCl
 
 	protected is(value: unknown) {
 		return value instanceof this.class;
+	}
+
+	protected toZod() {
+		return zod().instanceof(this.class);
 	}
 }

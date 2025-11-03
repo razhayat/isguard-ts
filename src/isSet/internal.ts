@@ -1,5 +1,5 @@
-import { SetTypeGuard } from ".";
-import { TypeGuard } from "../types";
+import { SetTypeGuard, TypeGuard } from "..";
+import { zod } from "../plugins/internal";
 import { TypeGuardClass } from "../types/internal";
 
 export class SetTypeGuardClass<T> extends TypeGuardClass<Set<T>> implements SetTypeGuard<T> {
@@ -11,5 +11,9 @@ export class SetTypeGuardClass<T> extends TypeGuardClass<Set<T>> implements SetT
 
 	protected is(value: unknown) {
 		return value instanceof Set && [...value.values()].every(value => this.isValue(value));
+	}
+
+	protected toZod() {
+		return zod().set(this.isValue.zod());
 	}
 }

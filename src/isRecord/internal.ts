@@ -1,6 +1,6 @@
-import { IndexRecordTypeGuard, isRecord, PartialRecordTypeGuard, RecordTypeGuard } from "../isRecord";
+import { IndexRecordTypeGuard, PartialRecordTypeGuard, RecordTypeGuard, TypeGuard, TypeGuardTemplate } from "..";
 import { TypeTypeGuardClass } from "../isType/internal";
-import { TypeGuard, TypeGuardTemplate } from "../types";
+import { zod } from "../plugins/internal";
 import { TypeGuardClass } from "../types/internal";
 import { createTemplate, objectKeys } from "../utils/internal";
 
@@ -19,7 +19,9 @@ export class PartialRecordTypeGuardClass<K extends readonly PropertyKey[], V> ex
 		public readonly keys: K,
 		public readonly isValue: TypeGuard<V>,
 	) {
-		super(isRecord(keys, isValue).partial().template);
+		const optionalIsValue = isValue.optional()
+		const template = createTemplate(keys, () => optionalIsValue);
+		super(template as TypeGuardTemplate<Partial<Record<K[number], V>>>);
 	}
 }
 
@@ -34,5 +36,9 @@ export class IndexRecordTypeGuardClass<T> extends TypeGuardClass<Record<Property
 		return value instanceof Object && value.constructor === Object && objectKeys(value).every(key => {
 			return this.isValue(Reflect.get(value, key));
 		});
+	}
+
+	protected toZod() {
+		return zod().record(zod().any(), this.isValue.zod());
 	}
 }

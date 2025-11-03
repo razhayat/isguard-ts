@@ -41,23 +41,24 @@ describe("is Date | number | string | boolean", () => {
 			isBoolean.or(isString, isDate, isNumber),
 		],
 		testCases: [
+			[null, false],
+			[undefined, false],
+			[[new Date(), true, 0, ""], false],
+			[Symbol(), false],
+			[/[123]/, false],
+			[(value: number) => value + 6, false],
+
 			[new Date(), true],
 			[0, true],
 			[348975034, true],
 			[-6.66, true],
-			[NaN, true],
-			[Infinity, true],
-			[-Infinity, true],
+			[NaN, true, { invertZod: true }],
+			[Infinity, true, { invertZod: true }],
+			[-Infinity, true, { invertZod: true }],
 			["", true],
 			["Empire?", true],
 			[false, true],
 			[true, true],
-			[[new Date(), true, 0, ""], false],
-			[Symbol(), false],
-			[/[123]/, false],
-			[null, false],
-			[undefined, false],
-			[(value: number) => value + 6, false],
 		],
 	});
 });
@@ -75,6 +76,7 @@ describe("is { a: number; } | { b: string; }", () => {
 			isUnion(isB, isA),
 			isUnion(isB, isA, isA),
 			isB.or(isA),
+			isUnion(isA, isB, isNever),
 		],
 		testCases: [
 			[null, false],
@@ -97,13 +99,14 @@ describe("is { a: number; } | { b: string; }", () => {
 			[{ b() {} }, false],
 			[{ b: null, a: "not a number" }, false],
 
-			[{ a: NaN }, true],
+			[{ a: NaN }, true, { invertZod: true }],
 			[{ a: 3.14 }, true],
 			[{ b: "" }, true],
 			[{ b: "foo" }, true],
 
 			[{ a: 0, b: "hello" }, true],
 			[{ b: "goodbye", a: 100 }, true],
+			[{ b: "goodbye", a: NaN }, true],
 			[{ a: 0, b: () => {} }, true],
 			[{ b: "goodbye", a: [] }, true],
 

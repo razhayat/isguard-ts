@@ -1,5 +1,4 @@
-import { UnionTypeGuard } from "../isUnion";
-import { TypeGuard } from "../types";
+import { UnionTypeGuard, TypeGuard } from "..";
 import { OptionalTypeGuardClass } from "./internal";
 
 export type OptionalTypeGuard<T> = UnionTypeGuard<[undefined, T]> & {

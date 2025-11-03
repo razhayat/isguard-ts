@@ -1,5 +1,5 @@
+import { TypeGuard } from "..";
 import { InstanceofTypeGuardClass } from "./internal";
-import { TypeGuard } from "../types";
 
 export type Constructor = abstract new (...args: any[]) => {};
 

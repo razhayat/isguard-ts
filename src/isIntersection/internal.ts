@@ -1,5 +1,6 @@
-import { IntersectionTypeGuard } from "../isIntersection";
-import { TypeGuardTemplate } from "../types";
+import { ZodType } from "zod";
+import { IntersectionTypeGuard, TypeGuardTemplate } from "..";
+import { zod } from "../plugins/internal";
 import { TypeGuardClass } from "../types/internal";
 
 export type TupleToIntersection<T extends readonly unknown[]> = {
@@ -17,5 +18,11 @@ export class IntersectionTypeGuardClass<T extends readonly unknown[]> extends Ty
 
 	protected is(value: unknown) {
 		return this.guards.every(guard => guard(value));
+	}
+
+	protected toZod() {
+		return this.guards.reduce<ZodType<TupleToIntersection<T>>>((acc, curr) => {
+			return acc.and(curr.zod());
+		}, zod().any());
 	}
 }

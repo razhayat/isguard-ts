@@ -1,4 +1,5 @@
-import { Literal, LiteralTypeGuard } from "../isLiteral";
+import { isLiteral, Literal, LiteralTypeGuard } from "..";
+import { zod } from "../plugins/internal";
 import { TypeGuardClass } from "../types/internal";
 
 export class LiteralTypeGuardClass<T extends readonly Literal[]> extends TypeGuardClass<T[number]> implements LiteralTypeGuard<T> {
@@ -11,5 +12,18 @@ export class LiteralTypeGuardClass<T extends readonly Literal[]> extends TypeGua
 	protected is(value: unknown) {
 		const unknownValues: readonly unknown[] = this.values;
 		return unknownValues.includes(value);
+	}
+
+	protected toZod() {
+		return this.values.length ? zod().union(this.values.map(value => zod().literal(value))) : zod().never();
+	}
+
+	public extract<V extends readonly T[number][]>(...values: V): LiteralTypeGuard<V> {
+		return isLiteral(...values);
+	}
+
+	public exclude<V extends readonly T[number][]>(...values: V): LiteralTypeGuard<Exclude<T[number], V[number]>[]> {
+		const includedValues = this.values.filter((value): value is Exclude<T[number], V[number]> => !values.includes(value));
+		return isLiteral(...includedValues);
 	}
 }

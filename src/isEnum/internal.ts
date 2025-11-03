@@ -1,5 +1,6 @@
-import { Enum, EnumTypeGuard } from ".";
+import { Enum, EnumTypeGuard } from "..";
 import { TypeGuardClass } from "../types/internal";
+import { zod } from "../plugins/internal";
 
 export class EnumTypeGuardClass<T extends Enum> extends TypeGuardClass<T[keyof T]> implements EnumTypeGuard<T> {
 	public readonly enum: T;
@@ -16,6 +17,10 @@ export class EnumTypeGuardClass<T extends Enum> extends TypeGuardClass<T[keyof T
 
 	protected is(value: unknown) {
 		return this._values.includes(value);
+	}
+
+	protected toZod() {
+		return zod().nativeEnum(this.enum);
 	}
 
 	private getEnumValues() {

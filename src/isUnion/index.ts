@@ -1,4 +1,4 @@
-import { TypeGuard, TypeGuardTemplate } from "../types";
+import { TypeGuard, TypeGuardTemplate } from "..";
 import { UnionTypeGuardClass } from "./internal";
 
 export type UnionTypeGuard<T extends readonly unknown[]> = TypeGuard<T[number]> & {

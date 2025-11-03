@@ -1,5 +1,5 @@
+import { TypeGuard } from "..";
 import { LazyTypeGuardClass } from "./internal";
-import { TypeGuard } from "../types";
 
 export type LazyTypeGuard<T> = TypeGuard<T> & {
 	unbox(): TypeGuard<T>;

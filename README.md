@@ -34,6 +34,8 @@ npm install isguard-ts
 + [utility type guards](#all-utility)
 + [generic types](#generic-types)
 + [recursive types](#recursive-types)
+*<p></p>*
++ [zod](#zod)
 
 ## Basic Usage
 
@@ -48,10 +50,6 @@ type TypeGuard<T> = (value: unknown) => value is T;
 ### `isType`
 Helps you create type guards for types and interfaces
 
-> ***Best Practice:***
-> Pass the generic type argument into `isType` <br/>
-> Otherwise optional fields might have an unexpected behavior
-
 ```typescript
 type Person = {
 	name: string;
@@ -65,6 +63,11 @@ const isPerson = isType<Person>({
 
 isPerson({ name: "Hello", age: 6 }); // true
 ```
+
+> **<span style="font-size: 1.25em" >Best Practice</span>**
+>
+> Pass the generic type argument into `isType` <br/>
+> Otherwise optional fields might have an unexpected behavior
 
 *<span id="is-optional" ></span>*
 ### `isOptional`
@@ -97,10 +100,6 @@ const is12 = isLiteral(12);
 
 `isLiteral` can receive multiple values
 
-> ***Best Practice:***
-> Use the `satisfies` keyword on the result of `isLiteral` when passing multiple values <br/>
-> This ensures the result is of the expected type
-
 ```typescript
 const directions = ["up", "down", "left", "right"] as const;
 type Direction = (typeof directions)[number];
@@ -108,13 +107,14 @@ type Direction = (typeof directions)[number];
 const isDirection = isLiteral(...directions) satisfies TypeGuard<Direction>;
 ```
 
+> **<span style="font-size: 1.25em" >Best Practice</span>**
+>
+> Use the `satisfies` keyword on the result of `isLiteral` when passing multiple values <br/>
+> This ensures the result is of the expected type
+
 *<span id="is-union" ></span>*
 ### `isUnion`
 Helps you create type guards for unions
-
-> ***Best Practice:***
-> Use the `satisfies` keyword on the result of `isUnion` <br/>
-> This ensures the result is of the expected type
 
 ```typescript
 type A = { a: number };
@@ -127,13 +127,14 @@ const isB = isType<B>({ b: isString });
 isUnion(isA, isB) satisfies TypeGuard<C>; // or isA.or(isB);
 ```
 
+> **<span style="font-size: 1.25em" >Best Practice</span>**
+>
+> Use the `satisfies` keyword on the result of `isUnion` <br/>
+> This ensures the result is of the expected type
+
 *<span id="is-intersection" ></span>*
 ### `isIntersection`
 Helps you create type guards for intersections
-
-> ***Best Practice:***
-> Use the `satisfies` keyword on the result of `isIntersection` <br/>
-> This ensures the result is of the expected type
 
 ```typescript
 type A = { a: number };
@@ -145,6 +146,11 @@ const isB = isType<B>({ b: isString });
 
 isIntersection(isA, isB) satisfies TypeGuard<C>; // or isA.and(isB);
 ```
+
+> **<span style="font-size: 1.25em" >Best Practice</span>**
+>
+> Use the `satisfies` keyword on the result of `isIntersection` <br/>
+> This ensures the result is of the expected type
 
 *<span id="is-record" ></span>*
 ### `isRecord`
@@ -195,10 +201,6 @@ In the example above `isPerson`, imported from `./some-module`, might be undefin
 ### `isTuple`
 Helps you create type guards for tuples
 
-> ***Best Practice:***
-> Pass the generic type argument into `isTuple` <br/>
-> Otherwise optional fields might have an unexpected behavior
-
 ```typescript
 type Row = [number, string?];
 
@@ -208,6 +210,11 @@ isRow([6, "Hello"]); // true
 isRow([6]); // true
 isRow(["Hello", "Bye"]); // false
 ```
+
+> **<span style="font-size: 1.25em" >Best Practice</span>**
+>
+> Pass the generic type argument into `isTuple` <br/>
+> Otherwise optional fields might have an unexpected behavior
 
 *<span id="is-enum" ></span>*
 ### `isEnum`
@@ -260,10 +267,6 @@ Helps you refine existing type guards. Can be used for:
 + Branded types (like Email, PositiveNumber and more)
 + Template literals (like \`Bye ${string}\`)
 
-> ***Warning:***
-> using `isRefine` can be unsafe because it let's you implement potentially false logic <br/>
-> Use at your own risk.
-
 ```typescript
 type Farewell = `Bye ${string}`;
 
@@ -271,6 +274,11 @@ const isFarewell = isRefine(isString, (value: string): value is Farewell => {
 	return value.startsWith("Bye ");
 });
 ```
+
+> **<span style="font-size: 1.25em" >Warning</span>**
+>
+> using `isRefine` can be unsafe because it let's you implement potentially false logic <br/>
+> Use at your own risk.
 
 *<span id="all-utility" ></span>*
 ### Built-in Utility Type Guards
@@ -327,19 +335,16 @@ const isNumberHolder = isValueHolder(isNumber);
 *<span id="recursive-types" ></span>*
 ### Recursive Types
 
-> ***Important:***
-> Annotate the recursive guard to avoid typescript errors
-
 One way to build recursive type guards is by using [`isLazy`](#is-lazy)
 
 ```typescript
 type Json =
-	number |
-	string |
-	boolean |
-	null |
-	Json[] |
-	{ [key: string]: Json; };
+	| number
+	| string
+	| boolean
+	| null
+	| Json[]
+	| { [key: string]: Json; };
 
 const isJson: TypeGuard<Json> = isUnion(
 	isNumber,
@@ -378,3 +383,37 @@ const isTree: TypeGuard<Tree> = isType<Tree>({
 	},
 });
 ```
+
+> **<span style="font-size: 1.25em" >Important</span>**
+>
+> Annotate the recursive guard to avoid typescript errors
+
+## Plugins
+
+*<span id="zod" ></span>*
+### Zod
+Any `TypeGuard` has a `.zod()` method that returns a `zod` schema which represents the guarded type.
+To use this feature you **must have zod installed** through npm. The supported versions of zod start with `zod@3.20.0` and end with `zod@5.0.0` (not included)
+
+```typescript
+const ZodNumber = isNumber.zod(); // same as z.number()
+
+type Person = {
+	name: string;
+};
+
+const isPerson = isType<Person>({
+	name: isString,
+});
+
+const ZodPerson = isPerson.zod(); // same as z.object({ name: z.string() })
+```
+
+> **<span style="font-size: 1.25em" >Important</span>**
+>
+> The schema returned by `.zod()` might not exactly represent the guarded type in certain edge cases.<br/>
+> For example: `isNumber(NaN)` returns `true` while `z.number()` marks `NaN` as invalid.</br>
+>
+> The differences vary between zod versions, but these are the most common
+> + Non finite numbers (`NaN, Infinity, -Infinity`) are valid when using `isguard-ts` but invalid when using `zod`
+> + `zod` ignores symbol property keys while `isguard-ts` doesn't<br/>

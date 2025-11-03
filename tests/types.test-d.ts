@@ -1,7 +1,12 @@
 import { describe, it, expectTypeOf, test } from "vitest";
 import { Guarded, isArray, isBoolean, isBooleanArray, isDate, isDateArray, isEnum, isFunction, isIndexRecord, isInstanceof, isIntersection, isMaybeBoolean, isMaybeDate, isMaybeNumber, isMaybeString, isNil, isNull, isNumber, isNumberArray, isObject, isOptionalDate, isOptionalBoolean, isOptionalNumber, isOptionalString, isString, isStringArray, isType, isUndefined, isUnion, TypeGuard, TypeGuardTemplate, isUnknown, isNever, isTrue, isFalse, isMap, isSet, isRecord, isPartialRecord, isTuple, isSymbol, isPropertyKey, isError, isEvalError, isRangeError, isReferenceError, isSyntaxError, isTypeError, isURIError, isRegExp, isLazy, isLiteral, isRefine, isOptional, isMaybe, ArrayTypeGuard, EnumTypeGuard, InstanceofTypeGuard, IntersectionTypeGuard, LazyTypeGuard, LiteralTypeGuard, MapTypeGuard, RefineTypeGuard, SetTypeGuard, isTypeof, TypeofTypeGuard, UnionTypeGuard, TupleTypeGuard, TypeTypeGuard, IndexRecordTypeGuard, RecordTypeGuard, PartialRecordTypeGuard, MaybeTypeGuard, OptionalTypeGuard } from "../src";
+import { ZodType } from "zod";
 
 describe("TypeGuard type", () => {
+	it("should extend a typescript type guard", () => {
+		expectTypeOf<TypeGuard<number>>().toExtend<(value: unknown) => value is number>();
+	});
+
 	it("should be exactly equal", () => {
 		type Type1 = number;
 		type Type2 = number;
@@ -405,6 +410,12 @@ describe("TypeGuard type", () => {
 
 		expectTypeOf(refine).toEqualTypeOf<(refinement: (value: string) => value is RefineResult) => RefineTypeGuard<string, RefineResult>>();
 	});
+
+	it("should have .zod() that receives no parameters and returns ZodType<T>", () => {
+		type T = [{ num: number }];
+
+		expectTypeOf<TypeGuard<T>>().toHaveProperty("zod").toEqualTypeOf<() => ZodType<T>>();
+	});
 });
 
 describe("Guarded type", () => {
@@ -785,6 +796,34 @@ describe("isLiteral", () => {
 			const actual = isLiteral(12, true);
 
 			expectTypeOf(actual.values).toEqualTypeOf<readonly [12, true]>();
+		});
+
+		it("should have .extract() that returns LiteralTypeGuard<[true]>", () => {
+			const actual = isLiteral(12, true, "hello").extract(true);
+
+			expectTypeOf(actual).toEqualTypeOf<LiteralTypeGuard<[true]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<true>>();
+		});
+
+		it("should have .extract() that only accepts available values", () => {
+			isLiteral(12, true, "hello").extract(
+				// @ts-expect-error
+				"not hello",
+			);
+		});
+
+		it("should have .exclude() that returns LiteralTypeGuard<(12 | true)[]>", () => {
+			const actual = isLiteral(12, true, "hello").exclude("hello");
+
+			expectTypeOf(actual).toEqualTypeOf<LiteralTypeGuard<(12 | true)[]>>();
+			expectTypeOf(actual).toExtend<TypeGuard<12 | true>>();
+		});
+
+		it("should have .exclude() that only accepts available values", () => {
+			isLiteral(12, true, "hello").exclude(
+				// @ts-expect-error
+				"not hello",
+			);
 		});
 	});
 

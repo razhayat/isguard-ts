@@ -54,21 +54,15 @@ describe("is number", () => {
 			[3.1e4, true],
 			[-3.1e4, true],
 
-			[NaN, true],
-			[-NaN, true],
-			[Infinity, true],
-			[-Infinity, true],
-			[0 / 0, true],
-			[1 / 0, true],
-			[-1 / 0, true],
+			[NaN, true, { invertZod: true }],
+			[-NaN, true, { invertZod: true }],
+			[Infinity, true, { invertZod: true }],
+			[-Infinity, true, { invertZod: true }],
 
-			[Number('12'), true, "Number('12')"],
 			[Number.MIN_VALUE, true],
 			[Number.MAX_VALUE, true],
 			[Number.MAX_SAFE_INTEGER, true],
 			[Number.EPSILON, true],
-			[Number.POSITIVE_INFINITY, true],
-			[Number.NEGATIVE_INFINITY, true],
 		],
 	});
 });
@@ -143,7 +137,6 @@ describe("is string", () => {
 			['one', true],
 			[`hello`, true],
 			[`hi ${"me from the future"}`, true],
-			[String("Hello"), true, "String('Hello')"],
 		],
 	});
 });
@@ -178,11 +171,6 @@ describe("is boolean", () => {
 
 			[true, true],
 			[false, true],
-
-			[Boolean("true"), true, "Boolean('true')"],
-			[Boolean("false"), true, "Boolean('false')"],
-			[Boolean(1), true, "Boolean(1)"],
-			[Boolean(0), true, "Boolean(0)"],
 		],
 	});
 });
@@ -240,10 +228,13 @@ describe("is typeof object", () => {
 			["Bye", false],
 			[() => {}, false],
 			[function () {}, false],
+
 			[new Date(), true],
+			[new Map(), true],
+			[new Set(), true],
 			[/1267/, true],
-			[[], true],
-			[[1, null, 3], true],
+			[[], true, { invertZod: true }],
+			[[1, null, 3], true, { invertZod: true }],
 			[{}, true],
 		],
 	});
@@ -276,9 +267,7 @@ describe("is function", () => {
 			[async () => {}, true],
 
 			[Array, true],
-			[Array.prototype.find, true, "Array.prototype.find"],
 			[Function, true],
-			[Function.prototype, true, "Function.prototype"],
 
 			[setTimeout, true],
 			[setInterval, true],
