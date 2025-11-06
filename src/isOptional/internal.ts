@@ -8,6 +8,10 @@ export class OptionalTypeGuardClass<T> extends UnionTypeGuardClass<[undefined, T
 		super([isUndefined, guard]);
 	}
 
+	protected toZod() {
+		return this.guard.zod().optional();
+	}
+
 	public unbox(): TypeGuard<T> {
 		return this.guard;
 	}
