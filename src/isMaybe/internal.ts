@@ -8,6 +8,10 @@ export class MaybeTypeGuardClass<T> extends UnionTypeGuardClass<[null, T]> imple
 		super([isNull, guard]);
 	}
 
+	protected toZod() {
+		return this.guard.zod().nullable();
+	}
+
 	public unbox(): TypeGuard<T> {
 		return this.guard;
 	}
