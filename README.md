@@ -351,8 +351,8 @@ const isJson: TypeGuard<Json> = isUnion(
 	isString,
 	isBoolean,
 	isNull,
-	isLazy(() => isArray(isJson)),
-	isLazy(() => isJson),
+	isLazy(() => isJson).array(),
+	isLazy(() => isJson).indexRecord(),
 );
 ```
 
@@ -370,7 +370,7 @@ const isTree: TypeGuard<Tree> = isType<Tree>({
 });
 ```
 
-Another way (though less recommended) is by using a `getter`
+There is a **less** recommended way using a getter
 
 ```typescript
 const isTree: TypeGuard<Tree> = isType<Tree>({
