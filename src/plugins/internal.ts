@@ -1,14 +1,14 @@
-const createPlugin = <T>(module: string): () => T => {
+const createZodPlugin = () => {
 	try {
-		const plugin: T = require(module);
+		const plugin: typeof import("zod") = require("zod");
 		return () => plugin;
 	}
 	catch (error) {
 		return () => {
-			console.error(`${module} must be installed in order to use this feature`);
+			console.error("zod must be installed in order to use this feature");
 			throw error;
 		};
 	}
 };
 
-export const zod = createPlugin<typeof import("zod")>("zod");
+export const zod = createZodPlugin();
