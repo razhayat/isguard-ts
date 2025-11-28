@@ -101,7 +101,7 @@ describe("is recursive tuple", () => {
 	describedGuardTests({
 		guard: isRow,
 		equivalentGuards: [
-			{ guard: isCompletelyLazyRow, skipZod: true },
+			isCompletelyLazyRow,
 		],
 		testCases: [
 			[null, false],
@@ -121,6 +121,7 @@ describe("is recursive tuple", () => {
 			[[42342, [423432, ["bla"]]], false],
 			[[-32, [5n]], false],
 			[[12], true],
+			[[NaN], true, { zod: "inverted" }],
 			[[15.5, undefined], true],
 			[[64, [424]], true],
 			[[943.2, [23432, [5352]]], true],
