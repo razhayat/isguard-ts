@@ -54,10 +54,10 @@ describe("is number", () => {
 			[3.1e4, true],
 			[-3.1e4, true],
 
-			[NaN, true, { invertZod: true }],
-			[-NaN, true, { invertZod: true }],
-			[Infinity, true, { invertZod: true }],
-			[-Infinity, true, { invertZod: true }],
+			[NaN, true, { zod: "inverted" }],
+			[-NaN, true, { zod: "inverted" }],
+			[Infinity, true, { zod: "inverted" }],
+			[-Infinity, true, { zod: "inverted" }],
 
 			[Number.MIN_VALUE, true],
 			[Number.MAX_VALUE, true],
@@ -233,8 +233,8 @@ describe("is typeof object", () => {
 			[new Map(), true],
 			[new Set(), true],
 			[/1267/, true],
-			[[], true, { invertZod: true }],
-			[[1, null, 3], true, { invertZod: true }],
+			[[], true, { zod: "inverted" }],
+			[[1, null, 3], true, { zod: "inverted" }],
 			[{}, true],
 		],
 	});

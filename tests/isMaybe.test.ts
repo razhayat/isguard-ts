@@ -33,8 +33,8 @@ describe("is maybe number", () => {
 			[0, true],
 			[-42, true],
 			[3.14, true],
-			[Infinity, true, { invertZod: true }],
-			[NaN, true, { invertZod: true }],
+			[Infinity, true, { zod: "inverted" }],
+			[NaN, true, { zod: "inverted" }],
 
 			[null, true],
 		],

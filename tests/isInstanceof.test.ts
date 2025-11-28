@@ -46,14 +46,12 @@ describe("is animal", () => {
 			[Object.setPrototypeOf(new Dog(), Animal.prototype), true],
 			[Object.setPrototypeOf(new Dog(), Cat.prototype), true],
 
-
 			[{ __proto__: { __proto__: new Cat() } }, true],
 			[new Cat, true],
 			[new Cat(), true],
 			[Object.create(Cat.prototype), true],
 			[Object.setPrototypeOf(new Cat(), Animal.prototype), true],
 			[Object.setPrototypeOf(new Cat(), Dog.prototype), true],
-
 		],
 	});
 });
