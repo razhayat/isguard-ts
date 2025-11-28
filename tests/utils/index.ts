@@ -1,11 +1,11 @@
 import { expect, test } from "vitest";
 import { defaultStringifyInput } from "./stringify";
-import { TestCaseOptions, TypeGuardProp, TypeGuardTuple } from "./types";
+import { TestCaseTuple, TypeGuardProp, TypeGuardTuple } from "./types";
 
 export type DescribedGuardTestsProps<T> = {
 	guard: TypeGuardProp<T>;
 	equivalentGuards?: TypeGuardProp<NoInfer<T>>[];
-	testCases: [input: unknown, result: boolean, options?: TestCaseOptions][];
+	testCases: TestCaseTuple[];
 };
 
 export const describedGuardTests = <T>({
