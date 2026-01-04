@@ -32,7 +32,6 @@ describe("is number set", () => {
 			[new Set([12, "hello", 11, 12]), false],
 			[new WeakSet(), false],
 			[Set, false],
-			[new Set, true],
 			[new Set(), true],
 			[new Set(null), true],
 			[new Set(undefined), true],

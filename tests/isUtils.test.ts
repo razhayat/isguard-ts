@@ -1,6 +1,16 @@
 import { describe } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isFalse, isNever, isNil, isNull, isObject, isPropertyKey, isTrue, isUndefined, isUnknown } from "../src";
+import {
+	isFalse,
+	isNever,
+	isNil,
+	isNull,
+	isObject,
+	isPropertyKey,
+	isTrue,
+	isUndefined,
+	isUnknown,
+} from "../src";
 
 describe("is object", () => {
 	describedGuardTests({
@@ -41,8 +51,8 @@ describe("isUnknown", () => {
 			["hello", true],
 			[[new Date(), 12, "bye"], true],
 			[{ bye: "no", ok: "yes" }, true],
-			[() => { }, true],
-			[function() {}, true],
+			[() => {}, true],
+			[function () {}, true],
 			[async () => {}, true],
 			[Symbol("symbol"), true],
 			[/[a-z]/, true],
@@ -65,7 +75,7 @@ describe("isNever", () => {
 			["hello", false],
 			[[new Date(), 12, "bye"], false],
 			[{ bye: "no", ok: "yes" }, false],
-			[() => { }, false],
+			[() => {}, false],
 			[async function* () {}, false],
 			[Symbol(), false],
 			[/[A-Z]/, false],
@@ -84,7 +94,7 @@ describe("isPropertyKey", () => {
 			[[], false],
 			[{}, false],
 			[{ key: "123" }, false],
-			[function() {}, false],
+			[function () {}, false],
 			[() => {}, false],
 			[new Map(), false],
 			[new Set(), false],
@@ -148,7 +158,7 @@ describe("is undefined", () => {
 			["hello", false],
 			[new Map(), false],
 			[Symbol("undefined"), false],
-			[async function() {}, false],
+			[async function () {}, false],
 			[[], false],
 			[{}, false],
 			[["Empire"], false],
@@ -224,7 +234,7 @@ describe("is false", () => {
 			[new Boolean(true), false],
 			[[], false],
 			[{}, false],
-			[function() {}, false],
+			[function () {}, false],
 			[[false], false],
 			[true, false],
 			[false, true],

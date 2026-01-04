@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { isArray, isDate, isNumber, isString, isType, isUndefined } from "../src";
+import {
+	isArray,
+	isDate,
+	isNumber,
+	isString,
+	isType,
+	isUndefined,
+} from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is array", () => {
@@ -26,7 +33,13 @@ describe("is number array", () => {
 			[{ length: 2, 0: 1, 1: 2 }, false],
 			[new Set<number>([1, 2, 3]), false],
 			[new Set<number>(), false],
-			[new Map([[1, 2], [2, 3]]), false],
+			[
+				new Map([
+					[1, 2],
+					[2, 3],
+				]),
+				false,
+			],
 
 			[["1", 2, 3], false],
 			[["hello", "bye"], false],
@@ -36,7 +49,13 @@ describe("is number array", () => {
 			[["6", 7, "8"], false],
 			[[1, {}, 3], false],
 			[[undefined, 2, 3], false],
-			[[[1, 2], [3, 4]], false],
+			[
+				[
+					[1, 2],
+					[3, 4],
+				],
+				false,
+			],
 
 			[[1, "2", true], false],
 			[[1, 2, { foo: "bar" }], false],
@@ -61,10 +80,9 @@ describe("is number array", () => {
 			[[6, , , 324, 34], false],
 
 			[Array(), true],
-			[new Array, true],
+			[new Array(), true],
 			[new Array(20, 60), true],
 			[Array(20, 50), true],
-
 
 			[[], true],
 			[[6, -6, 6.66], true],
@@ -99,7 +117,13 @@ describe("is undefined array", () => {
 			[{ length: 2, 0: undefined, 1: undefined }, false],
 			[new Set<number>([1, 2, 3]), false],
 			[new Set<number>(), false],
-			[new Map([[1, 2], [2, 3]]), false],
+			[
+				new Map([
+					[1, 2],
+					[2, 3],
+				]),
+				false,
+			],
 
 			[[new Date()], false],
 			[[[], undefined], false],
@@ -111,7 +135,10 @@ describe("is undefined array", () => {
 			[[undefined], true],
 			[[undefined, undefined], true],
 			[[undefined, undefined, undefined], true],
-			[[void 0, void undefined, undefined, void null, void function() {}], true],
+			[
+				[void 0, void undefined, undefined, void null, void function () {}],
+				true,
+			],
 
 			[new Array(35), true],
 			[Array(90), true],
@@ -158,7 +185,13 @@ describe("is object array", () => {
 			[[null, undefined], false],
 			[[Symbol("foo"), Symbol("bar")], false],
 			[[BigInt(123), BigInt(456)], false],
-			[[[1, 2], [3, 4]], false],
+			[
+				[
+					[1, 2],
+					[3, 4],
+				],
+				false,
+			],
 			[[Promise.resolve(), Promise.resolve()], false],
 
 			[[{ a: "Alice" }, { b: "Bob" }], false],
@@ -183,14 +216,22 @@ describe("is object array", () => {
 			[[{ name: "Alice" }], true],
 			[[{ name: "Alice" }, { name: "Bob" }], true],
 			[[{ name: "Alice" }, { name: "Bob" }, { name: "Charlie" }], true],
-			[[{ name: "Alice" }, { name: "Bob" }, { name: "Charlie" }, { name: "David" }], true],
+			[
+				[
+					{ name: "Alice" },
+					{ name: "Bob" },
+					{ name: "Charlie" },
+					{ name: "David" },
+				],
+				true,
+			],
 
 			[[{ name: "Alice" }, { name: "Bob", age: 30 }], true],
 			[[{ name: "Alice", extra: "prop" }, { name: "Bob" }], true],
 			[[{ name: "Bob" }, { name: "Charlie", value: "extra" }], true],
 
 			[[() => {}, { name: "function has a name" }], true, { zod: "inverted" }],
-			[[() => {}, function() {}], true, { zod: "inverted" }],
+			[[() => {}, function () {}], true, { zod: "inverted" }],
 		],
 	});
 });

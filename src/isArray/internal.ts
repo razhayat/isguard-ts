@@ -1,10 +1,11 @@
 import { ArrayTypeGuard, TypeGuard } from "..";
 import { TypeGuardClass } from "../types/internal";
 
-export class ArrayTypeGuardClass<T> extends TypeGuardClass<T[]> implements ArrayTypeGuard<T> {
-	public constructor(
-		public readonly isValue: TypeGuard<T>,
-	) {
+export class ArrayTypeGuardClass<T>
+	extends TypeGuardClass<T[]>
+	implements ArrayTypeGuard<T>
+{
+	public constructor(public readonly isValue: TypeGuard<T>) {
 		super();
 	}
 

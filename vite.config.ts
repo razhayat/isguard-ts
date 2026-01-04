@@ -5,7 +5,7 @@ export default defineConfig({
 	plugins: [
 		dtsPlugin({
 			rollupTypes: true,
-		})
+		}),
 	],
 	build: {
 		lib: {
@@ -16,5 +16,5 @@ export default defineConfig({
 	},
 	esbuild: {
 		minifyIdentifiers: false,
-	}
-})
+	},
+});

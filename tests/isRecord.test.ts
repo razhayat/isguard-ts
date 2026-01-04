@@ -1,6 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isBoolean, isDate, isIndexRecord, isLiteral, isNumber, isPartialRecord, isRecord, isString, isType } from "../src";
+import {
+	isBoolean,
+	isDate,
+	isIndexRecord,
+	isLiteral,
+	isNumber,
+	isPartialRecord,
+	isRecord,
+	isString,
+	isType,
+} from "../src";
 
 describe("is record", () => {
 	it("should have .keys that is equal to the given keys", () => {
@@ -39,7 +49,14 @@ describe("is number record", () => {
 			[Symbol(), false],
 			[[1, 2, 3], false],
 			[new Map(), false],
-			[new Map([["num1", 1], ["num2", 2], ["num3", 3]]), false],
+			[
+				new Map([
+					["num1", 1],
+					["num2", 2],
+					["num3", 3],
+				]),
+				false,
+			],
 			[() => {}, false],
 			[{}, false],
 			["bla bla", false],
@@ -53,7 +70,6 @@ describe("is number record", () => {
 });
 
 describe("is Record<'a' | 'b', 'c', 'd'> record", () => {
-
 	const extraGuard = isRecord(["a", "b", "c"], isLiteral("c", "d"));
 	const guard = isRecord(["a", "b"], isLiteral("c", "d"));
 
@@ -70,7 +86,7 @@ describe("is Record<'a' | 'b', 'c', 'd'> record", () => {
 			[{}, false],
 			[new Set(), false],
 			[async () => await Promise.resolve("c"), false],
-			[new Object, false],
+			[new Object(), false],
 			[{ a: "c" }, false],
 			[{ a: "d", b: "invalid value" }, false],
 			[{ a: "invalid", b: "another invalid" }, false],
@@ -139,7 +155,7 @@ describe("is record with symbol keys", () => {
 			[0, false],
 			[56n, false],
 			[new Map(), false, { zod: "inverted" }],
-			[function() {}, false],
+			[function () {}, false],
 			[[], false],
 			[{}, false, { zod: "inverted" }],
 			[s1, false],
@@ -174,7 +190,10 @@ describe("is partial record", () => {
 describe("is partial string record", () => {
 	type T = Partial<Record<"firstName" | "secondName", string>>;
 
-	const extraGuard = isPartialRecord(["firstName", "secondName", "thirdName"], isString);
+	const extraGuard = isPartialRecord(
+		["firstName", "secondName", "thirdName"],
+		isString,
+	);
 	const guard = isPartialRecord(["firstName", "secondName"], isString);
 
 	describedGuardTests<T>({
@@ -198,7 +217,7 @@ describe("is partial string record", () => {
 			[new Date(), true],
 			["hello", true, { zod: "inverted" }],
 			[["firstName", "secondName"], true, { zod: "inverted" }],
-			[() => { }, true, { zod: "inverted" }],
+			[() => {}, true, { zod: "inverted" }],
 
 			[{ firstName: "hello" }, true],
 			[{ firstName: "hello", secondName: "bye" }, true],
@@ -230,7 +249,7 @@ describe("is partial record with symbol keys", () => {
 			[2343n, true, { zod: "inverted" }],
 			[true, true, { zod: "inverted" }],
 			[symbol, true, { zod: "inverted" }],
-			[() => { }, true, { zod: "inverted" }],
+			[() => {}, true, { zod: "inverted" }],
 
 			[{ [Symbol("another symbol")]: 2423 }, true],
 			[{ [Symbol()]: 2423 }, true],
@@ -260,9 +279,7 @@ describe("is number index record", () => {
 			public num1: number,
 			public num2: number,
 			public num3: number,
-		) {
-
-		}
+		) {}
 
 		public static evenAStaticNumberField: number = 12;
 	}
@@ -286,9 +303,21 @@ describe("is number index record", () => {
 			[[], false],
 			[[213], false],
 
-			[Object.create(null), false, { stringify: "Object.create(null)", zod: "inverted" }],
-			[Object.create(Date.prototype), false, { stringify: "Object.create(Date.prototype)" }],
-			[Object.create(AllIHaveIsNumberFields.prototype), false, { stringify: "Object.create(AllIHaveIsNumberFields.prototype)" }],
+			[
+				Object.create(null),
+				false,
+				{ stringify: "Object.create(null)", zod: "inverted" },
+			],
+			[
+				Object.create(Date.prototype),
+				false,
+				{ stringify: "Object.create(Date.prototype)" },
+			],
+			[
+				Object.create(AllIHaveIsNumberFields.prototype),
+				false,
+				{ stringify: "Object.create(AllIHaveIsNumberFields.prototype)" },
+			],
 
 			[{ hello: "bye" }, false],
 			[{ 61: "not a number" }, false],
@@ -308,9 +337,17 @@ describe("is number index record", () => {
 			[{ [Symbol()]: 45, 56: 12 }, true],
 			[{ str: 78, 79: 80, [Symbol()]: 90 }, true],
 
-			[Object.create(Object.prototype), true, { stringify: "Object.create(Object.prototype)" }],
+			[
+				Object.create(Object.prototype),
+				true,
+				{ stringify: "Object.create(Object.prototype)" },
+			],
 			[Object.create({}), true, { stringify: "Object.create({})" }],
-			[Object.create({ name: 12 }), true, { stringify: "Object.create({ name: 12 })" }],
+			[
+				Object.create({ name: 12 }),
+				true,
+				{ stringify: "Object.create({ name: 12 })" },
+			],
 		],
 	});
 });

@@ -16,6 +16,7 @@ describe("is maybe number", () => {
 		equivalentGuards: [
 			isNumber.maybe(),
 			isUnion(isNumber, isNull),
+			isNull.or(isNumber),
 		],
 		testCases: [
 			[undefined, false],
@@ -24,7 +25,7 @@ describe("is maybe number", () => {
 			["123", false],
 			[[], false],
 			[{}, false],
-			[function() {}, false],
+			[function () {}, false],
 			[new Date(), false],
 			[Date, false],
 			[BigInt(123), false],

@@ -1,5 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { isDate, isMaybe, isNumber, isType, isString, isOptionalString, isLiteral, isLazy, TypeGuard, isBoolean, isIntersection, TypeTypeGuard } from "../src";
+import {
+	isDate,
+	isMaybe,
+	isNumber,
+	isType,
+	isString,
+	isOptionalString,
+	isLiteral,
+	isLazy,
+	TypeGuard,
+	isBoolean,
+	isIntersection,
+	TypeTypeGuard,
+} from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is type", () => {
@@ -35,7 +48,7 @@ describe("is empty type", () => {
 			[new Set(), true],
 			[new String(), true],
 			[new Date(), true],
-			[function() {}, true, { zod: "inverted" }],
+			[function () {}, true, { zod: "inverted" }],
 			[() => {}, true, { zod: "inverted" }],
 			[/[436rbf]/, true],
 			[{ 56: "no" }, true],
@@ -52,9 +65,10 @@ describe("is simple type", () => {
 	};
 
 	class SimpleClass implements Simple {
-		public constructor(public name: string, public age: number) {
-
-		}
+		public constructor(
+			public name: string,
+			public age: number,
+		) {}
 	}
 
 	describedGuardTests({
@@ -153,22 +167,21 @@ describe("is tree type", () => {
 			return isTreeWithGet.maybe();
 		},
 		get right() {
-			return isTreeWithGet.maybe()
+			return isTreeWithGet.maybe();
 		},
 	});
 
-	const isTreeWithMainLazy: TypeGuard<Tree> = isLazy(() => isType<Tree>({
-		value: isNumber,
-		left: isTreeWithMainLazy.maybe(),
-		right: isTreeWithMainLazy.maybe(),
-	}));
+	const isTreeWithMainLazy: TypeGuard<Tree> = isLazy(() =>
+		isType<Tree>({
+			value: isNumber,
+			left: isTreeWithMainLazy.maybe(),
+			right: isTreeWithMainLazy.maybe(),
+		}),
+	);
 
 	describedGuardTests({
 		guard: isTree,
-		equivalentGuards: [
-			[isTreeWithGet, { zod: "throws" }],
-			isTreeWithMainLazy,
-		],
+		equivalentGuards: [[isTreeWithGet, { zod: "throws" }], isTreeWithMainLazy],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -187,8 +200,22 @@ describe("is tree type", () => {
 			[{ value: NaN, left: null, right: null }, true, { zod: "inverted" }],
 			[{ value: 6, right: null }, false],
 			[{ value: "Hello, world!", left: null, right: null }, false],
-			[{ value: 12, left: { value: 13, left: null, right: null }, right: null }, true],
-			[{ value: 12, left: { value: 13, left: null, right: null }, right: { value: "Bye, world!", left: null, right: null } }, false],
+			[
+				{
+					value: 12,
+					left: { value: 13, left: null, right: null },
+					right: null,
+				},
+				true,
+			],
+			[
+				{
+					value: 12,
+					left: { value: 13, left: null, right: null },
+					right: { value: "Bye, world!", left: null, right: null },
+				},
+				false,
+			],
 			[{ value: 6, left: null, right: null, another: null }, true],
 		],
 	});
@@ -205,7 +232,9 @@ describe("is recursive pick type", () => {
 		b: isLazy(() => isPickParent.pick("b")).array(),
 	});
 
-	const isB: TypeTypeGuard<Pick<PickParent, "b">> = isType<Pick<PickParent, "b">>({
+	const isB: TypeTypeGuard<Pick<PickParent, "b">> = isType<
+		Pick<PickParent, "b">
+	>({
 		b: isLazy(() => isB).array(),
 	});
 
@@ -273,18 +302,52 @@ describe("is person interface", () => {
 			[new Set(), false],
 			[Object, false],
 			[{ name: "", height: 6, birthday: new Date(), sex: "F" }, false],
-			[{ name: "", height: 6, birthday: new Date(), deathday: null, sex: "F" }, true],
-			[{ name: "", height: 6, birthday: new Date(), deathDay: null, sex: "F" }, false],
-			[{ name: "", height: 6, birthday: new Date(), deathday: null, sex: "F", another: "no" }, true],
-			[{ name: "", height: 6, birthday: new Date(), deathday: new Date(), sex: "O" }, false],
-			[{ name: NaN, height: 6, birthday: new Date(), deathday: new Date(), sex: "M" }, false],
+			[
+				{ name: "", height: 6, birthday: new Date(), deathday: null, sex: "F" },
+				true,
+			],
+			[
+				{ name: "", height: 6, birthday: new Date(), deathDay: null, sex: "F" },
+				false,
+			],
+			[
+				{
+					name: "",
+					height: 6,
+					birthday: new Date(),
+					deathday: null,
+					sex: "F",
+					another: "no",
+				},
+				true,
+			],
+			[
+				{
+					name: "",
+					height: 6,
+					birthday: new Date(),
+					deathday: new Date(),
+					sex: "O",
+				},
+				false,
+			],
+			[
+				{
+					name: NaN,
+					height: 6,
+					birthday: new Date(),
+					deathday: new Date(),
+					sex: "M",
+				},
+				false,
+			],
 		],
 	});
 });
 
 describe("is tuple like type", () => {
 	type TupleLike = {
-		0: string,
+		0: string;
 		1: number;
 	};
 
@@ -327,7 +390,7 @@ describe("is tuple type", () => {
 			[43n, false],
 			[true, false],
 			["424", false],
-			[function() {}, false],
+			[function () {}, false],
 			[new Map(), false],
 			[Symbol(), false],
 			[/[0-5]/, false],
@@ -423,10 +486,16 @@ describe("is type with all PropertyKey types", () => {
 		guard: isAll,
 		equivalentGuards: [
 			isAllGet,
-			isIntersection(isAll.pick("str", symbol), isType<Pick<All, 61>>({ 61: isNumber })),
+			isIntersection(
+				isAll.pick("str", symbol),
+				isType<Pick<All, 61>>({ 61: isNumber }),
+			),
 			isAllExtra.pick("str", 61, symbol),
 			isAll.pick("str", 61, symbol),
-			isIntersection(isAll.omit("str"), isType<Pick<All, "str">>({ str: isNumber })),
+			isIntersection(
+				isAll.omit("str"),
+				isType<Pick<All, "str">>({ str: isNumber }),
+			),
 			isAllExtra.omit("extra", 12, omitted),
 			isAll.omit(),
 		],
@@ -469,30 +538,107 @@ describe("is type with all PropertyKey types", () => {
 
 			[{ str: "", 61: null }, false],
 			[{ str: 0.35, 61: Array }, false],
-			[{ 61: new Set, str: 783 }, false],
+			[{ 61: new Set(), str: 783 }, false],
 			[{ 61: 18327.4, str: -7216.3 }, false, { zod: "inverted" }],
 
 			[{ str: [], 61: () => {}, [symbol]: undefined }, false],
 			[{ [symbol]: 6.6, str: null, 61: true }, false],
 			[{ 61: NaN, [symbol]: Symbol(), str: false }, false],
 			[{ str: Infinity, [symbol]: 534n, 61: "" }, false],
-			[{  61: 53, str: {}, [symbol]: 12 }, false],
+			[{ 61: 53, str: {}, [symbol]: 12 }, false],
 			[{ 61: () => {}, str: 3213, [symbol]: 5372 }, false],
 			[{ str: 23948, [symbol]: null, 61: 2421 }, false, { zod: "inverted" }],
 			[{ str: 364634, 61: 24523, [symbol]: 2938523 }, true],
-			[{ get str() { return "364634" }, 61: 24523, [symbol]: 2938523 }, false],
-			[{ get str() { return 364634 }, get 61() { return 24523 }, get [symbol]() { return "2938523" } }, false, { zod: "inverted" }],
-			[{ str: 364634, get 61() { return "24523" }, get [symbol]() { return 2938523 } }, false],
+			[
+				{
+					get str() {
+						return "364634";
+					},
+					61: 24523,
+					[symbol]: 2938523,
+				},
+				false,
+			],
+			[
+				{
+					get str() {
+						return 364634;
+					},
+					get 61() {
+						return 24523;
+					},
+					get [symbol]() {
+						return "2938523";
+					},
+				},
+				false,
+				{ zod: "inverted" },
+			],
+			[
+				{
+					str: 364634,
+					get 61() {
+						return "24523";
+					},
+					get [symbol]() {
+						return 2938523;
+					},
+				},
+				false,
+			],
 
 			[{ str: 364634, 61: 24523, [symbol]: 2938523, anotherStr: 311 }, true],
-			[{ str: 364634, 61: 24523, [symbol]: 2938523, anotherStr: "not a number" }, true],
+			[
+				{
+					str: 364634,
+					61: 24523,
+					[symbol]: 2938523,
+					anotherStr: "not a number",
+				},
+				true,
+			],
 			[{ str: 364634, 61: 24523, [symbol]: 2938523, 46: 325832 }, true],
-			[{ str: 364634, 61: 24523, [symbol]: 2938523, 46: new Date }, true],
+			[{ str: 364634, 61: 24523, [symbol]: 2938523, 46: new Date() }, true],
 			[{ str: 364634, 61: 24523, [symbol]: 2938523, [Symbol()]: 239483 }, true],
-			[{ str: 364634, 61: 24523, [symbol]: 2938523, [Symbol()]: () => {} }, true],
-			[{ str: 364634, 61: 24523, [symbol]: 2938523, extra: "", 12: new Date(), [omitted]: true }, true],
-			[{ get str() { return 364634 }, 61: 24523, [symbol]: 2938523 }, true],
-			[{ get str() { return 364634 }, get 61() { return 24523 }, get [symbol]() { return 2938523 } }, true],
+			[
+				{ str: 364634, 61: 24523, [symbol]: 2938523, [Symbol()]: () => {} },
+				true,
+			],
+			[
+				{
+					str: 364634,
+					61: 24523,
+					[symbol]: 2938523,
+					extra: "",
+					12: new Date(),
+					[omitted]: true,
+				},
+				true,
+			],
+			[
+				{
+					get str() {
+						return 364634;
+					},
+					61: 24523,
+					[symbol]: 2938523,
+				},
+				true,
+			],
+			[
+				{
+					get str() {
+						return 364634;
+					},
+					get 61() {
+						return 24523;
+					},
+					get [symbol]() {
+						return 2938523;
+					},
+				},
+				true,
+			],
 		],
 	});
 });
@@ -530,11 +676,40 @@ describe("is type with .partial", () => {
 			[{ str: "bad", [symbol]: 12 }, false],
 			[{ str: 12, 61: 24, [symbol]: null }, false, { zod: "inverted" }],
 			[{ str: 12, 61: null, [symbol]: 42 }, false],
-			[{ get str() { return "bad" }, 61: 24 }, false],
-			[{ get 61() { return "wrong" }, [symbol]: 12 }, false],
-			[{ get [symbol]() { return "oops" }, str: 5 }, false, { zod: "inverted" }],
+			[
+				{
+					get str() {
+						return "bad";
+					},
+					61: 24,
+				},
+				false,
+			],
+			[
+				{
+					get 61() {
+						return "wrong";
+					},
+					[symbol]: 12,
+				},
+				false,
+			],
+			[
+				{
+					get [symbol]() {
+						return "oops";
+					},
+					str: 5,
+				},
+				false,
+				{ zod: "inverted" },
+			],
 			[{ str: 1, 61: 2, [symbol]: 3, extra: "allowed" }, true],
-			[{ str: 1, 61: 2, [symbol]: "bad", extra: "still allowed" }, false, { zod: "inverted" }],
+			[
+				{ str: 1, 61: 2, [symbol]: "bad", extra: "still allowed" },
+				false,
+				{ zod: "inverted" },
+			],
 			[{ str: null }, false],
 
 			[true, true, { zod: "inverted" }],
@@ -552,9 +727,33 @@ describe("is type with .partial", () => {
 			[{ str: 12, [symbol]: 42 }, true],
 			[{ [symbol]: 42, 61: 24 }, true],
 			[{ str: 12, 61: 24, [symbol]: 42 }, true],
-			[{ get str() { return 12 }, 61: 24 }, true],
-			[{ get 61() { return 100 }, [symbol]: 12 }, true],
-			[{ get [symbol]() { return 42 }, str: 5 }, true],
+			[
+				{
+					get str() {
+						return 12;
+					},
+					61: 24,
+				},
+				true,
+			],
+			[
+				{
+					get 61() {
+						return 100;
+					},
+					[symbol]: 12,
+				},
+				true,
+			],
+			[
+				{
+					get [symbol]() {
+						return 42;
+					},
+					str: 5,
+				},
+				true,
+			],
 			[{ str: undefined }, true],
 			[{ str: -42 }, true],
 		],

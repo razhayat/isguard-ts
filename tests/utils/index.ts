@@ -13,16 +13,16 @@ export const describedGuardTests = <T>({
 	equivalentGuards = [],
 	testCases,
 }: DescribedGuardTestsProps<T>) => {
-	const guardOptions = [guard, ...equivalentGuards].map<TypeGuardTuple<T>>(guard => typeof guard === "function" ? [guard] : guard);
+	const guardOptions = [guard, ...equivalentGuards].map<TypeGuardTuple<T>>(
+		guard => (typeof guard === "function" ? [guard] : guard),
+	);
 
 	testCases.forEach((testCase, testCaseIndex) => {
 		const [input, result, options = {}] = testCase;
-		const {
-			stringify = defaultStringifyInput,
-			zod: testCaseZod,
-		} = options;
+		const { stringify = defaultStringifyInput, zod: testCaseZod } = options;
 
-		const inputStr = typeof stringify === "string" ? stringify : stringify(input);
+		const inputStr =
+			typeof stringify === "string" ? stringify : stringify(input);
 
 		guardOptions.forEach(([guard], guardIndex) => {
 			test(`case #${testCaseIndex + 1} - guard #${guardIndex + 1} should return ${result} for ${inputStr}`, () => {
@@ -36,7 +36,9 @@ export const describedGuardTests = <T>({
 
 			test(`case #${testCaseIndex + 1} - zod schema #${schemaIndex + 1} should ${zod === "throws" ? "throw" : `return ${zodResult}`} for ${inputStr}`, () => {
 				const testFunction = () => guard.zod().safeParse(input).success;
-				zod === "throws" ? expect(testFunction).toThrow() : expect(testFunction()).toBe(zodResult);
+				zod === "throws"
+					? expect(testFunction).toThrow()
+					: expect(testFunction()).toBe(zodResult);
 			});
 		});
 	});

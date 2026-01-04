@@ -2,13 +2,14 @@ import { Enum, EnumTypeGuard } from "..";
 import { TypeGuardClass } from "../types/internal";
 import { zod } from "../plugins/internal";
 
-export class EnumTypeGuardClass<T extends Enum> extends TypeGuardClass<T[keyof T]> implements EnumTypeGuard<T> {
+export class EnumTypeGuardClass<T extends Enum>
+	extends TypeGuardClass<T[keyof T]>
+	implements EnumTypeGuard<T>
+{
 	public readonly enum: T;
 	private readonly _values: unknown[];
 
-	public constructor(
-		enumObj: T
-	) {
+	public constructor(enumObj: T) {
 		super();
 
 		this.enum = enumObj;

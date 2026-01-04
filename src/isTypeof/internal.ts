@@ -3,10 +3,11 @@ import { TypeofResult, TypeByTypeOfResult, TypeofTypeGuard } from "..";
 import { zod } from "../plugins/internal";
 import { TypeGuardClass } from "../types/internal";
 
-export class TypeofTypeGuardClass<T extends TypeofResult> extends TypeGuardClass<TypeByTypeOfResult[T]> implements TypeofTypeGuard<T> {
-	public constructor(
-		public readonly result: T,
-	) {
+export class TypeofTypeGuardClass<T extends TypeofResult>
+	extends TypeGuardClass<TypeByTypeOfResult[T]>
+	implements TypeofTypeGuard<T>
+{
+	public constructor(public readonly result: T) {
 		super();
 	}
 

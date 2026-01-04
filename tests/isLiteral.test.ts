@@ -48,7 +48,7 @@ describe("is literal of nothing (never)", () => {
 			["two", false],
 			[[new Date(), 12, "bye"], false],
 			[{ bye: "no", ok: "yes" }, false],
-			[() => { }, false],
+			[() => {}, false],
 			[async function* () {}, false],
 			[Symbol(), false],
 			[/[A-Z]/, false],
@@ -61,10 +61,7 @@ describe("is literal (56)", () => {
 
 	describedGuardTests({
 		guard: guard,
-		equivalentGuards: [
-			guard.extract(56),
-			guard.exclude(),
-		],
+		equivalentGuards: [guard.extract(56), guard.exclude()],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -98,7 +95,10 @@ describe("is literal ('Empire!')", () => {
 			isLiteral("Empire!", "Empire!"),
 			guard.extract("Empire!", "Empire!"),
 			isLiteral("Empire!", "to be excluded").extract("Empire!"),
-			isLiteral("Empire!", "to be excluded").exclude("to be excluded", "to be excluded"),
+			isLiteral("Empire!", "to be excluded").exclude(
+				"to be excluded",
+				"to be excluded",
+			),
 		],
 		testCases: [
 			[null, false],
@@ -165,10 +165,26 @@ describe("is 'apple' | 12 | 34n | true | null | undefined", () => {
 		guard: guard,
 		equivalentGuards: [
 			guard.extract(true, void 0, 34n, "apple", null, 12),
-			isLiteral("apple", 12, 34n, true, "not supposed to be here...", null, undefined).extract(true, void 0, 34n, "apple", null, 12),
+			isLiteral(
+				"apple",
+				12,
+				34n,
+				true,
+				"not supposed to be here...",
+				null,
+				undefined,
+			).extract(true, void 0, 34n, "apple", null, 12),
 			isLiteral(...guard.extract(true, void 0, null, 12).values, "apple", 34n),
 			guard.exclude(),
-			isLiteral("apple", 12, 34n, true, "please exclude me", null, undefined).exclude("please exclude me"),
+			isLiteral(
+				"apple",
+				12,
+				34n,
+				true,
+				"please exclude me",
+				null,
+				undefined,
+			).exclude("please exclude me"),
 			isLiteral(...guard.exclude(null).values, null),
 		],
 		testCases: [
@@ -181,7 +197,7 @@ describe("is 'apple' | 12 | 34n | true | null | undefined", () => {
 			[false, false],
 			[{}, false],
 			[[], false],
-			[function() {}, false],
+			[function () {}, false],
 			[["apple", 12, 34n, true, null, undefined], false],
 			[[12], false],
 			["6", false],

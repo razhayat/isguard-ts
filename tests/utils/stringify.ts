@@ -1,7 +1,9 @@
 export const objectStringify = (input: object) => {
-	const entries = Reflect.ownKeys(input).map(key => {
-		return `${key.toString()}: ${defaultStringifyInput(Reflect.get(input, key))}`
-	}).join(", ");
+	const entries = Reflect.ownKeys(input)
+		.map(key => {
+			return `${key.toString()}: ${defaultStringifyInput(Reflect.get(input, key))}`;
+		})
+		.join(", ");
 
 	if (!entries) {
 		return "{}";
@@ -10,7 +12,10 @@ export const objectStringify = (input: object) => {
 	return `{ ${entries} }`;
 };
 
-export const constructorStringify = (constructor: Function, ...args: unknown[]) => {
+export const constructorStringify = (
+	constructor: Function,
+	...args: unknown[]
+) => {
 	const argsStr = args.map(defaultStringifyInput).join(", ");
 	return `new ${constructor.name}(${argsStr})`;
 };
@@ -25,7 +30,12 @@ export const defaultStringifyInput = (input: unknown): string => {
 		return `[${itemsStr}]`;
 	}
 
-	if (typeof input === "number" || typeof input === "boolean" || typeof input === "symbol" || typeof input === "function") {
+	if (
+		typeof input === "number" ||
+		typeof input === "boolean" ||
+		typeof input === "symbol" ||
+		typeof input === "function"
+	) {
 		return input.toString();
 	}
 
@@ -36,7 +46,6 @@ export const defaultStringifyInput = (input: unknown): string => {
 	if (typeof input === "bigint") {
 		return `${input}n`;
 	}
-
 
 	if (input instanceof Object) {
 		if (input.constructor === Object) {

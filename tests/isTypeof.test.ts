@@ -1,10 +1,18 @@
 import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isBigint, isBoolean, isFunction, isNumber, isString, isSymbol, isTypeof } from "../src";
+import {
+	isBigint,
+	isBoolean,
+	isFunction,
+	isNumber,
+	isString,
+	isSymbol,
+	isTypeof,
+} from "../src";
 
 describe("is typeof", () => {
 	it("should have .result that is equal to the given result", () => {
-		const isTypeofString = isTypeof("string")
+		const isTypeofString = isTypeof("string");
 
 		expect(isTypeofString.result).toBe("string");
 	});
@@ -25,7 +33,7 @@ describe("is number", () => {
 			[/[2-5]/, false],
 			[new Number(12), false],
 			[BigInt(45), false],
-			[function() {}, false],
+			[function () {}, false],
 			[function* () {}, false],
 			[async () => {}, false],
 			[[], false],
@@ -38,11 +46,9 @@ describe("is number", () => {
 			[-0, true],
 			[6, true],
 			[6.0, true],
-			[6.00, true],
 			[6.25, true],
 			[-6, true],
 			[-6.0, true],
-			[-6.00, true],
 			[-6.25, true],
 
 			[1_000, true],
@@ -109,7 +115,12 @@ describe("is string", () => {
 			[/[a-g]/u, false],
 			[new String("Hello"), false],
 			[Object("test"), false],
-			[async function() { return "string" }, false],
+			[
+				async function () {
+					return "string";
+				},
+				false,
+			],
 			[[], false],
 			[["hi"], false],
 			[["h", "e", "l", "l", "o"], false],
@@ -134,7 +145,7 @@ describe("is string", () => {
 
 			["56 Empire!", true],
 			["6", true],
-			['one', true],
+			["one", true],
 			[`hello`, true],
 			[`hi ${"me from the future"}`, true],
 		],
@@ -163,9 +174,9 @@ describe("is boolean", () => {
 			[new String("Hello"), false],
 			[new Boolean(0), false],
 			[Promise.resolve(), false],
-			[function() {}, false],
+			[function () {}, false],
 			[() => {}, false],
-			[async function() {}, false],
+			[async function () {}, false],
 			[async () => {}, false],
 			[Object.create(null), false],
 
@@ -260,8 +271,18 @@ describe("is function", () => {
 			[(a: number, b: number) => a + b, true],
 			[(a: number, b?: number) => a + (b ?? 0), true],
 			[() => () => false, true],
-			[function () { return 6; }, true],
-			[function* () { yield 6; }, true],
+			[
+				function () {
+					return 6;
+				},
+				true,
+			],
+			[
+				function* () {
+					yield 6;
+				},
+				true,
+			],
 			[async function () {}, true],
 			[async function* () {}, true],
 			[async () => {}, true],
@@ -273,11 +294,16 @@ describe("is function", () => {
 			[setInterval, true],
 			[console.log, true],
 
-			[class Person { }, true],
-			[class Animal { speak() { } }, true],
+			[class Person {}, true],
+			[
+				class Animal {
+					speak() {}
+				},
+				true,
+			],
 
-			[{ myFunc: () => { } }.myFunc, true],
-			[{ myFunc() { } }.myFunc, true],
+			[{ myFunc: () => {} }.myFunc, true],
+			[{ myFunc() {} }.myFunc, true],
 		],
 	});
 });
@@ -296,7 +322,7 @@ describe("is typeof undefined", () => {
 			[Symbol(), false],
 			[[], false],
 			[{}, false],
-			[() => { }, false],
+			[() => {}, false],
 			[new Date(), false],
 			[{ a: undefined }, false],
 
