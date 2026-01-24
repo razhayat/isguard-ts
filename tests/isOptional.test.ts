@@ -17,6 +17,7 @@ describe("is optional string", () => {
 		equivalentGuards: [
 			isString.optional(),
 			isUnion(isString, isUndefined),
+			isUndefined.or(isString),
 		],
 		testCases: [
 			[null, false],

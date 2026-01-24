@@ -1,11 +1,28 @@
 import { ZodType } from "zod";
-import { ArrayTypeGuard, IndexRecordTypeGuard, IntersectionTypeGuard, isArray, isIndexRecord, isIntersection, isMaybe, isOptional, isRefine, isSet, isUnion, MaybeTypeGuard, OptionalTypeGuard, RefineTypeGuard, SetTypeGuard, UnionTypeGuard, TypeGuard, TypeGuardTemplate } from "..";
+import {
+	ArrayTypeGuard,
+	IndexRecordTypeGuard,
+	IntersectionTypeGuard,
+	isArray,
+	isIndexRecord,
+	isIntersection,
+	isMaybe,
+	isOptional,
+	isRefine,
+	isSet,
+	isUnion,
+	MaybeTypeGuard,
+	OptionalTypeGuard,
+	RefineTypeGuard,
+	SetTypeGuard,
+	UnionTypeGuard,
+	TypeGuard,
+	TypeGuardTemplate,
+} from "..";
 
 class ExtensibleFunction extends Function {
 	// @ts-expect-error
-	public constructor(
-		func: Function
-	) {
+	public constructor(func: Function) {
 		return Object.setPrototypeOf(func, new.target.prototype);
 	}
 }
@@ -14,7 +31,10 @@ export interface TypeGuardClass<T> {
 	(value: unknown): value is T;
 }
 
-export abstract class TypeGuardClass<T> extends ExtensibleFunction implements TypeGuard<T> {
+export abstract class TypeGuardClass<T>
+	extends ExtensibleFunction
+	implements TypeGuard<T>
+{
 	private _zod: ZodType<T> | undefined;
 
 	public constructor() {
@@ -31,11 +51,15 @@ export abstract class TypeGuardClass<T> extends ExtensibleFunction implements Ty
 		return isMaybe(this);
 	}
 
-	public and<I extends readonly unknown[]>(...guards: TypeGuardTemplate<I, any>): IntersectionTypeGuard<[T, ...I]> {
+	public and<I extends readonly unknown[]>(
+		...guards: TypeGuardTemplate<I, any>
+	): IntersectionTypeGuard<[T, ...I]> {
 		return isIntersection<[T, ...I]>(this, ...guards);
 	}
 
-	public or<I extends readonly unknown[]>(...guards: TypeGuardTemplate<I, any>): UnionTypeGuard<[T, ...I]> {
+	public or<I extends readonly unknown[]>(
+		...guards: TypeGuardTemplate<I, any>
+	): UnionTypeGuard<[T, ...I]> {
 		return isUnion<[T, ...I]>(this, ...guards);
 	}
 
@@ -51,12 +75,14 @@ export abstract class TypeGuardClass<T> extends ExtensibleFunction implements Ty
 		return isIndexRecord(this);
 	}
 
-	public refine<R extends T>(refinement: (value: T) => value is R): RefineTypeGuard<T, R> {
+	public refine<R extends T>(
+		refinement: (value: T) => value is R,
+	): RefineTypeGuard<T, R> {
 		return isRefine(this, refinement);
 	}
 
 	public zod(): ZodType<T> {
-		return this._zod ??= this.toZod();
+		return (this._zod ??= this.toZod());
 	}
 
 	protected abstract toZod(): ZodType<T>;

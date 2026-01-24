@@ -2,7 +2,10 @@ import { ZodType } from "zod";
 import { RefineTypeGuard, TypeGuard } from "..";
 import { TypeGuardClass } from "../types/internal";
 
-export class RefineTypeGuardClass<T, R extends T> extends TypeGuardClass<R> implements RefineTypeGuard<T, R> {
+export class RefineTypeGuardClass<T, R extends T>
+	extends TypeGuardClass<R>
+	implements RefineTypeGuard<T, R>
+{
 	public constructor(
 		public readonly isBase: TypeGuard<T>,
 		public readonly refinement: (value: T) => value is R,
@@ -15,6 +18,8 @@ export class RefineTypeGuardClass<T, R extends T> extends TypeGuardClass<R> impl
 	}
 
 	protected toZod() {
-		return this.isBase.zod().refine(value => this.refinement(value)) as ZodType<R>;
+		return this.isBase
+			.zod()
+			.refine(value => this.refinement(value)) as ZodType<R>;
 	}
 }

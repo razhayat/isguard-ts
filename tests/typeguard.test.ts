@@ -48,8 +48,6 @@ describe("TypeGuard", () => {
 	it("should work with Array.findLastIndex", () => {
 		const arr = ["hello", new Date(), 12, "bye", undefined];
 
-		arr.keys
-
 		expect(arr.findLastIndex(isString)).toBe(3);
 	});
 

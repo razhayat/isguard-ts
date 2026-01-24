@@ -1,6 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isIntersection, isNumber, isType, isString, isBoolean, isUnknown, isNever } from "../src";
+import {
+	isIntersection,
+	isNumber,
+	isType,
+	isString,
+	isBoolean,
+	isUnknown,
+	isNever,
+} from "../src";
 
 describe("is intersection", () => {
 	it("should have .guards that contains all given guards in order", () => {
@@ -23,7 +31,7 @@ describe("is empty intersection (unknown)", () => {
 			[true, true],
 			[false, true],
 			[() => {}, true],
-			[function() {}, true],
+			[function () {}, true],
 			[new Date(), true],
 			[Array, true],
 			["hello", true],
@@ -53,10 +61,10 @@ describe("is number & string", () => {
 });
 
 describe("is { a: number } & { b: string }", () => {
-	type A = { a: number; };
+	type A = { a: number };
 	const isA = isType<A>({ a: isNumber });
 
-	type B = { b: string; };
+	type B = { b: string };
 	const isB = isType<B>({ b: isString });
 
 	describedGuardTests({
@@ -64,6 +72,7 @@ describe("is { a: number } & { b: string }", () => {
 		equivalentGuards: [
 			isIntersection(isB, isA),
 			isA.and(isB),
+			isB.and(isA, isB),
 		],
 		testCases: [
 			[null, false],
@@ -101,7 +110,7 @@ describe("is { a: number } & { b: string }", () => {
 
 			[{ a: 56, b: "Empire!" }, true],
 			[{ a: 0, b: "test" }, true],
-			[{ b: "bar", a: -1, }, true],
+			[{ b: "bar", a: -1 }, true],
 			[{ b: "pi", a: 3.14 }, true],
 
 			[{ a: 100, b: "test", extra: undefined }, true],

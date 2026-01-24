@@ -2,12 +2,13 @@ import { LazyTypeGuard, TypeGuard } from "..";
 import { zod } from "../plugins/internal";
 import { TypeGuardClass } from "../types/internal";
 
-export class LazyTypeGuardClass<T> extends TypeGuardClass<T> implements LazyTypeGuard<T> {
+export class LazyTypeGuardClass<T>
+	extends TypeGuardClass<T>
+	implements LazyTypeGuard<T>
+{
 	private _guard: TypeGuard<T> | undefined;
 
-	public constructor(
-		private readonly _generator: () => TypeGuard<T>
-	) {
+	public constructor(private readonly _generator: () => TypeGuard<T>) {
 		super();
 	}
 
@@ -20,6 +21,6 @@ export class LazyTypeGuardClass<T> extends TypeGuardClass<T> implements LazyType
 	}
 
 	public unbox(): TypeGuard<T> {
-		return this._guard ??= this._generator();
+		return (this._guard ??= this._generator());
 	}
 }

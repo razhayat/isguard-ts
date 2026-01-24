@@ -1,10 +1,25 @@
 import { describe, expect, it } from "vitest";
-import { isDate, isError, isEvalError, isInstanceof, isRangeError, isReferenceError, isRegExp, isSyntaxError, isTypeError, isURIError } from "../src";
+import {
+	isDate,
+	isError,
+	isEvalError,
+	isInstanceof,
+	isRangeError,
+	isReferenceError,
+	isRegExp,
+	isSyntaxError,
+	isTypeError,
+	isURIError,
+} from "../src";
 import { describedGuardTests } from "./utils";
 
-class Animal { }
-class Dog extends Animal { woof: string = "woof" }
-class Cat extends Animal { meow: string = "meow" }
+class Animal {}
+class Dog extends Animal {
+	woof: string = "woof";
+}
+class Cat extends Animal {
+	meow: string = "meow";
+}
 
 describe("is instanceof", () => {
 	it("should have .class that is equal to the given constructor", () => {
@@ -33,27 +48,22 @@ describe("is animal", () => {
 
 			[{ __proto__: new Animal() }, true],
 			[{ __proto__: Animal.prototype }, true],
-			[new Animal, true],
 			[new Animal(), true],
 			[Object.create(Animal.prototype), true],
 			[Object.setPrototypeOf(new Animal(), Dog.prototype), true],
 			[Object.setPrototypeOf(new Animal(), Cat.prototype), true],
 
-			[{ __proto__: new Dog }, true],
-			[new Dog, true],
+			[{ __proto__: new Dog() }, true],
 			[new Dog(), true],
 			[Object.create(Dog.prototype), true],
 			[Object.setPrototypeOf(new Dog(), Animal.prototype), true],
 			[Object.setPrototypeOf(new Dog(), Cat.prototype), true],
 
-
 			[{ __proto__: { __proto__: new Cat() } }, true],
-			[new Cat, true],
 			[new Cat(), true],
 			[Object.create(Cat.prototype), true],
 			[Object.setPrototypeOf(new Cat(), Animal.prototype), true],
 			[Object.setPrototypeOf(new Cat(), Dog.prototype), true],
-
 		],
 	});
 });
@@ -70,23 +80,25 @@ describe("is dog", () => {
 			[{}, false],
 			[new Set(), false],
 
-			[async function() { return new Dog() }, false],
+			[
+				async function () {
+					return new Dog();
+				},
+				false,
+			],
 			[[new Dog()], false],
 			[{ dog: new Dog() }, false],
 
-			[new Animal, false],
 			[new Animal(), false],
 			[{ __proto__: new Animal() }, false],
 			[Object.create(Animal.prototype), false],
 
-			[new Cat, false],
 			[new Cat(), false],
 			[{ constructor: Dog }, false],
 			[{ constructor: new Dog() }, false],
 			[Object.create(Cat.prototype), false],
 
 			[{ __proto__: new Dog() }, true],
-			[new Dog, true],
 			[new Dog(), true],
 			[Object.create(Dog.prototype), true],
 
@@ -118,19 +130,16 @@ describe("is cat", () => {
 			[[new Cat()], false],
 			[{ cat: new Cat() }, false],
 
-			[new Animal, false],
 			[new Animal(), false],
 			[{ __proto__: Animal.prototype }, false],
 			[Object.create(Animal.prototype), false],
 
-			[new Dog, false],
 			[new Dog(), false],
 			[{ prototype: Cat }, false],
 			[{ prototype: new Cat() }, false],
 			[Object.create(Dog.prototype), false],
 
 			[{ __proto__: { __proto__: Cat.prototype } }, true],
-			[new Cat, true],
 			[new Cat(), true],
 			[Object.create(Cat.prototype), true],
 
@@ -156,14 +165,18 @@ describe("is date", () => {
 			[[], false],
 			[true, false],
 			[false, false],
-			[function* () { yield new Date() }, false],
+			[
+				function* () {
+					yield new Date();
+				},
+				false,
+			],
 			[new Animal(), false],
 			["06/07/2024", false],
 			["25/12/2023🥹", false],
 			[[new Date()], false],
 			[-56, false],
 
-			[new Date, true],
 			[new Date(), true],
 			[new Date("2021-01-01"), true],
 			[new Date(2022, 0, 1), true],

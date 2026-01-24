@@ -1,6 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isBoolean, isDate, isNever, isNumber, isString, isType, isUnion } from "../src";
+import {
+	isBoolean,
+	isDate,
+	isNever,
+	isNumber,
+	isString,
+	isType,
+	isUnion,
+} from "../src";
 
 describe("is union", () => {
 	it("should have .guards that contains all given guards in order", () => {
@@ -23,7 +31,7 @@ describe("is empty union (never)", () => {
 			[true, false],
 			[false, false],
 			[() => {}, false],
-			[function() {}, false],
+			[function () {}, false],
 			[new Date(), false],
 			[Array, false],
 			["hello", false],
@@ -52,9 +60,9 @@ describe("is Date | number | string | boolean", () => {
 			[0, true],
 			[348975034, true],
 			[-6.66, true],
-			[NaN, true, { invertZod: true }],
-			[Infinity, true, { invertZod: true }],
-			[-Infinity, true, { invertZod: true }],
+			[NaN, true, { zod: "inverted" }],
+			[Infinity, true, { zod: "inverted" }],
+			[-Infinity, true, { zod: "inverted" }],
 			["", true],
 			["Empire?", true],
 			[false, true],
@@ -64,10 +72,10 @@ describe("is Date | number | string | boolean", () => {
 });
 
 describe("is { a: number; } | { b: string; }", () => {
-	type A = { a: number; };
+	type A = { a: number };
 	const isA = isType<A>({ a: isNumber });
 
-	type B = { b: string; };
+	type B = { b: string };
 	const isB = isType<B>({ b: isString });
 
 	describedGuardTests({
@@ -99,7 +107,7 @@ describe("is { a: number; } | { b: string; }", () => {
 			[{ b() {} }, false],
 			[{ b: null, a: "not a number" }, false],
 
-			[{ a: NaN }, true, { invertZod: true }],
+			[{ a: NaN }, true, { zod: "inverted" }],
 			[{ a: 3.14 }, true],
 			[{ b: "" }, true],
 			[{ b: "foo" }, true],

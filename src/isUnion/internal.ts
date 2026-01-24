@@ -3,10 +3,11 @@ import { UnionTypeGuard, TypeGuardTemplate } from "..";
 import { zod } from "../plugins/internal";
 import { TypeGuardClass } from "../types/internal";
 
-export class UnionTypeGuardClass<T extends readonly unknown[]> extends TypeGuardClass<T[number]> implements UnionTypeGuard<T> {
-	public constructor(
-		public readonly guards: TypeGuardTemplate<T>,
-	) {
+export class UnionTypeGuardClass<T extends readonly unknown[]>
+	extends TypeGuardClass<T[number]>
+	implements UnionTypeGuard<T>
+{
+	public constructor(public readonly guards: TypeGuardTemplate<T>) {
 		super();
 	}
 
@@ -15,6 +16,8 @@ export class UnionTypeGuardClass<T extends readonly unknown[]> extends TypeGuard
 	}
 
 	protected toZod(): ZodType<T[number]> {
-		return this.guards.length ? zod().union(this.guards.map(guard => guard.zod())) : zod().never();
+		return this.guards.length
+			? zod().union(this.guards.map(guard => guard.zod()))
+			: zod().never();
 	}
 }

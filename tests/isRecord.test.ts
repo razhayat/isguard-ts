@@ -1,6 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isBoolean, isDate, isIndexRecord, isLiteral, isNumber, isPartialRecord, isRecord, isString, isType } from "../src";
+import {
+	isBoolean,
+	isDate,
+	isIndexRecord,
+	isLiteral,
+	isNumber,
+	isPartialRecord,
+	isRecord,
+	isString,
+	isType,
+} from "../src";
 
 describe("is record", () => {
 	it("should have .keys that is equal to the given keys", () => {
@@ -39,7 +49,14 @@ describe("is number record", () => {
 			[Symbol(), false],
 			[[1, 2, 3], false],
 			[new Map(), false],
-			[new Map([["num1", 1], ["num2", 2], ["num3", 3]]), false],
+			[
+				new Map([
+					["num1", 1],
+					["num2", 2],
+					["num3", 3],
+				]),
+				false,
+			],
 			[() => {}, false],
 			[{}, false],
 			["bla bla", false],
@@ -53,7 +70,6 @@ describe("is number record", () => {
 });
 
 describe("is Record<'a' | 'b', 'c', 'd'> record", () => {
-
 	const extraGuard = isRecord(["a", "b", "c"], isLiteral("c", "d"));
 	const guard = isRecord(["a", "b"], isLiteral("c", "d"));
 
@@ -70,7 +86,7 @@ describe("is Record<'a' | 'b', 'c', 'd'> record", () => {
 			[{}, false],
 			[new Set(), false],
 			[async () => await Promise.resolve("c"), false],
-			[new Object, false],
+			[new Object(), false],
 			[{ a: "c" }, false],
 			[{ a: "d", b: "invalid value" }, false],
 			[{ a: "invalid", b: "another invalid" }, false],
@@ -95,8 +111,8 @@ describe("tuple like is record", () => {
 			[() => {}, false],
 			[[true, true], false],
 
-			[[true, true, false], true, { invertZod: true }],
-			[[true, false, false, 23], true, { invertZod: true }],
+			[[true, true, false], true, { zod: "inverted" }],
+			[[true, false, false, 23], true, { zod: "inverted" }],
 
 			[{ 0: false, 1: true, 2: false }, true],
 		],
@@ -115,10 +131,10 @@ describe("special is record", () => {
 			[{}, false],
 			[{ array: [1, 2, 3] }, false],
 
-			["bla bla", true, { invertZod: true }],
-			[[1, 2, 3], true, { invertZod: true }],
-			[[], true, { invertZod: true }],
-			[() => {}, true, { invertZod: true }],
+			["bla bla", true, { zod: "inverted" }],
+			[[1, 2, 3], true, { zod: "inverted" }],
+			[[], true, { zod: "inverted" }],
+			[() => {}, true, { zod: "inverted" }],
 
 			[{ length: 0 }, true],
 		],
@@ -138,17 +154,17 @@ describe("is record with symbol keys", () => {
 			["true", false],
 			[0, false],
 			[56n, false],
-			[new Map(), false, { invertZod: true }],
-			[function() {}, false],
+			[new Map(), false, { zod: "inverted" }],
+			[function () {}, false],
 			[[], false],
-			[{}, false, { invertZod: true }],
+			[{}, false, { zod: "inverted" }],
 			[s1, false],
 			[s2, false],
 			[[s1, s2], false],
-			[{ [s1]: 12 }, false, { invertZod: true }],
-			[{ [s2]: 13 }, false, { invertZod: true }],
-			[{ [s1]: "12", [s2]: 13 }, false, { invertZod: true }],
-			[{ [s1]: 12, [s2]: "13" }, false, { invertZod: true }],
+			[{ [s1]: 12 }, false, { zod: "inverted" }],
+			[{ [s2]: 13 }, false, { zod: "inverted" }],
+			[{ [s1]: "12", [s2]: 13 }, false, { zod: "inverted" }],
+			[{ [s1]: 12, [s2]: "13" }, false, { zod: "inverted" }],
 			[{ [s1]: 12, [s2]: 13 }, true],
 			[{ [s1]: 358, [s2]: 5237, [Symbol()]: "not a number" }, true],
 		],
@@ -174,7 +190,10 @@ describe("is partial record", () => {
 describe("is partial string record", () => {
 	type T = Partial<Record<"firstName" | "secondName", string>>;
 
-	const extraGuard = isPartialRecord(["firstName", "secondName", "thirdName"], isString);
+	const extraGuard = isPartialRecord(
+		["firstName", "secondName", "thirdName"],
+		isString,
+	);
 	const guard = isPartialRecord(["firstName", "secondName"], isString);
 
 	describedGuardTests<T>({
@@ -193,12 +212,12 @@ describe("is partial string record", () => {
 			[{ secondName: 12 }, false],
 			[{ firstName: "hello", secondName: 12 }, false],
 
-			[NaN, true, { invertZod: true }],
-			[true, true, { invertZod: true }],
+			[NaN, true, { zod: "inverted" }],
+			[true, true, { zod: "inverted" }],
 			[new Date(), true],
-			["hello", true, { invertZod: true }],
-			[["firstName", "secondName"], true, { invertZod: true }],
-			[() => { }, true, { invertZod: true }],
+			["hello", true, { zod: "inverted" }],
+			[["firstName", "secondName"], true, { zod: "inverted" }],
+			[() => {}, true, { zod: "inverted" }],
 
 			[{ firstName: "hello" }, true],
 			[{ firstName: "hello", secondName: "bye" }, true],
@@ -217,20 +236,20 @@ describe("is partial record with symbol keys", () => {
 			[undefined, false],
 			[null, false],
 
-			[{ [symbol]: 123 }, false, { invertZod: true }],
-			[{ [symbol]: true }, false, { invertZod: true }],
-			[{ [symbol]: null }, false, { invertZod: true }],
-			[{ [symbol]: {} }, false, { invertZod: true }],
+			[{ [symbol]: 123 }, false, { zod: "inverted" }],
+			[{ [symbol]: true }, false, { zod: "inverted" }],
+			[{ [symbol]: null }, false, { zod: "inverted" }],
+			[{ [symbol]: {} }, false, { zod: "inverted" }],
 
 			[{}, true],
-			[[], true, { invertZod: true }],
+			[[], true, { zod: "inverted" }],
 			[new Date(), true],
-			["just a normal string", true, { invertZod: true }],
-			[3131, true, { invertZod: true }],
-			[2343n, true, { invertZod: true }],
-			[true, true, { invertZod: true }],
-			[symbol, true, { invertZod: true }],
-			[() => { }, true, { invertZod: true }],
+			["just a normal string", true, { zod: "inverted" }],
+			[3131, true, { zod: "inverted" }],
+			[2343n, true, { zod: "inverted" }],
+			[true, true, { zod: "inverted" }],
+			[symbol, true, { zod: "inverted" }],
+			[() => {}, true, { zod: "inverted" }],
 
 			[{ [Symbol("another symbol")]: 2423 }, true],
 			[{ [Symbol()]: 2423 }, true],
@@ -260,9 +279,7 @@ describe("is number index record", () => {
 			public num1: number,
 			public num2: number,
 			public num3: number,
-		) {
-
-		}
+		) {}
 
 		public static evenAStaticNumberField: number = 12;
 	}
@@ -286,9 +303,21 @@ describe("is number index record", () => {
 			[[], false],
 			[[213], false],
 
-			[Object.create(null), false, { stringify: "Object.create(null)", invertZod: true }],
-			[Object.create(Date.prototype), false, { stringify: "Object.create(Date.prototype)" }],
-			[Object.create(AllIHaveIsNumberFields.prototype), false, { stringify: "Object.create(AllIHaveIsNumberFields.prototype)" }],
+			[
+				Object.create(null),
+				false,
+				{ stringify: "Object.create(null)", zod: "inverted" },
+			],
+			[
+				Object.create(Date.prototype),
+				false,
+				{ stringify: "Object.create(Date.prototype)" },
+			],
+			[
+				Object.create(AllIHaveIsNumberFields.prototype),
+				false,
+				{ stringify: "Object.create(AllIHaveIsNumberFields.prototype)" },
+			],
 
 			[{ hello: "bye" }, false],
 			[{ 61: "not a number" }, false],
@@ -308,9 +337,17 @@ describe("is number index record", () => {
 			[{ [Symbol()]: 45, 56: 12 }, true],
 			[{ str: 78, 79: 80, [Symbol()]: 90 }, true],
 
-			[Object.create(Object.prototype), true, { stringify: "Object.create(Object.prototype)" }],
+			[
+				Object.create(Object.prototype),
+				true,
+				{ stringify: "Object.create(Object.prototype)" },
+			],
 			[Object.create({}), true, { stringify: "Object.create({})" }],
-			[Object.create({ name: 12 }), true, { stringify: "Object.create({ name: 12 })" }],
+			[
+				Object.create({ name: 12 }),
+				true,
+				{ stringify: "Object.create({ name: 12 })" },
+			],
 		],
 	});
 });

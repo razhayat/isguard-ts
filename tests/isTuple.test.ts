@@ -1,10 +1,20 @@
 import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isTuple, isNumber, isOptionalNumber, isString, isType, TypeGuard } from "../src";
+import {
+	isTuple,
+	isNumber,
+	isOptionalNumber,
+	isString,
+	isType,
+	TypeGuard,
+} from "../src";
 
 describe("is tuple", () => {
 	it("should have .template that is equal to the given template", () => {
-		const template: [TypeGuard<number>, TypeGuard<string>] = [isNumber, isString];
+		const template: [TypeGuard<number>, TypeGuard<string>] = [
+			isNumber,
+			isString,
+		];
 		const is = isTuple(template);
 
 		expect(is.template).toBe(template);
@@ -24,7 +34,12 @@ describe("is empty tuple", () => {
 			[Symbol(), false],
 			["hello", false],
 			[{}, false],
-			[function() { return [] }, false],
+			[
+				function () {
+					return [];
+				},
+				false,
+			],
 			[[undefined], false],
 			[[, undefined], false],
 			[[,], false],
@@ -54,7 +69,12 @@ describe("is normal tuple", () => {
 			["c2", false],
 			[{}, false],
 			[[], false],
-			[function() { ["", 0] }, false],
+			[
+				function () {
+					["", 0];
+				},
+				false,
+			],
 			[{ 0: "hello", 1: 6 }, false],
 			[["hello", 78, new Date()], false],
 			[["bye"], false],
@@ -86,7 +106,7 @@ describe("is tuple with optional", () => {
 			[[5, 6], true],
 			[[-235, 345.34], true],
 			[[6], true],
-			[[NaN], true, { invertZod: true }],
+			[[NaN], true, { zod: "inverted" }],
 			[[6, undefined], true],
 			[[1, ,], true],
 		],
@@ -94,13 +114,10 @@ describe("is tuple with optional", () => {
 });
 
 describe("is tuple of objects", () => {
-	type Tuple = [{ a: string; }, { b: number; }];
+	type Tuple = [{ a: string }, { b: number }];
 
 	describedGuardTests({
-		guard: isTuple<Tuple>([
-			isType({ a: isString }),
-			isType({ b: isNumber }),
-		]),
+		guard: isTuple<Tuple>([isType({ a: isString }), isType({ b: isNumber })]),
 		testCases: [
 			[null, false],
 			[undefined, false],

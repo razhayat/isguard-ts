@@ -14,10 +14,14 @@ export type TypeByTypeOfResult = {
 
 export type TypeofResult = keyof TypeByTypeOfResult;
 
-export type TypeofTypeGuard<T extends TypeofResult> = TypeGuard<TypeByTypeOfResult[T]> & {
+export type TypeofTypeGuard<T extends TypeofResult> = TypeGuard<
+	TypeByTypeOfResult[T]
+> & {
 	result: T;
 };
 
-export const isTypeof = <T extends TypeofResult>(result: T): TypeofTypeGuard<T> => {
+export const isTypeof = <T extends TypeofResult>(
+	result: T,
+): TypeofTypeGuard<T> => {
 	return new TypeofTypeGuardClass<T>(result);
 };

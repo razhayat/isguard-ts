@@ -1,5 +1,16 @@
 import { describe, expect, it, vi } from "vitest";
-import { isArray, isIndexRecord, isLazy, isLiteral, isNumber, isOptional, isTuple, isType, isUnion, TypeGuard } from "../src";
+import {
+	isArray,
+	isIndexRecord,
+	isLazy,
+	isLiteral,
+	isNumber,
+	isOptional,
+	isTuple,
+	isType,
+	isUnion,
+	TypeGuard,
+} from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is lazy", () => {
@@ -53,16 +64,16 @@ describe("is recursive type", () => {
 		next: isLazy(() => isNode).optional(),
 	});
 
-	const isCompletelyLazyNode: TypeGuard<Node> = isLazy(() => isType<Node>({
-		value: isNumber,
-		next: isCompletelyLazyNode.optional(),
-	}));
+	const isCompletelyLazyNode: TypeGuard<Node> = isLazy(() =>
+		isType<Node>({
+			value: isNumber,
+			next: isCompletelyLazyNode.optional(),
+		}),
+	);
 
 	describedGuardTests({
 		guard: isNode,
-		equivalentGuards: [
-			isCompletelyLazyNode,
-		],
+		equivalentGuards: [isCompletelyLazyNode],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -79,8 +90,20 @@ describe("is recursive type", () => {
 			[{ value: -32948, next: { value: 0.324, next: null } }, false],
 			[{ value: 12, next: { value: 1323 } }, true],
 			[{ value: 12, next: { value: 1323, next: { value: 313 } } }, true],
-			[{ value: 12, next: { value: 1323, next: { value: 313, next: undefined } } }, true],
-			[{ value: 12, next: { value: 1323, next: { value: 313, next: { value: 31231 } } } }, true],
+			[
+				{
+					value: 12,
+					next: { value: 1323, next: { value: 313, next: undefined } },
+				},
+				true,
+			],
+			[
+				{
+					value: 12,
+					next: { value: 1323, next: { value: 313, next: { value: 31231 } } },
+				},
+				true,
+			],
 		],
 	});
 });
@@ -93,16 +116,13 @@ describe("is recursive tuple", () => {
 		isOptional(isLazy(() => isRow)),
 	]);
 
-	const isCompletelyLazyRow: TypeGuard<Row> = isLazy(() => isTuple<Row>([
-		isNumber,
-		isCompletelyLazyRow.optional(),
-	]));
+	const isCompletelyLazyRow: TypeGuard<Row> = isLazy(() =>
+		isTuple<Row>([isNumber, isCompletelyLazyRow.optional()]),
+	);
 
 	describedGuardTests({
 		guard: isRow,
-		equivalentGuards: [
-			{ guard: isCompletelyLazyRow, skipZod: true },
-		],
+		equivalentGuards: [isCompletelyLazyRow],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -121,6 +141,7 @@ describe("is recursive tuple", () => {
 			[[42342, [423432, ["bla"]]], false],
 			[[-32, [5n]], false],
 			[[12], true],
+			[[NaN], true, { zod: "inverted" }],
 			[[15.5, undefined], true],
 			[[64, [424]], true],
 			[[943.2, [23432, [5352]]], true],
@@ -134,19 +155,16 @@ describe("is recursive union", () => {
 
 	const isNumbers: TypeGuard<Numbers> = isUnion(
 		isNumber,
-		isLazy(() => isArray(isNumbers))
+		isLazy(() => isArray(isNumbers)),
 	);
 
-	const isCompletelyLazyNumbers: TypeGuard<Numbers> = isLazy(() => isUnion(
-		isNumber,
-		isCompletelyLazyNumbers.array(),
-	));
+	const isCompletelyLazyNumbers: TypeGuard<Numbers> = isLazy(() =>
+		isUnion(isNumber, isCompletelyLazyNumbers.array()),
+	);
 
 	describedGuardTests({
 		guard: isNumbers,
-		equivalentGuards: [
-			isCompletelyLazyNumbers,
-		],
+		equivalentGuards: [isCompletelyLazyNumbers],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -184,15 +202,14 @@ describe("is recursive index record", () => {
 		isLazy(() => isRecursiveIndexRecord),
 	);
 
-	const isCompletelyLazyRecursiveIndexRecord: TypeGuard<RecursiveIndexRecord> = isLazy(() => {
-		return isCompletelyLazyRecursiveIndexRecord.indexRecord();
-	});
+	const isCompletelyLazyRecursiveIndexRecord: TypeGuard<RecursiveIndexRecord> =
+		isLazy(() => {
+			return isCompletelyLazyRecursiveIndexRecord.indexRecord();
+		});
 
 	describedGuardTests({
 		guard: isRecursiveIndexRecord,
-		equivalentGuards: [
-			isCompletelyLazyRecursiveIndexRecord,
-		],
+		equivalentGuards: [isCompletelyLazyRecursiveIndexRecord],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -203,22 +220,54 @@ describe("is recursive index record", () => {
 			[[], false],
 			[new Date(), false],
 			[() => console.log, false],
-			[function() { return {} }, false],
-			[function*() {}, false],
-			[async function() {}, false],
+			[
+				function () {
+					return {};
+				},
+				false,
+			],
+			[function* () {}, false],
+			[async function () {}, false],
 			[{ 0: new Set() }, false],
 			[{ str: [] }, false],
 			[{ [Symbol()]: "boolean" }, false],
 			[{ field1: {}, field2: "not {}" }, false],
 			[{ field1: { blue: [] }, field2: {} }, false],
-			[{ field1: { blue: {}, blah: {}, brute: { yes: { exactly: {} }, no: { hi: 12 } } }, field2: {} }, false],
+			[
+				{
+					field1: {
+						blue: {},
+						blah: {},
+						brute: { yes: { exactly: {} }, no: { hi: 12 } },
+					},
+					field2: {},
+				},
+				false,
+			],
 			[{}, true],
 			[{ 0: {} }, true],
 			[{ str: {} }, true],
 			[{ [Symbol()]: {} }, true],
 			[{ field1: {}, field2: {}, field3: {} }, true],
-			[{ field1: {}, [Symbol("hi")]: { 3: {} }, field3: { 8: {}, field5: {} } }, true],
-			[{ field1: { blue: {}, blah: {}, brute: { yes: { exactly: {} }, no: {} } }, field2: {} }, true],
+			[
+				{
+					field1: {},
+					[Symbol("hi")]: { 3: {} },
+					field3: { 8: {}, field5: {} },
+				},
+				true,
+			],
+			[
+				{
+					field1: {
+						blue: {},
+						blah: {},
+						brute: { yes: { exactly: {} }, no: {} },
+					},
+					field2: {},
+				},
+				true,
+			],
 		],
 	});
 });

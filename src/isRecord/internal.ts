@@ -1,10 +1,19 @@
-import { IndexRecordTypeGuard, PartialRecordTypeGuard, RecordTypeGuard, TypeGuard, TypeGuardTemplate } from "..";
+import {
+	IndexRecordTypeGuard,
+	PartialRecordTypeGuard,
+	RecordTypeGuard,
+	TypeGuard,
+	TypeGuardTemplate,
+} from "..";
 import { TypeTypeGuardClass } from "../isType/internal";
 import { zod } from "../plugins/internal";
 import { TypeGuardClass } from "../types/internal";
 import { createTemplate, objectKeys } from "../utils/internal";
 
-export class RecordTypeGuardClass<K extends readonly PropertyKey[], V> extends TypeTypeGuardClass<Record<K[number], V>> implements RecordTypeGuard<K, V> {
+export class RecordTypeGuardClass<K extends readonly PropertyKey[], V>
+	extends TypeTypeGuardClass<Record<K[number], V>>
+	implements RecordTypeGuard<K, V>
+{
 	public constructor(
 		public readonly keys: K,
 		public readonly isValue: TypeGuard<V>,
@@ -14,28 +23,36 @@ export class RecordTypeGuardClass<K extends readonly PropertyKey[], V> extends T
 	}
 }
 
-export class PartialRecordTypeGuardClass<K extends readonly PropertyKey[], V> extends TypeTypeGuardClass<Partial<Record<K[number], V>>> implements PartialRecordTypeGuard<K, V> {
+export class PartialRecordTypeGuardClass<K extends readonly PropertyKey[], V>
+	extends TypeTypeGuardClass<Partial<Record<K[number], V>>>
+	implements PartialRecordTypeGuard<K, V>
+{
 	public constructor(
 		public readonly keys: K,
 		public readonly isValue: TypeGuard<V>,
 	) {
-		const optionalIsValue = isValue.optional()
+		const optionalIsValue = isValue.optional();
 		const template = createTemplate(keys, () => optionalIsValue);
 		super(template as TypeGuardTemplate<Partial<Record<K[number], V>>>);
 	}
 }
 
-export class IndexRecordTypeGuardClass<T> extends TypeGuardClass<Record<PropertyKey, T>> implements IndexRecordTypeGuard<T> {
-	public constructor(
-		public readonly isValue: TypeGuard<T>,
-	) {
+export class IndexRecordTypeGuardClass<T>
+	extends TypeGuardClass<Record<PropertyKey, T>>
+	implements IndexRecordTypeGuard<T>
+{
+	public constructor(public readonly isValue: TypeGuard<T>) {
 		super();
 	}
 
 	protected is(value: unknown) {
-		return value instanceof Object && value.constructor === Object && objectKeys(value).every(key => {
-			return this.isValue(Reflect.get(value, key));
-		});
+		return (
+			value instanceof Object &&
+			value.constructor === Object &&
+			objectKeys(value).every(key => {
+				return this.isValue(Reflect.get(value, key));
+			})
+		);
 	}
 
 	protected toZod() {
