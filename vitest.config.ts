@@ -5,5 +5,13 @@ export default defineConfig({
 		typecheck: {
 			enabled: true,
 		},
+		reporters: [
+			[
+				"default",
+				{
+					summary: false,
+				},
+			],
+		],
 	},
 });
