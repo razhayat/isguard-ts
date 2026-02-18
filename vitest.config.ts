@@ -4,6 +4,7 @@ export default defineConfig({
 	test: {
 		typecheck: {
 			enabled: true,
+			tsconfig: "tests/tsconfig.json",
 		},
 		reporters: [
 			[
