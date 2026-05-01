@@ -3,7 +3,6 @@ import { ArrayTypeGuardClass } from "./internal";
 
 /**
  * A type guard for arrays of `T`.
- * Extends `TypeGuard<T[]>`.
  *
  * @template T - The type of elements in the array
  */

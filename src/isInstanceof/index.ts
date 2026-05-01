@@ -20,7 +20,7 @@ export type InstanceofTypeGuard<T extends Constructor> = TypeGuard<
 };
 
 /**
- * Creates a type guard using instanceof checks.
+ * Creates a `TypeGuard` using instanceof checks.
  * Validates that the value is an instance of the provided constructor.
  *
  * @template T - The constructor type

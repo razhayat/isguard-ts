@@ -17,7 +17,7 @@ export type EnumTypeGuard<T extends Enum> = TypeGuard<T[keyof T]> & {
 };
 
 /**
- * Creates a type guard for enum values.
+ * Creates a `TypeGuard` for enum values.
  * Accepts both the string keys and numeric values defined in the enum.
  *
  * @template T - The enum type
