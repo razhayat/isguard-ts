@@ -2,7 +2,9 @@ import { TypeGuard, TypeGuardTemplate } from "..";
 import { IntersectionTypeGuardClass, TupleToIntersection } from "./internal";
 
 /**
- * A type guard for intersection types.
+ * A {@linkcode TypeGuard} for intersection types (`A & B & C`).
+ *
+ * Returned by {@linkcode isIntersection} and {@linkcode TypeGuard.and}.
  *
  * @template T - Array of types in the intersection
  */
@@ -14,14 +16,13 @@ export type IntersectionTypeGuard<T extends readonly unknown[]> = TypeGuard<
 };
 
 /**
- * Creates a `TypeGuard` for intersection types.
- * Accepts multiple type guards and creates a guard that passes only if all of them pass.
+ * Creates an {@linkcode IntersectionTypeGuard} that checks that the value matches **all** provided type guards.
  *
  * Can be shortened with {@linkcode TypeGuard.and}.
  *
  * @template T - Array of types in the intersection
  * @param guards - The type guards for each type in the intersection
- * @returns A type guard that accepts the intersection of all types
+ * @returns A type guard for the intersection of all the given type guards
  *
  * @example
  * type A = { a: number };

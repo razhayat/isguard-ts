@@ -2,7 +2,9 @@ import { TypeGuard, TypeGuardTemplate } from "..";
 import { TypeTypeGuardClass } from "./internal";
 
 /**
- * A type guard for object types with additional methods for manipulating the type structure.
+ * A {@linkcode TypeGuard} for object types. Provides additional methods for manipulating the type structure.
+ *
+ * Returned by {@linkcode isType}.
  *
  * @template T - The object type to guard
  */
@@ -22,14 +24,15 @@ export type TypeTypeGuard<T extends object> = TypeGuard<T> & {
 };
 
 /**
- * Creates a `TypeGuard` for an object type based on a template of property type guards.
+ * Creates a {@linkcode TypeTypeGuard} for an object type based on a template of property type guards.
  * This is the primary function for creating type guards for interfaces and object types.
  *
  * @template T - The object type to create a guard for
  * @param template - An object where each property is a type guard for the corresponding property in `T`
- * @returns A TypeTypeGuard that can validate objects of type `T`
+ * @returns A type guard for `T`
  *
  * @example
+ *
  * type Person = {
  *   name: string;
  *   age: number;

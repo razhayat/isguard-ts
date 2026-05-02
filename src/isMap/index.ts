@@ -2,7 +2,9 @@ import { TypeGuard } from "..";
 import { MapTypeGuardClass } from "./internal";
 
 /**
- * A type guard for `Map` types.
+ * A {@linkcode TypeGuard} for `Map<K, V>`.
+ *
+ * Returned by {@linkcode isMap}.
  *
  * @template K - The type of keys in the map
  * @template V - The type of values in the map
@@ -15,18 +17,16 @@ export type MapTypeGuard<K, V> = TypeGuard<Map<K, V>> & {
 };
 
 /**
- * Creates a `TypeGuard` for Map types.
- * Validates that the value is a Map and all its keys and values match the provided type guards.
+ * Creates a {@linkcode MapTypeGuard} that checks that the value is a `Map` and all its keys and values are of the correct type.
  *
  * @template K - The type of keys in the map
  * @template V - The type of values in the map
- *
  * @param isKey - The type guard for map keys
  * @param isValue - The type guard for map values
- *
  * @returns A type guard for `Map<K, V>`
  *
  * @example
+ *
  * const isStringToNumberMap = isMap(isString, isNumber);
  *
  * isStringToNumberMap(new Map([["a", 1], ["b", 2]])); // true

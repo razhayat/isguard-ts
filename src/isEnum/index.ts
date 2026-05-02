@@ -7,7 +7,9 @@ import { EnumTypeGuardClass } from "./internal";
 export type Enum = Readonly<Record<string, string | number>>;
 
 /**
- * A type guard for enum values.
+ * A {@linkcode TypeGuard} for enum values.
+ *
+ * Returned by {@linkcode isEnum}.
  *
  * @template T - The enum type to guard
  */
@@ -17,14 +19,14 @@ export type EnumTypeGuard<T extends Enum> = TypeGuard<T[keyof T]> & {
 };
 
 /**
- * Creates a `TypeGuard` for enum values.
- * Accepts both the string keys and numeric values defined in the enum.
+ * Creates an {@linkcode EnumTypeGuard} that checks that the value is a valid enum value.
  *
  * @template T - The enum type
  * @param enumObj - The enum object to create a guard for
- * @returns A type guard that guards for values of `T`
+ * @returns A type guard for values of `T` (`T[keyof T]`)
  *
  * @example
+ *
  * enum Direction {
  *   up = 0,
  *   down = 1,

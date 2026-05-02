@@ -21,7 +21,9 @@ export type TypeByTypeOfResult = {
 export type TypeofResult = keyof TypeByTypeOfResult;
 
 /**
- * A type guard that uses the `typeof` operator for validation.
+ * A {@linkcode TypeGuard} that uses the `typeof` operator for validation.
+ *
+ * Returned by {@linkcode isTypeof}.
  *
  * @template T - The typeof result string
  */
@@ -33,13 +35,14 @@ export type TypeofTypeGuard<T extends TypeofResult> = TypeGuard<
 };
 
 /**
- * Creates a `TypeGuard` using the `typeof` operator.
+ * Creates a {@linkcode TypeofTypeGuard} that uses the `typeof` operator for validation.
  *
  * @template T - The typeof result to check for
  * @param result - The expected typeof result
  * @returns A type guard that checks `typeof value === result`
  *
  * @example
+ *
  * const isString = isTypeof("string");
  *
  * isString("hello"); // true

@@ -2,7 +2,9 @@ import { TypeGuard, TypeGuardTemplate } from "..";
 import { UnionTypeGuardClass } from "./internal";
 
 /**
- * A type guard for union types.
+ * A {@linkcode TypeGuard} for union types (`A | B | C`).
+ *
+ * Returned by {@linkcode isUnion} and {@linkcode TypeGuard.or}.
  *
  * @template T - Array of types in the union
  */
@@ -14,21 +16,16 @@ export type UnionTypeGuard<T extends readonly unknown[]> = TypeGuard<
 };
 
 /**
- * Creates a `TypeGuard` for union types.
- * Accepts multiple type guards and creates a guard that passes if any of them pass.
- * This is equivalent to calling `guard.or(...guards)` on an existing `TypeGuard`.
+ * Creates a {@linkcode UnionTypeGuard} that checks that the value matches **any** of the provided type guards.
  *
- * ---
+ * Can be shortened with {@linkcode TypeGuard.or}.
  *
  * @template T - Array of types in the union
- *
  * @param guards - The type guards for each type in the union
- *
- * @returns A type guard that accepts any of the union types
- *
- * ---
+ * @returns A type guard for the union of all the given type guards
  *
  * @example
+ *
  * type A = { a: number };
  * type B = { b: string };
  * type C = A | B;

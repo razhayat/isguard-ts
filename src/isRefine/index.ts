@@ -2,8 +2,10 @@ import { TypeGuard } from "..";
 import { RefineTypeGuardClass } from "./internal";
 
 /**
- * A type guard that refines an existing type guard with additional constraints.
+ * A {@linkcode TypeGuard} that refines an existing type guard with additional constraints.
  * Useful for branded types, template literals, and other refined types.
+ *
+ * Returned by {@linkcode isRefine} and {@linkcode TypeGuard.refine}.
  *
  * @template T - The base type
  * @template R - The refined type (subset of T)
@@ -16,7 +18,7 @@ export type RefineTypeGuard<T, R extends T> = TypeGuard<R> & {
 };
 
 /**
- * Creates a refined `TypeGuard` by applying additional constraints to an existing type guard.
+ * Creates a {@linkcode RefineTypeGuard} that checks that the value is of type `T` **and** passes the `refinement` function.
  * This allows creating more specific type guards from broader ones.
  *
  * Can be shortened with {@linkcode TypeGuard.refine}.
@@ -34,6 +36,7 @@ export type RefineTypeGuard<T, R extends T> = TypeGuard<R> & {
  * @returns A type guard for the refined type `R`
  *
  * @example
+ *
  * type Farewell = `Bye ${string}`;
  * const isFarewell = isRefine(isString, (value: string): value is Farewell => {
  *   return value.startsWith("Bye ");

@@ -6,7 +6,9 @@ import {
 } from "./internal";
 
 /**
- * A type guard for record types with specific keys.
+ * A {@linkcode TypeGuard} for `Record<K, V>`.
+ *
+ * Returned by {@linkcode isRecord}.
  *
  * @template K - Array of keys for the record
  * @template V - The value type for all keys
@@ -22,18 +24,16 @@ export type RecordTypeGuard<
 };
 
 /**
- * Creates a `TypeGuard` for record types with specific keys.
- * All specified keys must be present and their values must match the value guard.
+ * Creates a {@linkcode RecordTypeGuard} that checks that the value has the specified keys with the specified value type.
  *
  * @template K - Array of keys for the record
  * @template V - The value type for all keys
- *
  * @param keys - The keys that must be present in the record
  * @param isValue - The type guard for the values
- *
- * @returns A type guard for `Record<K[number], V>`
+ * @returns A type guard for `Record<K, V>`
  *
  * @example
+ *
  * const timeUnits = ["second", "minute", "hour"] as const;
  * const isTimeRecord = isRecord(timeUnits, isNumber);
  * // ^? TypeGuard<Record<"second" | "minute" | "hour", number>>
@@ -49,7 +49,9 @@ export const isRecord = <const K extends readonly PropertyKey[], V>(
 };
 
 /**
- * A type guard for partial record types with specific keys.
+ * A {@linkcode TypeGuard} for `Partial<Record<K, V>>`.
+ *
+ * Returned by {@linkcode isPartialRecord}.
  *
  * @template K - Array of keys for the record
  * @template V - The value type for all keys
@@ -65,18 +67,16 @@ export type PartialRecordTypeGuard<
 };
 
 /**
- * Creates a `TypeGuard` for partial record types with specific keys.
- * Keys are optional and their values must match the value guard if present.
+ * Creates a {@linkcode PartialRecordTypeGuard} that checks that the value is a partial record with the specified keys and value type.
  *
  * @template K - Array of keys for the record
  * @template V - The value type for all keys
- *
  * @param keys - The keys that may be present in the record
  * @param isValue - The type guard for the values
- *
- * @returns A type guard for `Partial<Record<K[number], V>>`
+ * @returns A type guard for `Partial<Record<K, V>>`
  *
  * @example
+ *
  * const timeUnits = ["second", "minute", "hour"] as const;
  * const isPartialTimeRecord = isPartialRecord(timeUnits, isNumber);
  * // ^? TypeGuard<Partial<Record<"second" | "minute" | "hour", number>>>
@@ -93,7 +93,9 @@ export const isPartialRecord = <const K extends readonly PropertyKey[], V>(
 };
 
 /**
- * A type guard for index record types.
+ * A {@linkcode TypeGuard} for `Record<PropertyKey, T>`.
+ *
+ * Returned by {@linkcode isIndexRecord} and {@linkcode TypeGuard.indexRecord}.
  *
  * @template T - The value type for all keys
  */
@@ -103,8 +105,7 @@ export type IndexRecordTypeGuard<T> = TypeGuard<Record<PropertyKey, T>> & {
 };
 
 /**
- * Creates a `TypeGuard` for index record types.
- * Accepts any object where all values match the provided type guard, regardless of keys.
+ * Creates a {@linkcode IndexRecordTypeGuard} that checks that the value is an index record with the specified value type.
  *
  * Can be shortened with {@linkcode TypeGuard.indexRecord}.
  *
@@ -113,6 +114,7 @@ export type IndexRecordTypeGuard<T> = TypeGuard<Record<PropertyKey, T>> & {
  * @returns A type guard for `Record<PropertyKey, T>`
  *
  * @example
+ *
  * const isNumberRecord = isIndexRecord(isNumber); // or isNumber.indexRecord()
  * // ^? TypeGuard<Record<PropertyKey, number>>
  *

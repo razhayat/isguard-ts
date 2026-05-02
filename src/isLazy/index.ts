@@ -2,8 +2,9 @@ import { TypeGuard } from "..";
 import { LazyTypeGuardClass } from "./internal";
 
 /**
- * A lazy type guard that defers evaluation until needed.
- * Useful for resolving circular imports and recursive types.
+ * A lazy {@linkcode TypeGuard} that defers evaluation until needed.
+ *
+ * Returned by {@linkcode isLazy}.
  *
  * @template T - The type to guard
  */
@@ -13,17 +14,22 @@ export type LazyTypeGuard<T> = TypeGuard<T> & {
 };
 
 /**
- * Creates a lazy `TypeGuard` that evaluates the generator function only when needed.
- * This is useful for breaking circular imports and creating recursive type guards.
+ * Creates a {@linkcode LazyTypeGuard} that evaluates the generator function only when needed.
+ *
+ * This is useful for:
+ * - Resolving circular imports.
+ * - Defining recursive type guards (e.g. trees, linked lists).
  *
  * @template T - The type to guard
  * @param generator - A function that returns the actual type guard when called
- * @returns A lazy `TypeGuard` that defers evaluation
+ * @returns A type guard for `T`
  *
  * @example <caption>Using `isLazy` for circular imports</caption>
+ *
  * const isPeople = isLazy(() => isPerson).array();
  *
  * @example <caption>Using `isLazy` for recursive types</caption>
+ *
  * type Tree = { value: number; left?: Tree; right?: Tree };
  *
  * const isTree: TypeGuard<Tree> = isType<Tree>({

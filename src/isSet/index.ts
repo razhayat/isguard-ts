@@ -2,7 +2,9 @@ import { TypeGuard } from "..";
 import { SetTypeGuardClass } from "./internal";
 
 /**
- * A type guard for `Set` types.
+ * A {@linkcode TypeGuard} for `Set<T>`.
+ *
+ * Returned by {@linkcode isSet} and {@linkcode TypeGuard.set}.
  *
  * @template T - The type of elements in the set
  */
@@ -12,8 +14,7 @@ export type SetTypeGuard<T> = TypeGuard<Set<T>> & {
 };
 
 /**
- * Creates a `TypeGuard` for `Set` types.
- * Validates that the value is a Set and all its elements match the provided type guard.
+ * Creates a {@linkcode SetTypeGuard} that validates that the value is a `Set` and all its elements match the provided type guard.
  *
  * Can be shortened with {@linkcode TypeGuard.set}.
  *

@@ -7,8 +7,9 @@ import { LiteralTypeGuardClass } from "./internal";
 export type Literal = string | number | bigint | boolean | null | undefined;
 
 /**
- * A type guard for literal values.
- * Can handle single literals or unions of literals.
+ * A {@linkcode TypeGuard} for literal values.
+ *
+ * Returned by {@linkcode isLiteral}.
  *
  * @template T - Array of literal values to guard
  */
@@ -26,20 +27,21 @@ export type LiteralTypeGuard<T extends readonly Literal[]> = TypeGuard<
 };
 
 /**
- * Creates a `TypeGuard` for literal values.
- * Can accept multiple literal values to create a union type guard.
+ * Creates a {@linkcode LiteralTypeGuard} that checks that the value equals one of the `values`.
  *
  * @template T - Array of literal values
  * @param values - The literal values to guard for
- * @returns A type guard that accepts any of the provided literal values
+ * @returns A type guard for the provided `values`
  *
  * @example <caption>Using `isLiteral` to guard a single literal value</caption>
+ *
  * const isHello = isLiteral("Hello");
  *
  * isHello("Hello"); // true
  * isHello("world"); // false
  *
  * @example <caption>Using `isLiteral` to create a union of literals</caption>
+ *
  * const directions = ["up", "down", "left", "right"] as const;
  * const isDirection = isLiteral(...directions);
  *

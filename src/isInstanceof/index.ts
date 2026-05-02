@@ -2,32 +2,33 @@ import { TypeGuard } from "..";
 import { InstanceofTypeGuardClass } from "./internal";
 
 /**
- * Represents a constructor function that can be used with instanceof.
+ * Represents a constructor function that can be used with `instanceof`.
  */
 export type Constructor = abstract new (...args: any[]) => {};
 
 /**
- * A type guard for instanceof checks.
- * Validates that a value is an instance of a specific class.
+ * A {@linkcode TypeGuard} for `instanceof` checks.
+ *
+ * Returned by {@linkcode isInstanceof}.
  *
  * @template T - The constructor type
  */
 export type InstanceofTypeGuard<T extends Constructor> = TypeGuard<
 	InstanceType<T>
 > & {
-	/** The constructor function used for instanceof checks */
+	/** The constructor function used for `instanceof` checks */
 	class: T;
 };
 
 /**
- * Creates a `TypeGuard` using instanceof checks.
- * Validates that the value is an instance of the provided constructor.
+ * Creates an {@linkcode InstanceofTypeGuard} that checks that the value is an instance of the provided constructor.
  *
  * @template T - The constructor type
  * @param constructor - The class constructor to check instanceof against
- * @returns A type guard for instances of the class
+ * @returns A type guard for instances of `T` (`InstanceType<T>`)
  *
  * @example
+ *
  * abstract class Animal {}
  * class Dog extends Animal {}
  *

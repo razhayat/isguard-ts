@@ -2,7 +2,9 @@ import { TypeGuard, TypeGuardTemplate } from "..";
 import { TupleTypeGuardClass } from "./internal";
 
 /**
- * A type guard for tuple types.
+ * A {@linkcode TypeGuard} for tuple types.
+ *
+ * Returned by {@linkcode isTuple}.
  *
  * @template T - The tuple type to guard
  */
@@ -12,14 +14,14 @@ export type TupleTypeGuard<T extends readonly unknown[]> = TypeGuard<T> & {
 };
 
 /**
- * Creates a `TypeGuard` for tuple types.
- * Validates that the array has the exact length and types match at each position.
+ * Creates a {@linkcode TupleTypeGuard} that validates that the array has the exact length and types match at each position.
  *
  * @template T - The tuple type to guard
  * @param template - An array of type guards corresponding to each position in the tuple
- * @returns A type guard for the tuple type T
+ * @returns A type guard for `T`
  *
  * @example
+ *
  * type Row = [number, string?];
  * const isRow = isTuple<Row>([isNumber, isString.optional()]);
  *

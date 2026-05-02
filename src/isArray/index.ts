@@ -2,7 +2,9 @@ import { TypeGuard } from "..";
 import { ArrayTypeGuardClass } from "./internal";
 
 /**
- * A type guard for arrays of `T`.
+ * A {@linkcode TypeGuard} for `T[]`.
+ *
+ * Returned by {@linkcode isArray} and {@linkcode TypeGuard.array}.
  *
  * @template T - The type of elements in the array
  */
@@ -12,15 +14,16 @@ export type ArrayTypeGuard<T> = TypeGuard<T[]> & {
 };
 
 /**
- * Creates a `TypeGuard` for arrays where all elements match the provided type guard.
+ * Creates an {@linkcode ArrayTypeGuard} that checks that the value is an array and all elements match `isValue`.
  *
  * Can be shortened with {@linkcode TypeGuard.array}.
  *
  * @template T - The type of elements in the array
  * @param isValue - The type guard for individual array elements
- * @returns A type guard that guards `T[]`
+ * @returns A type guard for `T[]`
  *
  * @example
+ *
  * const isNumberArray = isArray(isNumber); // or isNumber.array()
  *
  * isNumberArray([1, 2, 3]); // true
