@@ -13,7 +13,8 @@ export type OptionalTypeGuard<T> = UnionTypeGuard<[undefined, T]> & {
 
 /**
  * Creates a `TypeGuard` for `T | undefined`.
- * This is equivalent to calling `guard.optional()` on an existing `TypeGuard`.
+ *
+ * Can be shortened with {@linkcode TypeGuard.optional}.
  *
  * @template T - The type to make optional
  *

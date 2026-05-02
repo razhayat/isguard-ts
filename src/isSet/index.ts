@@ -14,17 +14,14 @@ export type SetTypeGuard<T> = TypeGuard<Set<T>> & {
 /**
  * Creates a `TypeGuard` for `Set` types.
  * Validates that the value is a Set and all its elements match the provided type guard.
- * This is equivalent to calling `guard.set()` on an existing `TypeGuard`.
  *
- * ---
+ * Can be shortened with {@linkcode TypeGuard.set}.
  *
  * @template T - The type of elements in the set
  *
  * @param isValue - The type guard for individual set elements
  *
  * @returns A type guard for `Set<T>`
- *
- * ---
  *
  * @example
  * const isNumberSet = isSet(isNumber); // or isNumber.set()

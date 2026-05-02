@@ -13,7 +13,8 @@ export type MaybeTypeGuard<T> = UnionTypeGuard<[null, T]> & {
 
 /**
  * Creates a `TypeGuard` for `T | null`.
- * This is equivalent to calling `guard.maybe()` on an existing `TypeGuard`.
+ *
+ * Can be shortened with {@linkcode TypeGuard.maybe}.
  *
  * @template T - The type to make nullable
  *

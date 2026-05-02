@@ -16,7 +16,8 @@ export type IntersectionTypeGuard<T extends readonly unknown[]> = TypeGuard<
 /**
  * Creates a `TypeGuard` for intersection types.
  * Accepts multiple type guards and creates a guard that passes only if all of them pass.
- * This is equivalent to calling `guard.and(...guards)` on an existing TypeGuard.
+ *
+ * Can be shortened with {@linkcode TypeGuard.and}.
  *
  * @template T - Array of types in the intersection
  * @param guards - The type guards for each type in the intersection

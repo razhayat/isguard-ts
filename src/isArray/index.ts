@@ -13,7 +13,8 @@ export type ArrayTypeGuard<T> = TypeGuard<T[]> & {
 
 /**
  * Creates a `TypeGuard` for arrays where all elements match the provided type guard.
- * This is equivalent to calling `guard.array()` on an existing `TypeGuard`.
+ *
+ * Can be shortened with {@linkcode TypeGuard.array}.
  *
  * @template T - The type of elements in the array
  * @param isValue - The type guard for individual array elements

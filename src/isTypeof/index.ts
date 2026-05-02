@@ -35,13 +35,9 @@ export type TypeofTypeGuard<T extends TypeofResult> = TypeGuard<
 /**
  * Creates a `TypeGuard` using the `typeof` operator.
  *
- * ---
- *
  * @template T - The typeof result to check for
  * @param result - The expected typeof result
  * @returns A type guard that checks `typeof value === result`
- *
- * ---
  *
  * @example
  * const isString = isTypeof("string");

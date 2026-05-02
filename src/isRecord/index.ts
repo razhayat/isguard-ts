@@ -105,12 +105,11 @@ export type IndexRecordTypeGuard<T> = TypeGuard<Record<PropertyKey, T>> & {
 /**
  * Creates a `TypeGuard` for index record types.
  * Accepts any object where all values match the provided type guard, regardless of keys.
- * This is equivalent to calling `guard.indexRecord()` on an existing `TypeGuard`.
+ *
+ * Can be shortened with {@linkcode TypeGuard.indexRecord}.
  *
  * @template T - The value type for all keys
- *
  * @param isValue - The type guard for the values
- *
  * @returns A type guard for `Record<PropertyKey, T>`
  *
  * @example

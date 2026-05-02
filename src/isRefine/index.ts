@@ -18,7 +18,8 @@ export type RefineTypeGuard<T, R extends T> = TypeGuard<R> & {
 /**
  * Creates a refined `TypeGuard` by applying additional constraints to an existing type guard.
  * This allows creating more specific type guards from broader ones.
- * This is equivalent to calling `guard.refine(refinement)` on an existing `TypeGuard`.
+ *
+ * Can be shortened with {@linkcode TypeGuard.refine}.
  *
  * **Warning**
  *
@@ -26,17 +27,11 @@ export type RefineTypeGuard<T, R extends T> = TypeGuard<R> & {
  * Ensure that the refinement function correctly narrows the type and does not produce false positives.
  * Use with caution.
  *
- * ---
- *
  * @template T - The base type
  * @template R - The refined type (must extend `T`)
- *
  * @param isBase - The base type guard to refine
  * @param refinement - A function that checks the additional constraints
- *
  * @returns A type guard for the refined type `R`
- *
- * ---
  *
  * @example
  * type Farewell = `Bye ${string}`;
