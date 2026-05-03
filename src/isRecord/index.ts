@@ -105,7 +105,7 @@ export type IndexRecordTypeGuard<T> = TypeGuard<Record<PropertyKey, T>> & {
 };
 
 /**
- * Creates a {@linkcode IndexRecordTypeGuard} that checks that the value is an index record with the specified value type.
+ * Creates an {@linkcode IndexRecordTypeGuard} that checks that the value is an index record with the specified value type.
  *
  * Can be shortened with {@linkcode TypeGuard.indexRecord}.
  *
