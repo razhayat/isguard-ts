@@ -6,7 +6,7 @@ import { OptionalTypeGuardClass } from "./internal";
  *
  * Returned by {@linkcode isOptional} and {@linkcode TypeGuard.optional}.
  *
- * @template T - The base type that may be undefined
+ * @template T - The base type that may be `undefined`
  */
 export type OptionalTypeGuard<T> = UnionTypeGuard<[undefined, T]> & {
 	/** Returns the underlying type guard for `T` (without `undefined`) */

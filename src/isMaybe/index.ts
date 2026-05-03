@@ -6,10 +6,10 @@ import { MaybeTypeGuardClass } from "./internal";
  *
  * Returned by {@linkcode isMaybe} and {@linkcode TypeGuard.maybe}.
  *
- * @template T - The base type that may be null
+ * @template T - The base type that may be `null`
  */
 export type MaybeTypeGuard<T> = UnionTypeGuard<[null, T]> & {
-	/** Returns the underlying type guard for T (without the null) */
+	/** Returns the underlying type guard for T (without `null`) */
 	unbox(): TypeGuard<T>;
 };
 
@@ -19,7 +19,7 @@ export type MaybeTypeGuard<T> = UnionTypeGuard<[null, T]> & {
  * Can be shortened with {@linkcode TypeGuard.maybe}.
  *
  * @template T - The type to make nullable
- * @param guard - The type guard for the base type T
+ * @param guard - The type guard for the base type `T`
  * @returns A type guard for `T | null`
  *
  * @example
