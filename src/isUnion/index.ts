@@ -37,6 +37,8 @@ export type UnionTypeGuard<T extends readonly unknown[]> = TypeGuard<
  *
  * isC({ a: 1 }); // true
  * isC({ b: "hello" }); // true
+ * isC({ a: 1, b: "hello" }); // true
+ * isC({}); // false
  */
 export const isUnion = <T extends readonly unknown[]>(
 	...guards: TypeGuardTemplate<T>
