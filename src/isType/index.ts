@@ -27,6 +27,9 @@ export type TypeTypeGuard<T extends object> = TypeGuard<T> & {
  * Creates a {@linkcode TypeTypeGuard} for an object type based on a template of property type guards.
  * This is the primary function for creating type guards for interfaces and object types.
  *
+ * **Best practice**:
+ * pass the generic type argument into `isType` to avoid unexpected optional-field behavior.
+ *
  * @template T - The object type to create a guard for
  * @param template - An object where each property is a type guard for the corresponding property in `T`
  * @returns A type guard for `T`

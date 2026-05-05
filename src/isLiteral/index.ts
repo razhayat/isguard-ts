@@ -29,6 +29,9 @@ export type LiteralTypeGuard<T extends readonly Literal[]> = TypeGuard<
 /**
  * Creates a {@linkcode LiteralTypeGuard} that checks that the value equals one of the `values`.
  *
+ * **Best practice**:
+ * use `satisfies` on the result when passing multiple literal values.
+ *
  * @template T - Array of literal values
  * @param values - The literal values to guard for
  * @returns A type guard for the provided `values`
@@ -43,7 +46,9 @@ export type LiteralTypeGuard<T extends readonly Literal[]> = TypeGuard<
  * @example <caption>Using `isLiteral` to create a union of literals</caption>
  *
  * const directions = ["up", "down", "left", "right"] as const;
- * const isDirection = isLiteral(...directions);
+ * type Direction = (typeof directions)[number];
+ *
+ * const isDirection = isLiteral(...directions) satisfies TypeGuard<Direction>;
  *
  * isDirection("up"); // true
  */
