@@ -103,7 +103,33 @@ export type TypeGuard<
 		refinement: (value: T) => value is R,
 	): RefineTypeGuard<T, R>;
 	/**
-	 * Creates a Zod schema equivalent to this type guard
+	 * Creates a `zod` schema equivalent to this type guard.
+	 * You **must have zod installed** to use this feature.
+	 *
+	 * The supported versions of `zod` start with `zod@3.20.0` and end with `zod@5.0.0` (not included)
+	 *
+	 * **Important**
+	 *
+	 * The schema returned by `.zod()` might not exactly represent the guarded type in certain edge cases.
+	 * For example: `isNumber(NaN)` returns `true` while `z.number()` marks `NaN` as invalid.
+	 *
+	 * The differences vary between zod versions, but these are the most common:
+	 * - Non finite numbers (`NaN, Infinity, -Infinity`) are valid when using `isguard-ts` but invalid when using `zod`.
+	 * - `zod` ignores symbol property keys while `isguard-ts` doesn't.
+	 *
+	 * @example
+	 *
+	 * const ZodNumber = isNumber.zod(); // same as z.number()
+	 *
+	 * type Person = {
+	 * 	name: string;
+	 * };
+	 *
+	 * const isPerson = isType<Person>({
+	 * 	name: isString,
+	 * });
+	 *
+	 * const ZodPerson = isPerson.zod(); // same as z.object({ name: z.string() })
 	 */
 	zod(): ZodType<T>;
 };
