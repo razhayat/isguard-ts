@@ -16,6 +16,9 @@ export type TupleTypeGuard<T extends readonly unknown[]> = TypeGuard<T> & {
 /**
  * Creates a {@linkcode TupleTypeGuard} that validates that the array has the exact length and types match at each position.
  *
+ * **Best practice**:
+ * pass the generic type argument into `isTuple` to avoid unexpected optional-field behavior.
+ *
  * @template T - The tuple type to guard
  * @param template - An array of type guards corresponding to each position in the tuple
  * @returns A type guard for `T`

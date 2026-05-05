@@ -20,6 +20,9 @@ export type IntersectionTypeGuard<T extends readonly unknown[]> = TypeGuard<
  *
  * Can be shortened with {@linkcode TypeGuard.and}.
  *
+ * **Best practice**:
+ * use `satisfies` on the result of `isIntersection` to ensure the type guard is of the expected intersection type.
+ *
  * @template T - Array of types in the intersection
  * @param guards - The type guards for each type in the intersection
  * @returns A type guard for the intersection of all the given type guards
@@ -32,7 +35,7 @@ export type IntersectionTypeGuard<T extends readonly unknown[]> = TypeGuard<
  * const isA = isType<A>({ a: isNumber });
  * const isB = isType<B>({ b: isString });
  *
- * const isC = isIntersection(isA, isB); // or isA.and(isB)
+ * const isC = isIntersection(isA, isB) satisfies TypeGuard<C>; // or isA.and(isB)
  *
  * isC({ a: 1, b: "hello" }); // true
  * isC({ a: 1 }); // false

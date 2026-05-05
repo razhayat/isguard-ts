@@ -18,6 +18,9 @@ export type UnionTypeGuard<T extends readonly unknown[]> = TypeGuard<
 /**
  * Creates a {@linkcode UnionTypeGuard} that checks that the value matches **any** of the provided type guards.
  *
+ * **Best practice**:
+ * use `satisfies` on the result of `isUnion` to ensure the result is of the expected union type.
+ *
  * Can be shortened with {@linkcode TypeGuard.or}.
  *
  * @template T - Array of types in the union
@@ -33,7 +36,7 @@ export type UnionTypeGuard<T extends readonly unknown[]> = TypeGuard<
  * const isA = isType<A>({ a: isNumber });
  * const isB = isType<B>({ b: isString });
  *
- * const isC = isUnion(isA, isB); // or isA.or(isB)
+ * const isC = isUnion(isA, isB) satisfies TypeGuard<C>; // or isA.or(isB)
  *
  * isC({ a: 1 }); // true
  * isC({ b: "hello" }); // true
