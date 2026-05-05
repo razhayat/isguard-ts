@@ -2,6 +2,7 @@
 	"entryPoints": ["src/index.ts"],
 	"searchInComments": true,
 	"searchInDocuments": true,
+	"headings": false,
 	"navigationLinks": {
 		"GitHub": "https://github.com/razhayat/isguard-ts"
 	}
