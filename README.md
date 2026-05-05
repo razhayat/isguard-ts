@@ -7,7 +7,7 @@ For example, when making a change to your type, `isguard-ts` will inform you to 
 
 ## Installation
 
-```
+```bash
 npm install isguard-ts
 ```
 
