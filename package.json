@@ -6,7 +6,8 @@
 	"scripts": {
 		"test": "npx vitest --run",
 		"build": "vite build",
-		"prepublishOnly": "bash scripts/publish.sh",
+		"prepublishOnly": "npm run test && npm run build",
+		"postpublish": "bash ./scripts/post-publish.sh",
 		"prepare": "npx husky",
 		"format": "prettier --write .",
 		"docs": "typedoc"

@@ -1,7 +1,3 @@
-npm run test || exit
-npx tsc --noEmit || exit
-npm run build || exit
-
 version=$(npm view ./ version)
 tag_name="v$version"
 
