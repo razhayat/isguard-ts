@@ -11,4 +11,4 @@ runs:
 
         - name: Install dependencies
           run: npm ci
-          sell: bash
+          shell: bash
