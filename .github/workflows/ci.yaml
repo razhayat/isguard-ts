@@ -3,25 +3,32 @@ name: Build and run tests
 on:
     pull_request:
 
+setup-repository: &setup-repository
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup node
+      uses: actions/setup-node@v4
+      with:
+          node-version: 24
+          cache: "npm"
+
+    - name: Install dependencies
+      run: npm ci
+
 jobs:
-    test:
+    build:
         runs-on: ubuntu-latest
-
         steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-
-            - name: Setup node
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 24
-                  cache: "npm"
-
-            - name: Install dependencies
-              run: npm ci
+            - <<: *setup-repository
 
             - name: Build project
               run: npm run build
+
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - <<: *setup-repository
 
             - name: Run tests
               run: npm test
