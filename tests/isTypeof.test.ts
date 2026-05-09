@@ -1,6 +1,18 @@
 import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isBigint, isBoolean, isFunction, isNumber, isString, isSymbol, isTypeof } from "../src";
+import {
+	isBigint,
+	isBoolean,
+	isFalse,
+	isFunction,
+	isLiteral,
+	isNumber,
+	isString,
+	isSymbol,
+	isTrue,
+	isTypeof,
+	isUnion,
+} from "../src";
 
 describe("is typeof", () => {
 	it("should have .result that is equal to the given result", () => {
@@ -12,7 +24,7 @@ describe("is typeof", () => {
 
 describe("is number", () => {
 	describedGuardTests({
-		guard: isNumber,
+		guards: [isNumber],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -67,7 +79,7 @@ describe("is number", () => {
 
 describe("is bigint", () => {
 	describedGuardTests({
-		guard: isBigint,
+		guards: [isBigint],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -95,7 +107,7 @@ describe("is bigint", () => {
 
 describe("is string", () => {
 	describedGuardTests({
-		guard: isString,
+		guards: [isString],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -146,7 +158,7 @@ describe("is string", () => {
 
 describe("is boolean", () => {
 	describedGuardTests({
-		guard: isBoolean,
+		guards: [isBoolean, isUnion(isTrue, isFalse), isFalse.or(isTrue), isLiteral(true, false)],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -180,7 +192,7 @@ describe("is boolean", () => {
 
 describe("is symbol", () => {
 	describedGuardTests({
-		guard: isSymbol,
+		guards: [isSymbol],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -220,7 +232,7 @@ describe("is symbol", () => {
 
 describe("is typeof object", () => {
 	describedGuardTests({
-		guard: isTypeof("object"),
+		guards: [isTypeof("object")],
 		testCases: [
 			[null, true],
 			[undefined, false],
@@ -245,7 +257,7 @@ describe("is typeof object", () => {
 
 describe("is function", () => {
 	describedGuardTests({
-		guard: isFunction,
+		guards: [isFunction],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -302,7 +314,7 @@ describe("is function", () => {
 
 describe("is typeof undefined", () => {
 	describedGuardTests({
-		guard: isTypeof("undefined"),
+		guards: [isTypeof("undefined")],
 		testCases: [
 			[null, false],
 			[false, false],

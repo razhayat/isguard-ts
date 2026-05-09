@@ -12,8 +12,7 @@ describe("is intersection", () => {
 
 describe("is empty intersection (unknown)", () => {
 	describedGuardTests({
-		guard: isIntersection(),
-		equivalentGuards: [isUnknown],
+		guards: [isIntersection(), isUnknown],
 		testCases: [
 			[null, true],
 			[undefined, true],
@@ -35,8 +34,13 @@ describe("is empty intersection (unknown)", () => {
 
 describe("is number & string", () => {
 	describedGuardTests({
-		guard: isIntersection(isNumber, isString),
-		equivalentGuards: [isNever],
+		guards: [
+			isIntersection(isNumber, isString),
+			isIntersection(isNumber, isString, isUnknown),
+			isNumber.and(isString),
+			isString.and(isNumber),
+			isNever,
+		],
 		testCases: [
 			[6, false],
 			["Hello", false],
@@ -60,8 +64,13 @@ describe("is { a: number } & { b: string }", () => {
 	const isB = isType<B>({ b: isString });
 
 	describedGuardTests({
-		guard: isIntersection(isA, isB),
-		equivalentGuards: [isIntersection(isB, isA), isA.and(isB), isB.and(isA, isB)],
+		guards: [
+			isIntersection(isA, isB),
+			isIntersection(isB, isA),
+			isIntersection(isA, isB, isUnknown),
+			isA.and(isB),
+			isB.and(isA, isB),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -120,11 +129,12 @@ describe("is { a: number } & { b: string } & { c: boolean }", () => {
 	const isC = isType<C>({ c: isBoolean });
 
 	describedGuardTests({
-		guard: isIntersection(isA, isB, isC),
-		equivalentGuards: [
+		guards: [
+			isIntersection(isA, isB, isC),
 			isIntersection(isB, isC, isA),
 			isIntersection(isA, isB, isC, isUnknown),
 			isA.and(isB, isC),
+			isA.and(isA, isA, isA, isA, isA, isB, isB, isB, isB, isC),
 			isC.and(isB, isC, isA),
 		],
 		testCases: [
@@ -192,8 +202,11 @@ describe("is { obj: { a: string } } & { obj: { b: number } }", () => {
 	});
 
 	describedGuardTests({
-		guard: isIntersection(isA, isB),
-		equivalentGuards: [isIntersection(isB, isB, isB, isA)],
+		guards: [
+			isIntersection(isA, isB),
+			isIntersection(isB, isB, isB, isA),
+			isUnknown.and(isA, isB),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],

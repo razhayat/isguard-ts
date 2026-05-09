@@ -1,5 +1,15 @@
 import { describe, expect, it } from "vitest";
-import { isNumber, isOptional, isString, isUndefined, isUnion, isArray, isDate } from "../src";
+import {
+	isNumber,
+	isOptional,
+	isString,
+	isUndefined,
+	isUnion,
+	isArray,
+	isDate,
+	isNever,
+	isUnknown,
+} from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is optional", () => {
@@ -13,8 +23,8 @@ describe("is optional", () => {
 
 describe("is optional string", () => {
 	describedGuardTests({
-		guard: isOptional(isString),
-		equivalentGuards: [
+		guards: [
+			isOptional(isString),
 			isString.optional(),
 			isUnion(isString, isUndefined),
 			isUndefined.or(isString),
@@ -40,7 +50,12 @@ describe("is optional string", () => {
 
 describe("is optional number", () => {
 	describedGuardTests({
-		guard: isOptional(isNumber),
+		guards: [
+			isOptional(isNumber),
+			isNumber.optional(),
+			isUnion(isNumber, isUndefined),
+			isNumber.or(isUndefined, isNever),
+		],
 		testCases: [
 			[null, false],
 			["0", false],
@@ -63,7 +78,12 @@ describe("is optional number", () => {
 
 describe("is optional date", () => {
 	describedGuardTests({
-		guard: isOptional(isDate),
+		guards: [
+			isOptional(isDate),
+			isDate.optional(),
+			isDate.or(isUndefined),
+			isDate.and(isUnknown).or(isNever).or(isUndefined),
+		],
 		testCases: [
 			[null, false],
 			["2024-01-01", false],
@@ -83,7 +103,11 @@ describe("is optional date", () => {
 
 describe("is optional number array", () => {
 	describedGuardTests({
-		guard: isOptional(isArray(isNumber)),
+		guards: [
+			isOptional(isArray(isNumber)),
+			isOptional(isNumber.array()),
+			isNumber.array().optional(),
+		],
 		testCases: [
 			[null, false],
 			[[1, "2"], false],

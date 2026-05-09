@@ -21,7 +21,7 @@ describe("is enum", () => {
 
 describe("is native enum", () => {
 	describedGuardTests({
-		guard: isEnum(Example),
+		guards: [isEnum(Example)],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -69,7 +69,7 @@ describe("is enum like", () => {
 	} as const;
 
 	describedGuardTests({
-		guard: isEnum(enumLike),
+		guards: [isEnum(enumLike)],
 		testCases: [
 			[null, false],
 			[undefined, false],

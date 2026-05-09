@@ -14,7 +14,7 @@ import {
 
 describe("is object", () => {
 	describedGuardTests({
-		guard: isObject,
+		guards: [isObject],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -38,7 +38,7 @@ describe("is object", () => {
 
 describe("isUnknown", () => {
 	describedGuardTests({
-		guard: isUnknown,
+		guards: [isUnknown],
 		testCases: [
 			[null, true],
 			[undefined, true],
@@ -62,7 +62,7 @@ describe("isUnknown", () => {
 
 describe("isNever", () => {
 	describedGuardTests({
-		guard: isNever,
+		guards: [isNever],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -85,7 +85,7 @@ describe("isNever", () => {
 
 describe("isPropertyKey", () => {
 	describedGuardTests({
-		guard: isPropertyKey,
+		guards: [isPropertyKey],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -129,7 +129,7 @@ describe("isPropertyKey", () => {
 
 describe("is null", () => {
 	describedGuardTests({
-		guard: isNull,
+		guards: [isNull],
 		testCases: [
 			[null, true],
 			[undefined, false],
@@ -150,7 +150,7 @@ describe("is null", () => {
 
 describe("is undefined", () => {
 	describedGuardTests({
-		guard: isUndefined,
+		guards: [isUndefined],
 		testCases: [
 			[null, false],
 			[423n, false],
@@ -174,7 +174,7 @@ describe("is undefined", () => {
 
 describe("is nil", () => {
 	describedGuardTests({
-		guard: isNil,
+		guards: [isNil],
 		testCases: [
 			[56, false],
 			[-34n, false],
@@ -200,7 +200,7 @@ describe("is nil", () => {
 
 describe("is true", () => {
 	describedGuardTests({
-		guard: isTrue,
+		guards: [isTrue],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -222,7 +222,7 @@ describe("is true", () => {
 
 describe("is false", () => {
 	describedGuardTests({
-		guard: isFalse,
+		guards: [isFalse],
 		testCases: [
 			[null, false],
 			[undefined, false],

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isArray, isDate, isNumber, isString, isType, isUndefined } from "../src";
+import { isArray, isDate, isNever, isNumber, isString, isType, isUndefined } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is array", () => {
@@ -12,8 +12,7 @@ describe("is array", () => {
 
 describe("is number array", () => {
 	describedGuardTests({
-		guard: isArray(isNumber),
-		equivalentGuards: [isNumber.array()],
+		guards: [isArray(isNumber), isNumber.array()],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -95,7 +94,12 @@ describe("is number array", () => {
 
 describe("is undefined array", () => {
 	describedGuardTests({
-		guard: isArray(isUndefined),
+		guards: [
+			isArray(isUndefined),
+			isUndefined.array(),
+			isNever.optional().array(),
+			isArray(isUndefined.or(isNever)),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -152,8 +156,12 @@ describe("is object array", () => {
 	});
 
 	describedGuardTests({
-		guard: isArray(isObj),
-		equivalentGuards: [isObj.array(), isArray(isObj).isValue.array()],
+		guards: [
+			isArray(isObj),
+			isObj.array(),
+			isArray(isObj).isValue.array(),
+			isObj.or(isNever).array(),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],

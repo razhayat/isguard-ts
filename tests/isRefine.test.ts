@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isNumber, isRefine, isString } from "../src";
+import { isNever, isNumber, isRefine, isString } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is refine", () => {
@@ -18,8 +18,11 @@ describe("is `Hello${string}`", () => {
 	};
 
 	describedGuardTests({
-		guard: isRefine(isString, startWithHello),
-		equivalentGuards: [isString.refine(startWithHello)],
+		guards: [
+			isRefine(isString, startWithHello),
+			isString.refine(startWithHello),
+			isString.or(isNever).refine(startWithHello),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -66,7 +69,7 @@ describe("is positive number", () => {
 	});
 
 	describedGuardTests({
-		guard: isPositiveNumber,
+		guards: [isPositiveNumber],
 		testCases: [
 			[null, false],
 			[undefined, false],

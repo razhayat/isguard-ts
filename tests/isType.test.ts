@@ -26,8 +26,8 @@ describe("is type", () => {
 
 describe("is empty type", () => {
 	describedGuardTests({
-		guard: isType<{}>({}),
-		equivalentGuards: [
+		guards: [
+			isType<{}>({}),
 			isType({ name: isString }).pick(),
 			isType({ name: isString }).omit("name"),
 		],
@@ -72,10 +72,12 @@ describe("is simple type", () => {
 	}
 
 	describedGuardTests({
-		guard: isType<Simple>({
-			name: isString,
-			age: isNumber,
-		}),
+		guards: [
+			isType<Simple>({
+				name: isString,
+				age: isNumber,
+			}),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -110,10 +112,12 @@ describe("is type with optional", () => {
 	};
 
 	describedGuardTests({
-		guard: isType<MenuItem>({
-			value: isString,
-			display: isOptionalString,
-		}),
+		guards: [
+			isType<MenuItem>({
+				value: isString,
+				display: isOptionalString,
+			}),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -180,8 +184,7 @@ describe("is tree type", () => {
 	);
 
 	describedGuardTests({
-		guard: isTree,
-		equivalentGuards: [[isTreeWithGet, { zod: "throws" }], isTreeWithMainLazy],
+		guards: [isTree, [isTreeWithGet, { zod: "throws" }], isTreeWithMainLazy],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -242,8 +245,7 @@ describe("is recursive pick type", () => {
 	});
 
 	describedGuardTests({
-		guard: isPickParent,
-		equivalentGuards: [isPickParent2],
+		guards: [isPickParent, isPickParent2],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -277,14 +279,16 @@ describe("is person interface", () => {
 		sex: "M" | "F";
 	}
 
+	const isPerson = isType<Person>({
+		name: isString,
+		height: isNumber,
+		birthday: isDate,
+		deathday: isDate.maybe(),
+		sex: isLiteral("M", "F"),
+	});
+
 	describedGuardTests({
-		guard: isType<Person>({
-			name: isString,
-			height: isNumber,
-			birthday: isDate,
-			deathday: isDate.maybe(),
-			sex: isLiteral("M", "F"),
-		}),
+		guards: [isPerson],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -343,11 +347,13 @@ describe("is tuple like type", () => {
 		1: number;
 	};
 
+	const isTupleLike = isType<TupleLike>({
+		"0": isString,
+		"1": isNumber,
+	});
+
 	describedGuardTests({
-		guard: isType<TupleLike>({
-			"0": isString,
-			"1": isNumber,
-		}),
+		guards: [isTupleLike],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -374,7 +380,7 @@ describe("is tuple type", () => {
 	type Tuple = readonly [string, number];
 
 	describedGuardTests({
-		guard: isType<Tuple>([isString, isNumber]),
+		guards: [isType<Tuple>([isString, isNumber])],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -406,10 +412,12 @@ describe("is type with symbol", () => {
 	};
 
 	describedGuardTests({
-		guard: isType<WithSymbol>({
-			name: isString,
-			[hello]: isNumber,
-		}),
+		guards: [
+			isType<WithSymbol>({
+				name: isString,
+				[hello]: isNumber,
+			}),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -475,8 +483,9 @@ describe("is type with all PropertyKey types", () => {
 	});
 
 	describedGuardTests({
-		guard: isAll,
-		equivalentGuards: [
+		guards: [
+			isAll,
+
 			isAllGet,
 			isIntersection(isAll.pick("str", symbol), isType<Pick<All, 61>>({ 61: isNumber })),
 			isAllExtra.pick("str", 61, symbol),
@@ -636,12 +645,12 @@ describe("is type with .partial", () => {
 	};
 
 	describedGuardTests({
-		guard: isType<All>({
-			str: isNumber,
-			61: isNumber,
-			[symbol]: isNumber,
-		}).partial(),
-		equivalentGuards: [
+		guards: [
+			isType<All>({
+				str: isNumber,
+				61: isNumber,
+				[symbol]: isNumber,
+			}).partial(),
 			isType<Partial<All>>({
 				str: isNumber.optional(),
 				61: isNumber.optional(),

@@ -13,7 +13,7 @@ describe("is tuple", () => {
 
 describe("is empty tuple", () => {
 	describedGuardTests({
-		guard: isTuple<[]>([]),
+		guards: [isTuple<[]>([])],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -46,7 +46,7 @@ describe("is normal tuple", () => {
 	type Tuple = [string, number];
 
 	describedGuardTests({
-		guard: isTuple<Tuple>([isString, isNumber]),
+		guards: [isTuple<Tuple>([isString, isNumber])],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -79,7 +79,7 @@ describe("is tuple with optional", () => {
 	type Tuple = [number, number?];
 
 	describedGuardTests({
-		guard: isTuple<Tuple>([isNumber, isOptionalNumber]),
+		guards: [isTuple<Tuple>([isNumber, isOptionalNumber])],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -107,7 +107,7 @@ describe("is tuple of objects", () => {
 	type Tuple = [{ a: string }, { b: number }];
 
 	describedGuardTests({
-		guard: isTuple<Tuple>([isType({ a: isString }), isType({ b: isNumber })]),
+		guards: [isTuple<Tuple>([isType({ a: isString }), isType({ b: isNumber })])],
 		testCases: [
 			[null, false],
 			[undefined, false],

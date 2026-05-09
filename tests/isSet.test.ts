@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isNumber, isSet, isString, isBoolean } from "../src";
+import { isNumber, isSet, isString, isBoolean, isTrue, isFalse } from "../src";
 
 describe("is set", () => {
 	it("should have .isValue that is equal to the given guard", () => {
@@ -12,8 +12,7 @@ describe("is set", () => {
 
 describe("is number set", () => {
 	describedGuardTests({
-		guard: isSet(isNumber),
-		equivalentGuards: [isNumber.set()],
+		guards: [isSet(isNumber), isNumber.set()],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -44,8 +43,7 @@ describe("is number set", () => {
 
 describe("is string set", () => {
 	describedGuardTests({
-		guard: isSet(isString),
-		equivalentGuards: [isString.set()],
+		guards: [isSet(isString), isString.set()],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -71,8 +69,7 @@ describe("is string set", () => {
 
 describe("is boolean set", () => {
 	describedGuardTests({
-		guard: isSet(isBoolean),
-		equivalentGuards: [isBoolean.set()],
+		guards: [isSet(isBoolean), isBoolean.set(), isTrue.or(isFalse).set()],
 		testCases: [
 			[null, false],
 			[undefined, false],
