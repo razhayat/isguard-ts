@@ -3,17 +3,12 @@ import { defaultStringifyInput } from "./stringify";
 import { TestCaseTuple, TypeGuardProp, TypeGuardTuple } from "./types";
 
 export type DescribedGuardTestsProps<T> = {
-	guard: TypeGuardProp<T>;
-	equivalentGuards?: TypeGuardProp<NoInfer<T>>[];
+	guards: [TypeGuardProp<T>, ...TypeGuardProp<T>[]];
 	testCases: TestCaseTuple[];
 };
 
-export const describedGuardTests = <T>({
-	guard,
-	equivalentGuards = [],
-	testCases,
-}: DescribedGuardTestsProps<T>) => {
-	const guardOptions = [guard, ...equivalentGuards].map<TypeGuardTuple<T>>(guard =>
+export const describedGuardTests = <T>({ guards, testCases }: DescribedGuardTestsProps<T>) => {
+	const guardOptions = guards.map<TypeGuardTuple<T>>(guard =>
 		typeof guard === "function" ? [guard] : guard,
 	);
 

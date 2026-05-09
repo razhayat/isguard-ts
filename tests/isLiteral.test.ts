@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isLiteral, isNever, isUnion } from "../src";
+import { isLiteral, isNever, isString, isUnion, isUnknown } from "../src";
 
 describe("is literal", () => {
 	it("should have .values that is equal to the given values", () => {
@@ -28,9 +28,10 @@ describe("is literal", () => {
 
 describe("is literal of nothing (never)", () => {
 	describedGuardTests({
-		guard: isLiteral(),
-		equivalentGuards: [
+		guards: [
+			isLiteral(),
 			isNever,
+			isNever.and(isUnknown),
 			isLiteral("1234", 56, false).extract(),
 			isLiteral("one", "two").exclude("one", "two"),
 		],
@@ -60,8 +61,7 @@ describe("is literal (56)", () => {
 	const guard = isLiteral(56);
 
 	describedGuardTests({
-		guard: guard,
-		equivalentGuards: [guard.extract(56), guard.exclude()],
+		guards: [guard, guard.extract(56), guard.exclude()],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -90,12 +90,13 @@ describe("is literal ('Empire!')", () => {
 	const guard = isLiteral("Empire!");
 
 	describedGuardTests({
-		guard: guard,
-		equivalentGuards: [
+		guards: [
+			guard,
 			isLiteral("Empire!", "Empire!"),
 			guard.extract("Empire!", "Empire!"),
 			isLiteral("Empire!", "to be excluded").extract("Empire!"),
 			isLiteral("Empire!", "to be excluded").exclude("to be excluded", "to be excluded"),
+			isString.refine((value): value is "Empire!" => value === "Empire!"),
 		],
 		testCases: [
 			[null, false],
@@ -128,8 +129,8 @@ describe("is 'apple' | 'orange' | 'banana' | 6", () => {
 	const guard = isLiteral("apple", "orange", "banana", 6);
 
 	describedGuardTests({
-		guard: guard,
-		equivalentGuards: [
+		guards: [
+			guard,
 			isLiteral("orange", "banana", "apple", 6),
 			guard.extract("banana", 6, "orange", "apple"),
 			isUnion(guard.extract("apple", "orange", "banana"), isLiteral(6)),
@@ -159,8 +160,8 @@ describe("is 'apple' | 12 | 34n | true | null | undefined", () => {
 	const guard = isLiteral("apple", 12, 34n, true, null, undefined);
 
 	describedGuardTests({
-		guard: guard,
-		equivalentGuards: [
+		guards: [
+			guard,
 			guard.extract(true, void 0, 34n, "apple", null, 12),
 			isLiteral(
 				"apple",

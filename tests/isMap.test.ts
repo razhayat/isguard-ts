@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isMap, isNumber, isString, isArray, isBoolean } from "../src";
+import { isMap, isNumber, isString, isArray, isBoolean, isNever, isUnknown } from "../src";
 
 describe("is map", () => {
 	it("should have .isKey and .isValue that are equal to the given guards", () => {
@@ -13,7 +13,11 @@ describe("is map", () => {
 
 describe("is Map<number, string>", () => {
 	describedGuardTests({
-		guard: isMap(isNumber, isString),
+		guards: [
+			isMap(isNumber, isString),
+			isMap(isNumber.or(isNever), isString),
+			isMap(isNumber, isString.and(isUnknown)),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -56,7 +60,7 @@ describe("is Map<number, string>", () => {
 
 describe("is Map<string, number>", () => {
 	describedGuardTests({
-		guard: isMap(isString, isNumber),
+		guards: [isMap(isString, isNumber), isMap(isString.or(isNever), isNumber.and(isUnknown))],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -93,7 +97,7 @@ describe("is Map<string, number>", () => {
 
 describe("is Map<string, boolean>", () => {
 	describedGuardTests({
-		guard: isMap(isString, isBoolean),
+		guards: [isMap(isString, isBoolean)],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -128,8 +132,7 @@ describe("is Map<string, boolean>", () => {
 
 describe("is Map<number, number[]>", () => {
 	describedGuardTests({
-		guard: isMap(isNumber, isArray(isNumber)),
-		equivalentGuards: [isMap(isNumber, isNumber.array())],
+		guards: [isMap(isNumber, isArray(isNumber)), isMap(isNumber, isNumber.array())],
 		testCases: [
 			[null, false],
 			[undefined, false],

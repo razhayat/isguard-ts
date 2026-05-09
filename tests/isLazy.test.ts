@@ -72,8 +72,7 @@ describe("is recursive type", () => {
 	);
 
 	describedGuardTests({
-		guard: isNode,
-		equivalentGuards: [isCompletelyLazyNode],
+		guards: [isNode, isCompletelyLazyNode],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -118,8 +117,7 @@ describe("is recursive tuple", () => {
 	);
 
 	describedGuardTests({
-		guard: isRow,
-		equivalentGuards: [isCompletelyLazyRow],
+		guards: [isRow, isCompletelyLazyRow],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -160,8 +158,7 @@ describe("is recursive union", () => {
 	);
 
 	describedGuardTests({
-		guard: isNumbers,
-		equivalentGuards: [isCompletelyLazyNumbers],
+		guards: [isNumbers, isCompletelyLazyNumbers],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -204,8 +201,7 @@ describe("is recursive index record", () => {
 	});
 
 	describedGuardTests({
-		guard: isRecursiveIndexRecord,
-		equivalentGuards: [isCompletelyLazyRecursiveIndexRecord],
+		guards: [isRecursiveIndexRecord, isCompletelyLazyRecursiveIndexRecord],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -269,9 +265,10 @@ describe("is recursive index record", () => {
 });
 
 describe("non recursive type", () => {
+	const isLazyNumber = isLazy(() => isNumber);
+
 	describedGuardTests({
-		guard: isLazy<number>(() => isNumber),
-		equivalentGuards: [isNumber],
+		guards: [isLazyNumber, isLazyNumber.unbox(), isNumber],
 		testCases: [
 			[null, false],
 			[undefined, false],

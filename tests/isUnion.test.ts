@@ -12,8 +12,7 @@ describe("is union", () => {
 
 describe("is empty union (never)", () => {
 	describedGuardTests({
-		guard: isUnion(),
-		equivalentGuards: [isNever],
+		guards: [isUnion(), isNever],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -35,8 +34,8 @@ describe("is empty union (never)", () => {
 
 describe("is Date | number | string | boolean", () => {
 	describedGuardTests({
-		guard: isUnion(isDate, isNumber, isString, isBoolean),
-		equivalentGuards: [
+		guards: [
+			isUnion(isDate, isNumber, isString, isBoolean),
 			isUnion(isNumber, isBoolean, isDate, isString),
 			isBoolean.or(isString, isDate, isNumber),
 		],
@@ -71,8 +70,8 @@ describe("is { a: number; } | { b: string; }", () => {
 	const isB = isType<B>({ b: isString });
 
 	describedGuardTests({
-		guard: isUnion(isA, isB),
-		equivalentGuards: [
+		guards: [
+			isUnion(isA, isB),
 			isUnion(isB, isA),
 			isUnion(isB, isA, isA),
 			isB.or(isA),

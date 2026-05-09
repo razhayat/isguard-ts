@@ -31,7 +31,7 @@ describe("is instanceof", () => {
 
 describe("is animal", () => {
 	describedGuardTests({
-		guard: isInstanceof(Animal),
+		guards: [isInstanceof(Animal)],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -70,7 +70,7 @@ describe("is animal", () => {
 
 describe("is dog", () => {
 	describedGuardTests({
-		guard: isInstanceof(Dog),
+		guards: [isInstanceof(Dog)],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -113,7 +113,7 @@ describe("is dog", () => {
 
 describe("is cat", () => {
 	describedGuardTests({
-		guard: isInstanceof(Cat),
+		guards: [isInstanceof(Cat)],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -154,7 +154,7 @@ describe("is cat", () => {
 
 describe("is date", () => {
 	describedGuardTests({
-		guard: isDate,
+		guards: [isDate],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -194,7 +194,7 @@ describe("is date", () => {
 
 describe("is regexp", () => {
 	describedGuardTests({
-		guard: isRegExp,
+		guards: [isRegExp],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -224,7 +224,7 @@ describe("is regexp", () => {
 
 describe("is error", () => {
 	describedGuardTests({
-		guard: isError,
+		guards: [isError],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -250,7 +250,7 @@ describe("is error", () => {
 
 describe("is eval error", () => {
 	describedGuardTests({
-		guard: isEvalError,
+		guards: [isEvalError],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -275,7 +275,7 @@ describe("is eval error", () => {
 
 describe("is range error", () => {
 	describedGuardTests({
-		guard: isRangeError,
+		guards: [isRangeError],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -300,7 +300,7 @@ describe("is range error", () => {
 
 describe("is reference error", () => {
 	describedGuardTests({
-		guard: isReferenceError,
+		guards: [isReferenceError],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -324,7 +324,7 @@ describe("is reference error", () => {
 
 describe("is syntax error", () => {
 	describedGuardTests({
-		guard: isSyntaxError,
+		guards: [isSyntaxError],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -348,7 +348,7 @@ describe("is syntax error", () => {
 
 describe("is type error", () => {
 	describedGuardTests({
-		guard: isTypeError,
+		guards: [isTypeError],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -372,7 +372,7 @@ describe("is type error", () => {
 
 describe("is uri error", () => {
 	describedGuardTests({
-		guard: isURIError,
+		guards: [isURIError],
 		testCases: [
 			[null, false],
 			[undefined, false],

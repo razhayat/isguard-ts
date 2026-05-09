@@ -5,11 +5,13 @@ import {
 	isDate,
 	isIndexRecord,
 	isLiteral,
+	isNever,
 	isNumber,
 	isPartialRecord,
 	isRecord,
 	isString,
 	isType,
+	isUnknown,
 } from "../src";
 
 describe("is record", () => {
@@ -32,8 +34,8 @@ describe("is number record", () => {
 	type T = Record<"num1" | "num2" | "num3", number>;
 
 	describedGuardTests<T>({
-		guard: isRecord(["num1", "num2", "num3"], isNumber),
-		equivalentGuards: [
+		guards: [
+			isRecord(["num1", "num2", "num3"], isNumber),
 			isType<T>({
 				num1: isNumber,
 				num2: isNumber,
@@ -74,8 +76,13 @@ describe("is Record<'a' | 'b', 'c', 'd'> record", () => {
 	const guard = isRecord(["a", "b"], isLiteral("c", "d"));
 
 	describedGuardTests({
-		guard: guard,
-		equivalentGuards: [extraGuard.pick("a", "b", "a"), extraGuard.omit("c", "c")],
+		guards: [
+			guard,
+			guard.or(isNever),
+			extraGuard.pick("a", "b", "a"),
+			extraGuard.pick("a", "b", "a").and(isUnknown),
+			extraGuard.omit("c", "c"),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -96,7 +103,7 @@ describe("is Record<'a' | 'b', 'c', 'd'> record", () => {
 
 describe("tuple like is record", () => {
 	describedGuardTests({
-		guard: isRecord([0, 1, 2], isBoolean),
+		guards: [isRecord([0, 1, 2], isBoolean)],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -118,7 +125,7 @@ describe("tuple like is record", () => {
 
 describe("special is record", () => {
 	describedGuardTests({
-		guard: isRecord(["length"], isNumber),
+		guards: [isRecord(["length"], isNumber)],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -143,7 +150,7 @@ describe("is record with symbol keys", () => {
 	const s2 = Symbol();
 
 	describedGuardTests({
-		guard: isRecord([s1, s2], isNumber),
+		guards: [isRecord([s1, s2], isNumber)],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -191,8 +198,8 @@ describe("is partial string record", () => {
 	const guard = isPartialRecord(["firstName", "secondName"], isString);
 
 	describedGuardTests<T>({
-		guard: guard,
-		equivalentGuards: [
+		guards: [
+			guard,
 			extraGuard.pick("firstName", "secondName", "secondName"),
 			extraGuard.omit("thirdName", "thirdName"),
 			isType<T>({
@@ -225,7 +232,12 @@ describe("is partial record with symbol keys", () => {
 	const symbol = Symbol();
 
 	describedGuardTests({
-		guard: isPartialRecord([symbol], isString),
+		guards: [
+			isPartialRecord([symbol], isString),
+			isType<{ [symbol]?: string }>({
+				[symbol]: isString.optional(),
+			}),
+		],
 		testCases: [
 			[undefined, false],
 			[null, false],
@@ -279,8 +291,12 @@ describe("is number index record", () => {
 	}
 
 	describedGuardTests({
-		guard: isIndexRecord(isNumber),
-		equivalentGuards: [isNumber.indexRecord()],
+		guards: [
+			isIndexRecord(isNumber),
+			isNumber.indexRecord(),
+			isNumber.and(isUnknown).indexRecord(),
+			isNumber.optional().unbox().indexRecord(),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -330,6 +346,40 @@ describe("is number index record", () => {
 			],
 			[Object.create({}), true, { stringify: "Object.create({})" }],
 			[Object.create({ name: 12 }), true, { stringify: "Object.create({ name: 12 })" }],
+		],
+	});
+});
+
+describe("is never index record", () => {
+	describedGuardTests({
+		guards: [
+			isIndexRecord(isNever),
+			isNever.indexRecord(),
+			isIndexRecord(isNever.maybe().unbox()),
+		],
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[21, false],
+			[23n, false],
+			["4", false],
+			[true, false],
+			[false, false],
+			[new Date(), false],
+			[new Set(), false],
+			[new Map(), false],
+			[(param: number) => param, false],
+			[/this is my regex! not yours/, false],
+			[[], false],
+			[[213], false],
+
+			[{ hello: "bye" }, false],
+			[{ 61: "not a number" }, false],
+			[{ [Symbol()]: 89987987987987897897n }, false],
+			[{ hi: 12, bye: 6, blue: "kvdkdm" }, false],
+			[{ 64634: 12, [Symbol()]: 6, blue: "kvdkdm" }, false],
+
+			[{}, true],
 		],
 	});
 });
