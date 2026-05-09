@@ -158,7 +158,13 @@ describe("is string", () => {
 
 describe("is boolean", () => {
 	describedGuardTests({
-		guards: [isBoolean, isUnion(isTrue, isFalse), isFalse.or(isTrue), isLiteral(true, false)],
+		guards: [
+			isBoolean,
+			isUnion(isTrue, isFalse),
+			isFalse.or(isTrue),
+			isLiteral(true, false),
+			isBoolean.refine((value): value is boolean => true),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],

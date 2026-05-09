@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isArray, isDate, isNever, isNumber, isString, isType, isUndefined } from "../src";
+import { isArray, isDate, isLazy, isNever, isNumber, isString, isType, isUndefined } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is array", () => {
@@ -12,7 +12,12 @@ describe("is array", () => {
 
 describe("is number array", () => {
 	describedGuardTests({
-		guards: [isArray(isNumber), isNumber.array()],
+		guards: [
+			isArray(isNumber),
+			isNumber.array(),
+			isLazy(() => isNumber).array(),
+			isNumber.maybe().unbox().array(),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isLiteral, isNever, isUnion, isUnknown } from "../src";
+import { isLiteral, isNever, isString, isUnion, isUnknown } from "../src";
 
 describe("is literal", () => {
 	it("should have .values that is equal to the given values", () => {
@@ -96,6 +96,7 @@ describe("is literal ('Empire!')", () => {
 			guard.extract("Empire!", "Empire!"),
 			isLiteral("Empire!", "to be excluded").extract("Empire!"),
 			isLiteral("Empire!", "to be excluded").exclude("to be excluded", "to be excluded"),
+			isString.refine((value): value is "Empire!" => value === "Empire!"),
 		],
 		testCases: [
 			[null, false],

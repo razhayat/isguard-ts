@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isNever, isNumber, isRefine, isString } from "../src";
+import { isNever, isNumber, isRefine, isString, isUnknown } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is refine", () => {
@@ -21,6 +21,7 @@ describe("is `Hello${string}`", () => {
 		guards: [
 			isRefine(isString, startWithHello),
 			isString.refine(startWithHello),
+			isUnknown.refine(value => isString(value) && startWithHello(value)),
 			isString.or(isNever).refine(startWithHello),
 		],
 		testCases: [

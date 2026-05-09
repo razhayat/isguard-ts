@@ -38,7 +38,7 @@ describe("is object", () => {
 
 describe("isUnknown", () => {
 	describedGuardTests({
-		guards: [isUnknown],
+		guards: [isUnknown, isNever.or(isUnknown)],
 		testCases: [
 			[null, true],
 			[undefined, true],
@@ -62,7 +62,7 @@ describe("isUnknown", () => {
 
 describe("isNever", () => {
 	describedGuardTests({
-		guards: [isNever],
+		guards: [isNever, isNever.and(isUnknown)],
 		testCases: [
 			[null, false],
 			[undefined, false],

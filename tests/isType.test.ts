@@ -14,6 +14,7 @@ import {
 	TypeTypeGuard,
 	isRecord,
 	isNever,
+	isPartialRecord,
 } from "../src";
 import { describedGuardTests } from "./utils";
 
@@ -33,6 +34,7 @@ describe("is empty type", () => {
 			isType({ name: isString }).pick(),
 			isType({ name: isString }).omit("name"),
 			isRecord([], isNever),
+			isPartialRecord([], isNever),
 		],
 		testCases: [
 			[null, false],
