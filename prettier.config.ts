@@ -5,6 +5,7 @@ const config: Config = {
 	tabWidth: 4,
 	arrowParens: "avoid",
 	semi: true,
+	printWidth: 100,
 };
 
 export default config;

@@ -1,12 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-	isArray,
-	isDate,
-	isNumber,
-	isString,
-	isType,
-	isUndefined,
-} from "../src";
+import { isArray, isDate, isNumber, isString, isType, isUndefined } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is array", () => {
@@ -135,10 +128,7 @@ describe("is undefined array", () => {
 			[[undefined], true],
 			[[undefined, undefined], true],
 			[[undefined, undefined, undefined], true],
-			[
-				[void 0, void undefined, undefined, void null, void function () {}],
-				true,
-			],
+			[[void 0, void undefined, undefined, void null, void function () {}], true],
 
 			[new Array(35), true],
 			[Array(90), true],
@@ -216,15 +206,7 @@ describe("is object array", () => {
 			[[{ name: "Alice" }], true],
 			[[{ name: "Alice" }, { name: "Bob" }], true],
 			[[{ name: "Alice" }, { name: "Bob" }, { name: "Charlie" }], true],
-			[
-				[
-					{ name: "Alice" },
-					{ name: "Bob" },
-					{ name: "Charlie" },
-					{ name: "David" },
-				],
-				true,
-			],
+			[[{ name: "Alice" }, { name: "Bob" }, { name: "Charlie" }, { name: "David" }], true],
 
 			[[{ name: "Alice" }, { name: "Bob", age: 30 }], true],
 			[[{ name: "Alice", extra: "prop" }, { name: "Bob" }], true],

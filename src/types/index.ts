@@ -43,10 +43,7 @@ type ExactEqual<T> = {
  *   // someValue is now typed as Person
  * }
  */
-export type TypeGuard<
-	in out T,
-	in out _U extends ExactEqual<T> = ExactEqual<T>,
-> = {
+export type TypeGuard<in out T, in out _U extends ExactEqual<T> = ExactEqual<T>> = {
 	(value: unknown): value is T;
 	/**
 	 * Creates a type guard for `T | undefined`.
@@ -73,9 +70,7 @@ export type TypeGuard<
 	 *
 	 * Shorthand for {@linkcode isUnion}
 	 */
-	or<I extends readonly unknown[]>(
-		...guards: TypeGuardTemplate<I>
-	): UnionTypeGuard<[T, ...I]>;
+	or<I extends readonly unknown[]>(...guards: TypeGuardTemplate<I>): UnionTypeGuard<[T, ...I]>;
 	/**
 	 * Creates a type guard for `T[]`
 	 *
@@ -99,9 +94,7 @@ export type TypeGuard<
 	 *
 	 * Shorthand for {@linkcode isRefine}
 	 */
-	refine<R extends T>(
-		refinement: (value: T) => value is R,
-	): RefineTypeGuard<T, R>;
+	refine<R extends T>(refinement: (value: T) => value is R): RefineTypeGuard<T, R>;
 	/**
 	 * Creates a `zod` schema equivalent to this type guard.
 	 * You **must have zod installed** to use this feature.
@@ -154,8 +147,7 @@ export type TypeGuard<
  * type PersonType = Guarded<typeof isPerson>;
  * // ^? Person
  */
-export type Guarded<T extends AnyTypeGuard> =
-	T extends TypeGuard<infer R> ? R : never;
+export type Guarded<T extends AnyTypeGuard> = T extends TypeGuard<infer R> ? R : never;
 
 /**
  * A template for creating type guards for objects or tuples.
@@ -163,9 +155,6 @@ export type Guarded<T extends AnyTypeGuard> =
  *
  * @template T - The object or tuple to guard
  */
-export type TypeGuardTemplate<
-	in out T,
-	in out _U extends ExactEqual<T> = ExactEqual<T>,
-> = {
+export type TypeGuardTemplate<in out T, in out _U extends ExactEqual<T> = ExactEqual<T>> = {
 	-readonly [K in keyof T]-?: TypeGuard<T[K]>;
 };

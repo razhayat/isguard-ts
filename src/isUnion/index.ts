@@ -8,9 +8,7 @@ import { UnionTypeGuardClass } from "./internal";
  *
  * @template T - Array of types in the union
  */
-export type UnionTypeGuard<T extends readonly unknown[]> = TypeGuard<
-	T[number]
-> & {
+export type UnionTypeGuard<T extends readonly unknown[]> = TypeGuard<T[number]> & {
 	/** The array of type guards used in this union */
 	guards: TypeGuardTemplate<T>;
 };

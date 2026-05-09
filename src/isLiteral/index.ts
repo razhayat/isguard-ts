@@ -13,9 +13,7 @@ export type Literal = string | number | bigint | boolean | null | undefined;
  *
  * @template T - Array of literal values to guard
  */
-export type LiteralTypeGuard<T extends readonly Literal[]> = TypeGuard<
-	T[number]
-> & {
+export type LiteralTypeGuard<T extends readonly Literal[]> = TypeGuard<T[number]> & {
 	/** The array of literal values this guard accepts */
 	values: T;
 	/** Creates a new guard that only accepts the specified subset of values */

@@ -13,10 +13,9 @@ import {
  * @template K - Array of keys for the record
  * @template V - The value type for all keys
  */
-export type RecordTypeGuard<
-	K extends readonly PropertyKey[],
-	V,
-> = TypeTypeGuard<Record<K[number], V>> & {
+export type RecordTypeGuard<K extends readonly PropertyKey[], V> = TypeTypeGuard<
+	Record<K[number], V>
+> & {
 	/** The array of keys that must be present in the record */
 	keys: K;
 	/** The type guard used for validating record values */
@@ -56,10 +55,9 @@ export const isRecord = <const K extends readonly PropertyKey[], V>(
  * @template K - Array of keys for the record
  * @template V - The value type for all keys
  */
-export type PartialRecordTypeGuard<
-	K extends readonly PropertyKey[],
-	V,
-> = TypeTypeGuard<Partial<Record<K[number], V>>> & {
+export type PartialRecordTypeGuard<K extends readonly PropertyKey[], V> = TypeTypeGuard<
+	Partial<Record<K[number], V>>
+> & {
 	/** The array of keys that may be present in the record */
 	keys: K;
 	/** The type guard used for validating record values */
@@ -121,8 +119,6 @@ export type IndexRecordTypeGuard<T> = TypeGuard<Record<PropertyKey, T>> & {
  * isNumberRecord({ a: 1, b: 2 }); // true
  * isNumberRecord({ a: 1, b: "2" }); // false
  */
-export const isIndexRecord = <T>(
-	isValue: TypeGuard<T>,
-): IndexRecordTypeGuard<T> => {
+export const isIndexRecord = <T>(isValue: TypeGuard<T>): IndexRecordTypeGuard<T> => {
 	return new IndexRecordTypeGuardClass<T>(isValue);
 };

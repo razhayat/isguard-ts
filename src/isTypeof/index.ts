@@ -27,9 +27,7 @@ export type TypeofResult = keyof TypeByTypeOfResult;
  *
  * @template T - The typeof result string
  */
-export type TypeofTypeGuard<T extends TypeofResult> = TypeGuard<
-	TypeByTypeOfResult[T]
-> & {
+export type TypeofTypeGuard<T extends TypeofResult> = TypeGuard<TypeByTypeOfResult[T]> & {
 	/** The expected `typeof` result */
 	result: T;
 };
@@ -48,8 +46,6 @@ export type TypeofTypeGuard<T extends TypeofResult> = TypeGuard<
  * isString("hello"); // true
  * isString(123); // false
  */
-export const isTypeof = <T extends TypeofResult>(
-	result: T,
-): TypeofTypeGuard<T> => {
+export const isTypeof = <T extends TypeofResult>(result: T): TypeofTypeGuard<T> => {
 	return new TypeofTypeGuardClass<T>(result);
 };

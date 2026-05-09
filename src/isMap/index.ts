@@ -32,9 +32,6 @@ export type MapTypeGuard<K, V> = TypeGuard<Map<K, V>> & {
  * isStringToNumberMap(new Map([["a", 1], ["b", 2]])); // true
  * isStringToNumberMap(new Map([[1, "a"]])); // false
  */
-export const isMap = <K, V>(
-	isKey: TypeGuard<K>,
-	isValue: TypeGuard<V>,
-): MapTypeGuard<K, V> => {
+export const isMap = <K, V>(isKey: TypeGuard<K>, isValue: TypeGuard<V>): MapTypeGuard<K, V> => {
 	return new MapTypeGuardClass<K, V>(isKey, isValue);
 };
