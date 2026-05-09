@@ -27,3 +27,15 @@ jobs:
 
             - name: Run tests
               run: npm test
+
+    check-format:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup project
+              uses: ./.github/actions/setup-project
+
+            - name: Check if all files are formatted
+              run: npm run check-format
