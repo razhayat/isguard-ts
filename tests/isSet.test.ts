@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isNumber, isSet } from "../src";
+import { isNumber, isSet, isString, isBoolean } from "../src";
 
 describe("is set", () => {
 	it("should have .isValue that is equal to the given guard", () => {
@@ -38,6 +38,60 @@ describe("is number set", () => {
 			[new Set([1, 2, 3]), true],
 			[new Set([56, 61]), true],
 			[new Set([1, 2, 3, 2]), true],
+		],
+	});
+});
+
+describe("is string set", () => {
+	describedGuardTests({
+		guard: isSet(isString),
+		equivalentGuards: [isString.set()],
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[[], false],
+			[{}, false],
+			[() => {}, false],
+			[new Date(), false],
+			[123, false],
+			[true, false],
+			[Symbol(), false],
+
+			[new Set([1, 2, 3]), false],
+			[new Set(["hello", 123]), false],
+
+			[new Set(), true],
+			[new Set([""]), true],
+			[new Set(["hello"]), true],
+			[new Set(["a", "b", "c"]), true],
+			[new Set(["hello", "world", "hello"]), true],
+		],
+	});
+});
+
+describe("is boolean set", () => {
+	describedGuardTests({
+		guard: isSet(isBoolean),
+		equivalentGuards: [isBoolean.set()],
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[[], false],
+			[{}, false],
+			[() => {}, false],
+			[new Date(), false],
+			["true", false],
+			[1, false],
+			[Symbol(), false],
+
+			[new Set([true, 1]), false],
+			[new Set([false, 0]), false],
+			[new Set(["true", "false"]), false],
+
+			[new Set(), true],
+			[new Set([true]), true],
+			[new Set([false]), true],
+			[new Set([true, false]), true],
 		],
 	});
 });

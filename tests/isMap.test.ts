@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isMap, isNumber, isString } from "../src";
+import { isMap, isNumber, isString, isArray, isBoolean } from "../src";
 
 describe("is map", () => {
 	it("should have .isKey and .isValue that are equal to the given guards", () => {
@@ -50,6 +50,112 @@ describe("is Map<number, string>", () => {
 				]),
 				true,
 			],
+		],
+	});
+});
+
+describe("is Map<string, number>", () => {
+	describedGuardTests({
+		guard: isMap(isString, isNumber),
+		testCases: [
+			[null, false],
+			[undefined, false],
+			["", false],
+			[56.123, false],
+			[-2452523525352356n, false],
+			[[], false],
+			[{}, false],
+			[true, false],
+			[Symbol(), false],
+			[Map, false],
+			[[new Map()], false],
+
+			[new Map([[1, "not valid"]]), false],
+			[new Map([["key", "value"]]), false],
+
+			[new Map([["key", NaN]]), true, { zod: "inverted" }],
+			[new Map([["key", Infinity]]), true, { zod: "inverted" }],
+
+			[new Map(), true],
+			[new Map([["key", 42]]), true],
+			[new Map([["", 0]]), true],
+			[
+				new Map([
+					["a", 1],
+					["b", 2],
+					["c", 3],
+				]),
+				true,
+			],
+		],
+	});
+});
+
+describe("is Map<string, boolean>", () => {
+	describedGuardTests({
+		guard: isMap(isString, isBoolean),
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[String(), false],
+			[-56.123, false],
+			[-2452523525352356n, false],
+			[[], false],
+			[{}, false],
+			[true, false],
+			[Symbol(), false],
+			[Set, false],
+			[{ map: new Map() }, false],
+
+			[new Map([[true, false]]), false],
+			[new Map([["flag", 1]]), false],
+			[new Map([["flag", "true"]]), false],
+
+			[new Map(), true],
+			[new Map([["enabled", true]]), true],
+			[new Map([["disabled", false]]), true],
+			[
+				new Map([
+					["a", true],
+					["b", false],
+					["c", true],
+				]),
+				true,
+			],
+		],
+	});
+});
+
+describe("is Map<number, number[]>", () => {
+	describedGuardTests({
+		guard: isMap(isNumber, isArray(isNumber)),
+		equivalentGuards: [isMap(isNumber, isNumber.array())],
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[function () {}, false],
+			[3.14159265358979323, false],
+			[2424452523525352356n, false],
+			[[], false],
+			[{}, false],
+			[false, false],
+			[Symbol.for("me"), false],
+			[Boolean, false],
+			[{ map: [new Map()] }, false],
+
+			[new Map([[1, [1, 2, "3"]]]), false],
+			[new Map([["key", [1, 2, 3]]]), false],
+
+			[new Map(), true],
+			[new Map([[1, []]]), true],
+			[
+				new Map([
+					[1, [1, 2, 3]],
+					[2, [4, 5, 6]],
+				]),
+				true,
+			],
+			[new Map([[0, [NaN]]]), true, { zod: "inverted" }],
 		],
 	});
 });
