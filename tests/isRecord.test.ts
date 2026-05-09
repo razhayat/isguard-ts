@@ -349,3 +349,37 @@ describe("is number index record", () => {
 		],
 	});
 });
+
+describe("is never index record", () => {
+	describedGuardTests({
+		guards: [
+			isIndexRecord(isNever),
+			isNever.indexRecord(),
+			isIndexRecord(isNever.maybe().unbox()),
+		],
+		testCases: [
+			[null, false],
+			[undefined, false],
+			[21, false],
+			[23n, false],
+			["4", false],
+			[true, false],
+			[false, false],
+			[new Date(), false],
+			[new Set(), false],
+			[new Map(), false],
+			[(param: number) => param, false],
+			[/this is my regex! not yours/, false],
+			[[], false],
+			[[213], false],
+
+			[{ hello: "bye" }, false],
+			[{ 61: "not a number" }, false],
+			[{ [Symbol()]: 89987987987987897897n }, false],
+			[{ hi: 12, bye: 6, blue: "kvdkdm" }, false],
+			[{ 64634: 12, [Symbol()]: 6, blue: "kvdkdm" }, false],
+
+			[{}, true],
+		],
+	});
+});

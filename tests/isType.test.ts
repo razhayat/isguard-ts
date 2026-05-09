@@ -12,6 +12,8 @@ import {
 	isBoolean,
 	isIntersection,
 	TypeTypeGuard,
+	isRecord,
+	isNever,
 } from "../src";
 import { describedGuardTests } from "./utils";
 
@@ -30,6 +32,7 @@ describe("is empty type", () => {
 			isType<{}>({}),
 			isType({ name: isString }).pick(),
 			isType({ name: isString }).omit("name"),
+			isRecord([], isNever),
 		],
 		testCases: [
 			[null, false],
