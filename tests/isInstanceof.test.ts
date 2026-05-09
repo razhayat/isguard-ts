@@ -232,14 +232,18 @@ describe("is error", () => {
 			["27/07/2024😃", false],
 			[[new Date()], false],
 			[-56, false],
+			[{ message: "Error like", stack: "..." }, false],
 
 			[new Error(), true],
+			[new Error("with message"), true],
 			[new EvalError(), true],
 			[new RangeError(), true],
 			[new ReferenceError(), true],
 			[new SyntaxError(), true],
 			[new TypeError(), true],
 			[new URIError(), true],
+			[Object.create(Error.prototype), true],
+			[Object.setPrototypeOf({}, Error.prototype), true],
 		],
 	});
 });
@@ -260,7 +264,11 @@ describe("is eval error", () => {
 			[new SyntaxError(), false],
 			[new TypeError(), false],
 			[new URIError(), false],
+
 			[new EvalError(), true],
+			[new EvalError("custom eval error message"), true],
+			[Object.create(EvalError.prototype), true],
+			[Object.setPrototypeOf({}, EvalError.prototype), true],
 		],
 	});
 });
@@ -283,6 +291,9 @@ describe("is range error", () => {
 			[new EvalError(), false],
 
 			[new RangeError(), true],
+			[new RangeError("invalid array length"), true],
+			[Object.create(RangeError.prototype), true],
+			[Object.setPrototypeOf({}, RangeError.prototype), true],
 		],
 	});
 });
@@ -304,6 +315,9 @@ describe("is reference error", () => {
 			[new RangeError(), false],
 
 			[new ReferenceError(), true],
+			[new ReferenceError("undefined variable"), true],
+			[Object.create(ReferenceError.prototype), true],
+			[Object.setPrototypeOf({}, ReferenceError.prototype), true],
 		],
 	});
 });
@@ -325,6 +339,9 @@ describe("is syntax error", () => {
 			[new ReferenceError(), false],
 
 			[new SyntaxError(), true],
+			[new SyntaxError("unexpected token"), true],
+			[Object.create(SyntaxError.prototype), true],
+			[Object.setPrototypeOf({}, SyntaxError.prototype), true],
 		],
 	});
 });
@@ -346,6 +363,9 @@ describe("is type error", () => {
 			[new SyntaxError(), false],
 
 			[new TypeError(), true],
+			[new TypeError("is not a function"), true],
+			[Object.create(TypeError.prototype), true],
+			[Object.setPrototypeOf({}, TypeError.prototype), true],
 		],
 	});
 });
@@ -367,6 +387,9 @@ describe("is uri error", () => {
 			[new TypeError(), false],
 
 			[new URIError(), true],
+			[new URIError("invalid URI"), true],
+			[Object.create(URIError.prototype), true],
+			[Object.setPrototypeOf({}, URIError.prototype), true],
 		],
 	});
 });
