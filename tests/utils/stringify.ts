@@ -12,10 +12,7 @@ export const objectStringify = (input: object) => {
 	return `{ ${entries} }`;
 };
 
-export const constructorStringify = (
-	constructor: Function,
-	...args: unknown[]
-) => {
+export const constructorStringify = (constructor: Function, ...args: unknown[]) => {
 	const argsStr = args.map(defaultStringifyInput).join(", ");
 	return `new ${constructor.name}(${argsStr})`;
 };

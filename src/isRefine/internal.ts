@@ -18,8 +18,6 @@ export class RefineTypeGuardClass<T, R extends T>
 	}
 
 	protected toZod() {
-		return this.isBase
-			.zod()
-			.refine(value => this.refinement(value)) as ZodType<R>;
+		return this.isBase.zod().refine(value => this.refinement(value)) as ZodType<R>;
 	}
 }

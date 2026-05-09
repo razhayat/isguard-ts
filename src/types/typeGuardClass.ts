@@ -31,10 +31,7 @@ export interface TypeGuardClass<T> {
 	(value: unknown): value is T;
 }
 
-export abstract class TypeGuardClass<T>
-	extends ExtensibleFunction
-	implements TypeGuard<T>
-{
+export abstract class TypeGuardClass<T> extends ExtensibleFunction implements TypeGuard<T> {
 	private _zod: ZodType<T> | undefined;
 
 	public constructor() {
@@ -75,9 +72,7 @@ export abstract class TypeGuardClass<T>
 		return isIndexRecord(this);
 	}
 
-	public refine<R extends T>(
-		refinement: (value: T) => value is R,
-	): RefineTypeGuard<T, R> {
+	public refine<R extends T>(refinement: (value: T) => value is R): RefineTypeGuard<T, R> {
 		return isRefine(this, refinement);
 	}
 

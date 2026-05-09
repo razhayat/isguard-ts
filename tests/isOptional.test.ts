@@ -1,13 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-	isNumber,
-	isOptional,
-	isString,
-	isUndefined,
-	isUnion,
-	isArray,
-	isDate,
-} from "../src";
+import { isNumber, isOptional, isString, isUndefined, isUnion, isArray, isDate } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is optional", () => {

@@ -14,13 +14,9 @@ export type TypeTypeGuard<T extends object> = TypeGuard<T> & {
 	/** Creates a type guard for the partial version of `T` (all properties optional) */
 	partial(): TypeTypeGuard<Partial<T>>;
 	/** Creates a type guard for a subset of `T`'s properties */
-	pick<const K extends readonly (keyof T)[]>(
-		...keys: K
-	): TypeTypeGuard<Pick<T, K[number]>>;
+	pick<const K extends readonly (keyof T)[]>(...keys: K): TypeTypeGuard<Pick<T, K[number]>>;
 	/** Creates a type guard excluding specified properties from `T` */
-	omit<const K extends readonly (keyof T)[]>(
-		...keys: K
-	): TypeTypeGuard<Omit<T, K[number]>>;
+	omit<const K extends readonly (keyof T)[]>(...keys: K): TypeTypeGuard<Omit<T, K[number]>>;
 };
 
 /**
@@ -48,8 +44,6 @@ export type TypeTypeGuard<T extends object> = TypeGuard<T> & {
  *
  * isPerson({ name: "Hello", age: 6 }); // true
  */
-export const isType = <T extends object>(
-	template: TypeGuardTemplate<T>,
-): TypeTypeGuard<T> => {
+export const isType = <T extends object>(template: TypeGuardTemplate<T>): TypeTypeGuard<T> => {
 	return new TypeTypeGuardClass<T>(template);
 };

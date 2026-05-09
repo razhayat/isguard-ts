@@ -75,10 +75,7 @@ describe("is Record<'a' | 'b', 'c', 'd'> record", () => {
 
 	describedGuardTests({
 		guard: guard,
-		equivalentGuards: [
-			extraGuard.pick("a", "b", "a"),
-			extraGuard.omit("c", "c"),
-		],
+		equivalentGuards: [extraGuard.pick("a", "b", "a"), extraGuard.omit("c", "c")],
 		testCases: [
 			[null, false],
 			[undefined, false],
@@ -190,10 +187,7 @@ describe("is partial record", () => {
 describe("is partial string record", () => {
 	type T = Partial<Record<"firstName" | "secondName", string>>;
 
-	const extraGuard = isPartialRecord(
-		["firstName", "secondName", "thirdName"],
-		isString,
-	);
+	const extraGuard = isPartialRecord(["firstName", "secondName", "thirdName"], isString);
 	const guard = isPartialRecord(["firstName", "secondName"], isString);
 
 	describedGuardTests<T>({
@@ -303,16 +297,8 @@ describe("is number index record", () => {
 			[[], false],
 			[[213], false],
 
-			[
-				Object.create(null),
-				false,
-				{ stringify: "Object.create(null)", zod: "inverted" },
-			],
-			[
-				Object.create(Date.prototype),
-				false,
-				{ stringify: "Object.create(Date.prototype)" },
-			],
+			[Object.create(null), false, { stringify: "Object.create(null)", zod: "inverted" }],
+			[Object.create(Date.prototype), false, { stringify: "Object.create(Date.prototype)" }],
 			[
 				Object.create(AllIHaveIsNumberFields.prototype),
 				false,
@@ -343,11 +329,7 @@ describe("is number index record", () => {
 				{ stringify: "Object.create(Object.prototype)" },
 			],
 			[Object.create({}), true, { stringify: "Object.create({})" }],
-			[
-				Object.create({ name: 12 }),
-				true,
-				{ stringify: "Object.create({ name: 12 })" },
-			],
+			[Object.create({ name: 12 }), true, { stringify: "Object.create({ name: 12 })" }],
 		],
 	});
 });

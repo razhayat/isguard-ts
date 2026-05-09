@@ -4,8 +4,7 @@ import { describedGuardTests } from "./utils";
 
 describe("is refine", () => {
 	it("should have .isBase and .refinement that are equal to the given parameters", () => {
-		const refinement = (value: string): value is `Hello${string}` =>
-			value.startsWith("Hello");
+		const refinement = (value: string): value is `Hello${string}` => value.startsWith("Hello");
 		const isStartWithHello = isRefine(isString, refinement);
 
 		expect(isStartWithHello.isBase).toBe(isString);
@@ -62,12 +61,9 @@ describe("is positive number", () => {
 		[TAG]: Record<"PositiveNumber", void>;
 	};
 
-	const isPositiveNumber = isRefine(
-		isNumber,
-		(value): value is PositiveNumber => {
-			return value > 0;
-		},
-	);
+	const isPositiveNumber = isRefine(isNumber, (value): value is PositiveNumber => {
+		return value > 0;
+	});
 
 	describedGuardTests({
 		guard: isPositiveNumber,

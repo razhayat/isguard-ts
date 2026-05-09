@@ -30,10 +30,7 @@ export class TypeTypeGuardClass<T extends object>
 	}
 
 	protected toZod() {
-		const entries = this._keys.map(key => [
-			key,
-			Reflect.get(this.template, key).zod(),
-		]);
+		const entries = this._keys.map(key => [key, Reflect.get(this.template, key).zod()]);
 
 		return zod().object(Object.fromEntries(entries)) as ZodType<T>;
 	}
@@ -42,15 +39,11 @@ export class TypeTypeGuardClass<T extends object>
 		return isType<Partial<T>>(partial(this.template));
 	}
 
-	public pick<K extends readonly (keyof T)[]>(
-		...keys: K
-	): TypeTypeGuard<Pick<T, K[number]>> {
+	public pick<K extends readonly (keyof T)[]>(...keys: K): TypeTypeGuard<Pick<T, K[number]>> {
 		return isType<Pick<T, K[number]>>(pick(this.template, keys));
 	}
 
-	public omit<K extends readonly (keyof T)[]>(
-		...keys: K
-	): TypeTypeGuard<Omit<T, K[number]>> {
+	public omit<K extends readonly (keyof T)[]>(...keys: K): TypeTypeGuard<Omit<T, K[number]>> {
 		return isType<Omit<T, K[number]>>(omit(this.template, keys));
 	}
 }

@@ -1,11 +1,4 @@
-import {
-	isInstanceof,
-	isLiteral,
-	isRefine,
-	isTypeof,
-	isUnion,
-	TypeGuard,
-} from "..";
+import { isInstanceof, isLiteral, isRefine, isTypeof, isUnion, TypeGuard } from "..";
 import { NeverTypeGuardClass, UnknownTypeGuardClass } from "./internal";
 
 /**
@@ -66,19 +59,12 @@ export const isFunction: TypeGuard<Function> = isTypeof("function");
 /**
  * Type guard for non-null `object` values.
  */
-export const isObject: TypeGuard<object> = isRefine(
-	isTypeof("object"),
-	object => !!object,
-);
+export const isObject: TypeGuard<object> = isRefine(isTypeof("object"), object => !!object);
 
 /**
  * Type guard for `PropertyKey` values (`string | number | symbol`).
  */
-export const isPropertyKey: TypeGuard<PropertyKey> = isUnion(
-	isString,
-	isNumber,
-	isSymbol,
-);
+export const isPropertyKey: TypeGuard<PropertyKey> = isUnion(isString, isNumber, isSymbol);
 
 /**
  * Type guard for `Date` instances.
@@ -108,8 +94,7 @@ export const isRangeError: TypeGuard<RangeError> = isInstanceof(RangeError);
 /**
  * Type guard for `ReferenceError` instances.
  */
-export const isReferenceError: TypeGuard<ReferenceError> =
-	isInstanceof(ReferenceError);
+export const isReferenceError: TypeGuard<ReferenceError> = isInstanceof(ReferenceError);
 
 /**
  * Type guard for `SyntaxError` instances.
@@ -156,53 +141,32 @@ export const isDateArray = isDate.array();
 /**
  * @deprecated use `isNumber.optional()` instead
  */
-export const isOptionalNumber: TypeGuard<number | undefined> = isUnion(
-	isUndefined,
-	isNumber,
-);
+export const isOptionalNumber: TypeGuard<number | undefined> = isUnion(isUndefined, isNumber);
 /**
  * @deprecated use `isString.optional()` instead
  */
-export const isOptionalString: TypeGuard<string | undefined> = isUnion(
-	isUndefined,
-	isString,
-);
+export const isOptionalString: TypeGuard<string | undefined> = isUnion(isUndefined, isString);
 /**
  * @deprecated use `isBoolean.optional()` instead
  */
-export const isOptionalBoolean: TypeGuard<boolean | undefined> = isUnion(
-	isUndefined,
-	isBoolean,
-);
+export const isOptionalBoolean: TypeGuard<boolean | undefined> = isUnion(isUndefined, isBoolean);
 /**
  * @deprecated use `isDate.optional()` instead
  */
-export const isOptionalDate: TypeGuard<Date | undefined> = isUnion(
-	isUndefined,
-	isDate,
-);
+export const isOptionalDate: TypeGuard<Date | undefined> = isUnion(isUndefined, isDate);
 
 /**
  * @deprecated use `isNumber.maybe()` instead
  */
-export const isMaybeNumber: TypeGuard<number | null> = isUnion(
-	isNull,
-	isNumber,
-);
+export const isMaybeNumber: TypeGuard<number | null> = isUnion(isNull, isNumber);
 /**
  * @deprecated use `isString.maybe()` instead
  */
-export const isMaybeString: TypeGuard<string | null> = isUnion(
-	isNull,
-	isString,
-);
+export const isMaybeString: TypeGuard<string | null> = isUnion(isNull, isString);
 /**
  * @deprecated use `isBoolean.maybe()` instead
  */
-export const isMaybeBoolean: TypeGuard<boolean | null> = isUnion(
-	isNull,
-	isBoolean,
-);
+export const isMaybeBoolean: TypeGuard<boolean | null> = isUnion(isNull, isBoolean);
 /**
  * @deprecated use `isDate.maybe()` instead
  */

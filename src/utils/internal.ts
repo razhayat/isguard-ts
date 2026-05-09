@@ -14,9 +14,7 @@ export const createTemplate = <const K extends readonly PropertyKey[]>(
 	return template as Record<K[number], AnyTypeGuard>;
 };
 
-export const partial = <T>(
-	template: TypeGuardTemplate<T>,
-): TypeGuardTemplate<Partial<T>> => {
+export const partial = <T>(template: TypeGuardTemplate<T>): TypeGuardTemplate<Partial<T>> => {
 	return createTemplate(objectKeys(template), key =>
 		Reflect.get(template, key).optional(),
 	) as TypeGuardTemplate<Partial<T>>;

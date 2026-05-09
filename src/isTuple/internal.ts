@@ -20,8 +20,6 @@ export class TupleTypeGuardClass<T extends readonly unknown[]>
 	}
 
 	protected toZod() {
-		return zod().tuple(
-			this.template.map(guard => guard.zod()) as any,
-		) as unknown as ZodType<T>;
+		return zod().tuple(this.template.map(guard => guard.zod()) as any) as unknown as ZodType<T>;
 	}
 }

@@ -21,9 +21,7 @@ export class LiteralTypeGuardClass<T extends readonly Literal[]>
 			: zod().never();
 	}
 
-	public extract<V extends readonly T[number][]>(
-		...values: V
-	): LiteralTypeGuard<V> {
+	public extract<V extends readonly T[number][]>(...values: V): LiteralTypeGuard<V> {
 		return isLiteral(...values);
 	}
 
@@ -31,8 +29,7 @@ export class LiteralTypeGuardClass<T extends readonly Literal[]>
 		...values: V
 	): LiteralTypeGuard<Exclude<T[number], V[number]>[]> {
 		const includedValues = this.values.filter(
-			(value): value is Exclude<T[number], V[number]> =>
-				!values.includes(value),
+			(value): value is Exclude<T[number], V[number]> => !values.includes(value),
 		);
 		return isLiteral(...includedValues);
 	}

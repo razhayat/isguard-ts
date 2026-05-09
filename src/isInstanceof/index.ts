@@ -13,9 +13,7 @@ export type Constructor = abstract new (...args: any[]) => {};
  *
  * @template T - The constructor type
  */
-export type InstanceofTypeGuard<T extends Constructor> = TypeGuard<
-	InstanceType<T>
-> & {
+export type InstanceofTypeGuard<T extends Constructor> = TypeGuard<InstanceType<T>> & {
 	/** The constructor function used for `instanceof` checks */
 	class: T;
 };
@@ -38,8 +36,6 @@ export type InstanceofTypeGuard<T extends Constructor> = TypeGuard<
  * isAnimal(new Dog()); // true
  * isDog(new Animal()); // false
  */
-export const isInstanceof = <T extends Constructor>(
-	constructor: T,
-): InstanceofTypeGuard<T> => {
+export const isInstanceof = <T extends Constructor>(constructor: T): InstanceofTypeGuard<T> => {
 	return new InstanceofTypeGuardClass<T>(constructor);
 };

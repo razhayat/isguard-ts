@@ -1,14 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import {
-	isBoolean,
-	isDate,
-	isNever,
-	isNumber,
-	isString,
-	isType,
-	isUnion,
-} from "../src";
+import { isBoolean, isDate, isNever, isNumber, isString, isType, isUnion } from "../src";
 
 describe("is union", () => {
 	it("should have .guards that contains all given guards in order", () => {

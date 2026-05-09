@@ -232,9 +232,7 @@ describe("is recursive pick type", () => {
 		b: isLazy(() => isPickParent.pick("b")).array(),
 	});
 
-	const isB: TypeTypeGuard<Pick<PickParent, "b">> = isType<
-		Pick<PickParent, "b">
-	>({
+	const isB: TypeTypeGuard<Pick<PickParent, "b">> = isType<Pick<PickParent, "b">>({
 		b: isLazy(() => isB).array(),
 	});
 
@@ -302,14 +300,8 @@ describe("is person interface", () => {
 			[new Set(), false],
 			[Object, false],
 			[{ name: "", height: 6, birthday: new Date(), sex: "F" }, false],
-			[
-				{ name: "", height: 6, birthday: new Date(), deathday: null, sex: "F" },
-				true,
-			],
-			[
-				{ name: "", height: 6, birthday: new Date(), deathDay: null, sex: "F" },
-				false,
-			],
+			[{ name: "", height: 6, birthday: new Date(), deathday: null, sex: "F" }, true],
+			[{ name: "", height: 6, birthday: new Date(), deathDay: null, sex: "F" }, false],
 			[
 				{
 					name: "",
@@ -486,16 +478,10 @@ describe("is type with all PropertyKey types", () => {
 		guard: isAll,
 		equivalentGuards: [
 			isAllGet,
-			isIntersection(
-				isAll.pick("str", symbol),
-				isType<Pick<All, 61>>({ 61: isNumber }),
-			),
+			isIntersection(isAll.pick("str", symbol), isType<Pick<All, 61>>({ 61: isNumber })),
 			isAllExtra.pick("str", 61, symbol),
 			isAll.pick("str", 61, symbol),
-			isIntersection(
-				isAll.omit("str"),
-				isType<Pick<All, "str">>({ str: isNumber }),
-			),
+			isIntersection(isAll.omit("str"), isType<Pick<All, "str">>({ str: isNumber })),
 			isAllExtra.omit("extra", 12, omitted),
 			isAll.omit(),
 		],
@@ -600,10 +586,7 @@ describe("is type with all PropertyKey types", () => {
 			[{ str: 364634, 61: 24523, [symbol]: 2938523, 46: 325832 }, true],
 			[{ str: 364634, 61: 24523, [symbol]: 2938523, 46: new Date() }, true],
 			[{ str: 364634, 61: 24523, [symbol]: 2938523, [Symbol()]: 239483 }, true],
-			[
-				{ str: 364634, 61: 24523, [symbol]: 2938523, [Symbol()]: () => {} },
-				true,
-			],
+			[{ str: 364634, 61: 24523, [symbol]: 2938523, [Symbol()]: () => {} }, true],
 			[
 				{
 					str: 364634,

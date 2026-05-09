@@ -95,10 +95,7 @@ describe("is literal ('Empire!')", () => {
 			isLiteral("Empire!", "Empire!"),
 			guard.extract("Empire!", "Empire!"),
 			isLiteral("Empire!", "to be excluded").extract("Empire!"),
-			isLiteral("Empire!", "to be excluded").exclude(
-				"to be excluded",
-				"to be excluded",
-			),
+			isLiteral("Empire!", "to be excluded").exclude("to be excluded", "to be excluded"),
 		],
 		testCases: [
 			[null, false],
@@ -176,15 +173,9 @@ describe("is 'apple' | 12 | 34n | true | null | undefined", () => {
 			).extract(true, void 0, 34n, "apple", null, 12),
 			isLiteral(...guard.extract(true, void 0, null, 12).values, "apple", 34n),
 			guard.exclude(),
-			isLiteral(
-				"apple",
-				12,
-				34n,
-				true,
+			isLiteral("apple", 12, 34n, true, "please exclude me", null, undefined).exclude(
 				"please exclude me",
-				null,
-				undefined,
-			).exclude("please exclude me"),
+			),
 			isLiteral(...guard.exclude(null).values, null),
 		],
 		testCases: [

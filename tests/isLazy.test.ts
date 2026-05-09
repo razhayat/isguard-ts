@@ -111,10 +111,7 @@ describe("is recursive type", () => {
 describe("is recursive tuple", () => {
 	type Row = [number, Row?];
 
-	const isRow: TypeGuard<Row> = isTuple<Row>([
-		isNumber,
-		isOptional(isLazy(() => isRow)),
-	]);
+	const isRow: TypeGuard<Row> = isTuple<Row>([isNumber, isOptional(isLazy(() => isRow))]);
 
 	const isCompletelyLazyRow: TypeGuard<Row> = isLazy(() =>
 		isTuple<Row>([isNumber, isCompletelyLazyRow.optional()]),
@@ -202,10 +199,9 @@ describe("is recursive index record", () => {
 		isLazy(() => isRecursiveIndexRecord),
 	);
 
-	const isCompletelyLazyRecursiveIndexRecord: TypeGuard<RecursiveIndexRecord> =
-		isLazy(() => {
-			return isCompletelyLazyRecursiveIndexRecord.indexRecord();
-		});
+	const isCompletelyLazyRecursiveIndexRecord: TypeGuard<RecursiveIndexRecord> = isLazy(() => {
+		return isCompletelyLazyRecursiveIndexRecord.indexRecord();
+	});
 
 	describedGuardTests({
 		guard: isRecursiveIndexRecord,

@@ -1,13 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-	isBoolean,
-	isMaybe,
-	isNull,
-	isNumber,
-	isUnion,
-	isString,
-	isArray,
-} from "../src";
+import { isBoolean, isMaybe, isNull, isNumber, isUnion, isString, isArray } from "../src";
 import { describedGuardTests } from "./utils";
 
 describe("is maybe", () => {
@@ -21,11 +13,7 @@ describe("is maybe", () => {
 describe("is maybe number", () => {
 	describedGuardTests({
 		guard: isMaybe(isNumber),
-		equivalentGuards: [
-			isNumber.maybe(),
-			isUnion(isNumber, isNull),
-			isNull.or(isNumber),
-		],
+		equivalentGuards: [isNumber.maybe(), isUnion(isNumber, isNull), isNull.or(isNumber)],
 		testCases: [
 			[undefined, false],
 			[false, false],
@@ -53,11 +41,7 @@ describe("is maybe number", () => {
 describe("is maybe string", () => {
 	describedGuardTests({
 		guard: isMaybe(isString),
-		equivalentGuards: [
-			isString.maybe(),
-			isUnion(isNull, isString),
-			isString.or(isNull),
-		],
+		equivalentGuards: [isString.maybe(), isUnion(isNull, isString), isString.or(isNull)],
 		testCases: [
 			[undefined, false],
 			[0, false],
