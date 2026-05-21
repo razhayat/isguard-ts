@@ -4,7 +4,7 @@
 	"description": "a typescript library for building type guards quickly while maintaining type safety",
 	"main": "dist/index.js",
 	"scripts": {
-		"test": "npx vitest --run",
+		"test": "vitest --run",
 		"build": "vite build",
 		"prepublishOnly": "npm run test && npm run build",
 		"postpublish": "bash ./scripts/post-publish.sh",
