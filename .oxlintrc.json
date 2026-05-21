@@ -1,0 +1,22 @@
+{
+	"plugins": ["typescript", "unicorn", "oxc"],
+	"jsPlugins": ["eslint-plugin-prettier"],
+	"categories": {
+		"correctness": "error"
+	},
+	"rules": {
+		"prettier/prettier": "error"
+	},
+	"overrides": [
+		{
+			"files": ["*.test.ts"],
+			"rules": {
+				"no-sparse-arrays": "allow",
+				"unicorn/no-new-array": "allow"
+			}
+		}
+	],
+	"env": {
+		"builtin": true
+	}
+}
