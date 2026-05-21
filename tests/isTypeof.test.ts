@@ -163,7 +163,7 @@ describe("is boolean", () => {
 			isUnion(isTrue, isFalse),
 			isFalse.or(isTrue),
 			isLiteral(true, false),
-			isBoolean.refine((value): value is boolean => true),
+			isBoolean.refine((_value): _value is boolean => true),
 		],
 		testCases: [
 			[null, false],

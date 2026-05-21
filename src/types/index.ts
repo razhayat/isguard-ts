@@ -8,14 +8,6 @@ import {
 	RefineTypeGuard,
 	SetTypeGuard,
 	UnionTypeGuard,
-	isOptional,
-	isUnion,
-	isMaybe,
-	isArray,
-	isSet,
-	isIntersection,
-	isIndexRecord,
-	isRefine,
 } from "..";
 import { AnyTypeGuard } from "./internal";
 

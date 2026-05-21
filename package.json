@@ -4,12 +4,12 @@
 	"description": "a typescript library for building type guards quickly while maintaining type safety",
 	"main": "dist/index.js",
 	"scripts": {
-		"test": "npx vitest --run",
+		"test": "vitest --run",
 		"build": "vite build",
 		"prepublishOnly": "npm run test && npm run build",
 		"postpublish": "bash ./scripts/post-publish.sh",
+		"lint": "oxlint",
 		"format": "prettier --write .",
-		"check-format": "prettier --check .",
 		"docs": "typedoc"
 	},
 	"keywords": [
@@ -68,7 +68,9 @@
 	"devDependencies": {
 		"@types/node": "^24.7.2",
 		"@vitest/coverage-v8": "^4.0.18",
-		"prettier": "^3.7.4",
+		"eslint-plugin-prettier": "^5.5.5",
+		"oxlint": "^1.66.0",
+		"prettier": "^3.8.3",
 		"typedoc": "^0.28.19",
 		"typescript": "^5.6.2",
 		"vite": "^5.4.21",

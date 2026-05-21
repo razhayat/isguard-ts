@@ -28,7 +28,7 @@ jobs:
             - name: Run tests
               run: npm test
 
-    check-format:
+    lint:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
@@ -37,5 +37,5 @@ jobs:
             - name: Setup project
               uses: ./.github/actions/setup-project
 
-            - name: Check if all files are formatted
-              run: npm run check-format
+            - name: Run linter
+              run: npm run lint
