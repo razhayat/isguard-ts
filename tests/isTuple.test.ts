@@ -61,7 +61,7 @@ describe("is normal tuple", () => {
 			[[], false],
 			[
 				function () {
-					["", 0];
+					return ["", 0];
 				},
 				false,
 			],

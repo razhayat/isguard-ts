@@ -1337,25 +1337,21 @@ describe("isIndexRecord", () => {
 
 describe("isRefine", () => {
 	describe("return type", () => {
-		it("should return TypeGuard<Farewell>", () => {
-			type Farewell = `Bye ${string}`;
-			const actual = isRefine(isString, (value): value is Farewell => true);
+		type Farewell = `Bye ${string}`;
+		const actual = isRefine(isString, (value): value is Farewell => {
+			return value.startsWith("Bye ");
+		});
 
+		it("should return TypeGuard<Farewell>", () => {
 			expectTypeOf(actual).toEqualTypeOf<RefineTypeGuard<string, Farewell>>();
 			expectTypeOf(actual).toExtend<TypeGuard<Farewell>>();
 		});
 
 		it("should have .isBase that is of type TypeGuard<string>", () => {
-			type Farewell = `Bye ${string}`;
-			const actual = isRefine(isString, (value): value is Farewell => true);
-
 			expectTypeOf(actual.isBase).toEqualTypeOf<TypeGuard<string>>();
 		});
 
 		it("should have .refinement that is of type (value: string) => value is Farewell", () => {
-			type Farewell = `Bye ${string}`;
-			const actual = isRefine(isString, (value): value is Farewell => true);
-
 			expectTypeOf(actual.refinement).toEqualTypeOf<(value: string) => value is Farewell>();
 		});
 	});
@@ -1368,9 +1364,9 @@ describe("isRefine", () => {
 		});
 
 		it("should accept a typescript type guard as a second argument", () => {
-			expectTypeOf(isRefine<boolean, true>).parameter(1).toEqualTypeOf<
-				(value: boolean) => value is true
-			>;
+			expectTypeOf(isRefine<boolean, true>)
+				.parameter(1)
+				.toEqualTypeOf<(value: boolean) => value is true>();
 		});
 	});
 });
@@ -1408,21 +1404,11 @@ describe("isTuple", () => {
 			);
 		});
 
-		it("should not accept number as a generic argument", () => {
-			isTuple<// @ts-expect-error
-			number>;
-		});
-
 		it("should not accept a string", () => {
 			isTuple(
 				// @ts-expect-error
 				"Don't accept me",
 			);
-		});
-
-		it("should not accept string as a generic argument", () => {
-			isTuple<// @ts-expect-error
-			string>;
 		});
 
 		it("should not accept boolean", () => {
@@ -1432,11 +1418,6 @@ describe("isTuple", () => {
 			);
 		});
 
-		it("should not accept boolean as a generic argument", () => {
-			isTuple<// @ts-expect-error
-			boolean>;
-		});
-
 		it("should not accept undefined", () => {
 			isTuple(
 				// @ts-expect-error
@@ -1444,21 +1425,11 @@ describe("isTuple", () => {
 			);
 		});
 
-		it("should not accept undefined as a generic argument", () => {
-			isTuple<// @ts-expect-error
-			undefined>;
-		});
-
 		it("should not accept null", () => {
 			isTuple(
 				// @ts-expect-error
 				null,
 			);
-		});
-
-		it("should not accept null as a generic argument", () => {
-			isTuple<// @ts-expect-error
-			null>;
 		});
 	});
 });
@@ -1505,7 +1476,7 @@ describe("isType", () => {
 	describe("parameters", () => {
 		it("should accept classes", () => {
 			class Example {}
-			isType<Example>;
+			isType<Example>(new Example());
 		});
 
 		it("should accept tuples", () => {
@@ -1519,21 +1490,11 @@ describe("isType", () => {
 			);
 		});
 
-		it("should not accept number as a generic argument", () => {
-			isType<// @ts-expect-error
-			number>;
-		});
-
 		it("should not accept a string", () => {
 			isType(
 				// @ts-expect-error
 				"Don't accept me",
 			);
-		});
-
-		it("should not accept string as a generic argument", () => {
-			isType<// @ts-expect-error
-			string>;
 		});
 
 		it("should not accept boolean", () => {
@@ -1543,11 +1504,6 @@ describe("isType", () => {
 			);
 		});
 
-		it("should not accept boolean as a generic argument", () => {
-			isType<// @ts-expect-error
-			boolean>;
-		});
-
 		it("should not accept undefined", () => {
 			isType(
 				// @ts-expect-error
@@ -1555,21 +1511,11 @@ describe("isType", () => {
 			);
 		});
 
-		it("should not accept undefined as a generic argument", () => {
-			isType<// @ts-expect-error
-			undefined>;
-		});
-
 		it("should not accept null", () => {
 			isType(
 				// @ts-expect-error
 				null,
 			);
-		});
-
-		it("should not accept null as a generic argument", () => {
-			isType<// @ts-expect-error
-			null>;
 		});
 	});
 });

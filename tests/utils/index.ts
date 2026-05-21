@@ -30,9 +30,12 @@ export const describedGuardTests = <T>({ guards, testCases }: DescribedGuardTest
 
 			test(`case #${testCaseIndex + 1} - zod schema #${schemaIndex + 1} should ${zod === "throws" ? "throw" : `return ${zodResult}`} for ${inputStr}`, () => {
 				const testFunction = () => guard.zod().safeParse(input).success;
-				zod === "throws"
-					? expect(testFunction).toThrow()
-					: expect(testFunction()).toBe(zodResult);
+
+				if (zod === "throws") {
+					return expect(testFunction).toThrow();
+				}
+
+				return expect(testFunction()).toBe(zodResult);
 			});
 		});
 	});

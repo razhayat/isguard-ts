@@ -6,6 +6,7 @@ const config: Config = {
 	arrowParens: "avoid",
 	semi: true,
 	printWidth: 100,
+	endOfLine: "auto",
 };
 
 export default config;

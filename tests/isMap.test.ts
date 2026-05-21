@@ -137,7 +137,7 @@ describe("is Map<number, number[]>", () => {
 			[null, false],
 			[undefined, false],
 			[function () {}, false],
-			[3.14159265358979323, false],
+			[3.141592653589793, false],
 			[2424452523525352356n, false],
 			[[], false],
 			[{}, false],

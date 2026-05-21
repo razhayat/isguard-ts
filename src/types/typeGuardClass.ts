@@ -22,11 +22,13 @@ import {
 
 class ExtensibleFunction extends Function {
 	// @ts-expect-error
+	// oxlint-disable-next-line constructor-super
 	public constructor(func: Function) {
 		return Object.setPrototypeOf(func, new.target.prototype);
 	}
 }
 
+// oxlint-disable-next-line typescript/no-unsafe-declaration-merging
 export interface TypeGuardClass<T> {
 	(value: unknown): value is T;
 }
