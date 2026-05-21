@@ -10,7 +10,6 @@
 		"postpublish": "bash ./scripts/post-publish.sh",
 		"lint": "oxlint",
 		"format": "prettier --write .",
-		"check-format": "prettier --check .",
 		"docs": "typedoc"
 	},
 	"keywords": [
