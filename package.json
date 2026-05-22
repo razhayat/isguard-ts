@@ -9,7 +9,7 @@
 		"prepublishOnly": "npm run test && npm run build",
 		"postpublish": "bash ./scripts/post-publish.sh",
 		"lint": "oxlint",
-		"format": "prettier --write .",
+		"format": "oxfmt",
 		"docs": "typedoc"
 	},
 	"keywords": [
