@@ -1,11 +1,11 @@
 {
 	"plugins": ["typescript", "unicorn", "oxc"],
-	"jsPlugins": ["eslint-plugin-prettier"],
+	"jsPlugins": ["eslint-plugin-oxfmt"],
 	"categories": {
 		"correctness": "error"
 	},
 	"rules": {
-		"prettier/prettier": "error"
+		"oxfmt/oxfmt": "error"
 	},
 	"overrides": [
 		{
