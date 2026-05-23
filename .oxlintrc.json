@@ -1,6 +1,9 @@
 {
 	"plugins": ["typescript", "unicorn", "oxc"],
 	"jsPlugins": ["eslint-plugin-oxfmt"],
+	"options": {
+		"reportUnusedDisableDirectives": "error"
+	},
 	"categories": {
 		"correctness": "error"
 	},
