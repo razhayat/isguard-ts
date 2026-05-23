@@ -5,7 +5,6 @@ import {
 	isNumber,
 	isType,
 	isString,
-	isOptionalString,
 	isLiteral,
 	isLazy,
 	TypeGuard,
@@ -15,6 +14,9 @@ import {
 	isRecord,
 	isNever,
 	isPartialRecord,
+	isOptional,
+	isUnion,
+	isUndefined,
 } from "../src";
 import { describedGuardTests } from "./utils";
 
@@ -120,7 +122,35 @@ describe("is type with optional", () => {
 		guards: [
 			isType<MenuItem>({
 				value: isString,
-				display: isOptionalString,
+				display: isString.optional(),
+			}),
+			isType<MenuItem>({
+				value: isString,
+				display: isOptional(isString),
+			}),
+			isType<MenuItem>({
+				value: isString,
+				display: isUnion(isString, isUndefined),
+			}),
+			isType<MenuItem>({
+				value: isString,
+				display: isUnion(isUndefined, isString),
+			}),
+			isType<MenuItem>({
+				value: isString,
+				display: isUnion(isUndefined, isUndefined, isString),
+			}),
+			isType<MenuItem>({
+				value: isString,
+				display: isString.or(isUndefined),
+			}),
+			isType<MenuItem>({
+				value: isString,
+				display: isUndefined.or(isString),
+			}),
+			isType<MenuItem>({
+				value: isString,
+				display: isUndefined.or(isString, isString),
 			}),
 		],
 		testCases: [

@@ -1,6 +1,15 @@
 import { describe, expect, it } from "vitest";
 import { describedGuardTests } from "./utils";
-import { isTuple, isNumber, isOptionalNumber, isString, isType, TypeGuard } from "../src";
+import {
+	isTuple,
+	isNumber,
+	isString,
+	isType,
+	TypeGuard,
+	isUndefined,
+	isOptional,
+	isUnion,
+} from "../src";
 
 describe("is tuple", () => {
 	it("should have .template that is equal to the given template", () => {
@@ -78,8 +87,17 @@ describe("is normal tuple", () => {
 describe("is tuple with optional", () => {
 	type Tuple = [number, number?];
 
-	describedGuardTests({
-		guards: [isTuple<Tuple>([isNumber, isOptionalNumber])],
+	describedGuardTests<Tuple>({
+		guards: [
+			isTuple<Tuple>([isNumber, isNumber.optional()]),
+			isTuple<Tuple>([isNumber, isOptional(isNumber)]),
+			isTuple<Tuple>([isNumber, isUnion(isNumber, isUndefined)]),
+			isTuple<Tuple>([isNumber, isUnion(isUndefined, isNumber)]),
+			isTuple<Tuple>([isNumber, isUnion(isUndefined, isNumber, isNumber)]),
+			isTuple<Tuple>([isNumber, isNumber.or(isUndefined)]),
+			isTuple<Tuple>([isNumber, isUndefined.or(isNumber)]),
+			isTuple<Tuple>([isNumber, isUndefined.or(isUndefined, isNumber)]),
+		],
 		testCases: [
 			[null, false],
 			[undefined, false],
