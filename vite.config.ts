@@ -13,8 +13,15 @@ export default defineConfig({
 			fileName: "index",
 			formats: ["cjs"],
 		},
-	},
-	esbuild: {
-		minifyIdentifiers: false,
+		rolldownOptions: {
+			external: ["zod"],
+			output: {
+				minify: {
+					mangle: {
+						keepNames: true,
+					},
+				},
+			},
+		},
 	},
 });
