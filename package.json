@@ -6,11 +6,11 @@
 	"scripts": {
 		"test": "vitest --run",
 		"build": "vite build",
-		"prepublishOnly": "npm run test && npm run build",
-		"postpublish": "bash ./scripts/post-publish.sh",
 		"lint": "oxlint",
 		"format": "oxfmt",
-		"docs": "typedoc"
+		"docs": "typedoc",
+		"prepublishOnly": "npm run test && npm run build",
+		"postpublish": "bash ./scripts/post-publish.sh"
 	},
 	"keywords": [
 		"assert",
