@@ -4,6 +4,8 @@
 	"arrowParens": "avoid",
 	"semi": true,
 	"printWidth": 100,
+	"endOfLine": "crlf",
+
 	"sortPackageJson": false,
 	"ignorePatterns": []
 }
